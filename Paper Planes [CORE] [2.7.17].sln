@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{D29C8F48-264A-C34E-7830-6AB0A78B29B8}") = "Paper Planes [CORE] [2.7.17]", "Assembly-CSharp.csproj", "{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
