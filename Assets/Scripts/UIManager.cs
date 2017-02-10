@@ -7,10 +7,7 @@ public class UIManager : MonoBehaviour {
 
 	/************************ [VARIABLES & PROPERTIES] ************************/
 
-	public Text ScoreText, StatusText;
-
-
-	private float score = 0;
+	public Text scoreText, levelText, healthText;
 
 	//Singleton implementation
 	private static UIManager instance;
@@ -41,7 +38,18 @@ public class UIManager : MonoBehaviour {
 
 	/************************ [METHODS] ************************/
 
-	public void ResetScore() {
+	public void UpdateScore() {
+		scoreText.text = "Score: " + GameManager.playerScore.ToString ();
+	}
+
+	public void UpdateHealth() {
+		healthText.text = "Health: " + GameManager.playerHealth.ToString () + " / 100";
+	}
+
+
+
+
+	/*public void ResetScore() {
 		score = 0;
 		UpdateScoreText();
 	}
@@ -57,12 +65,12 @@ public class UIManager : MonoBehaviour {
 	}
 
 	private void UpdateScoreText() {
-		ScoreText.text = score.ToString();
+		scoreText.text = score.ToString();
 	}
 
 	public void SetStatus(string text) {
 		StatusText.text = text;
-	}
+	}*/
 
 
 

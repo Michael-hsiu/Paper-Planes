@@ -8,6 +8,12 @@ public class GameManager : MonoBehaviour {
 
 	/************************ [VARIABLES & PROPERTIES] ************************/
 
+	// Player health
+	public static int playerHealth = 100;
+
+	// Player score
+	public static int playerScore = 0;
+
 	// One instance of GameManager will run throughout game
 	private static GameManager singleton;
 
@@ -38,6 +44,11 @@ public class GameManager : MonoBehaviour {
 			DestroyImmediate(this);
 		}
 	}
+
+	void Start() {
+		InvokeRepeating ("HealthTest", 1, 1);	// Starts 1 second after start, then calls in 1 sec intervals
+		Debug.Log ("REACHED!");
+	}
 		
 
 	/************************ [METHODS] ************************/
@@ -46,7 +57,16 @@ public class GameManager : MonoBehaviour {
 		this.GameState = GameState.Dead;
 	}
 
+	// Test function to deduct health
+	public void DeductHealth() {
+		playerHealth -= 1;
+		Debug.Log ("PLAYER HEALTH: " + playerHealth);
+	}
 
+	public void HealthTest() {
+		DeductHealth ();
+		UIManager.Instance.UpdateHealth ();
+	}
 
 		
 	/************************ [GETTERS & SETTERS] ************************/
