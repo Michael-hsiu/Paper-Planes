@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour {
 
 	void Start() {
 		InvokeRepeating ("HealthTest", 1, 1);	// Starts 1 second after start, then calls in 1 sec intervals
-		Debug.Log ("REACHED!");
+		//Debug.Log ("REACHED!");
 	}
 		
 
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour {
 	// Test function to deduct health
 	public void DeductHealth() {
 		playerHealth -= 1;
-		Debug.Log ("PLAYER HEALTH: " + playerHealth);
+		//Debug.Log ("PLAYER HEALTH: " + playerHealth);
 	}
 
 	public void HealthTest() {

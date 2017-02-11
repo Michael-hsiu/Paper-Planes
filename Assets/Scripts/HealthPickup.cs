@@ -15,7 +15,7 @@ public class HealthPickup : MonoBehaviour {
 
 			GameManager.playerHealth += healthToAdd;	// Set new health in GameManager
 
-			Debug.Log ("PLAYER HEALTH: " + GameManager.playerHealth);
+			//Debug.Log ("PLAYER HEALTH: " + GameManager.playerHealth);
 
 			UIManager.Instance.UpdateScore ();	// Update score in UI
 
@@ -30,6 +30,5 @@ public class HealthPickup : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
 	}
 }
