@@ -63,4 +63,6 @@ public class PlayerMovement : MonoBehaviour {
 		//transform.position += Vector3.right * speed;
 		//rb.AddForce(Vector3.right);
 	}
+
+
 }

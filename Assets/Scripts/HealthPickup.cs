@@ -6,7 +6,9 @@ public class HealthPickup : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		// Triggers on collision with rigidbody's collider
-		if(GameManager.playerHealth < 100 && GameManager.playerHealth > 0) {
+
+
+		if(/*GameManager.playerHealth < 100 && */ GameManager.playerHealth > 0) {
 
 			//int missingHealth = 100 - GameManager.playerHealth;
 			//int healthToAdd = (missingHealth < 100) ? missingHealth : 100;	// Restore missing HP if <10 missing, otherwise restore 10 HP
@@ -20,6 +22,7 @@ public class HealthPickup : MonoBehaviour {
 			UIManager.Instance.UpdateScore ();	// Update score in UI
 
 			Destroy (this.gameObject);
+			Debug.Log ("HEALTH PACK PICKED UP!");
 		}
 	}
 
@@ -31,4 +34,6 @@ public class HealthPickup : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	}
+
+
 }
