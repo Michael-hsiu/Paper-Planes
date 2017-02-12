@@ -35,7 +35,6 @@ public class UIManager : MonoBehaviour {
 	}
 
 
-
 	/************************ [METHODS] ************************/
 
 	public void UpdateScore() {

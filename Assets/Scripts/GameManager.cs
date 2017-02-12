@@ -7,15 +7,22 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
 	/************************ [VARIABLES & PROPERTIES] ************************/
-
 	// Player health
 	public static int playerHealth = 100;
 
 	// Player score
 	public static int playerScore = 0;
 
+	// Player shot logic
+	public GameObject shot;
+	public Transform shotSpawn;
+	public float fireRate;
+
+	private float nextFire;
+
 	// One instance of GameManager will run throughout game
 	private static GameManager singleton;
+
 
 	// Property for GameManager instance
 	public static GameManager Singleton {
@@ -44,6 +51,16 @@ public class GameManager : MonoBehaviour {
 			DestroyImmediate(this);
 		}
 	}
+
+	void Update () {
+		if (Input.GetButton("Fire1") && Time.time > nextFire) 
+		{
+			nextFire = Time.time + fireRate;
+			Instantiate(shot, shotSpawn.position, Quaternion.Euler(new Vector3(45, 0, 0)));		// Rotate projectile 45 degrees so its graphic is displayed
+			//GetComponent<AudioSource>().Play ();
+		}
+	}
+
 
 	void Start() {
 		InvokeRepeating ("HealthTest", 1, 1);	// Starts 1 second after start, then calls in 1 sec intervals
@@ -84,6 +101,9 @@ public class GameManager : MonoBehaviour {
 	//public bool CanSwipe { get; set; }
 
 }
+
+
+
 
 
 
