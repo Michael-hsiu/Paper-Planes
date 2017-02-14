@@ -9,7 +9,7 @@ public class PlayerShooting : MonoBehaviour {
 
 	// Player shot logic
 	public GameObject shot;
-	//public Transform shotSpawn;	// The location in front of player where shot spawns
+	public Transform shotSpawn;	// The location in front of player where shot spawns
 	//public GameObject sprite;	// Use rotation of player sprite to determine which direction shot fires
 
 	public float fireRate;
@@ -26,9 +26,18 @@ public class PlayerShooting : MonoBehaviour {
 	void Update () {
 		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
 			nextFire = Time.time + fireRate;
-			Instantiate (shot, transform.position, transform.rotation);
-		}
 
+			Instantiate (shot, shotSpawn.position, shotSpawn.rotation * Quaternion.Inverse(transform.rotation));	// Align parent with child
+
+		}
+	}
+}
+
+		/** TRIED CODE */
+
+		//Instantiate (shot, transform.position, shotSpawn.rotation * Quaternion.Inverse(transform.rotation));
+		//Instantiate (shot, transform.position, transform.rotation);
+		//Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
 
 		/*GameObject projectile;
 		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
@@ -54,8 +63,7 @@ public class PlayerShooting : MonoBehaviour {
 
 
 
-	}
-}
+
 
 
 
