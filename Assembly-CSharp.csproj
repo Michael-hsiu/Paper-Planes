@@ -51,6 +51,8 @@
      <Compile Include="Assets\Scripts\GameState.cs" />
      <Compile Include="Assets\Scripts\HealthPickup.cs" />
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
+     <Compile Include="Assets\Scripts\PlayerShooting.cs" />
+     <Compile Include="Assets\Scripts\RotationUpdate.cs" />
      <Compile Include="Assets\Scripts\StartMenuManager.cs" />
      <Compile Include="Assets\Scripts\UIManager.cs" />
      <Compile Include="Assets\ShotMover.cs" />

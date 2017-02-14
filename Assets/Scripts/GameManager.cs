@@ -7,20 +7,13 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
 	/************************ [VARIABLES & PROPERTIES] ************************/
+
+
 	// Player health
 	public static int playerHealth = 100;
 
 	// Player score
 	public static int playerScore = 0;
-
-	// Player shot logic
-	public GameObject shot;
-	public Transform shotSpawn;	// The location in front of player where shot spawns
-	public GameObject sprite;	// Use rotation of player sprite to determine which direction shot fires
-
-	public float fireRate;
-
-	private float nextFire;
 
 	// One instance of GameManager will run throughout game
 	private static GameManager singleton;
@@ -54,18 +47,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void Update () {
-		if (Input.GetButton("Fire1") && Time.time > nextFire) 
-		{
-			nextFire = Time.time + fireRate;
 
-	
-			Instantiate(shot, shotSpawn.position, Quaternion.Euler(new Vector3(sprite.transform.rotation.x + 45, sprite.transform.rotation.y, sprite.transform.rotation.z)));
-			//Instantiate(shot, shotSpawn.position, sprite.transform.rotation);
-			//Instantiate(shot, shotSpawn.position, Quaternion.Euler(new Vector3(45, 0, 0)));		// Rotate projectile 45 degrees so its graphic is displayed
-			//GetComponent<AudioSource>().Play ();
-		}
-	}
 
 
 	void Start() {
