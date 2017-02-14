@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour {
 
-	//public Transform target1;
-	//public Vector3 target;
-
 	// Player shot logic
 	public GameObject shot;
 	public Transform shotSpawn;	// The location in front of player where shot spawns
-	//public GameObject sprite;	// Use rotation of player sprite to determine which direction shot fires
 
 	public float fireRate;
 
 	private float nextFire;
-	private float speed = 1f;
+	private float speed = 1.0f;
 
 
 	// Use this for initialization
@@ -25,9 +21,9 @@ public class PlayerShooting : MonoBehaviour {
 	
 	void Update () {
 		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
-			nextFire = Time.time + fireRate;
+			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
 
-			Instantiate (shot, shotSpawn.position, shotSpawn.rotation * Quaternion.Inverse(transform.rotation));	// Align parent with child
+			Instantiate (shot, shotSpawn.position, shotSpawn.rotation * Quaternion.Inverse(transform.rotation));	// Align parent with child (get child rotation in terms of parent rotation (?)) (showSpawn relative rotation to Player)
 
 		}
 	}
