@@ -10,13 +10,13 @@ public class UIManager : MonoBehaviour {
 	public Text scoreText, levelText, healthText;
 
 	//Singleton implementation
-	private static UIManager instance;
-	public static UIManager Instance {
+	private static UIManager singleton;
+	public static UIManager Singleton {
 		get {
-			if (instance == null) {
-				instance = new UIManager();
+			if (singleton == null) {
+				singleton = new UIManager();
 			}
-			return instance;
+			return singleton;
 		}
 	}
 
@@ -27,8 +27,8 @@ public class UIManager : MonoBehaviour {
 
 	/************************ [UNITY FUNCTIONS] ************************/
 	void Awake() {
-		if (instance == null) {
-			instance = this;
+		if (singleton == null) {
+			singleton = this;
 		} else {
 			DestroyImmediate(this);
 		}
@@ -38,11 +38,11 @@ public class UIManager : MonoBehaviour {
 	/************************ [METHODS] ************************/
 
 	public void UpdateScore() {
-		scoreText.text = "Score: " + GameManager.playerScore.ToString ();
+		scoreText.text = "Score: " + GameManager.Singleton.playerScore.ToString ();
 	}
 
 	public void UpdateHealth() {
-		healthText.text = "Health: " + GameManager.playerHealth.ToString () + " / 100";
+		healthText.text = "Health: " + GameManager.Singleton.playerHealth.ToString () + " / 100";
 	}
 
 

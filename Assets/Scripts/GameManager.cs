@@ -10,10 +10,10 @@ public class GameManager : MonoBehaviour {
 
 
 	// Player health
-	public static int playerHealth = 100;
+	public int playerHealth = 100;
 
 	// Player score
-	public static int playerScore = 0;
+	public int playerScore = 0;
 
 	// One instance of GameManager will run throughout game
 	private static GameManager singleton;
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour {
 
 	public void HealthTest() {
 		DeductHealth ();
-		UIManager.Instance.UpdateHealth ();
+		UIManager.Singleton.UpdateHealth ();
 	}
 		
 	/************************ [GETTERS & SETTERS] ************************/

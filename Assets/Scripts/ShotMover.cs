@@ -13,17 +13,19 @@ public class ShotMover : MonoBehaviour {
 
 
 	// Triggers on collision with enemy ship's rigidbody's collider
-	void OnTriggerEnter(Collider other) {
+	/*void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
 
 			int scoreToAdd = 100;
 
-			GameManager.playerScore += scoreToAdd;	// Add new score in GameManager
-			UIManager.Instance.UpdateScore ();	// Update score in UI
+			GameManager.Singleton.playerScore += scoreToAdd;	// Add new score in GameManager
+			UIManager.Singleton.UpdateScore ();	// Update score in UI
+
+			//Destroy (other.gameObject);		// Destroy target ship hit
 
 			Destroy (this.gameObject);		// Remove the shot
-			Debug.Log ("SHOT HIT ENEMY!");	// Print message to console
+			//Debug.Log ("SHOT HIT ENEMY!");	// Print message to console
 		}
-	}
+	}*/
 }

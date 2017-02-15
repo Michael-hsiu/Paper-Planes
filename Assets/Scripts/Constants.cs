@@ -9,6 +9,7 @@ public static class Constants {
 	public static readonly string BossTag = "Boss";
 	public static readonly string PickupTag = "Pickup";
 	public static readonly string GameScene = "GameScene";
+	public static readonly string PlayerShot = "PlayerShot";
 
 
 	// Other examples

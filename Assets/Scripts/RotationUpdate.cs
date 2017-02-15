@@ -9,6 +9,6 @@ public class RotationUpdate : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.localRotation = targetRotation.transform.rotation;	// Rotate shotSpawn relative to parent Player
-		Debug.Log(transform.rotation.z);
+		//Debug.Log(transform.rotation.z);
 	}
 }
