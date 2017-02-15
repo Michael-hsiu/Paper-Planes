@@ -24,6 +24,7 @@ public class PlayerShooting : MonoBehaviour {
 			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
 
 			Instantiate (shot, shotSpawn.position, shotSpawn.rotation * Quaternion.Inverse(transform.rotation));	// Align parent with child (get child rotation in terms of parent rotation (?)) (showSpawn relative rotation to Player)
+			//Instantiate (shot, shotSpawn.position, transform.rotation * Quaternion.Inverse(shotSpawn.rotation));	// Align parent with child (get child rotation in terms of parent rotation (?)) (showSpawn relative rotation to Player)
 
 		}
 	}

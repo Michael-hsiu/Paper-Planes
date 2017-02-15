@@ -72,16 +72,6 @@ public class GameManager : MonoBehaviour {
 		DeductHealth ();
 		UIManager.Instance.UpdateHealth ();
 	}
-
-	// Called when gameObject first touches trigger collider.
-	/*void OnTriggerEnter2D(Collider2D other) {
-		// Deactivates gameObject and all its children
-		if (other.gameObject.CompareTag ("HealthPack")) {
-			other.gameObject.SetActive (false);
-			playerHealth += 50;
-		}
-		Debug.Log ("COLLISION NOT DETECTED!");
-	}*/
 		
 	/************************ [GETTERS & SETTERS] ************************/
 	public GameState GameState { get; set; }
