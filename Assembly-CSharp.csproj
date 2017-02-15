@@ -48,7 +48,8 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Constants.cs" />
      <Compile Include="Assets\Scripts\EnemyManager.cs" />
-     <Compile Include="Assets\Scripts\EnemyMovement.cs" />
+     <Compile Include="Assets\Scripts\EnemyMovement1.cs" />
+     <Compile Include="Assets\Scripts\EnemyShooting1.cs" />
      <Compile Include="Assets\Scripts\EngineUpdate.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameState.cs" />
