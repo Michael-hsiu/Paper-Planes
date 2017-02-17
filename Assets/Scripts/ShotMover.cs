@@ -5,6 +5,14 @@ using UnityEngine;
 public class ShotMover : MonoBehaviour {
 
 	public float speed;
+	public float lifeTime = 3.0f;
+
+
+	// Destory bullet after its lifetime
+	void Awake() {
+		Destroy (gameObject, lifeTime);
+	}
+
 
 	void Start () {
 		GetComponent<Rigidbody>().AddForce(transform.up * speed * Time.deltaTime);

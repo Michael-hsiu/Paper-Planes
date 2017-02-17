@@ -83,6 +83,7 @@
 'Assets/Scripts/Constants.cs'
 'Assets/Scripts/EnemyManager.cs'
 'Assets/Scripts/EnemyMovement1.cs'
+'Assets/Scripts/EnemyShooting1.cs'
 'Assets/Scripts/EngineUpdate.cs'
 'Assets/Scripts/GameManager.cs'
 'Assets/Scripts/GameState.cs'

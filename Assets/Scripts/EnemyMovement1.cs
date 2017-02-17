@@ -13,6 +13,7 @@ public class EnemyMovement1 : MonoBehaviour {
 	private Vector2 initialPos;
 	private Vector2 offset = new Vector2(0, 3);
 		
+
 	// Use this for initialization
 	void Start () {
 		initialPos = new Vector2(transform.position.x, transform.position.y);

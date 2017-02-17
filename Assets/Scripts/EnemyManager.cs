@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour {
 
+	public GameObject explosion;
 
 	private int enemyHealth = 100;
 	private int shotDamage = 20;
@@ -21,6 +22,7 @@ public class EnemyManager : MonoBehaviour {
 			enemyHealth -= shotDamage;			// We lost health
 
 			if (enemyHealth <= 0) {
+				Instantiate (explosion, transform.position, transform.rotation);
 				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 				GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI
