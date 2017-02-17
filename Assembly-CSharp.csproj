@@ -46,9 +46,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\ColliderHelper.cs" />
      <Compile Include="Assets\Scripts\Constants.cs" />
      <Compile Include="Assets\Scripts\EnemyManager.cs" />
+     <Compile Include="Assets\Scripts\EnemyManagerTroopers.cs" />
      <Compile Include="Assets\Scripts\EnemyMovement1.cs" />
+     <Compile Include="Assets\Scripts\EnemyMovement2.cs" />
      <Compile Include="Assets\Scripts\EnemyShooting1.cs" />
      <Compile Include="Assets\Scripts\EngineUpdate.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
