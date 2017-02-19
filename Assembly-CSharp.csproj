@@ -46,23 +46,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\ColliderHelper.cs" />
-     <Compile Include="Assets\Scripts\Constants.cs" />
-     <Compile Include="Assets\Scripts\EnemyManager.cs" />
-     <Compile Include="Assets\Scripts\EnemyManagerTroopers.cs" />
-     <Compile Include="Assets\Scripts\EnemyMovement1.cs" />
-     <Compile Include="Assets\Scripts\EnemyMovement2.cs" />
-     <Compile Include="Assets\Scripts\EnemyShooting1.cs" />
-     <Compile Include="Assets\Scripts\EngineUpdate.cs" />
-     <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\GameState.cs" />
-     <Compile Include="Assets\Scripts\HealthPickup.cs" />
-     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
-     <Compile Include="Assets\Scripts\PlayerShooting.cs" />
-     <Compile Include="Assets\Scripts\RotationUpdate.cs" />
-     <Compile Include="Assets\Scripts\ShotMover.cs" />
-     <Compile Include="Assets\Scripts\StartMenuManager.cs" />
-     <Compile Include="Assets\Scripts\UIManager.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyManager.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyManagerTroopers.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyMovement1.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyMovement2.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyShooting1.cs" />
+     <Compile Include="Assets\Scripts\Game\Constants.cs" />
+     <Compile Include="Assets\Scripts\Game\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Game\GameState.cs" />
+     <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
+     <Compile Include="Assets\Scripts\Game\UIManager.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerShooting.cs" />
+     <Compile Include="Assets\Scripts\Utility\ColliderHelper.cs" />
+     <Compile Include="Assets\Scripts\Utility\EngineUpdate.cs" />
+     <Compile Include="Assets\Scripts\Utility\HealthPickup.cs" />
+     <Compile Include="Assets\Scripts\Utility\RotationUpdate.cs" />
+     <Compile Include="Assets\Scripts\Utility\ShotMover.cs" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
