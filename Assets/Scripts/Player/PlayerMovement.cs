@@ -19,12 +19,12 @@ public class PlayerMovement : MonoBehaviour {
 		//transform.Rotate(new Vector3(0, 0, 40) * Time.deltaTime);
 
 		if (Input.GetKey(KeyCode.D)) {
-			transform.Rotate(new Vector3(0, 0, -50) * Time.deltaTime);
+			transform.Rotate(new Vector3(0, 0, -70) * Time.deltaTime);
 		}
 
 		if (Input.GetKey(KeyCode.A)) {
 			//rb.AddForce(Vector2.left * speed);
-			transform.Rotate(new Vector3(0, 0, 50) * Time.deltaTime);
+			transform.Rotate(new Vector3(0, 0, 70) * Time.deltaTime);
 		}
 
 		if (Input.GetKey(KeyCode.W)) {

@@ -13,15 +13,19 @@ public class EnemySpawn : MonoBehaviour {
 
 	private IEnumerator coroutine;
 	private int numEnemies = 0;
+	private GameObject spawnContainer;
 
 	void Start() {
+		spawnContainer = new GameObject ("SpawnContainer");		// Create container to hold all spawned enemies
 		coroutine = WaitAndFire(spawnDelay);	// Assign co-routine
 		StartCoroutine(coroutine);	// Begin eternal enemy spawn
 	}
 
 	private IEnumerator WaitAndFire(float spawnDelay) {
 		while (numEnemies < maxEnemies) {
-			Instantiate (enemy, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
+			GameObject spawnedEnemy = Instantiate (enemy, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
+			spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
+				
 			numEnemies += 1;	// Increment number of enemies this spawn has created
 
 			print ("Enemy # " + numEnemies + " spawned!");
