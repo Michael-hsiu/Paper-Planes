@@ -46,13 +46,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Enemy\EnemyManager.cs" />
-     <Compile Include="Assets\Scripts\Enemy\EnemyManagerTroopers.cs" />
-     <Compile Include="Assets\Scripts\Enemy\EnemyMovement1.cs" />
-     <Compile Include="Assets\Scripts\Enemy\EnemyMovement2.cs" />
-     <Compile Include="Assets\Scripts\Enemy\EnemyShooting1.cs" />
-     <Compile Include="Assets\Scripts\Enemy\EnemySpawn.cs" />
-     <Compile Include="Assets\Scripts\Enemy\EnemySpawnCapped.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Bomber Type\CollisionHelperBomberType.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Bomber Type\EnemyManagerBomberType.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Bomber Type\EnemyMovementBomberType.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Collision Type\EnemyManagerCollisionType.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Collision Type\EnemyMovementCollisionType.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Distance Type\EnemyManagerDistanceType.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Distance Type\EnemyMovementDistanceType.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Distance Type\EnemyShootingDistanceType.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Spawns\EnemySpawnCappedTemplate.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Spawns\EnemySpawnTemplate.cs" />
      <Compile Include="Assets\Scripts\Game\Constants.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\GameState.cs" />
