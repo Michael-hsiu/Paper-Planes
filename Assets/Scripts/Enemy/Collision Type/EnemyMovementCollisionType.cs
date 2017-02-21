@@ -36,7 +36,7 @@ public class EnemyMovementCollisionType : MonoBehaviour {
 		transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
 
 		/** MOVEMENT UPDATE */
-		transform.position = Vector2.Lerp (transform.position, target.transform.position, Time.deltaTime / 3.0f);
+		transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
 
 	}
 }

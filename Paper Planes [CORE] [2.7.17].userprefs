@@ -1,16 +1,18 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/EnemyMovement1.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Bomber Type/EnemyMovementBomberType.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/EnemySpawn.cs" Line="13" Column="2" />
-      <File FileName="Assets/Scripts/Enemy/EnemyManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Utility/ParticleSystemAutoDestroy.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Utility/ColliderHelper.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Game/UIManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Player/PlayerMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/EnemySpawnCapped.cs" Line="48" Column="36" />
-      <File FileName="Assets/Scripts/Enemy/EnemyMovement2.cs" Line="19" Column="19" />
-      <File FileName="Assets/Scripts/Enemy/EnemyMovement1.cs" Line="29" Column="37" />
+      <File FileName="Assets/Scripts/Enemy/Distance Type/EnemyManagerDistanceType.cs" Line="5" Column="38" />
+      <File FileName="Assets/Scripts/Enemy/Bomber Type/EnemyManagerBomberType.cs" Line="24" Column="39" />
+      <File FileName="Assets/Scripts/Enemy/Distance Type/EnemyMovementDistanceType.cs" Line="6" Column="2" />
+      <File FileName="Assets/Scripts/Enemy/Distance Type/EnemyShootingDistanceType.cs" Line="24" Column="2" />
+      <File FileName="Assets/Scripts/Enemy/Collision Type/EnemyMovementCollisionType.cs" Line="43" Column="1" />
+      <File FileName="Assets/Scripts/Utility/ColliderHelper.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/Bomber Type/CollisionHelperBomberType.cs" Line="27" Column="3" />
+      <File FileName="Assets/Scripts/Enemy/Bomber Type/EnemyMovementBomberType.cs" Line="43" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
