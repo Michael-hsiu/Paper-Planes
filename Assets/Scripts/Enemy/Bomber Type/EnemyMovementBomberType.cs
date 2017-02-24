@@ -37,8 +37,8 @@ public class EnemyMovementBomberType : MonoBehaviour {
 
 		/** MOVEMENT UPDATE */
 		if (!isExploding) {
-			transform.position = Vector2.Lerp (transform.position, target.transform.position, Time.deltaTime / 3.0f);
-			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * 100);	// Rotate the enemy MUCH FASTER; needs adjustment
+			//transform.position = Vector2.Lerp (transform.position, target.transform.position, Time.deltaTime / 3.0f);
+			transform.Rotate(Vector3.forward * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment
 		} 
 	}
 }

@@ -14,11 +14,11 @@ public class EnemySpawnCappedTemplate : MonoBehaviour {
 
 	void Start() {
 		spawnContainer = new GameObject ("SpawnContainerCapped");		// Create container to hold all spawned enemies
-		coroutine = WaitAndFire(spawnDelay);	// Assign co-routine
+		coroutine = WaitAndSpawn(spawnDelay);	// Assign co-routine
 		StartCoroutine(coroutine);	// Begin eternal enemy spawn
 	}
 
-	private IEnumerator WaitAndFire(float spawnDelay) {
+	private IEnumerator WaitAndSpawn(float spawnDelay) {
 		
 		while (true) {
 			int fillSize = calcContainerLength ();		// Get current number of living enemies

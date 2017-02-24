@@ -63,6 +63,11 @@
      <Compile Include="Assets\Scripts\Game\UIManager.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerShooting.cs" />
+     <Compile Include="Assets\Scripts\Superclasses\IDamageable.cs" />
+     <Compile Include="Assets\Scripts\Superclasses\IKillable.cs" />
+     <Compile Include="Assets\Scripts\Superclasses\IMovement.cs" />
+     <Compile Include="Assets\Scripts\Superclasses\RangedEnemyShip.cs" />
+     <Compile Include="Assets\Scripts\Superclasses\Ship.cs" />
      <Compile Include="Assets\Scripts\Utility\ColliderHelper.cs" />
      <Compile Include="Assets\Scripts\Utility\EngineUpdate.cs" />
      <Compile Include="Assets\Scripts\Utility\HealthPickup.cs" />
