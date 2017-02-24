@@ -13,12 +13,11 @@ public class RangedEnemyShip : Ship {
 	protected int _health = 400;
 
 
-
 	/** HELPER METHODS */
-	protected override void DoInitialization() {
+	protected override void Initialize() {
 		
 		// Do normal initalization
-		base.DoInitialization ();
+		base.Initialize ();
 
 		// Adjust attributes
 		this.Speed = _speed;
@@ -30,14 +29,13 @@ public class RangedEnemyShip : Ship {
 		Debug.Log (this.RotationSpeed);
 		Debug.Log (this.Health);
 	}
-
-
+		
 
 	/** UNITY CALLBACKS */
 	protected override void Start () {
 		
 		// Call our overridden initalization method
-		DoInitialization ();
+		Initialize ();
 
 		// Check that we're calling the right Start() method
 		Debug.Log("RANGED SHIP START");

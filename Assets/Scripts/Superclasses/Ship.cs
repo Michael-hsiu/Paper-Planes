@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillable {
-	
+
 
 	/** INSTANCE VARS */
 
@@ -65,7 +65,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 
 	/** HELPER METHODS */
 
-	protected virtual void DoInitialization() {
+	protected virtual void Initialize() {
 		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
 		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
 	}
@@ -74,7 +74,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	/** UNITY CALLBACKS */
 
 	protected virtual void Start () {
-		DoInitialization ();
+		Initialize ();
 		Debug.Log ("SHIP START");
 	}
 	
