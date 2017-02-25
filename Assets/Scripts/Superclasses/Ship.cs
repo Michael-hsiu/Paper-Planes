@@ -39,7 +39,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 		set { health = value; } 
 	}
 
-	public float EnemyPoints { 
+	public int EnemyPoints { 
 		get { return enemyPoints; } 
 		set { enemyPoints = value; } 
 	}
@@ -87,7 +87,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 
 	// Should update so that Shot contains its own 'damageDealt' var
 	/** ENEMY TAKES CARE OF WHAT SHOT DOES TO IT */
-	void OnTriggerEnter(Collider other) {
+	/*void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
 
@@ -105,16 +105,19 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 
 			Debug.Log ("ENEMY HEALTH: " + enemyHealth);	// Print message to console
 		}
-	}
+	}*/
 
 	/** UNITY CALLBACKS */
 
 	protected virtual void Start () {
+	
 		Initialize ();
+
 		Debug.Log ("SHIP START");
 	}
 	
 	protected virtual void Update () {
+	
 		Move ();
 	}
 }

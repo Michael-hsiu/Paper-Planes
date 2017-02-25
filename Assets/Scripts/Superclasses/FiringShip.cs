@@ -20,7 +20,7 @@ public abstract class FiringShip : Ship, IFires {
 
 	/** PROPERTIES */
 
-	public float ShotDamage { 
+	public int ShotDamage { 
 		get { return shotDamage; } 
 		set { shotDamage = value; } 
 	}
@@ -37,7 +37,7 @@ public abstract class FiringShip : Ship, IFires {
 
 	/** GAME LOGIC */
 
-	void Fire() {
+	public void Fire() {
 		if (Time.time > nextFire) {
 			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
 

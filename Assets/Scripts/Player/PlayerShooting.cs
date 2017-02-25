@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShooting : MonoBehaviour {
+public class PlayerShooting : MonoBehaviour, IFires {
 
 	// Player shot logic
 	public GameObject shot;
@@ -14,6 +14,12 @@ public class PlayerShooting : MonoBehaviour {
 	private float speed = 1.0f;
 
 
+	/** INTERFACE METHODS */
+
+	public void Fire() {
+		GetComponent<ShotSpawn> ().CreateShot ();
+	}
+
 	// Use this for initialization
 	void Start () {
 		//target = target1.transform.position;
@@ -23,7 +29,11 @@ public class PlayerShooting : MonoBehaviour {
 		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
 			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
 
-			Instantiate (shot, shotSpawn.position, shotSpawn.rotation * Quaternion.Inverse(transform.rotation));	// Align parent with child (get child rotation in terms of parent rotation (?)) (showSpawn relative rotation to Player)
+			Fire ();
+			
+			//Instantiate (shot, shotSpawn.position, shotSpawn.rotation * Quaternion.Inverse(transform.rotation));	// Align parent with child (get child rotation in terms of parent rotation (?)) (showSpawn relative rotation to Player)
+
+
 			//Instantiate (shot, shotSpawn.position, transform.rotation * Quaternion.Inverse(shotSpawn.rotation));	// Align parent with child (get child rotation in terms of parent rotation (?)) (showSpawn relative rotation to Player)
 
 		}

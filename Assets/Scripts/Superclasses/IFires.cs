@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IFires : MonoBehaviour {
+public interface IFires {
 
 	int ShotDamage { get; set; }
 

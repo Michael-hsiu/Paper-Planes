@@ -10,5 +10,9 @@ public class RotationUpdate : MonoBehaviour {
 	void Update () {
 		transform.localRotation = targetRotation.transform.rotation;	// Rotate shotSpawn relative to parent Player
 		//Debug.Log(transform.rotation.z);
+		/* 
+		GameObject targetRotation = shotSpawn.transform.parent;	// This should be the Player
+		shotSpawn.transform.localRotation = targetRotation.transform.rotation;	// Update shotSpawn rotation to align with parent
+		*/
 	}
 }

@@ -70,6 +70,8 @@
      <Compile Include="Assets\Scripts\Superclasses\IMovement.cs" />
      <Compile Include="Assets\Scripts\Superclasses\RangedEnemyShip.cs" />
      <Compile Include="Assets\Scripts\Superclasses\Ship.cs" />
+     <Compile Include="Assets\Scripts\Superclasses\Shot.cs" />
+     <Compile Include="Assets\Scripts\Superclasses\ShotSpawn.cs" />
      <Compile Include="Assets\Scripts\Utility\ColliderHelper.cs" />
      <Compile Include="Assets\Scripts\Utility\EngineUpdate.cs" />
      <Compile Include="Assets\Scripts\Utility\HealthPickup.cs" />
