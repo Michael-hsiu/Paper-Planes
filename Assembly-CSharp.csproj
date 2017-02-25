@@ -63,7 +63,9 @@
      <Compile Include="Assets\Scripts\Game\UIManager.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerShooting.cs" />
+     <Compile Include="Assets\Scripts\Superclasses\FiringShip.cs" />
      <Compile Include="Assets\Scripts\Superclasses\IDamageable.cs" />
+     <Compile Include="Assets\Scripts\Superclasses\IFires.cs" />
      <Compile Include="Assets\Scripts\Superclasses\IKillable.cs" />
      <Compile Include="Assets\Scripts\Superclasses\IMovement.cs" />
      <Compile Include="Assets\Scripts\Superclasses\RangedEnemyShip.cs" />

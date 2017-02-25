@@ -7,11 +7,17 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 
 	/** INSTANCE VARS */
 
+	[Header("References")]
 	public GameObject target;
+	public GameObject explosion;
 
+	[Space]
+
+	[Header("Properties")]
 	public float speed = 1.0f;
 	public float rotationSpeed = 90.0f;
 	public int health = 100;
+	public int enemyPoints = 100;
 
 	protected Vector2 initialPos;
 
@@ -32,6 +38,12 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 		get { return health; } 
 		set { health = value; } 
 	}
+
+	public float EnemyPoints { 
+		get { return enemyPoints; } 
+		set { enemyPoints = value; } 
+	}
+
 
 
 	/** INTERFACE METHODS */
@@ -69,7 +81,31 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
 		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
 	}
+		
 
+	/** COLLIDER METHODS */
+
+	// Should update so that Shot contains its own 'damageDealt' var
+	/** ENEMY TAKES CARE OF WHAT SHOT DOES TO IT */
+	void OnTriggerEnter(Collider other) {
+
+		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
+
+			Destroy (other.gameObject);		// Destroy the shot that hit us
+
+			enemyHealth -= shotDamage;			// We lost health
+
+			if (enemyHealth <= 0) {
+				Instantiate (explosion, transform.position, transform.rotation);
+				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
+				GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
+				UIManager.Singleton.UpdateScore ();	// Update score in UI
+				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");
+			}
+
+			Debug.Log ("ENEMY HEALTH: " + enemyHealth);	// Print message to console
+		}
+	}
 
 	/** UNITY CALLBACKS */
 
