@@ -8,7 +8,7 @@ public class ShotMover : MonoBehaviour {
 	public float lifeTime = 3.0f;
 
 
-	// Destory bullet after its lifetime
+	// Destroy bullet after its lifetime
 	void Awake() {
 		Destroy (gameObject, lifeTime);
 	}

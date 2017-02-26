@@ -102,6 +102,7 @@
 'Assets/Scripts/Superclasses/IFires.cs'
 'Assets/Scripts/Superclasses/IKillable.cs'
 'Assets/Scripts/Superclasses/IMovement.cs'
+'Assets/Scripts/Superclasses/PlayerShip.cs'
 'Assets/Scripts/Superclasses/RangedEnemyShip.cs'
 'Assets/Scripts/Superclasses/Ship.cs'
 'Assets/Scripts/Superclasses/Shot.cs'

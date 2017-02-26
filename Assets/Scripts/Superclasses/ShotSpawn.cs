@@ -14,10 +14,18 @@ public class ShotSpawn : MonoBehaviour {
 	/** HELPER METHODS */
 
 	public void CreateShot() {
-		targetRotation = transform.parent;		// The parent should be the player or enemy sprite
-		transform.localRotation = targetRotation.transform.rotation;	// Rotate shotSpawn relative to parent Player
+		
+		// The parent should be the player or enemy sprite
+		targetRotation = transform.parent.gameObject;		
 
-		Instantiate (targetRotation.transform.GetComponent<FiringShip>().shot, transform.position, 
-						transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation));
+		// Rotate shotSpawn relative to parent Player
+		transform.localRotation = targetRotation.transform.rotation;	
+
+		// Create the shot
+		GameObject shot = Instantiate (targetRotation.transform.GetComponent<FiringShip>().shot, transform.position, 
+			transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
+
+		// Set shot's parent to us
+		shot.transform.parent = gameObject.transform;
 	}
 }

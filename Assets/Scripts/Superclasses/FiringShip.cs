@@ -30,20 +30,18 @@ public abstract class FiringShip : Ship, IFires {
 		set { fireRate = value; } 
 	}
 
-	public float NextFire { 
-		get { return nextFire; } 
-		set { nextFire = value; } 
-	}
 
 	/** GAME LOGIC */
 
-	public void Fire() {
+	public virtual void Fire() {
 		if (Time.time > nextFire) {
+			
 			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
 
-			Instantiate (shot, shotSpawn.position, shotSpawn.rotation * Quaternion.Inverse(transform.rotation));	// Align parent with child
+			// Check for all shotspawns in children
+			foreach(ShotSpawn s in transform) {
+				s.CreateShot ();	// Fire the shot!
+			}
 		}
 	}
-
-
 }

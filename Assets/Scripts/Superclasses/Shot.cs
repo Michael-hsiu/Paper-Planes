@@ -12,7 +12,7 @@ public class Shot : MonoBehaviour, IMovement {
 	[Space]
 
 	[Header("Properties")]
-	public float speed;
+	public float speed = 1.0f;
 	public float lifeTime = 3.0f;
 
 	private GameObject shotContainer;
@@ -29,15 +29,15 @@ public class Shot : MonoBehaviour, IMovement {
 	/** UNITY CALLBACKS */
 
 	// Destroy shot after its lifetime
-	void Awake() {
+	protected void Awake () {
 		Destroy (gameObject, lifeTime);
 	}
 
 
-	void Start () {
+	protected void Start () {
 
 		rb = GetComponent<Rigidbody> ();	// Find rigidbody
-		shotSpawn = transform.parent;		// Initially spawned as child of shotSpawn
+		shotSpawn = transform.parent.gameObject;		// Initially spawned as child of shotSpawn
 
 		transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
 
