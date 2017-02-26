@@ -14,7 +14,7 @@ public abstract class FiringShip : Ship, IFires {
 
 	[Header("Shot Properties")]
 	public int shotDamage = 10;
-	public float fireRate = 0.3f;
+	public float fireRate = .1f;
 	public float nextFire;
 
 
@@ -34,14 +34,18 @@ public abstract class FiringShip : Ship, IFires {
 	/** GAME LOGIC */
 
 	public virtual void Fire() {
-		if (Time.time > nextFire) {
-			
-			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
+	
+		nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
 
-			// Check for all shotspawns in children
-			foreach(ShotSpawn s in transform) {
-				s.CreateShot ();	// Fire the shot!
+		// Check for all shotspawns in children
+		foreach(Transform s in transform) {
+			
+			ShotSpawn shotSpawn = s.GetComponent<ShotSpawn> ();	// Get ShotSpawn in children
+
+			if (shotSpawn != null) {
+				shotSpawn.CreateShot ();	// Fire the shot!
 			}
 		}
+
 	}
 }

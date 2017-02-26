@@ -22,7 +22,9 @@ public class Shot : MonoBehaviour, IMovement {
 	/** INTERFACE METHODS */
 
 	public void Move() {
-		rb.AddForce(transform.up * speed * Time.deltaTime);		// Propel shot forward
+		rb.velocity = transform.up * speed * Time.deltaTime;		// Propel shot forward
+
+		//rb.AddForce(transform.up * speed * Time.deltaTime);		// Propel shot forward
 	}
 
 
@@ -41,7 +43,9 @@ public class Shot : MonoBehaviour, IMovement {
 
 		transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
 
-		Move ();	// Shot starts traveling
+	}
 
+	protected void FixedUpdate() {
+		Move ();	// Shot starts traveling
 	}
 }

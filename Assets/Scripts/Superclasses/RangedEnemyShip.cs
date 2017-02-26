@@ -46,10 +46,14 @@ public class RangedEnemyShip : FiringShip {
 		
 	}
 
-	protected override void Update () {
+	protected override void Update() {
 
 		// Use default movement
 		base.Update ();
+
+	}
+
+	protected virtual void FixedUpdate () {
 
 		// Basic AI - fires constantly
 		Fire ();
