@@ -5,19 +5,19 @@ using UnityEngine;
 public class CollisionHelperBomberType : MonoBehaviour {
 
 
-	public GameObject explosion;
-	public float damageRange = 3.0f;
+	/** INSTANCE VARS */
 
-	private int enemyHealth = 100;
-	private int shotDamage = 20;
-	private int enemyPoints = 100;
-	private int explosionDamage = 50;
-	private float explosionDelay = 3.0f;
+	//public GameObject explosion;
+	//public float damageRange = 3.0f;
+
+	//private int explosionDamage = 50;
+	//private float explosionDelay = 3.0f;
 
 	private GameObject player;
-	private Rigidbody2D rb;
 
-	// Use this for initialization
+
+	/** UNITY CALLBACKS */
+
 	void Start () {
 		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);	// Find the player
 	}
@@ -25,18 +25,20 @@ public class CollisionHelperBomberType : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		
-		// If our overly large collider touches the player...
+		// If our AoE collider touches the player...
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 
 			GetComponentInParent<Rigidbody>().velocity = Vector3.zero; 	// We stop moving, precautionary measure
-			GetComponentInParent<EnemyMovementBomberType>().isExploding = true;		// Tell movement script to stop moving
+			GetComponentInParent<BomberShip>().isExploding = true;		// Tell parent to start explosion protocol
 
-			StartCoroutine (Explode (explosionDelay));	// Blow 'er up)
+			//StartCoroutine (Explode (explosionDelay));	// Blow 'er up)
 
 		}
 	}
 
-	IEnumerator Explode(float explosionDelay) {
+
+	/** CO-ROUTINES */
+	/*IEnumerator Explode(float explosionDelay) {
 
 		Debug.Log ("EXPLOSION COUNTDOWN BEGINS!");
 
@@ -45,7 +47,7 @@ public class CollisionHelperBomberType : MonoBehaviour {
 		Instantiate (explosion, transform.position, transform.rotation);	// Explode! 
 
 		/** Rudimentary way of checking if Player is within our explosion range; not normalized. */
-		Vector3 playerPosition = player.transform.position;
+		/*Vector3 playerPosition = player.transform.position;
 		Vector3 ourPosition = transform.position;
 
 		float xDiff = Mathf.Abs(playerPosition.x - ourPosition.x);
@@ -58,7 +60,7 @@ public class CollisionHelperBomberType : MonoBehaviour {
 
 		Destroy (transform.parent.gameObject);		// We're dead, so get rid of this object :/
 		Debug.Log("ENEMY EXPLODED!");
-	}
+	}*/
 
 
 }

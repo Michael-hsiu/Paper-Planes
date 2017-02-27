@@ -10,7 +10,6 @@ public class EnemyMovementBomberType : MonoBehaviour {
 	public bool isExploding = false;
 
 	private Vector2 initialPos;
-	private Vector2 offset = new Vector2(0, 3);
 	private bool explosionActive = false;
 
 
