@@ -15,13 +15,13 @@ public class Shot : MonoBehaviour, IMovement {
 	public float speed = 1.0f;
 	public float lifeTime = 3.0f;
 
-	private GameObject shotContainer;
 	private Rigidbody rb;
 
 
 	/** INTERFACE METHODS */
 
 	public void Move() {
+
 		rb.velocity = transform.up * speed * Time.deltaTime;		// Propel shot forward
 
 		//rb.AddForce(transform.up * speed * Time.deltaTime);		// Propel shot forward
@@ -39,9 +39,9 @@ public class Shot : MonoBehaviour, IMovement {
 	protected void Start () {
 
 		rb = GetComponent<Rigidbody> ();	// Find rigidbody
-		shotSpawn = transform.parent.gameObject;		// Initially spawned as child of shotSpawn
+		//shotSpawn = transform.parent.gameObject;		// Initially spawned as child of shotSpawn
 
-		transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
+		//transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
 
 	}
 

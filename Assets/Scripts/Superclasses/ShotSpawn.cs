@@ -9,6 +9,7 @@ public class ShotSpawn : MonoBehaviour {
 
 	[Header("References")]
 	public GameObject targetRotation;
+	private GameObject shotContainer;
 
 
 	/** HELPER METHODS */
@@ -25,7 +26,12 @@ public class ShotSpawn : MonoBehaviour {
 		GameObject shot = Instantiate (targetRotation.transform.GetComponent<FiringShip>().shot, transform.position, 
 			transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 
-		// Set shot's parent to us
-		shot.transform.parent = gameObject.transform;
+		// Set shot's parent to shotContainer
+		shot.transform.parent = shotContainer.transform;
+	}
+
+	/** UNITY CALLBACKS */
+	void Start() {
+		shotContainer = new GameObject ("Player Shots");
 	}
 }

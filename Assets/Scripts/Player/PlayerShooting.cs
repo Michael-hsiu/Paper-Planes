@@ -18,7 +18,6 @@ public class PlayerShooting : MonoBehaviour {
 
 	public void Fire() {
 
-		//Debug.Log ("FIRING");
 		// Check for all shotspawns in children
 		foreach(Transform s in transform) {
 			if (s.GetComponent<ShotSpawn>() != null) {
@@ -27,9 +26,6 @@ public class PlayerShooting : MonoBehaviour {
 		}
 	}
 
-	void Start () {
-		//target = target1.transform.position;
-	}
 	
 	void Update () {
 		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
