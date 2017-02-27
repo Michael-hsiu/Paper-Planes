@@ -27,11 +27,11 @@ public class ShotSpawn : MonoBehaviour {
 			transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 
 		// Set shot's parent to shotContainer
-		shot.transform.parent = shotContainer.transform;
+		//shot.transform.parent = shotContainer.transform;
 	}
 
 	/** UNITY CALLBACKS */
 	void Start() {
-		shotContainer = new GameObject ("Player Shots");
+		//shotContainer = new GameObject ("Player Shots");
 	}
 }

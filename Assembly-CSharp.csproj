@@ -51,7 +51,7 @@
      <Compile Include="Assets\Scripts\Enemy\Bomber Type\EnemyMovementBomberType.cs" />
      <Compile Include="Assets\Scripts\Enemy\Collision Type\EnemyManagerCollisionType.cs" />
      <Compile Include="Assets\Scripts\Enemy\Collision Type\EnemyMovementCollisionType.cs" />
-     <Compile Include="Assets\Scripts\Enemy\Distance Type\EnemyManagerDistanceType.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Distance Type\EnemyManagerRangedType.cs" />
      <Compile Include="Assets\Scripts\Enemy\Distance Type\EnemyMovementDistanceType.cs" />
      <Compile Include="Assets\Scripts\Enemy\Distance Type\EnemyShootingDistanceType.cs" />
      <Compile Include="Assets\Scripts\Enemy\Spawns\EnemySpawnCappedTemplate.cs" />

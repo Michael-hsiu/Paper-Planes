@@ -7,7 +7,9 @@ public class PlayerShip : FiringShip {
 	/** INSTANCE VARS */
 
 	private Rigidbody2D rb;
-	protected float _speed = 4.0f;	
+
+	protected float _speed = 2.0f;	
+	protected int _shotDamage = 20;
 
 
 	/** UNITY CALLBACKS */
@@ -15,6 +17,10 @@ public class PlayerShip : FiringShip {
 	protected override void Start () {
 
 		this.Speed = _speed;
+		this.ShotDamage = _shotDamage;
+
+		Debug.Log ("Player's shotDamage: " + ShotDamage);
+
 		rb = GetComponent<Rigidbody2D>();
 	}
 

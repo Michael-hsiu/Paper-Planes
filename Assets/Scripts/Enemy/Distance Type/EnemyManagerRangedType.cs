@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManagerDistanceType : MonoBehaviour {
+public class EnemyManagerRangedType : MonoBehaviour {
 
 	public GameObject explosion;
 
