@@ -59,6 +59,9 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 		Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
 		transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+
+		/** MOVEMENT UPDATE */
+		transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
 	}
 
 	public virtual void Damage(int damageTaken) {

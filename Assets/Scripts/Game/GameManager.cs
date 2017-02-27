@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour {
 	// Player score
 	public int playerScore = 0;
 
+	// Player Damage
+	public int playerDamage = 20;
+
 	// One instance of GameManager will run throughout game
 	private static GameManager singleton;
 
