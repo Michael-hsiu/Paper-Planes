@@ -86,6 +86,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	}
 		
 
+
 /** UNITY CALLBACKS */
 
 protected virtual void Start () {
