@@ -45,6 +45,7 @@ public class PlayerShip : FiringShip {
 			Fire ();
 		}
 
+		// Temp logic for player destruction
 		if (GameManager.Singleton.playerHealth <= 0) {
 			Instantiate (explosion, transform.position, transform.rotation);
 			transform.gameObject.SetActive (false);
