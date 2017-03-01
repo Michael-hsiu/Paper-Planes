@@ -80,6 +80,8 @@
 -define:UNITY_EDITOR_64
 -define:UNITY_EDITOR_OSX
 -define:UNITY_TEAM_LICENSE
+'Assets/Scripts/Enemy/BomberCollisionHelper.cs'
+'Assets/Scripts/Enemy/BomberShip.cs'
 'Assets/Scripts/Enemy/PawnShip.cs'
 'Assets/Scripts/Enemy/RangedEnemyShip.cs'
 'Assets/Scripts/Game/Constants.cs'
@@ -88,8 +90,10 @@
 'Assets/Scripts/Game/StartMenuManager.cs'
 'Assets/Scripts/Game/UIManager.cs'
 'Assets/Scripts/General/FiringShip.cs'
-'Assets/Scripts/General/SHot.cs'
+'Assets/Scripts/General/PlayerShip.cs'
 'Assets/Scripts/General/Ship.cs'
+'Assets/Scripts/General/Shot.cs'
+'Assets/Scripts/General/ShotSpawn.cs'
 'Assets/Scripts/Interfaces/IDamageable.cs'
 'Assets/Scripts/Interfaces/IFires.cs'
 'Assets/Scripts/Interfaces/IKillable.cs'
