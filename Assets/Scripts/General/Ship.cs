@@ -45,7 +45,6 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	}
 
 
-
 	/** INTERFACE METHODS */
 
 	public virtual void Move() {
@@ -74,7 +73,8 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	}
 
 	public virtual void Kill() {
-		Destroy (transform.gameObject);		// Destroy our gameobject
+		//Destroy (transform.gameObject);		// Destroy our gameobject
+		transform.gameObject.SetActive(false);	// "Destroy" our gameobject
 		Instantiate(explosion, transform.position, transform.rotation);
 	}
 

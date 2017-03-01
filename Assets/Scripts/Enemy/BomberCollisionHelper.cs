@@ -5,17 +5,6 @@ using UnityEngine;
 public class BomberCollisionHelper : MonoBehaviour {
 
 
-	/** INSTANCE VARS */
-	private GameObject player;
-
-
-	/** UNITY CALLBACKS */
-
-	void Start () {
-		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);	// Find the player
-	}
-
-
 	void OnTriggerEnter2D(Collider2D other) {
 
 		// If our AoE collider touches the player...

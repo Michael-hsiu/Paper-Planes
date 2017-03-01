@@ -149,11 +149,13 @@ public class BomberShip : Ship {
 			Debug.Log ("Target: " + go);
 		}
 
-		// Kill all gameobjects 
+		// Damage all gameobjects 
 		foreach (GameObject go in targets) {
-			IKillable i = go.GetComponent (typeof(IKillable)) as IKillable;
+			
+			// Retrieve the script that implements IDamageable
+			IDamageable<int> i = go.GetComponent (typeof(IDamageable<int>)) as IDamageable<int>;
 			if (i != null) {
-				i.Kill ();
+				i.Damage(explosionDamage);
 			}
 		}
 

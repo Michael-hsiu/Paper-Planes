@@ -6,11 +6,23 @@ public class PlayerShip : FiringShip {
 
 	/** INSTANCE VARS */
 
-	private Rigidbody2D rb;
+	private Rigidbody rb;
 
 	protected float _speed = 2.0f;	
 	protected int _shotDamage = 20;
 
+
+	/** INTERFACE METHODS */
+
+	public override void Damage(int damageTaken) {
+
+		base.Damage (damageTaken);
+		Debug.Log ("OLD PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
+		GameManager.Singleton.playerHealth -= damageTaken;
+		Debug.Log ("NEW PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
+		UIManager.Singleton.UpdateHealth ();
+
+	}
 
 	/** UNITY CALLBACKS */
 
@@ -21,7 +33,7 @@ public class PlayerShip : FiringShip {
 
 		Debug.Log ("Player's shotDamage: " + ShotDamage);
 
-		rb = GetComponent<Rigidbody2D>();
+		rb = GetComponent<Rigidbody>();
 	}
 
 	protected override void Update () {
@@ -31,6 +43,11 @@ public class PlayerShip : FiringShip {
 
 			Debug.Log ("FIRING");
 			Fire ();
+		}
+
+		if (GameManager.Singleton.playerHealth <= 0) {
+			Instantiate (explosion, transform.position, transform.rotation);
+			transform.gameObject.SetActive (false);
 		}
 
 		// Check for user input

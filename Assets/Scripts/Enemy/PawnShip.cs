@@ -28,19 +28,22 @@ public class PawnShip : Ship {
 	}
 
 	public override void Move () {
+		
+		if (target != null) {
+			Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
+			dist.Normalize ();		// Get unit vector
 
-		Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-		dist.Normalize ();		// Get unit vector
+			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) + 180;	// Angle of rotation around z-axis (pointing upwards)
 
-		float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) + 180;	// Angle of rotation around z-axis (pointing upwards)
+			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-		Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
 
-		transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+			/** MOVEMENT UPDATE */
+			transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
+				
+		}
 
-		/** MOVEMENT UPDATE */
-		transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
-	
 	}	
 
 	/** UNITY CALLBACKS */
