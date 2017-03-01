@@ -16,7 +16,7 @@ public class BomberShip : Ship {
 	[Header("Explosion Attributes")]
 	public int explosionDamage = 50;
 	public float explosionDelay = 3.0f;
-	public float damageRange = 400.0f;
+	public float damageRange = 7.0f;
 	public float rotationFactor = 150.0f;
 
 	public bool isExploding = false;
@@ -135,17 +135,21 @@ public class BomberShip : Ship {
 
 		yield return new WaitForSeconds(explosionDelay);	 // Wait for a few seconds while beeping animation plays
 
-
-
-
 		// Get all colliders in area
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
+
 		List<GameObject> targets = new List<GameObject> ();
 
+		// Add the gameobjects connected to colliders
 		foreach (Collider c in hitColliders) {
 			targets.Add (c.gameObject);
 		}
-			
+
+		foreach(GameObject go in targets) {
+			Debug.Log ("Target: " + go);
+		}
+
+		// Kill all gameobjects 
 		foreach (GameObject go in targets) {
 			IKillable i = go.GetComponent (typeof(IKillable)) as IKillable;
 			if (i != null) {
