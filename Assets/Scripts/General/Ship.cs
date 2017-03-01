@@ -75,6 +75,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 
 	public virtual void Kill() {
 		Destroy (transform.gameObject);		// Destroy our gameobject
+		Instantiate(explosion, transform.position, transform.rotation);
 	}
 
 

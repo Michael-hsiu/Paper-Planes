@@ -16,7 +16,7 @@ public class BomberShip : Ship {
 	[Header("Explosion Attributes")]
 	public int explosionDamage = 50;
 	public float explosionDelay = 3.0f;
-	public float damageRange = 3.0f;
+	public float damageRange = 400.0f;
 	public float rotationFactor = 150.0f;
 
 	public bool isExploding = false;
@@ -135,9 +135,25 @@ public class BomberShip : Ship {
 
 		yield return new WaitForSeconds(explosionDelay);	 // Wait for a few seconds while beeping animation plays
 
-		Instantiate (explosion, transform.position, transform.rotation);	// Explode! 
 
-		/** Rudimentary way of checking if Player is within our explosion range; not normalized. */
+
+
+		// Get all colliders in area
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
+		List<GameObject> targets = new List<GameObject> ();
+
+		foreach (Collider c in hitColliders) {
+			targets.Add (c.gameObject);
+		}
+			
+		foreach (GameObject go in targets) {
+			IKillable i = go.GetComponent (typeof(IKillable)) as IKillable;
+			if (i != null) {
+				i.Kill ();
+			}
+		}
+
+		/** Rudimentary way of checking if Player is within our explosion range; not normalized. 
 		Vector3 playerPosition = target.transform.position;
 		Vector3 ourPosition = transform.position;
 
@@ -145,11 +161,14 @@ public class BomberShip : Ship {
 		float yDiff = Mathf.Abs(playerPosition.y - ourPosition.y);
 
 		if (xDiff <= damageRange || yDiff <= damageRange) {
+
 			GameManager.Singleton.playerHealth -= explosionDamage;	// Player damaged by explosion
 			UIManager.Singleton.UpdateHealth ();	// Update health in UI
-		}
+		}*/
 
 		Destroy (transform.gameObject);		// We're dead, so get rid of this object :/
+		Instantiate (explosion, transform.position, transform.rotation);	// Explode! 
+
 		Debug.Log("BOMBER ENEMY EXPLODED!");
 
 	}
