@@ -26,12 +26,5 @@ public class ShotSpawn : MonoBehaviour {
 		GameObject shot = Instantiate (targetRotation.transform.GetComponent<FiringShip>().shot, transform.position, 
 			transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 
-		// Set shot's parent to shotContainer
-		//shot.transform.parent = shotContainer.transform;
-	}
-
-	/** UNITY CALLBACKS */
-	void Start() {
-		//shotContainer = new GameObject ("Player Shots");
 	}
 }
