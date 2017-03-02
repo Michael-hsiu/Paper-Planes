@@ -22,8 +22,12 @@ public class TurretShotSpawn : MonoBehaviour {
 		// Rotate shotSpawn relative to parent Player
 		transform.localRotation = targetRotation.transform.rotation;	
 
+
 		// Create the shot
-		GameObject shot = Instantiate (targetRotation.transform.GetComponent<Turret>().shot, transform.position, 
+		Turret turret = targetRotation.transform.GetComponent<IFires>() as Turret;		// We know that it'll be a firingship
+
+		// Create the shot
+		GameObject shot = Instantiate (turret.shot, transform.position, 
 			transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 
 	}

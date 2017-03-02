@@ -28,8 +28,10 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	[Header("Shot Properties")]
 	public int shotDamage = 10;
 	public float fireRate = .1f;
-	public float nextFire;
+	public float burstFireDelay = 1.0f;
+	public int burstCount = 5;
 
+	public float nextFire;
 	protected Vector2 initialPos;
 
 
@@ -122,6 +124,8 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	protected virtual void Start () {
 
 		Initialize ();
+		IEnumerator co = BurstFire ();
+		StartCoroutine (co);
 
 		Debug.Log ("TURRET START");
 	}
@@ -129,10 +133,35 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	protected virtual void Update () {
 
 		Move ();
-		
-		if (Time.time > nextFire) {
+
+		/**f (Time.time > nextFire) {
 
 			Fire ();
+		}*/
+	}
+
+	IEnumerator BurstFire() {
+
+		while (true) {
+
+			int roundsLeft = burstCount;
+
+			// Fire an entire burst
+			while (roundsLeft > 0) {
+
+				if (Time.time > nextFire) {
+
+					Fire ();
+
+					roundsLeft -= 1;
+				} else {
+					yield return new WaitForSeconds (Time.time - nextFire);
+				}
+			}
+
+			// Wait between bursts
+			yield return new WaitForSeconds(burstFireDelay);
+
 		}
 	}
 }

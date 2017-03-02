@@ -1,20 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/BomberCollisionHelper.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Turret.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/RangedEnemyShip.cs" Line="24" Column="22" />
-      <File FileName="Assets/Scripts/Enemy/PawnShip.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/RangedEnemyShip.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/PawnShip.cs" Line="31" Column="3" />
       <File FileName="Assets/Scripts/Scripts [old]/Enemy [old]/Bomber Type/CollisionHelperBomberType.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Scripts [old]/Enemy [old]/Bomber Type/EnemyManagerBomberType.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Scripts [old]/Enemy [old]/Bomber Type/EnemyMovementBomberType.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/Ship.cs" Line="71" Column="12" />
-      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="64" Column="38" />
-      <File FileName="Assets/Scripts/Interfaces/IDamageable.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/FiringShip.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Utility/ColliderHelper.cs" Line="11" Column="69" />
-      <File FileName="Assets/Scripts/Enemy/BomberCollisionHelper.cs" Line="10" Column="47" />
+      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="14" Column="2" />
+      <File FileName="Assets/Scripts/General/FiringShip.cs" Line="23" Column="1" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="50" Column="1" />
+      <File FileName="Assets/Scripts/General/TurretShotSpawn.cs" Line="5" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="14" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

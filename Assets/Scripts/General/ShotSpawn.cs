@@ -22,9 +22,12 @@ public class ShotSpawn : MonoBehaviour {
 		// Rotate shotSpawn relative to parent Player
 		transform.localRotation = targetRotation.transform.rotation;	
 
-		// Create the shot
-		GameObject shot = Instantiate (targetRotation.transform.GetComponent<FiringShip>().shot, transform.position, 
+		// Create the shote
+		FiringShip firingShip = targetRotation.transform.GetComponent<IFires>() as FiringShip;		// We know that it'll be a firingship
+
+		GameObject shot = Instantiate (firingShip.shot, transform.position, 
 			transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 
 	}
+
 }
