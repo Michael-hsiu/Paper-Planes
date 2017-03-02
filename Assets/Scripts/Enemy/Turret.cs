@@ -154,9 +154,9 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 					Fire ();
 
 					roundsLeft -= 1;
-				} else {
-					yield return new WaitForSeconds (Time.time - nextFire);
-				}
+				} 
+
+				yield return null;
 			}
 
 			// Wait between bursts
