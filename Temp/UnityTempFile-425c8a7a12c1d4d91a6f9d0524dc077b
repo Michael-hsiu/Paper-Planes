@@ -92,6 +92,7 @@
 'Assets/Scripts/Game/UIManager.cs'
 'Assets/Scripts/General/FiringShip.cs'
 'Assets/Scripts/General/PlayerShip.cs'
+'Assets/Scripts/General/Shields.cs'
 'Assets/Scripts/General/Ship.cs'
 'Assets/Scripts/General/Shot.cs'
 'Assets/Scripts/General/ShotSpawn.cs'

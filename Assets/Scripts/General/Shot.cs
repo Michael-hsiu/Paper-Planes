@@ -8,6 +8,7 @@ public class Shot : MonoBehaviour, IMovement {
 
 	[Header("References")]
 	public GameObject shotSpawn;
+	public int shotDamage = 10;
 
 	[Space]
 
@@ -16,6 +17,12 @@ public class Shot : MonoBehaviour, IMovement {
 	public float lifeTime = 3.0f;
 
 	private Rigidbody rb;
+
+	/** PROPERTIES */
+	public int ShotDamage { 
+		get { return shotDamage; } 
+		set { shotDamage = value; } 
+	}
 
 
 	/** INTERFACE METHODS */

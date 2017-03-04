@@ -140,6 +140,27 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 		}*/
 	}
 
+	void OnTriggerEnter(Collider other) {
+
+		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
+
+			Destroy (other.gameObject);		// Destroy the shot that hit us
+
+			health -= GameManager.Singleton.playerDamage;			// We lost health
+
+			if (health <= 0) {
+
+				Instantiate (explosion, transform.position, transform.rotation);
+				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
+
+				GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
+				UIManager.Singleton.UpdateScore ();	// Update score in UI
+
+				Debug.Log("TURRET KILLED! Obtained: " + enemyPoints + "points!");
+			}
+		}
+	}
+
 	IEnumerator BurstFire() {
 
 		while (true) {
