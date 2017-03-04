@@ -8,6 +8,7 @@ public class Shields : MonoBehaviour, IDamageable<int>, IKillable {
 	[Header("Properties")]
 	public int shieldHealth = 50;
 	public float shieldDuration = 5.0f;
+	public Color spriteColor;
 
 
 	/** INTERFACE METHODS */
@@ -26,7 +27,15 @@ public class Shields : MonoBehaviour, IDamageable<int>, IKillable {
 
 	/** UNITY CALLBACKS */
 	void Start () {
+		spriteColor = GetComponent<SpriteRenderer> ().color;
+
+
 		StartCoroutine (ActivateShield ());
+	}
+
+	void Update() {
+		Debug.Log ("ALPHA: " + spriteColor.a);	
+
 	}
 
 	void OnTriggerEnter(Collider other) {
@@ -37,6 +46,8 @@ public class Shields : MonoBehaviour, IDamageable<int>, IKillable {
 			Debug.Log ("OTHER DMG: " + other.gameObject.GetComponent<Shot>().ShotDamage);
 
 			shieldHealth -= other.gameObject.GetComponent<Shot>().ShotDamage;			// We lost health
+
+
 
 			Destroy (other.gameObject);		// Destroy the shot that hit us
 
@@ -53,6 +64,13 @@ public class Shields : MonoBehaviour, IDamageable<int>, IKillable {
 
 	/** CO-ROUTINES */
 	IEnumerator ActivateShield() {
+
+		while (true) {
+			GetComponent<SpriteRenderer> ().color = Color.Lerp (spriteColor, new Color (spriteColor.r, spriteColor.g, spriteColor.b, 0), Time.deltaTime * shieldDuration / 100000);
+			spriteColor = GetComponent<SpriteRenderer> ().color;
+			yield return null;
+
+		}
 
 		// Let shield run for its lifespan
 		yield return new WaitForSeconds (shieldDuration);
