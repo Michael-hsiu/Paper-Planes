@@ -9,6 +9,7 @@ public class TurretShotSpawn : MonoBehaviour {
 
 	[Header("References")]
 	public GameObject targetRotation;
+	public bool multiFire = false;
 	private GameObject shotContainer;
 
 
@@ -29,14 +30,15 @@ public class TurretShotSpawn : MonoBehaviour {
 		GameObject shot = Instantiate (turret.shot, transform.position, 
 			transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 
-		// Left angled
-		GameObject shot2 = Instantiate (turret.shot, transform.position, 
-			transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 10)))) as GameObject;
+		if (multiFire) {
+			// Left angled
+			GameObject shot2 = Instantiate (turret.shot, transform.position, 
+				transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 10)))) as GameObject;
 
-		// Right angled
-		GameObject shot3 = Instantiate (turret.shot, transform.position, 
-			transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
-		
-
+			// Right angled
+			GameObject shot3 = Instantiate (turret.shot, transform.position, 
+				transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
+			
+		}
 	}
 }
