@@ -54,7 +54,7 @@ public class PawnShip : Ship {
 		Initialize ();
 
 		// Check that we're calling the right Start() method
-		Debug.Log("PAWN SHIP START");
+		//Debug.Log("PAWN SHIP START");
 
 	}
 

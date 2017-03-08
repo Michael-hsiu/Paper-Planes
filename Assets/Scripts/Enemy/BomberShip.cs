@@ -51,7 +51,7 @@ public class BomberShip : Ship {
 
 			// If co-routine not running
 			if (!explosionActive) {
-				Debug.Log ("STARTED COROUTINE");
+				//Debug.Log ("STARTED COROUTINE");
 				StartCoroutine(BeginExplosion());
 			}
 
@@ -86,7 +86,7 @@ public class BomberShip : Ship {
 		Initialize ();
 
 		// Check that we're calling the right Start() method
-		Debug.Log("BOMBER SHIP START");
+		//Debug.Log("BOMBER SHIP START");
 
 	}
 
@@ -131,7 +131,7 @@ public class BomberShip : Ship {
 		// Set this to have only one co-routine running
 		explosionActive = true;
 
-		Debug.Log ("EXPLOSION COUNTDOWN BEGINS!");
+		//Debug.Log ("EXPLOSION COUNTDOWN BEGINS!");
 
 		yield return new WaitForSeconds(explosionDelay);	 // Wait for a few seconds while beeping animation plays
 
@@ -175,7 +175,7 @@ public class BomberShip : Ship {
 		Destroy (transform.gameObject);		// We're dead, so get rid of this object :/
 		Instantiate (explosion, transform.position, transform.rotation);	// Explode! 
 
-		Debug.Log("BOMBER ENEMY EXPLODED!");
+		//Debug.Log("BOMBER ENEMY EXPLODED!");
 
 	}
 }

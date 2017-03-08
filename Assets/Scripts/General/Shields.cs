@@ -34,8 +34,7 @@ public class Shields : MonoBehaviour, IDamageable<int>, IKillable {
 	}
 
 	void Update() {
-		Debug.Log ("ALPHA: " + spriteColor.a);	
-
+		//Debug.Log ("ALPHA: " + spriteColor.a);	
 	}
 
 	void OnTriggerEnter(Collider other) {
@@ -55,10 +54,10 @@ public class Shields : MonoBehaviour, IDamageable<int>, IKillable {
 
 				Kill ();
 
-				Debug.Log ("SHIELD DESTROYED!");
+				//Debug.Log ("SHIELD DESTROYED!");
 			}
 
-			Debug.Log ("SHIELD HEALTH: " + shieldHealth);	// Print message to console
+			//Debug.Log ("SHIELD HEALTH: " + shieldHealth);	// Print message to console
 		}
 	}
 

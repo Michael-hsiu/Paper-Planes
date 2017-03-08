@@ -57,7 +57,7 @@ public class RangedEnemyShip : FiringShip {
 		Initialize ();
 
 		// Check that we're calling the right Start() method
-		Debug.Log("RANGED SHIP START");
+		//Debug.Log("RANGED SHIP START");
 		
 	}
 
@@ -68,8 +68,6 @@ public class RangedEnemyShip : FiringShip {
 
 		// Basic AI - firing logic
 		if (Time.time > nextFire) {
-
-			Debug.Log ("ENEMY FIRING");
 			Fire ();
 		}
 	}
@@ -94,7 +92,7 @@ public class RangedEnemyShip : FiringShip {
 				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");
 			}
 
-			Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
+			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
 		}
 	}
 }
