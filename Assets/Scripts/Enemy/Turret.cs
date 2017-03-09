@@ -117,6 +117,26 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
 	}
 
+	public void DeactivateGuns() {
+		foreach(Transform s in transform) {
+			TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn> ();	// Get ShotSpawn in children
+
+			if (shotSpawn != null) {
+				shotSpawn.Disarm();	// Fire the shot!
+			}
+		}
+	}
+
+	public void ActivateGuns() {
+		foreach(Transform s in transform) {
+			TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn> ();	// Get ShotSpawn in children
+
+			if (shotSpawn != null) {
+				shotSpawn.Arm();	// Fire the shot!
+			}
+		}
+	}
+
 
 
 	/** UNITY CALLBACKS */

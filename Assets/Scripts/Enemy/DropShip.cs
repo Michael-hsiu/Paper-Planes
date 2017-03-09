@@ -39,6 +39,8 @@ public class DropShip : Ship {
 		this.Health = _health;
 		this.EnemyPoints = _enemyPoints;
 
+		DeactivateGuns ();		// Guns not normally on
+
 	}
 
 	public override void Kill () {
@@ -86,6 +88,26 @@ public class DropShip : Ship {
 				shotSpawn.CreateShot ();	// Fire the shot!
 			}
 		}*/
+	}
+
+	public void DeactivateGuns() {
+		foreach(Transform s in transform) {
+			Turret turret = s.GetComponent<Turret> () as Turret;	// Get ShotSpawn in children
+
+			if (turret != null) {
+				turret.DeactivateGuns();	// Fire the shot!
+			}
+		}
+	}
+
+	public void ActivateGuns() {
+		foreach(Transform s in transform) {
+			Turret turret= s.GetComponent<Turret> () as Turret;	// Get ShotSpawn in children
+
+			if (turret != null) {
+				turret.ActivateGuns();	// Fire the shot!
+			}
+		}
 	}
 
 
@@ -145,6 +167,7 @@ public class DropShip : Ship {
 	/** CO-ROUTINES */
 	IEnumerator StartSpawning() {
 		float startTime = Time.time;	// Get time this co-routine begins
+		ActivateGuns();					// Guns are on when spawning
 
 		// While we're still in our window of time where we spawn ships...
 		while (Time.time < startTime + spawnModeDuration) {
@@ -155,5 +178,6 @@ public class DropShip : Ship {
 		nextSpawn = Time.time + timeUntilNextSpawnMode;		// Won't start spawning until certain time has passed
 		Debug.Log("nextSpawn: " + nextSpawn);
 		isSpawning = false;			// Resume normal behavior
+		DeactivateGuns();			// Guns are off when not spawning
 	}
 }
