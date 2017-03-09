@@ -79,6 +79,7 @@
      <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyShootingDistanceType.cs" />
      <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerShooting.cs" />
+     <Compile Include="Assets\Scripts\Spawns\DropShipSpawn.cs" />
      <Compile Include="Assets\Scripts\Spawns\EnemySpawnCappedTemplate.cs" />
      <Compile Include="Assets\Scripts\Spawns\EnemySpawnTemplate.cs" />
      <Compile Include="Assets\Scripts\Utility\ColliderHelper.cs" />

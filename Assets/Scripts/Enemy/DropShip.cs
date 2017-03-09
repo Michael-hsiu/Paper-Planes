@@ -77,17 +77,17 @@ public class DropShip : Ship {
 
 	public virtual void SpawnShip() {
 
-		Instantiate (shipToSpawn, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
+		//Instantiate (shipToSpawn, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
 
-		/*// Check for all spawners in children
+		// Check for all spawners in children
 		foreach(Transform s in transform) {
 
-			ShotSpawn shotSpawn = s.GetComponent<ShotSpawn> ();	// Get ShotSpawn in children
+			DropShipSpawn shipSpawn = s.GetComponent<DropShipSpawn> () as DropShipSpawn;
 
-			if (shotSpawn != null) {
-				shotSpawn.CreateShot ();	// Fire the shot!
+			if (shipSpawn != null) {
+				shipSpawn.Spawn ();	// Fire the shot!
 			}
-		}*/
+		}
 	}
 
 	public void DeactivateGuns() {
