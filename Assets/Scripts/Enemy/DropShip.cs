@@ -10,10 +10,11 @@ public class DropShip : Ship {
 	[Header("References")]
 	public GameObject shipToSpawn;
 
-	public float timeUntilNextSpawnMode = 3.0f;
-	public float spawnModeDuration = 5.0f;
-	public float timeBetweenSpawns = 0.3f;
-	public bool isSpawning = false;
+	public float timeUntilNextSpawnMode = 10.0f;		// Time between when a ship leaves spawn mode and can re-enter spawn mode
+	public float spawnModeDuration = 5.0f;			// How long spawn mode will last
+	public float timeBetweenSpawns = 1.0f;			// Time between when 1 unit spawns and next unit spawns
+	public int deathSpawnCount = 5;					// Number of mobs spawned on death
+	public bool isSpawning = false;					// Tracks if ship is in spawn mode
 
 	// Attributes unique to DropShip
 	protected float _speed = 2.0f;	
@@ -40,6 +41,18 @@ public class DropShip : Ship {
 
 	}
 
+	public override void Kill () {
+		Debug.Log ("KILL CALLED");
+
+		for (int i = 0; i < deathSpawnCount; i++) {
+			SpawnShip ();
+			Debug.Log ("DEATH SPAWN");
+		}
+
+		base.Kill ();
+
+	}
+
 	public override void Move () {
 
 		if (!isSpawning) {
@@ -62,9 +75,9 @@ public class DropShip : Ship {
 
 	public virtual void SpawnShip() {
 
-		nextSpawn = Time.time + timeUntilNextSpawnMode;	// Cooldown time between spawns (constant for now)
+		Instantiate (shipToSpawn, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
 
-		// Check for all spawners in children
+		/*// Check for all spawners in children
 		foreach(Transform s in transform) {
 
 			ShotSpawn shotSpawn = s.GetComponent<ShotSpawn> ();	// Get ShotSpawn in children
@@ -72,7 +85,7 @@ public class DropShip : Ship {
 			if (shotSpawn != null) {
 				shotSpawn.CreateShot ();	// Fire the shot!
 			}
-		}
+		}*/
 	}
 
 
@@ -81,6 +94,7 @@ public class DropShip : Ship {
 
 		// Call our overridden initalization method
 		Initialize ();
+		nextSpawn = 5.0f;		// Only enter spawn mode at least 5 sec after we are created
 
 		// Check that we're calling the right Start() method
 		Debug.Log("DROPSHIP SHIP START");
@@ -92,6 +106,8 @@ public class DropShip : Ship {
 		// Use default movement
 		base.Update ();
 
+		//Debug.Log ("isSpawning: " + isSpawning);
+		//Debug.Log("TIME.TIME: " + Time.time + ", " + "NEXTSPAWN: " + nextSpawn);
 		// Check for spawning
 		if (Time.time > nextSpawn && !isSpawning) {
 			isSpawning = true;
@@ -112,8 +128,9 @@ public class DropShip : Ship {
 
 			if (health <= 0) {
 
-				Instantiate (explosion, transform.position, transform.rotation);
-				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
+				Kill ();
+				//Instantiate (explosion, transform.position, transform.rotation);
+				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 
 				GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI
@@ -121,21 +138,22 @@ public class DropShip : Ship {
 				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");
 			}
 
-			Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
+			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
 		}
 	}
 
 	/** CO-ROUTINES */
 	IEnumerator StartSpawning() {
 		float startTime = Time.time;	// Get time this co-routine begins
-		GameObject spawnedEnemy;
 
-		while (Time.time > startTime + spawnModeDuration) {
+		// While we're still in our window of time where we spawn ships...
+		while (Time.time < startTime + spawnModeDuration) {
 			SpawnShip();	// Instantiate an enemy
 			yield return new WaitForSeconds(timeBetweenSpawns);		// Wait a certain time between spawning
 		}
 
-		nextSpawn += timeUntilNextSpawnMode;		// Won't start spawning until certain time has passed
+		nextSpawn = Time.time + timeUntilNextSpawnMode;		// Won't start spawning until certain time has passed
+		Debug.Log("nextSpawn: " + nextSpawn);
 		isSpawning = false;			// Resume normal behavior
 	}
 }
