@@ -224,13 +224,17 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	public float visibilityDistance = 10f;
 
 	protected bool CanSeePlayer() {
+		
+		// Only cast ray onto Player layer
+		int layerMask = 1 << 8;
+
 		RaycastHit hit;
 		Vector3 rayDirection = target.transform.position - transform.position;
 
 		if ((Vector3.Angle(rayDirection, transform.forward)) <= fieldOfViewDegrees * 0.5f) {
 
 			// Detect if player is within the field of view
-			if (Physics.Raycast(transform.position, rayDirection, out hit, visibilityDistance)) {
+			if (Physics.Raycast(transform.position, rayDirection, out hit, visibilityDistance, layerMask)) {
 				Debug.DrawRay(transform.position, rayDirection, Color.red);
 				return (hit.transform.CompareTag(Constants.PlayerTag));
 			}
