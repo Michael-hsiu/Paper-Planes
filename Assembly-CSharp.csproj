@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
      <Compile Include="Assets\Scripts\Game\UIManager.cs" />
      <Compile Include="Assets\Scripts\General\DropShipShotSpawn.cs" />
+     <Compile Include="Assets\Scripts\General\FOV2D.cs" />
      <Compile Include="Assets\Scripts\General\FiringShip.cs" />
      <Compile Include="Assets\Scripts\General\PlayerShip.cs" />
      <Compile Include="Assets\Scripts\General\Shields.cs" />

@@ -68,15 +68,17 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	public virtual void Move() {
 
 		/** Default move pattern is to turn and move towards player. */
-		Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-		dist.Normalize ();		// Get unit vector
+		if (CanSeePlayer()) {
+			Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
+			dist.Normalize ();		// Get unit vector
 
-		float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
 
-		Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-		transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
 
+		}
 	}
 
 	public virtual void Damage(int damageTaken) {
@@ -188,7 +190,7 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 			int roundsLeft = burstCount;
 
 			// Fire an entire burst
-			while (roundsLeft > 0) {
+			while (roundsLeft > 0 && CanSeePlayer()) {
 
 				if (Time.time > nextFire) {
 
@@ -204,5 +206,24 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 			yield return new WaitForSeconds(burstFireDelay);
 
 		}
+	}
+
+	public float fieldOfViewDegrees = 180f;
+	public float visibilityDistance = 10f;
+
+	protected bool CanSeePlayer() {
+		RaycastHit hit;
+		Vector3 rayDirection = target.transform.position - transform.position;
+
+		if ((Vector3.Angle(rayDirection, transform.forward)) <= fieldOfViewDegrees * 0.5f) {
+
+			// Detect if player is within the field of view
+			if (Physics.Raycast(transform.position, rayDirection, out hit, visibilityDistance)) {
+				Debug.DrawRay(transform.position, rayDirection, Color.red);
+				return (hit.transform.CompareTag(Constants.PlayerTag));
+			}
+		}
+
+		return false;
 	}
 }
