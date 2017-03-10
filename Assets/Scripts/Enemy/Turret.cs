@@ -32,7 +32,8 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	public int burstCount = 5;
 
 	public float nextFire;
-	protected Vector2 initialPos;
+	public Vector3 initialPos;
+	public Quaternion initialRot;
 
 
 	/** PROPERTIES */
@@ -76,8 +77,10 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 
 			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
-
+			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy	
+		} else {
+			// Rotate back to original position
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, initialRot, rotationSpeed * Time.deltaTime);
 		}
 	}
 
@@ -127,6 +130,8 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 				shotSpawn.Disarm();	// Fire the shot!
 			}
 		}
+
+
 	}
 
 	public void ActivateGuns() {
@@ -145,6 +150,7 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 
 	protected virtual void Start () {
 
+		initialRot = transform.rotation;
 		Initialize ();
 		IEnumerator co = BurstFire ();
 		StartCoroutine (co);
@@ -155,6 +161,12 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	protected virtual void Update () {
 
 		Move ();
+
+		if (CanSeePlayer()) {
+			ActivateGuns ();
+		} else {
+			DeactivateGuns ();
+		}
 
 		/**f (Time.time > nextFire) {
 
