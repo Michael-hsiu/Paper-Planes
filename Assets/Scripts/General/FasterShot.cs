@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shot : MonoBehaviour, IMovement {
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class FasterShot : MonoBehaviour, IMovement {
 
 	/** INSTANCE VARS */
 
@@ -10,7 +14,7 @@ public class Shot : MonoBehaviour, IMovement {
 	public GameObject shotSpawn;
 	public int shotDamage = 10;
 	public float speed = 1.0f;
-	public float speedMultiplier = 1.0f;
+	public float speedMultiplier = 2.0f;
 	public float lifeTime = 3.0f;
 
 	private Rigidbody rb;

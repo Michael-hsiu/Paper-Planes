@@ -7,18 +7,15 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 
 	/** INSTANCE VARS */
 
-	[Header("References")]
 	public GameObject target;
 	public GameObject explosion;
 	public float moveFactor;
-
-	[Space]
-
-	[Header("Properties")]
 	public float speed = 1.0f;
 	public float rotationSpeed = 90.0f;
 	public int health = 100;
 	public int enemyPoints = 100;
+	public bool isSpeedBuffed = false;
+	public float buffedSpeedFactor = 2.0f;
 
 	protected Vector2 initialPos;
 
@@ -50,18 +47,19 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 
 	public virtual void Move() {
 
-		/** Default move pattern is to turn and move towards player. */
-		Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-		dist.Normalize ();		// Get unit vector
-
+		// Default move pattern is to turn and move towards player.
+		Vector3 dist = target.transform.position - transform.position;		// Find vector difference between target and this
+		dist.Normalize ();													// Get unit vector
 		float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-
 		Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-		transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
-
-		/** MOVEMENT UPDATE */
-		transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
+		if (!isSpeedBuffed) {
+			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+			transform.position = Vector2.MoveTowards (transform.position, target.transform.position, speed * Time.deltaTime);
+		} else {
+			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * buffedSpeedFactor * Time.deltaTime);	// Rotate the enemy
+			transform.position = Vector2.MoveTowards (transform.position, target.transform.position, speed * buffedSpeedFactor * Time.deltaTime);
+		}
 	}
 
 	public virtual void Damage(int damageTaken) {
@@ -92,14 +90,11 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	/** UNITY CALLBACKS */
 
 	protected virtual void Start () {
-
 		Initialize ();
-
 		Debug.Log ("SHIP START");
 	}
 
 	protected virtual void Update () {
-
 		Move ();
 	}
 }

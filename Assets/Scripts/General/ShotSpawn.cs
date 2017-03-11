@@ -15,7 +15,7 @@ public class ShotSpawn : MonoBehaviour {
 
 	/** HELPER METHODS */
 
-	public void CreateShot() {
+	public void CreateShot(bool isFiringBuffed=false) {
 
 		// The parent should be the player or enemy sprite
 		targetRotation = transform.parent.gameObject;		
@@ -23,22 +23,40 @@ public class ShotSpawn : MonoBehaviour {
 		// Rotate shotSpawn relative to parent Player
 		transform.localRotation = targetRotation.transform.rotation;	
 
-		// Create the shote
+		// Create the shot
 		FiringShip firingShip = targetRotation.transform.GetComponent<IFires>() as FiringShip;		// We know that it'll be a firingship
 
-		// Straight shot
-		GameObject shot = Instantiate (firingShip.shot, transform.position, 
-			transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 
-		if (multiFire) {
-			// Left angled
-			GameObject shot2 = Instantiate (firingShip.shot, transform.position, 
-				transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 10)))) as GameObject;
+		if (!isFiringBuffed) {
+			// Straight shot
+			GameObject shot = Instantiate (firingShip.shot, transform.position, 
+				transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 
-			// Right angled
-			GameObject shot3 = Instantiate (firingShip.shot, transform.position, 
-				transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
-			
+			if (multiFire) {
+				// Left angled
+				GameObject shot2 = Instantiate (firingShip.shot, transform.position, 
+					transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 10)))) as GameObject;
+
+				// Right angled
+				GameObject shot3 = Instantiate (firingShip.shot, transform.position, 
+					transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
+
+			}
+		} else {
+			// Straight shot
+			GameObject shot = Instantiate (firingShip.fasterShot, transform.position, 
+				transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
+
+			if (multiFire) {
+				// Left angled
+				GameObject shot2 = Instantiate (firingShip.fasterShot, transform.position, 
+					transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 10)))) as GameObject;
+
+				// Right angled
+				GameObject shot3 = Instantiate (firingShip.fasterShot, transform.position, 
+					transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
+
+			}
 		}
 	}
 
