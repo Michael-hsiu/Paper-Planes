@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class BomberShip : Ship {
 
@@ -132,16 +133,19 @@ public class BomberShip : Ship {
 		// Get all colliders in area
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
 
-		List<GameObject> targets = new List<GameObject> ();
 
-		// Add the gameobjects connected to colliders
+		//List<GameObject> targets = new List<GameObject> ();
+		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
+
+
+		/*// Add the gameobjects connected to colliders
 		foreach (Collider c in hitColliders) {
 			targets.Add (c.gameObject);
-		}
+		} 
 
 		foreach(GameObject go in targets) {
 			Debug.Log ("Target: " + go);
-		}
+		}*/
 
 		// Damage all gameobjects 
 		foreach (GameObject go in targets) {
