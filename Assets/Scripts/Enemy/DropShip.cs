@@ -19,7 +19,7 @@ public class DropShip : Ship {
 	// Attributes unique to DropShip
 	protected float _speed = 2.0f;	
 	protected float _rotationSpeed = 100.0f;
-	protected int _health = 100;
+	protected int _health = 1000;
 	protected int _enemyPoints = 100;
 
 	private Vector2 offset = new Vector2(0, 3);
@@ -34,10 +34,10 @@ public class DropShip : Ship {
 		base.Initialize ();
 
 		// Adjust attributes
-		this.Speed = _speed;
-		this.RotationSpeed = _rotationSpeed;
-		this.Health = _health;
-		this.EnemyPoints = _enemyPoints;
+		//this.Speed = _speed;
+		//this.RotationSpeed = _rotationSpeed;
+		//this.Health = _health;
+		//this.EnemyPoints = _enemyPoints;
 
 		DeactivateGuns ();		// Guns not normally on
 

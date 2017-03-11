@@ -11,8 +11,11 @@ public class BomberCollisionHelper : MonoBehaviour {
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 
 			GetComponentInParent<Rigidbody>().velocity = Vector3.zero; 	// We stop moving, precautionary measure
-			GetComponentInParent<BomberShip>().isExploding = true;		// Tell parent to start explosion protocol
 
+			if (GetComponentInParent<BomberShip>() != null) {
+				GetComponentInParent<BomberShip>().isExploding = true;		// Tell parent to start explosion protocol
+
+			}
 		}
 	}
 }

@@ -20,10 +20,10 @@ public class MediShip : Ship {
 		base.Initialize ();
 
 		// Adjust attributes
-		this.Speed = _speed;
-		this.RotationSpeed = _rotationSpeed;
-		this.Health = _health;
-		this.EnemyPoints = _enemyPoints;
+		//this.Speed = _speed;
+		//this.RotationSpeed = _rotationSpeed;
+		//this.Health = _health;
+		//this.EnemyPoints = _enemyPoints;
 
 	}
 
@@ -56,7 +56,7 @@ public class MediShip : Ship {
 
 	}
 
-	protected override void Update() {
+	/*protected override void Update() {
 
 		// Use default movement
 		base.Update ();
@@ -77,7 +77,8 @@ public class MediShip : Ship {
 
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
 
-			Destroy (other.gameObject);		// Destroy the shot that hit us
+			Destroy (other.gameObject);		// Destroy the shot 
+			that hit us
 
 			health -= GameManager.Singleton.playerDamage;			// We lost health
 
@@ -97,7 +98,7 @@ public class MediShip : Ship {
 		}
 	}
 
-	/** CO-ROUTINES */
+	// Co-routines
 	IEnumerator StartSpawning() {
 		float startTime = Time.time;	// Get time this co-routine begins
 
@@ -111,4 +112,5 @@ public class MediShip : Ship {
 		Debug.Log("nextSpawn: " + nextBuff);
 		isBuffing = false;			// Resume normal behavior
 	}
+	*/
 }

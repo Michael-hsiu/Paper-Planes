@@ -20,10 +20,10 @@ public class PawnShip : Ship {
 		base.Initialize ();
 
 		// Adjust attributes
-		this.Speed = _speed;
-		this.RotationSpeed = _rotationSpeed;
-		this.Health = _health;
-		this.EnemyPoints = _enemyPoints;
+		//this.Speed = _speed;
+		//this.RotationSpeed = _rotationSpeed;
+		//this.Health = _health;
+		//this.EnemyPoints = _enemyPoints;
 
 	}
 

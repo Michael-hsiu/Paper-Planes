@@ -24,11 +24,11 @@ public class RangedEnemyShip : FiringShip {
 		base.Initialize ();
 
 		// Adjust attributes
-		this.Speed = _speed;
-		this.RotationSpeed = _rotationSpeed;
-		this.Health = _health;
-		this.ShotDamage = _shotDamage;
-		this.EnemyPoints = _enemyPoints;
+		//this.Speed = _speed;
+		//this.RotationSpeed = _rotationSpeed;
+		//this.Health = _health;
+		//this.ShotDamage = _shotDamage;
+		//this.EnemyPoints = _enemyPoints;
 
 	}
 
