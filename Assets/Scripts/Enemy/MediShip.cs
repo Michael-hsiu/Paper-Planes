@@ -4,16 +4,7 @@ using UnityEngine;
 
 public class MediShip : Ship {
 
-	/** INSTANCE VARS */
-
-	[Header("References")]
-
-	public float timeUntilNextBuffMode = 10.0f;		// Cooldown for MediShip buffs
-	public float buffDuration = 5.0f;			// AoE buff duration
-	public bool isBuffing = false;					// Tracks if ship is buffing allies
-	public float nextBuff;
-
-	// Attributes unique to MediShip
+	// Instance vars
 	protected float _speed = 2.0f;	
 	protected float _rotationSpeed = 100.0f;
 	protected int _health = 100;
@@ -38,10 +29,8 @@ public class MediShip : Ship {
 
 	public override void Move () {
 
-		if (!isBuffing) {
-			// Move enemy ship up and down
-			this.transform.position = Vector2.Lerp (initialPos - offset, initialPos + offset, (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
-		}
+		// Move enemy ship up and down
+		this.transform.position = Vector2.Lerp (initialPos - offset, initialPos + offset, (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
 
 		// Enemy ship turns to face player
 		//Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
@@ -61,10 +50,9 @@ public class MediShip : Ship {
 
 		// Call our overridden initalization method
 		Initialize ();
-		nextBuff = 5.0f;		// Only enter spawn mode at least 5 sec after we are created
 
 		// Check that we're calling the right Start() method
-		Debug.Log("DROPSHIP SHIP START");
+		Debug.Log("MEDISHIP SHIP START");
 
 	}
 

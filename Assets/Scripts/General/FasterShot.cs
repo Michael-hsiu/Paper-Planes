@@ -12,9 +12,9 @@ public class FasterShot : MonoBehaviour, IMovement {
 
 	[Header("References")]
 	public GameObject shotSpawn;
-	public int shotDamage = 10;
+	public int shotDamage = 20;				// BUFFED change
 	public float speed = 1.0f;
-	public float speedMultiplier = 2.0f;
+	public float speedMultiplier = 2.0f;	// BUFFED change
 	public float lifeTime = 3.0f;
 
 	private Rigidbody rb;

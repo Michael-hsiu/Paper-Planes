@@ -4,29 +4,23 @@ using UnityEngine;
 
 public class BomberShip : Ship {
 
-	/** INSTANCE VARS */
-
-	// Attributes values unique to BomberShip
+	// Instance variables
 	protected float _speed = 1.0f;	
 	protected float _rotationSpeed = 100.0f;
 	protected int _health = 100;
 	protected int _enemyPoints = 100;
 
-	// Unique attributes
-	[Header("Explosion Attributes")]
 	public int explosionDamage = 50;
 	public float explosionDelay = 3.0f;
 	public float damageRange = 7.0f;
 	public float rotationFactor = 150.0f;
-
 	public bool isExploding = false;
 	public bool explosionActive = false;
 
 	private Rigidbody rb;
 
 
-
-	/** HELPER METHODS */
+	// Helper methods
 	protected override void Initialize() {
 
 		// Do normal initalization
@@ -159,23 +153,8 @@ public class BomberShip : Ship {
 			}
 		}
 
-		/** Rudimentary way of checking if Player is within our explosion range; not normalized. 
-		Vector3 playerPosition = target.transform.position;
-		Vector3 ourPosition = transform.position;
-
-		float xDiff = Mathf.Abs(playerPosition.x - ourPosition.x);
-		float yDiff = Mathf.Abs(playerPosition.y - ourPosition.y);
-
-		if (xDiff <= damageRange || yDiff <= damageRange) {
-
-			GameManager.Singleton.playerHealth -= explosionDamage;	// Player damaged by explosion
-			UIManager.Singleton.UpdateHealth ();	// Update health in UI
-		}*/
-
-		Destroy (transform.gameObject);		// We're dead, so get rid of this object :/
+		Kill ();		// We're dead, so hide this object!
 		Instantiate (explosion, transform.position, transform.rotation);	// Explode! 
-
-		//Debug.Log("BOMBER ENEMY EXPLODED!");
 
 	}
 }

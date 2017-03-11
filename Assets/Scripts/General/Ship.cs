@@ -20,29 +20,6 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	protected Vector2 initialPos;
 
 
-	/** PROPERTIES */
-
-	public float Speed { 
-		get { return speed; } 
-		set { speed = value; } 
-	}
-
-	public float RotationSpeed { 
-		get { return rotationSpeed; } 
-		set { rotationSpeed = value; } 
-	}
-
-	public int Health { 
-		get { return health; } 
-		set { health = value; } 
-	}
-
-	public int EnemyPoints { 
-		get { return enemyPoints; } 
-		set { enemyPoints = value; } 
-	}
-
-
 	/** INTERFACE METHODS */
 
 	public virtual void Move() {
@@ -96,5 +73,28 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 
 	protected virtual void Update () {
 		Move ();
+	}
+
+
+	/** PROPERTIES */
+
+	public float Speed { 
+		get { return speed; } 
+		set { speed = value; } 
+	}
+
+	public float RotationSpeed { 
+		get { return rotationSpeed; } 
+		set { rotationSpeed = value; } 
+	}
+
+	public int Health { 
+		get { return health; } 
+		set { health = value; } 
+	}
+
+	public int EnemyPoints { 
+		get { return enemyPoints; } 
+		set { enemyPoints = value; } 
 	}
 }

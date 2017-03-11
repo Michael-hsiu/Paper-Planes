@@ -13,7 +13,6 @@ public abstract class FiringShip : Ship, IFires {
 	public float fireRate = .1f;
 	public float nextFire;
 	public float buffedFiringRateFactor = 2.0f;
-	public float buffedFiringDamageFactor = 2.0f;
 	public bool isFiringBuffed = false;
 
 
