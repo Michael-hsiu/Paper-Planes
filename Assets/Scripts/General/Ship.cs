@@ -10,6 +10,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	[Header("References")]
 	public GameObject target;
 	public GameObject explosion;
+	public float moveFactor;
 
 	[Space]
 

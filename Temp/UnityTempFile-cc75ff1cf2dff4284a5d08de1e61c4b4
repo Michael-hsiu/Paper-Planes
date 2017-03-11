@@ -83,6 +83,7 @@
 'Assets/Scripts/Enemy/BomberCollisionHelper.cs'
 'Assets/Scripts/Enemy/BomberShip.cs'
 'Assets/Scripts/Enemy/DropShip.cs'
+'Assets/Scripts/Enemy/MediShip.cs'
 'Assets/Scripts/Enemy/PawnShip.cs'
 'Assets/Scripts/Enemy/RangedEnemyShip.cs'
 'Assets/Scripts/Enemy/Turret.cs'

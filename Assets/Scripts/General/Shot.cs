@@ -9,11 +9,8 @@ public class Shot : MonoBehaviour, IMovement {
 	[Header("References")]
 	public GameObject shotSpawn;
 	public int shotDamage = 10;
-
-	[Space]
-
-	[Header("Properties")]
 	public float speed = 1.0f;
+	public float speedMultiplier = 1.0f;
 	public float lifeTime = 3.0f;
 
 	private Rigidbody rb;
@@ -24,12 +21,17 @@ public class Shot : MonoBehaviour, IMovement {
 		set { shotDamage = value; } 
 	}
 
+	public float SpeedMultiplier { 
+		get { return speedMultiplier; } 
+		set { speedMultiplier = value; } 
+	}
+
 
 	/** INTERFACE METHODS */
 
 	public void Move() {
 
-		rb.velocity = transform.up * speed * Time.deltaTime;		// Propel shot forward
+		rb.velocity = transform.up * speed * speedMultiplier * Time.deltaTime;		// Propel shot forward
 
 		//rb.AddForce(transform.up * speed * Time.deltaTime);		// Propel shot forward
 	}

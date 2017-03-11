@@ -16,6 +16,7 @@ public abstract class FiringShip : Ship, IFires {
 	public int shotDamage = 10;
 	public float fireRate = .1f;
 	public float nextFire;
+	public float fireRateMultiplier = 1.0f;
 
 
 	/** PROPERTIES */
