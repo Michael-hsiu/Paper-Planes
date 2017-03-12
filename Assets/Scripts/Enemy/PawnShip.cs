@@ -40,7 +40,12 @@ public class PawnShip : Ship {
 			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
 
 			/** MOVEMENT UPDATE */
-			transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
+			if (!isSpeedBuffed) {
+				transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
+			} else {
+				transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed * buffedSpeedFactor);
+
+			}
 				
 		}
 

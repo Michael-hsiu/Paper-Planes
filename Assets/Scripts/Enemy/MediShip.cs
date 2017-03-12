@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+[SelectionBase]
 public class MediShip : Ship {
 
 	// Instance vars
 	public float buffRange = 5.0f;			// Range that buff works
-	protected float _speed = 2.0f;	
-	protected float _rotationSpeed = 100.0f;
-	protected int _health = 100;
-	protected int _enemyPoints = 100;
+	//protected float _speed = 2.0f;	
+	//protected float _rotationSpeed = 100.0f;
+	//protected int _health = 100;
+	//protected int _enemyPoints = 100;
 
 	private Vector2 offset = new Vector2(0, 3);
 
@@ -86,6 +87,11 @@ public class MediShip : Ship {
 
 		BuffAllies ();		// Continue buffing
 
+	}
+
+	public void OnDrawGizmos() {
+		Gizmos.color = Color.white;
+		Gizmos.DrawWireSphere(transform.position, buffRange);
 	}
 
 	/*
