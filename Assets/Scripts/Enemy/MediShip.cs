@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MediShip : Ship {
 
 	// Instance vars
+	public float buffRange = 5.0f;			// Range that buff works
 	protected float _speed = 2.0f;	
 	protected float _rotationSpeed = 100.0f;
 	protected int _health = 100;
@@ -30,7 +32,7 @@ public class MediShip : Ship {
 	public override void Move () {
 
 		// Move enemy ship up and down
-		this.transform.position = Vector2.Lerp (initialPos - offset, initialPos + offset, (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
+		//this.transform.position = Vector2.Lerp (initialPos - offset, initialPos + offset, (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
 
 		// Enemy ship turns to face player
 		//Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
@@ -45,6 +47,27 @@ public class MediShip : Ship {
 
 	/** GAME LOGIC */
 
+	public void BuffAllies() {
+
+		// Get all colliders in area
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position, buffRange);
+		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
+
+		// Buff all gameobjects 
+		foreach (GameObject go in targets) {
+
+			// Retrieve the script that implements IDamageable
+			Ship s = go.GetComponent (typeof(Ship)) as Ship;
+			if (s != null) {
+				s.isSpeedBuffed = true;		// Speed buff
+				if (s is FiringShip) {
+					FiringShip fs = (FiringShip) s;
+					fs.isFiringBuffed = true;
+				}
+			}
+		}
+	}
+
 	/** UNITY CALLBACKS */
 	protected override void Start () {
 
@@ -56,23 +79,16 @@ public class MediShip : Ship {
 
 	}
 
-	/*protected override void Update() {
+	protected override void Update() {
 
 		// Use default movement
 		base.Update ();
 
-		//Debug.Log ("isSpawning: " + isSpawning);
-		//Debug.Log("TIME.TIME: " + Time.time + ", " + "NEXTSPAWN: " + nextSpawn);
-		// Check for spawning
-		if (Time.time > nextBuff && !isBuffing) {
-			isBuffing = true;
-			StopAllCoroutines ();
-			StartCoroutine (StartSpawning ());
-		}
+		BuffAllies ();		// Continue buffing
 
 	}
 
-
+	/*
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {

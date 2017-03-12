@@ -15,7 +15,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	public int health = 100;
 	public int enemyPoints = 100;
 	public bool isSpeedBuffed = false;
-	public float buffedSpeedFactor = 2.0f;
+	public float buffedSpeedFactor = 10.0f;
 
 	protected Vector2 initialPos;
 

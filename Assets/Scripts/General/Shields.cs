@@ -42,22 +42,27 @@ public class Shields : MonoBehaviour, IDamageable<int>, IKillable {
 
 		if (other.gameObject.CompareTag (Constants.EnemyShot)) {
 
-			Debug.Log ("OTHER DMG: " + other.gameObject.GetComponent<Shot>().ShotDamage);
+			if (other != null) {
+				Shot shot = other.gameObject.GetComponent<Shot> () as Shot;
+				if (shot != null) {
+					//Debug.Log ("OTHER DMG: " + other.gameObject.GetComponent<Shot>().ShotDamage);
+					shieldHealth -= shot.ShotDamage;			// We lost health
+				}
 
-			shieldHealth -= other.gameObject.GetComponent<Shot>().ShotDamage;			// We lost health
 
 
 
-			Destroy (other.gameObject);		// Destroy the shot that hit us
+				Destroy (other.gameObject);		// Destroy the shot that hit us
 
-			if (shieldHealth <= 0) {
+				if (shieldHealth <= 0) {
 
-				Kill ();
+					Kill ();
 
-				//Debug.Log ("SHIELD DESTROYED!");
+					//Debug.Log ("SHIELD DESTROYED!");
+				}
+
+				//Debug.Log ("SHIELD HEALTH: " + shieldHealth);	// Print message to console
 			}
-
-			//Debug.Log ("SHIELD HEALTH: " + shieldHealth);	// Print message to console
 		}
 	}
 
