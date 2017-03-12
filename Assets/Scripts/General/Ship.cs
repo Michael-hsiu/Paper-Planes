@@ -61,6 +61,14 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
 		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
 	}
+
+	public void BuffSpeed() {
+		this.isSpeedBuffed = true;
+	}
+
+	public void DebuffSpeed() {
+		this.isSpeedBuffed = false;
+	}
 		
 
 

@@ -8,6 +8,10 @@ public class MediShip : Ship {
 
 	// Instance vars
 	public float buffRange = 5.0f;			// Range that buff works
+	public Collider[] hitColliders;
+	List<GameObject> currTargets;
+	List<GameObject> prevTargets;
+	List<GameObject> toDebuff = new List<GameObject>();
 	//protected float _speed = 2.0f;	
 	//protected float _rotationSpeed = 100.0f;
 	//protected int _health = 100;
@@ -51,22 +55,47 @@ public class MediShip : Ship {
 	public void BuffAllies() {
 
 		// Get all colliders in area
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position, buffRange);
-		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
+		hitColliders = Physics.OverlapSphere(transform.position, buffRange);
+		currTargets = (from c in hitColliders select c.gameObject).ToList();
+		if (prevTargets != null) {
+			toDebuff = (from go in prevTargets where !currTargets.Contains(go) select go).ToList();		// Get targets that are no longer in buff range
+		}
 
 		// Buff all gameobjects 
-		foreach (GameObject go in targets) {
+		foreach (GameObject go in currTargets) {
 
 			// Retrieve the script that implements IDamageable
 			Ship s = go.GetComponent (typeof(Ship)) as Ship;
 			if (s != null) {
-				s.isSpeedBuffed = true;		// Speed buff
+				s.BuffSpeed ();
+				//s.isSpeedBuffed = true;		// Speed buff
 				if (s is FiringShip) {
 					FiringShip fs = (FiringShip) s;
-					fs.isFiringBuffed = true;
+					fs.BuffFiring ();
+					//fs.isFiringBuffed = true;
 				}
 			}
 		}
+
+		// Debuff out-of-range allies
+		foreach (GameObject go in toDebuff) {
+
+			// Retrieve the script that implements IDamageable
+			Ship s = null;
+			if (go != null) {
+				s = go.GetComponent (typeof(Ship)) as Ship;
+			}
+			if (s != null) {
+				s.DebuffSpeed ();
+				//s.isSpeedBuffed = true;		// Speed buff
+				if (s is FiringShip) {
+					FiringShip fs = (FiringShip) s;
+					fs.DebuffFiring ();
+					//fs.isFiringBuffed = true;
+				}
+			}
+		}
+		prevTargets = currTargets;	// Update list of just-buffed targets
 	}
 
 	/** UNITY CALLBACKS */

@@ -37,6 +37,15 @@ public abstract class FiringShip : Ship, IFires {
 		}
 
 	}
+
+	public void BuffFiring() {
+		this.isFiringBuffed = true;
+	}
+
+	public void DebuffFiring() {
+		this.isFiringBuffed = false;
+	}
+
 		
 
 	/** PROPERTIES */
