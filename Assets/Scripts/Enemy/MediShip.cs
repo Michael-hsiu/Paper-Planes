@@ -36,19 +36,6 @@ public class MediShip : Ship {
 	}
 
 	public override void Move () {
-
-		// Move enemy ship up and down
-		//this.transform.position = Vector2.Lerp (initialPos - offset, initialPos + offset, (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
-
-		// Enemy ship turns to face player
-		//Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-		//dist.Normalize ();		// Get unit vector
-
-		//float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-
-		//Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-
-		//transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
 	}
 
 	/** GAME LOGIC */
@@ -104,6 +91,7 @@ public class MediShip : Ship {
 
 		// Call our overridden initalization method
 		Initialize ();
+		StartCoroutine (SeekHealTarget ());
 
 		// Check that we're calling the right Start() method
 		Debug.Log("MEDISHIP SHIP START");
@@ -159,14 +147,14 @@ public class MediShip : Ship {
 
 			// Find most damaged nearby allied ship
 			if (currTargets.Count > 0) {
-				Ship mostDamaged;
+				Ship mostDamaged = null;
 				if (currTargets[0] != null) {
 					mostDamaged = currTargets[0].GetComponent (typeof(Ship)) as Ship;
 				}
 				foreach (GameObject go in currTargets) {
 					Ship s = go.GetComponent (typeof(Ship)) as Ship;
 					if (s != null) {
-						if (s.health < (Ship) mostDamaged.health) {		// Need to adjust to percentages
+						if (s.health < mostDamaged.health) {		// Need to adjust to percentages
 							mostDamaged = s;
 						}
 					}
@@ -176,30 +164,42 @@ public class MediShip : Ship {
 				while(mostDamaged.health < 100) {
 					MoveToAlly(mostDamaged.gameObject);
 					HealAlly (mostDamaged.gameObject);
-					yield return null;
+					yield return new WaitForSeconds(2f);
 				}
 			}
+			yield return null;
 		}
 	}
 
 	protected void HealAlly(GameObject go) {
 
-		// Only cast ray onto Player layer
-		int layerMask = 1 << 8;
-
 		RaycastHit hit;
 		Vector3 rayDirection = go.transform.position - transform.position;
 
-		if (Physics.Raycast(transform.position, rayDirection, out hit, visibilityDistance, layerMask)) {
-			if (hit == go) {
+		if (Physics.Raycast(transform.position, rayDirection, out hit, visibilityDistance)) {
+			if (hit.transform.gameObject == go) {
 				Debug.DrawRay(transform.position, rayDirection, Color.red);
 				Ship s = go.GetComponent (typeof(Ship)) as Ship;
-				s.health += 10;
+				s.health += 10;		// Actual healing logic
 			}
 		}
 	}
 
-	protected void MoveToAlly() {
-		
+	protected void MoveToAlly(GameObject target) {
+		if (Vector3.Distance(target.transform.position, transform.position) > 3 * Vector2.up.magnitude) {
+			// Default move pattern is to turn and move towards player.
+			Vector3 dist = target.transform.position - transform.position;		// Find vector difference between target and this
+			dist.Normalize ();													// Get unit vector
+			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+
+			if (!isSpeedBuffed) {
+				transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+				transform.position = Vector2.MoveTowards (transform.position, target.transform.position, speed * Time.deltaTime);
+			} else {
+				transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * buffedSpeedFactor * Time.deltaTime);	// Rotate the enemy
+				transform.position = Vector2.MoveTowards (transform.position, target.transform.position, speed * buffedSpeedFactor * Time.deltaTime);
+			}			
+		}
 	}
 } 
