@@ -6,7 +6,7 @@ using System.Linq;
 [SelectionBase]
 public class MediShip : Ship {
 
-	// Instance vars
+	#region Variables
 	public float buffRange = 5.0f;			// Range that buff works
 	public float healRange = 15.0f;
 	public float followDistance = 4.0f;		// How far away from heal target MediShip will stay away
@@ -20,7 +20,7 @@ public class MediShip : Ship {
 	//protected int _enemyPoints = 100;
 
 	private Vector2 offset = new Vector2(0, 3);
-
+	#endregion
 
 	/** HELPER METHODS */
 	protected override void Initialize() {
@@ -38,8 +38,6 @@ public class MediShip : Ship {
 
 	public override void Move () {
 	}
-
-	/** GAME LOGIC */
 
 	public void BuffAllies() {
 
@@ -85,9 +83,11 @@ public class MediShip : Ship {
 			}
 		}
 		prevTargets = currTargets;	// Update list of just-buffed targets
+  
+
 	}
 
-	/** UNITY CALLBACKS */
+	#region Unity lifecycle
 	protected override void Start () {
 
 		// Call our overridden initalization method
@@ -107,6 +107,7 @@ public class MediShip : Ship {
 		BuffAllies ();		// Continue buffing
 
 	}
+	#endregion
 
 	public void OnDrawGizmos() {
 		Gizmos.color = Color.white;
@@ -141,7 +142,7 @@ public class MediShip : Ship {
 		}
 	}
 
-	// Co-routines
+	#region Co-routines
 	IEnumerator SeekHealTarget() {
 
 		while (true) {
@@ -224,4 +225,4 @@ public class MediShip : Ship {
 			}
 		}
 	}
-} 
+} 	#endregion
