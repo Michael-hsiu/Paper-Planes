@@ -8,6 +8,7 @@ public class MediShip : Ship {
 
 	// Instance vars
 	public float buffRange = 5.0f;			// Range that buff works
+	public float visibilityDistance = 10.0f;
 	public Collider[] hitColliders;
 	List<GameObject> currTargets;
 	List<GameObject> prevTargets;
@@ -123,13 +124,12 @@ public class MediShip : Ship {
 		Gizmos.DrawWireSphere(transform.position, buffRange);
 	}
 
-	/*
+
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
 
-			Destroy (other.gameObject);		// Destroy the shot 
-			that hit us
+			Destroy (other.gameObject);		// Destroy the shot that hit us
 
 			health -= GameManager.Singleton.playerDamage;			// We lost health
 
@@ -150,18 +150,56 @@ public class MediShip : Ship {
 	}
 
 	// Co-routines
-	IEnumerator StartSpawning() {
-		float startTime = Time.time;	// Get time this co-routine begins
+	IEnumerator SeekHealTarget() {
 
-		// While we're still in our window of time where we spawn ships...
-		while (Time.time < startTime + buffDuration) {
-			//BuffShips();	// Buff surrounding enemies
-			yield return new WaitForSeconds(buffDuration);		// Wait a certain time between spawning
+		while (true) {
+			// Get all colliders in area
+			hitColliders = Physics.OverlapSphere(transform.position, buffRange);
+			currTargets = (from c in hitColliders select c.gameObject).ToList();
+
+			// Find most damaged nearby allied ship
+			if (currTargets.Count > 0) {
+				Ship mostDamaged;
+				if (currTargets[0] != null) {
+					mostDamaged = currTargets[0].GetComponent (typeof(Ship)) as Ship;
+				}
+				foreach (GameObject go in currTargets) {
+					Ship s = go.GetComponent (typeof(Ship)) as Ship;
+					if (s != null) {
+						if (s.health < (Ship) mostDamaged.health) {		// Need to adjust to percentages
+							mostDamaged = s;
+						}
+					}
+				}
+
+				// Move to that ally and heal them
+				while(mostDamaged.health < 100) {
+					MoveToAlly(mostDamaged.gameObject);
+					HealAlly (mostDamaged.gameObject);
+					yield return null;
+				}
+			}
 		}
-
-		nextBuff = Time.time + timeUntilNextBuffMode;		// Won't start spawning until certain time has passed
-		Debug.Log("nextSpawn: " + nextBuff);
-		isBuffing = false;			// Resume normal behavior
 	}
-	*/
-}
+
+	protected void HealAlly(GameObject go) {
+
+		// Only cast ray onto Player layer
+		int layerMask = 1 << 8;
+
+		RaycastHit hit;
+		Vector3 rayDirection = go.transform.position - transform.position;
+
+		if (Physics.Raycast(transform.position, rayDirection, out hit, visibilityDistance, layerMask)) {
+			if (hit == go) {
+				Debug.DrawRay(transform.position, rayDirection, Color.red);
+				Ship s = go.GetComponent (typeof(Ship)) as Ship;
+				s.health += 10;
+			}
+		}
+	}
+
+	protected void MoveToAlly() {
+		
+	}
+} 
