@@ -8,7 +8,7 @@ public class BomberCollisionHelper : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 
 		// If our AoE collider touches the player...
-		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
+		if (other.gameObject.CompareTag (Constants.PlayerColliders)) {
 
 			GetComponentInParent<Rigidbody>().velocity = Vector3.zero; 	// We stop moving, precautionary measure
 

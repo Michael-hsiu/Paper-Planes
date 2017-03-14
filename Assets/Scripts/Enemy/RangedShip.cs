@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangedEnemyShip : FiringShip {
+public class RangedShip : FiringShip {
 
 
 	/** INSTANCE VARS */
 
 	// Attributes unique to RangedEnemyShip
-	protected float _speed = 2.0f;	
-	protected float _rotationSpeed = 100.0f;
-	protected int _health = 100;
-	protected int _shotDamage = 20;
-	protected int _enemyPoints = 100;
 
-	private Vector2 offset = new Vector2(0, 3);
+	//protected float _speed = 2.0f;	
+	//protected float _rotationSpeed = 100.0f;
+	//protected int _health = 100;
+	//protected int _shotDamage = 20;
+	//protected int _enemyPoints = 100;
+
+	public float offsetY = 3.0f;
+	//private Vector2 offset = new Vector2(0, 3);
 
 
 	/** HELPER METHODS */
@@ -35,7 +37,7 @@ public class RangedEnemyShip : FiringShip {
 	public override void Move () {
 		
 		// Move enemy ship up and down
-		this.transform.position = Vector2.Lerp (initialPos - offset, initialPos + offset, (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
+		this.transform.position = Vector2.Lerp (initialPos - new Vector2(0, offsetY), initialPos + new Vector2(0, offsetY), (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
 
 
 		// Enemy ship turns to face player

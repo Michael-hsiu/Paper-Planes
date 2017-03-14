@@ -10,7 +10,7 @@ public class ColliderHelper : MonoBehaviour {
 
 		Debug.Log ("COLLISION HERE. Other was: " + other.gameObject.name);
 
-		if (other.gameObject.CompareTag(Constants.PlayerTag)) {
+		if (other.gameObject.CompareTag(Constants.PlayerColliders)) {
 
 			Debug.Log ("INNER REACHED!");
 			
