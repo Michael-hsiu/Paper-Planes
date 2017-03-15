@@ -7,10 +7,10 @@ public class PawnShip : Ship {
 	/** INSTANCE VARS */
 
 	// Attributes unique to PawnShip
-	protected float _speed = 1.0f;	
-	protected float _rotationSpeed = 90.0f;
-	protected int _health = 20;
-	protected int _enemyPoints = 25;
+	//protected float _speed = 1.0f;	
+	//protected float _rotationSpeed = 90.0f;
+	//protected int _health = 20;
+	//protected int _enemyPoints = 25;
 
 
 	/** HELPER METHODS */
@@ -18,7 +18,7 @@ public class PawnShip : Ship {
 
 		// Do normal initalization
 		base.Initialize ();
-
+		//HP_MAX = health;
 		// Adjust attributes
 		//this.Speed = _speed;
 		//this.RotationSpeed = _rotationSpeed;

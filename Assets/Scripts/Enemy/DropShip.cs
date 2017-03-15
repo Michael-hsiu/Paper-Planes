@@ -17,10 +17,10 @@ public class DropShip : Ship {
 	public bool isSpawning = false;					// Tracks if ship is in spawn mode
 
 	// Attributes unique to DropShip
-	protected float _speed = 2.0f;	
-	protected float _rotationSpeed = 100.0f;
-	protected int _health = 1000;
-	protected int _enemyPoints = 100;
+	//protected float _speed = 2.0f;	
+	//protected float _rotationSpeed = 100.0f;
+	//protected int _health = 1000;
+	//protected int _enemyPoints = 100;
 
 	private Vector2 offset = new Vector2(0, 3);
 	[SerializeField]
@@ -32,7 +32,7 @@ public class DropShip : Ship {
 
 		// Do normal initalization
 		base.Initialize ();
-
+		//HP_MAX = health;
 		// Adjust attributes
 		//this.Speed = _speed;
 		//this.RotationSpeed = _rotationSpeed;

@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class RangedShip : FiringShip {
 
-
-	/** INSTANCE VARS */
-
 	// Attributes unique to RangedEnemyShip
 
 	//protected float _speed = 2.0f;	
@@ -24,7 +21,7 @@ public class RangedShip : FiringShip {
 		
 		// Do normal initalization
 		base.Initialize ();
-
+		//HP_MAX = health;
 		// Adjust attributes
 		//this.Speed = _speed;
 		//this.RotationSpeed = _rotationSpeed;

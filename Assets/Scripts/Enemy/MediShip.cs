@@ -162,14 +162,14 @@ public class MediShip : Ship {
 					if (s != null) {
 						if (mostDamaged == null) {
 							mostDamaged = s;
-						} else if (s.health < mostDamaged.health) {		// Need to adjust to percentages
+						} else if (s.HPRatio() < mostDamaged.HPRatio()) {		// Need to adjust to percentages
 							mostDamaged = s;
 						}
 					}
 				}
 
 				// Move to that ally and heal them
-				while(mostDamaged.health < 100) {
+				while(mostDamaged.HPRatio() < 0.5) {
 				//while(GameObject.FindGameObjectWithTag(Constants.PlayerTag).GetComponent<Ship>().health < 100) {
 					if (mostDamaged != null) {
 						MoveToAlly(mostDamaged.gameObject);

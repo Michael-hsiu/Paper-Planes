@@ -6,10 +6,11 @@ using System.Linq;
 public class BomberShip : Ship {
 
 	// Instance variables
-	protected float _speed = 1.0f;	
-	protected float _rotationSpeed = 100.0f;
-	protected int _health = 100;
-	protected int _enemyPoints = 100;
+	//protected float _speed = 1.0f;	
+	//protected float _rotationSpeed = 100.0f;
+	//protected int _health = 100;
+	//protected int _enemyPoints = 100;
+
 
 	public int explosionDamage = 50;
 	public float explosionDelay = 3.0f;
@@ -26,6 +27,7 @@ public class BomberShip : Ship {
 
 		// Do normal initalization
 		base.Initialize ();
+		//HP_MAX = health;
 
 		// Adjust attributes
 		//this.Speed = _speed;

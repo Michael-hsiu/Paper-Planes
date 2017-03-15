@@ -13,6 +13,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	public float speed = 1.0f;
 	public float rotationSpeed = 90.0f;
 	public int health = 100;
+	public int HP_MAX = 100;
 	public int enemyPoints = 100;
 	public bool isSpeedBuffed = false;
 	public float buffedSpeedFactor = 10.0f;
@@ -70,6 +71,12 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 		this.isSpeedBuffed = false;
 	}
 		
+	public float HPRatio() {
+		if (HP_MAX > 0) {
+			return health / HP_MAX;
+		}
+		return -1f;
+	}
 
 
 	/** UNITY CALLBACKS */
