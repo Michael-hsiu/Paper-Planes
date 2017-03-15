@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Enemy\BomberCollisionHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\BomberShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\DoT.cs" />
      <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\MediShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\PawnShip.cs" />
