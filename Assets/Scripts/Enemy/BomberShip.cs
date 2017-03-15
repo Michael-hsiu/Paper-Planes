@@ -22,7 +22,6 @@ public class BomberShip : Ship {
 	private Rigidbody rb;
 
 
-	// Helper methods
 	protected override void Initialize() {
 
 		// Do normal initalization
