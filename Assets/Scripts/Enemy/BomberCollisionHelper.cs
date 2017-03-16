@@ -5,7 +5,7 @@ using UnityEngine;
 public class BomberCollisionHelper : MonoBehaviour {
 
 
-	void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerStay2D(Collider2D other) {
 
 		// If our AoE collider touches the player...
 		if (other.gameObject.CompareTag (Constants.PlayerColliders)) {

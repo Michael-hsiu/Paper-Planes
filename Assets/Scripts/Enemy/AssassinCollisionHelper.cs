@@ -11,7 +11,7 @@ public class AssassinCollisionHelper : MonoBehaviour {
 
 			GetComponentInParent<Rigidbody>().velocity = Vector3.zero; 	// We stop moving, precautionary measure
 
-			if (GetComponentInParent<AssassinShip>() != null) {
+			if (GetComponentInParent<AssassinShip>() != null && !GetComponentInParent<AssassinShip>().onStandby) {
 				GetComponentInParent<AssassinShip>().startTargeting = true;
 
 			}
