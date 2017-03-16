@@ -106,8 +106,7 @@ public class BomberShip : Ship {
 			// If the enemy stays far enough away and kills us...
 			if (health <= 0 && !isExploding) {
 				
-				Instantiate (explosion, transform.position, transform.rotation);
-				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
+				Kill ();
 
 				GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI

@@ -24,16 +24,7 @@ public class MediShip : Ship {
 
 	/** HELPER METHODS */
 	protected override void Initialize() {
-
-		// Do normal initalization
 		base.Initialize ();
-
-		// Adjust attributes
-		//this.Speed = _speed;
-		//this.RotationSpeed = _rotationSpeed;
-		//this.Health = _health;
-		//this.EnemyPoints = _enemyPoints;
-
 	}
 
 	public override void Move () {
@@ -55,11 +46,9 @@ public class MediShip : Ship {
 			Ship s = go.GetComponent (typeof(Ship)) as Ship;
 			if (s != null) {
 				s.BuffSpeed ();
-				//s.isSpeedBuffed = true;		// Speed buff
 				if (s is FiringShip) {
 					FiringShip fs = (FiringShip) s;
 					fs.BuffFiring ();
-					//fs.isFiringBuffed = true;
 				}
 			}
 		}
@@ -74,11 +63,9 @@ public class MediShip : Ship {
 			}
 			if (s != null) {
 				s.DebuffSpeed ();
-				//s.isSpeedBuffed = true;		// Speed buff
 				if (s is FiringShip) {
 					FiringShip fs = (FiringShip) s;
 					fs.DebuffFiring ();
-					//fs.isFiringBuffed = true;
 				}
 			}
 		}
@@ -129,8 +116,6 @@ public class MediShip : Ship {
 			if (health <= 0) {
 
 				Kill ();
-				//Instantiate (explosion, transform.position, transform.rotation);
-				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 
 				GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI
