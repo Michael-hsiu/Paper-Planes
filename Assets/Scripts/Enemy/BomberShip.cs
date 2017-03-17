@@ -5,13 +5,7 @@ using System.Linq;
 
 public class BomberShip : Ship {
 
-	// Instance variables
-	//protected float _speed = 1.0f;	
-	//protected float _rotationSpeed = 100.0f;
-	//protected int _health = 100;
-	//protected int _enemyPoints = 100;
-
-
+	#region Variables
 	public int explosionDamage = 50;
 	public float explosionDelay = 3.0f;
 	public float damageRange = 7.0f;
@@ -20,8 +14,28 @@ public class BomberShip : Ship {
 	public bool explosionActive = false;
 
 	private Rigidbody rb;
+	#endregion
 
+	#region Unity Life Cycle
+	protected override void Start () {
 
+		// Call our overridden initalization method
+		Initialize ();
+
+		// Check that we're calling the right Start() method
+		//Debug.Log("BOMBER SHIP START");
+
+	}
+
+	protected override void Update() {
+
+		// Use default movement
+		base.Update ();
+
+	}
+	#endregion
+
+	#region Game Logic
 	protected override void Initialize() {
 
 		// Do normal initalization
@@ -75,23 +89,7 @@ public class BomberShip : Ship {
 	}		
 
 
-	/** UNITY CALLBACKS */
-	protected override void Start () {
 
-		// Call our overridden initalization method
-		Initialize ();
-
-		// Check that we're calling the right Start() method
-		//Debug.Log("BOMBER SHIP START");
-
-	}
-
-	protected override void Update() {
-
-		// Use default movement
-		base.Update ();
-
-	}
 
 	// For shots
 	protected void OnTriggerEnter(Collider other) {
@@ -161,4 +159,5 @@ public class BomberShip : Ship {
 		Instantiate (explosion, transform.position, transform.rotation);	// Explode! 
 
 	}
+	#endregion
 }

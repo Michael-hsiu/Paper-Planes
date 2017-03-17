@@ -5,8 +5,7 @@ using UnityEngine;
 public class DropShip : Ship {
 
 
-	/** INSTANCE VARS */
-
+	#region Variables
 	[Header("References")]
 	public GameObject shipToSpawn;
 
@@ -16,29 +15,44 @@ public class DropShip : Ship {
 	public int deathSpawnCount = 5;					// Number of mobs spawned on death
 	public bool isSpawning = false;					// Tracks if ship is in spawn mode
 
-	// Attributes unique to DropShip
-	//protected float _speed = 2.0f;	
-	//protected float _rotationSpeed = 100.0f;
-	//protected int _health = 1000;
-	//protected int _enemyPoints = 100;
-
 	private Vector2 offset = new Vector2(0, 3);
 	[SerializeField]
 	private float nextSpawn;
+	#endregion
 
+	#region Unity Life Cycle
+	/** UNITY CALLBACKS */
+	protected override void Start () {
 
-	/** HELPER METHODS */
+		// Call our overridden initalization method
+		Initialize ();
+		nextSpawn = 5.0f;		// Only enter spawn mode at least 5 sec after we are created
+
+		// Check that we're calling the right Start() method
+		Debug.Log("DROPSHIP SHIP START");
+
+	}
+
+	protected override void Update() {
+
+		// Use default movement
+		base.Update ();
+
+		//Debug.Log ("isSpawning: " + isSpawning);
+		//Debug.Log("TIME.TIME: " + Time.time + ", " + "NEXTSPAWN: " + nextSpawn);
+		// Check for spawning
+		if (Time.time > nextSpawn && !isSpawning) {
+			isSpawning = true;
+			StopAllCoroutines ();
+			StartCoroutine (StartSpawning ());
+		}
+
+	}
+	#endregion
+
+	#region Game Logic
 	protected override void Initialize() {
-
-		// Do normal initalization
-		base.Initialize ();
-		//HP_MAX = health;
-		// Adjust attributes
-		//this.Speed = _speed;
-		//this.RotationSpeed = _rotationSpeed;
-		//this.Health = _health;
-		//this.EnemyPoints = _enemyPoints;
-
+		base.Initialize ();		// Normal initialize
 		DeactivateGuns ();		// Guns not normally on
 
 	}
@@ -111,33 +125,7 @@ public class DropShip : Ship {
 	}
 
 
-	/** UNITY CALLBACKS */
-	protected override void Start () {
 
-		// Call our overridden initalization method
-		Initialize ();
-		nextSpawn = 5.0f;		// Only enter spawn mode at least 5 sec after we are created
-
-		// Check that we're calling the right Start() method
-		Debug.Log("DROPSHIP SHIP START");
-
-	}
-
-	protected override void Update() {
-
-		// Use default movement
-		base.Update ();
-
-		//Debug.Log ("isSpawning: " + isSpawning);
-		//Debug.Log("TIME.TIME: " + Time.time + ", " + "NEXTSPAWN: " + nextSpawn);
-		// Check for spawning
-		if (Time.time > nextSpawn && !isSpawning) {
-			isSpawning = true;
-			StopAllCoroutines ();
-			StartCoroutine (StartSpawning ());
-		}
-
-	}
 
 
 	void OnTriggerEnter(Collider other) {
@@ -180,4 +168,5 @@ public class DropShip : Ship {
 		isSpawning = false;			// Resume normal behavior
 		DeactivateGuns();			// Guns are off when not spawning
 	}
+	#endregion
 }

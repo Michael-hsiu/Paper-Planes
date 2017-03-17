@@ -4,31 +4,35 @@ using UnityEngine;
 
 public class RangedShip : FiringShip {
 
-	// Attributes unique to RangedEnemyShip
-
-	//protected float _speed = 2.0f;	
-	//protected float _rotationSpeed = 100.0f;
-	//protected int _health = 100;
-	//protected int _shotDamage = 20;
-	//protected int _enemyPoints = 100;
-
 	public float offsetY = 3.0f;
-	//private Vector2 offset = new Vector2(0, 3);
 
+	#region Unity Life Cycle
+	protected override void Start () {
 
-	/** HELPER METHODS */
+		// Call our overridden initalization method
+		Initialize ();
+
+		// Check that we're calling the right Start() method
+		//Debug.Log("RANGED SHIP START");
+
+	}
+
+	protected override void Update() {
+
+		// Use default movement
+		base.Update ();
+
+		// Basic AI - firing logic
+		if (Time.time > nextFire) {
+			Fire ();
+		}
+	}
+	#endregion
+
+	#region Game Logic
 	protected override void Initialize() {
-		
 		// Do normal initalization
 		base.Initialize ();
-		//HP_MAX = health;
-		// Adjust attributes
-		//this.Speed = _speed;
-		//this.RotationSpeed = _rotationSpeed;
-		//this.Health = _health;
-		//this.ShotDamage = _shotDamage;
-		//this.EnemyPoints = _enemyPoints;
-
 	}
 
 	public override void Move () {
@@ -48,30 +52,6 @@ public class RangedShip : FiringShip {
 		transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
 	}		
 
-
-	/** UNITY CALLBACKS */
-	protected override void Start () {
-		
-		// Call our overridden initalization method
-		Initialize ();
-
-		// Check that we're calling the right Start() method
-		//Debug.Log("RANGED SHIP START");
-		
-	}
-
-	protected override void Update() {
-
-		// Use default movement
-		base.Update ();
-
-		// Basic AI - firing logic
-		if (Time.time > nextFire) {
-			Fire ();
-		}
-	}
-
-
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
@@ -81,7 +61,7 @@ public class RangedShip : FiringShip {
 			health -= GameManager.Singleton.playerDamage;			// We lost health
 
 			if (health <= 0) {
-				
+
 				Instantiate (explosion, transform.position, transform.rotation);
 				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 
@@ -94,4 +74,5 @@ public class RangedShip : FiringShip {
 			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
 		}
 	}
+	#endregion
 }

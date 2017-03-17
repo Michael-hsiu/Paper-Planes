@@ -5,27 +5,19 @@ using UnityEngine.Assertions;
 
 public class PawnShip : Ship {
 
-	/** INSTANCE VARS */
+	#region Unity Life Cycle
+	protected override void Start () {
+		// Call our overridden initalization method
+		Initialize ();
+		//Debug.Log("PAWN SHIP START");
 
-	// Attributes unique to PawnShip
-	//protected float _speed = 1.0f;	
-	//protected float _rotationSpeed = 90.0f;
-	//protected int _health = 20;
-	//protected int _enemyPoints = 25;
+	}
+	#endregion
 
-
-	/** HELPER METHODS */
+	#region Game Logic
 	protected override void Initialize() {
-
 		// Do normal initalization
 		base.Initialize ();
-		//HP_MAX = health;
-		// Adjust attributes
-		//this.Speed = _speed;
-		//this.RotationSpeed = _rotationSpeed;
-		//this.Health = _health;
-		//this.EnemyPoints = _enemyPoints;
-
 	}
 
 	public override void Move () {
@@ -51,19 +43,7 @@ public class PawnShip : Ship {
 		}
 
 	}	
-
-	/** UNITY CALLBACKS */
-
-	protected override void Start () {
-
-		// Call our overridden initalization method
-		Initialize ();
-
-		// Check that we're calling the right Start() method
-		//Debug.Log("PAWN SHIP START");
-
-	}
-
+		
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
@@ -84,4 +64,5 @@ public class PawnShip : Ship {
 			}
 		}
 	}
+	#endregion
 }

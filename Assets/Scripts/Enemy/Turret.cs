@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKillable {
 
-	/** INSTANCE VARS */
-
+	#region Variables
 	[Header("References")]
 	public GameObject target;
 	public GameObject explosion;
@@ -31,13 +30,15 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	public float burstFireDelay = 1.0f;
 	public int burstCount = 5;
 
+	public float fieldOfViewDegrees = 180f;
+	public float visibilityDistance = 10f;
+
 	public float nextFire;
 	public Vector3 initialPos;
 	public Quaternion initialRot;
+	#endregion
 
-
-	/** PROPERTIES */
-
+	#region Properties
 	public float RotationSpeed { 
 		get { return rotationSpeed; } 
 		set { rotationSpeed = value; } 
@@ -62,9 +63,43 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 		get { return fireRate; } 
 		set { fireRate = value; } 
 	}
+	#endregion
 
+	#region Unity Life Cycle
+	/** UNITY CALLBACKS */
 
-	/** INTERFACE METHODS */
+	protected virtual void Start () {
+
+		initialRot = transform.rotation;
+		Initialize ();
+		IEnumerator co = BurstFire ();
+		StartCoroutine (co);
+
+		Debug.Log ("TURRET START");
+	}
+
+	protected virtual void Update () {
+
+		Move ();
+
+		if (CanSeePlayer()) {
+			ActivateGuns ();
+		} else {
+			DeactivateGuns ();
+		}
+
+		/**f (Time.time > nextFire) {
+
+			Fire ();
+		}*/
+	}
+	#endregion
+
+	#region Game Logic
+	protected virtual void Initialize() {
+		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
+		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
+	}
 
 	public virtual void Move() {
 
@@ -115,65 +150,6 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 
 	}
 
-	/** GAME LOGIC */
-
-	protected virtual void Initialize() {
-		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
-		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
-	}
-
-	public void DeactivateGuns() {
-		foreach(Transform s in transform) {
-			TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn> ();	// Get ShotSpawn in children
-
-			if (shotSpawn != null) {
-				shotSpawn.Disarm();	// Fire the shot!
-			}
-		}
-
-
-	}
-
-	public void ActivateGuns() {
-		foreach(Transform s in transform) {
-			TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn> ();	// Get ShotSpawn in children
-
-			if (shotSpawn != null) {
-				shotSpawn.Arm();	// Fire the shot!
-			}
-		}
-	}
-
-
-
-	/** UNITY CALLBACKS */
-
-	protected virtual void Start () {
-
-		initialRot = transform.rotation;
-		Initialize ();
-		IEnumerator co = BurstFire ();
-		StartCoroutine (co);
-
-		Debug.Log ("TURRET START");
-	}
-
-	protected virtual void Update () {
-
-		Move ();
-
-		if (CanSeePlayer()) {
-			ActivateGuns ();
-		} else {
-			DeactivateGuns ();
-		}
-
-		/**f (Time.time > nextFire) {
-
-			Fire ();
-		}*/
-	}
-
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
@@ -193,6 +169,48 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 				Debug.Log("TURRET KILLED! Obtained: " + enemyPoints + "points!");
 			}
 		}
+	}
+
+	public void ActivateGuns() {
+		foreach(Transform s in transform) {
+			TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn> ();	// Get ShotSpawn in children
+
+			if (shotSpawn != null) {
+				shotSpawn.Arm();	// Fire the shot!
+			}
+		}
+	}
+
+	public void DeactivateGuns() {
+		foreach(Transform s in transform) {
+			TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn> ();	// Get ShotSpawn in children
+
+			if (shotSpawn != null) {
+				shotSpawn.Disarm();	// Fire the shot!
+			}
+		}
+
+
+	}
+
+	protected bool CanSeePlayer() {
+
+		// Only cast ray onto Player layer
+		int layerMask = 1 << 8;
+
+		RaycastHit hit;
+		Vector3 rayDirection = target.transform.position - transform.position;
+
+		if ((Vector3.Angle(rayDirection, transform.forward)) <= fieldOfViewDegrees * 0.5f) {
+
+			// Detect if player is within the field of view
+			if (Physics.Raycast(transform.position, rayDirection, out hit, visibilityDistance, layerMask)) {
+				Debug.DrawRay(transform.position, rayDirection, Color.red);
+				return (hit.transform.CompareTag(Constants.PlayerTag));
+			}
+		}
+
+		return false;
 	}
 
 	IEnumerator BurstFire() {
@@ -219,27 +237,5 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 
 		}
 	}
-
-	public float fieldOfViewDegrees = 180f;
-	public float visibilityDistance = 10f;
-
-	protected bool CanSeePlayer() {
-		
-		// Only cast ray onto Player layer
-		int layerMask = 1 << 8;
-
-		RaycastHit hit;
-		Vector3 rayDirection = target.transform.position - transform.position;
-
-		if ((Vector3.Angle(rayDirection, transform.forward)) <= fieldOfViewDegrees * 0.5f) {
-
-			// Detect if player is within the field of view
-			if (Physics.Raycast(transform.position, rayDirection, out hit, visibilityDistance, layerMask)) {
-				Debug.DrawRay(transform.position, rayDirection, Color.red);
-				return (hit.transform.CompareTag(Constants.PlayerTag));
-			}
-		}
-
-		return false;
-	}
+	#endregion
 }

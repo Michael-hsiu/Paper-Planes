@@ -22,6 +22,18 @@ public class AssassinShip : Ship {
 	private Vector2 offset = new Vector2(0, 3);
 	#endregion
 
+	#region Unity Lifecycle
+	protected override void Start () {
+		Initialize ();
+		Debug.Log("ASSASSIN SHIP START");
+	}
+
+	protected override void Update() {
+		base.Update ();
+	}
+	#endregion
+
+	#region Game Logic
 	protected override void Initialize() {
 		base.Initialize ();
 	}
@@ -60,16 +72,7 @@ public class AssassinShip : Ship {
 		}
 	}
 		
-	#region Unity lifecycle
-	protected override void Start () {
-		Initialize ();
-		Debug.Log("ASSASSIN SHIP START");
-	}
 
-	protected override void Update() {
-		base.Update ();
-	}
-	#endregion
 
 
 	void OnTriggerEnter(Collider other) {
@@ -132,4 +135,5 @@ public class AssassinShip : Ship {
 		//startTargeting = false;
 		isAttacking = false;
 	}
+	#endregion
 }
