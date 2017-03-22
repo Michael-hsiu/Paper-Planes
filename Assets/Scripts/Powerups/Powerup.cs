@@ -53,7 +53,7 @@ public class Powerup : MonoBehaviour {
 	}
 
 	void Start () {
-		HideInScene ();
+		HideInScene ();		// Powerups start out hidden
 	}
-
+}
 
