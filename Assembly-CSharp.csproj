@@ -71,6 +71,7 @@
      <Compile Include="Assets\Scripts\General\Shot.cs" />
      <Compile Include="Assets\Scripts\General\ShotSpawn.cs" />
      <Compile Include="Assets\Scripts\General\TurretShotSpawn.cs" />
+     <Compile Include="Assets\Scripts\General\Utils.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IDamageable.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IFires.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IKillable.cs" />
