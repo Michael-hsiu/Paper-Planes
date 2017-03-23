@@ -6,6 +6,7 @@ public class PlayerShip : FiringShip {
 
 	#region Variables
 	public Weapons weapon;
+	private List<GameObject> weapons;
 	private Rigidbody rb;
 	protected float _speed = 2.0f;	
 	protected int _shotDamage = 20;
@@ -21,6 +22,24 @@ public class PlayerShip : FiringShip {
 
 		Debug.Log ("Player's shotDamage: " + ShotDamage);
 
+		GameObject parentShotSpawn;
+		foreach(Transform s in transform) {
+			if (s.gameObject.CompareTag(Constants.ParentSS)) {
+				parentShotSpawn = s.gameObject;
+				break;
+			}
+		}
+		List<GameObject> ss = Utils.GetChildren (parentShotSpawn);
+		foreach (GameObject go in ss) {
+			switch (go.tag) {
+				case "NORMAL":
+					break;
+				case "DUAL":
+					break;
+				case "TRI":
+					break;
+			}
+		}
 		rb = GetComponent<Rigidbody>();
 	}
 
@@ -57,6 +76,17 @@ public class PlayerShip : FiringShip {
 				this.weapon = Weapons.NORMAL;
 				break;
 		}
+	}
+
+	public override void Fire() {
+
+		if (!isFiringBuffed) {
+			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
+		} else {
+			nextFire = Time.time + fireRate / buffedFiringRateFactor;
+		}
+			
+
 	}
 
 	public override void Damage(int damageTaken) {
