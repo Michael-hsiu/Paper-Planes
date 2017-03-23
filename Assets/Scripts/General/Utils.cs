@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Utils {
-	public List<GameObject> GetChildren(GameObject go) {
-		List<GameObject> list = new List<>();
+	
+	public static List<GameObject> GetChildren(GameObject go) {
+		List<GameObject> list = new List<GameObject>();
 		return GetChildrenHelper (go, list);
 	}
 
-	private List<GameObject> GetChildrenHelper(GameObject go, List<GameObject> list) {
+	private static List<GameObject> GetChildrenHelper(GameObject go, List<GameObject> list) {
 		if (go == null || go.transform.childCount == 0) {
 			return list;
 		}

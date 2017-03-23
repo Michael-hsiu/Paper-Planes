@@ -5,17 +5,19 @@ using UnityEngine;
 public class PlayerShip : FiringShip {
 
 	#region Variables
+	public Weapons weapon;
 	private Rigidbody rb;
-
 	protected float _speed = 2.0f;	
 	protected int _shotDamage = 20;
+
+	public enum Weapons {NORMAL, DUAL, TRI}; 
 	#endregion
 
 	#region Unity Life Cycle
 	protected override void Start () {
-
-		this.Speed = _speed;
-		this.ShotDamage = _shotDamage;
+		this.weapon = Weapons.NORMAL;
+		//this.Speed = _speed;
+		//this.ShotDamage = _shotDamage;
 
 		Debug.Log ("Player's shotDamage: " + ShotDamage);
 
@@ -43,6 +45,20 @@ public class PlayerShip : FiringShip {
 	#endregion
 
 	#region Game Logic
+	public void ChangeWeapons(Weapons id) {
+		switch(id) {
+			case Weapons.DUAL:
+				this.weapon = Weapons.DUAL;
+				break;
+			case Weapons.TRI:
+				this.weapon = Weapons.TRI;
+				break;
+			default:
+				this.weapon = Weapons.NORMAL;
+				break;
+		}
+	}
+
 	public override void Damage(int damageTaken) {
 
 		base.Damage (damageTaken);

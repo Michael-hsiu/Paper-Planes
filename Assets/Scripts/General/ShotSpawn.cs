@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class ShotSpawn : MonoBehaviour {
 
-
-	/** INSTANCE VARS */
-
-	[Header("References")]
 	public GameObject targetRotation;
 	public bool multiFire = false;
-
-	private GameObject shotContainer;
-
-	/** HELPER METHODS */
 
 	public void CreateShot(bool isFiringBuffed=false) {
 
