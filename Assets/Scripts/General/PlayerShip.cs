@@ -4,28 +4,14 @@ using UnityEngine;
 
 public class PlayerShip : FiringShip {
 
-	/** INSTANCE VARS */
-
+	#region Variables
 	private Rigidbody rb;
 
 	protected float _speed = 2.0f;	
 	protected int _shotDamage = 20;
+	#endregion
 
-
-	/** INTERFACE METHODS */
-
-	public override void Damage(int damageTaken) {
-
-		base.Damage (damageTaken);
-		Debug.Log ("OLD PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
-		GameManager.Singleton.playerHealth -= damageTaken;
-		Debug.Log ("NEW PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
-		UIManager.Singleton.UpdateHealth ();
-
-	}
-
-	/** UNITY CALLBACKS */
-
+	#region Unity Life Cycle
 	protected override void Start () {
 
 		this.Speed = _speed;
@@ -40,8 +26,7 @@ public class PlayerShip : FiringShip {
 
 		// Firing logic
 		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
-
-			Debug.Log ("FIRING");
+			// Debug.Log ("FIRING");
 			Fire ();
 		}
 
@@ -53,6 +38,18 @@ public class PlayerShip : FiringShip {
 
 		// Check for user input
 		CheckForInput ();
+
+	}
+	#endregion
+
+	#region Game Logic
+	public override void Damage(int damageTaken) {
+
+		base.Damage (damageTaken);
+		Debug.Log ("OLD PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
+		GameManager.Singleton.playerHealth -= damageTaken;
+		Debug.Log ("NEW PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
+		UIManager.Singleton.UpdateHealth ();
 
 	}
 
@@ -74,4 +71,5 @@ public class PlayerShip : FiringShip {
 			rb.AddForce(-transform.up * speed);
 		}
 	}
+	#endregion
 }

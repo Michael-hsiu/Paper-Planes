@@ -4,8 +4,7 @@ using UnityEngine;
 
 public abstract class FiringShip : Ship, IFires {
 
-	/** INSTANCE VARS */
-
+	#region Variables
 	public GameObject shot;
 	public GameObject fasterShot;
 	public Transform shotSpawn;
@@ -14,10 +13,9 @@ public abstract class FiringShip : Ship, IFires {
 	public float nextFire;
 	public float buffedFiringRateFactor = 2.0f;
 	public bool isFiringBuffed = false;
+	#endregion
 
-
-	/** GAME LOGIC */
-
+	#region Game Logic
 	public virtual void Fire() {
 
 		if (!isFiringBuffed) {
@@ -26,6 +24,7 @@ public abstract class FiringShip : Ship, IFires {
 			nextFire = Time.time + fireRate / buffedFiringRateFactor;
 		}
 
+		//GameObject parentShotSpawn = (from c in hitColliders select c.gameObject).ToList();
 		// Check for all shotspawns in children
 		foreach(Transform s in transform) {
 
@@ -45,7 +44,7 @@ public abstract class FiringShip : Ship, IFires {
 	public void DebuffFiring() {
 		this.isFiringBuffed = false;
 	}
-
+	#endregion
 		
 
 	/** PROPERTIES */

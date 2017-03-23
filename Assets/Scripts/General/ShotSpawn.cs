@@ -26,7 +26,6 @@ public class ShotSpawn : MonoBehaviour {
 		// Create the shot
 		FiringShip firingShip = targetRotation.transform.GetComponent<IFires>() as FiringShip;		// We know that it'll be a firingship
 
-		/*
 		if (!isFiringBuffed) {
 			// Straight shot
 			GameObject shot = Instantiate (firingShip.shot, transform.position, 
@@ -57,7 +56,7 @@ public class ShotSpawn : MonoBehaviour {
 					transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
 
 			}
-		}*/
+		}
 	}
 
 }
