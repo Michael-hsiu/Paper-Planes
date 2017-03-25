@@ -5,9 +5,11 @@ using UnityEngine;
 // API inspired by: https://github.com/antfarmar/Unity-3D-Asteroids/blob/master/Assets/Asteroids/Scripts/Powerups/Powerup.cs
 public class Powerup : MonoBehaviour {
 
+	public PlayerShip player;
+	public List<ShotSpawn> prevSS = new List<ShotSpawn> ();
 	private float powerDuration = 10f;
 	private bool isVisible;
-	private string id = "";
+	protected string id = "";
 
 	void Spawn() {
 		transform.position = Vector3.zero;	// Temp fixed location
@@ -18,12 +20,13 @@ public class Powerup : MonoBehaviour {
 		SetVisibility (false);
 	}
 
-	void ActivatePower() {
+	public virtual void ActivatePower() {
 		CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
 		Invoke ("DeactivatePower", powerDuration);	// Reset to state before powerup obtained
 	}
 
-	void DeactivatePower() {
+	public virtual void DeactivatePower() {
+		player.activeSS = prevSS;
 		Debug.Log ("POWERUP DEACTIVATED: " + id);
 	}
 
@@ -46,6 +49,10 @@ public class Powerup : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
+			prevSS = other.GetComponent<PlayerShip>().activeSS;		// Get the previous state
+			if (player == null) {
+				player = other.GetComponent<PlayerShip> ();
+			}
 			ActivatePower ();
 			HideInScene ();
 			Debug.Log ("PICKED UP POWERUP: " + this.id);	// Print message to console
@@ -53,7 +60,7 @@ public class Powerup : MonoBehaviour {
 	}
 
 	void Start () {
-		HideInScene ();		// Powerups start out hidden
+		//HideInScene ();		// Powerups start out hidden
 	}
 }
 

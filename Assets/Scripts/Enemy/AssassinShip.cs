@@ -122,7 +122,7 @@ public class AssassinShip : Ship {
 		yield return new WaitForSeconds(rushDelay);	 // Wait for a few seconds while rushing
 
 		while (transform.position != desiredPos) {
-			Debug.Log ("IN LOOP");
+			//Debug.Log ("IN LOOP");
 			transform.position = Vector2.MoveTowards(transform.position, desiredPos, Time.deltaTime * speed * rushSpeed);
 			yield return null;
 		}

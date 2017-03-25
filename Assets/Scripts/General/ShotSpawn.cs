@@ -19,8 +19,8 @@ public class ShotSpawn : MonoBehaviour {
 		FiringShip firingShip = targetRotation.transform.GetComponent<IFires>() as FiringShip;		// We know that it'll be a firingship
 
 		if (!isFiringBuffed) {
-			Debug.Log ("SHOT: " + firingShip.shot == null);
-			Debug.Log ("FIRINGSHOT: " + firingShip.fasterShot == null);
+			//Debug.Log ("SHOT: " + firingShip.shot == null);
+			//Debug.Log ("FIRINGSHOT: " + firingShip.fasterShot == null);
 
 			// Straight shot
 			GameObject shot = Instantiate (firingShip.shot, transform.position, 

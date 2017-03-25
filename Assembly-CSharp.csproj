@@ -77,6 +77,7 @@
      <Compile Include="Assets\Scripts\Interfaces\IFires.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IKillable.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />
+     <Compile Include="Assets\Scripts\Powerups\DualFirePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />
      <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\CollisionHelperBomberType.cs" />

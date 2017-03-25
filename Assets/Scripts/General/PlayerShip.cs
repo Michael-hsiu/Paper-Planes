@@ -90,7 +90,7 @@ public class PlayerShip : FiringShip {
 		//this.weapon = Weapons.NORMAL;
 	}
 
-	public void ChangeWeapons(Weapons id) {
+	public void SetWeapons(Weapons id) {
 		this.activeSS = ssDict [id];
 	}
 

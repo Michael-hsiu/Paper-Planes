@@ -8,7 +8,7 @@ public class ColliderHelper : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 
-		Debug.Log ("COLLISION HERE. Other was: " + other.gameObject.name);
+		//Debug.Log ("COLLISION HERE. Other was: " + other.gameObject.name);
 
 		if (other.gameObject.CompareTag(Constants.PlayerColliders)) {
 

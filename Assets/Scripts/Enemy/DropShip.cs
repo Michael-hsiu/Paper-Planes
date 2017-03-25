@@ -164,7 +164,7 @@ public class DropShip : Ship {
 		}
 
 		nextSpawn = Time.time + timeUntilNextSpawnMode;		// Won't start spawning until certain time has passed
-		Debug.Log("nextSpawn: " + nextSpawn);
+		//Debug.Log("nextSpawn: " + nextSpawn);
 		isSpawning = false;			// Resume normal behavior
 		DeactivateGuns();			// Guns are off when not spawning
 	}
