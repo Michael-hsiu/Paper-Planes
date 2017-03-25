@@ -5,9 +5,10 @@ using UnityEngine;
 public class PlayerShip : FiringShip {
 
 	#region Variables
-	public Weapons weapon;
+	//public Weapons weapon;
+	public List<ShotSpawn> activeSS;
 	//private List<GameObject> weapons;
-	public Dictionary<Weapons, List<ShotSpawn>> ssList = new Dictionary<Weapons, List<ShotSpawn>>();
+	public Dictionary<Weapons, List<ShotSpawn>> ssDict = new Dictionary<Weapons, List<ShotSpawn>>();
 	private Rigidbody rb;
 	protected float _speed = 2.0f;	
 	protected int _shotDamage = 20;
@@ -17,50 +18,14 @@ public class PlayerShip : FiringShip {
 
 	#region Unity Life Cycle
 	protected override void Start () {
-		this.weapon = Weapons.NORMAL;
-		//this.Speed = _speed;
-		//this.ShotDamage = _shotDamage;
-
-		Debug.Log ("Player's shotDamage: " + ShotDamage);
-
-		GameObject parentShotSpawn;
-		foreach(Transform s in transform) {
-			if (s.gameObject.CompareTag(Constants.ParentSS)) {
-				parentShotSpawn = s.gameObject;
-				break;
-			}
-		}
-		List<GameObject> ss = Utils.GetChildren (parentShotSpawn);
-
-		List<GameObject> normalSS = new List<GameObject> ();
-		List<GameObject> dualSS = new List<GameObject> ();
-		List<GameObject> triSS = new List<GameObject> ();
-
-		foreach (GameObject go in ss) {		// Get ref to all player shotspawns
-			ShotSpawn spawn = go.GetComponent<ShotSpawn>();
-			if (spawn != null) {
-				switch (go.tag) {
-				case "NormalSS":
-					normalSS.Add (spawn);
-					triSS.Add (spawn);
-					break;
-				case "DualSS":
-					dualSS.Add (spawn);
-					break;
-				case "TriSS":
-					triSS.Add (spawn);
-					break;
-				}
-			}
-		}
+		InitializeSS ();
 		rb = GetComponent<Rigidbody>();
 	}
-
+		
 	protected override void Update () {
 
 		// Firing logic
 		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
-			// Debug.Log ("FIRING");
 			Fire ();
 		}
 
@@ -77,28 +42,78 @@ public class PlayerShip : FiringShip {
 	#endregion
 
 	#region Game Logic
-	public void ChangeWeapons(Weapons id) {
-		switch(id) {
-			case Weapons.DUAL:
-				this.weapon = Weapons.DUAL;
+	private void InitializeSS() {
+		GameObject parentShotSpawn = null;		// This contains all shotspawns
+		foreach(Transform s in transform) {
+			if (s.gameObject.CompareTag(Constants.ParentSS)) {
+				parentShotSpawn = s.gameObject;
 				break;
-			case Weapons.TRI:
-				this.weapon = Weapons.TRI;
-				break;
-			default:
-				this.weapon = Weapons.NORMAL;
-				break;
+			}
 		}
+		List<GameObject> ss;
+		if (parentShotSpawn != null) {
+			ss = Utils.GetChildren (parentShotSpawn);	// Find all shotspawns
+		} else {
+			Debug.Log ("Didn't get parentShotSpawn (InitializeSS)");
+			return;
+		}
+
+		List<ShotSpawn> normalSS = new List<ShotSpawn> ();
+		List<ShotSpawn> dualSS = new List<ShotSpawn> ();
+		List<ShotSpawn> triSS = new List<ShotSpawn> ();
+
+		foreach (GameObject go in ss) {		// Get ref to all player shotspawns
+			ShotSpawn spawn = go.GetComponent<ShotSpawn>();
+			if (spawn != null) {
+				switch (go.tag) {
+					case "NormalSS":
+						normalSS.Add (spawn);
+						triSS.Add (spawn);
+						break;
+					case "DualSS":
+						dualSS.Add (spawn);
+						break;
+					case "TriSS":
+						triSS.Add (spawn);
+						break;
+				}
+			}
+		}
+
+		// Mapping enum vals to shotspawn lists
+		ssDict.Add (Weapons.NORMAL, normalSS);
+		ssDict.Add (Weapons.DUAL, dualSS);
+		ssDict.Add (Weapons.TRI, triSS);
+
+		// Starting properties
+		this.activeSS = ssDict [Weapons.NORMAL];
+		//this.weapon = Weapons.NORMAL;
+	}
+
+	public void ChangeWeapons(Weapons id) {
+		this.activeSS = ssDict [id];
 	}
 
 	public override void Fire() {
 
 		if (!isFiringBuffed) {
 			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
+			//Debug.Log("COOLDOWN REACHED #1");
+			//Debug.Log ("NEXTFIRE: " + nextFire);
 		} else {
 			nextFire = Time.time + fireRate / buffedFiringRateFactor;
+			//Debug.Log("COOLDOWN REACHED #2");
 		}
-			
+
+		// Look inside list of active shotspawns
+		//Debug.Log ("FIRING");
+
+		foreach(ShotSpawn s in activeSS) {
+			if (s != null) {
+				//Debug.Log("SHOT CREATED");
+				s.CreateShot (isFiringBuffed);	// Fire the shot!
+			}
+		}
 
 	}
 

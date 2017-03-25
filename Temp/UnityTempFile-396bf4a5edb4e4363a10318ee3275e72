@@ -100,6 +100,7 @@
 'Assets/Scripts/General/FasterShot.cs'
 'Assets/Scripts/General/FiringShip.cs'
 'Assets/Scripts/General/PlayerShip.cs'
+'Assets/Scripts/General/PlayerShotSpawn.cs'
 'Assets/Scripts/General/Shields.cs'
 'Assets/Scripts/General/Ship.cs'
 'Assets/Scripts/General/Shot.cs'
