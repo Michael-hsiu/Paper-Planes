@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DualFirePowerup : Powerup {
+public class TriFirePowerup : Powerup {
 
 	public override void ActivatePower() {
-		player.SetWeapons (PlayerShip.Weapons.DUAL);
+		player.SetWeapons (PlayerShip.Weapons.TRI);
 		base.ActivatePower ();
 	}
 

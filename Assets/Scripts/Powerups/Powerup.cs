@@ -7,7 +7,7 @@ public class Powerup : MonoBehaviour {
 
 	public PlayerShip player;
 	public List<ShotSpawn> prevSS = new List<ShotSpawn> ();
-	private float powerDuration = 10f;
+	private float powerDuration = 3.0f;
 	private bool isVisible;
 	protected string id = "";
 
@@ -26,7 +26,6 @@ public class Powerup : MonoBehaviour {
 	}
 
 	public virtual void DeactivatePower() {
-		player.activeSS = prevSS;
 		Debug.Log ("POWERUP DEACTIVATED: " + id);
 	}
 
@@ -62,5 +61,6 @@ public class Powerup : MonoBehaviour {
 	void Start () {
 		//HideInScene ();		// Powerups start out hidden
 	}
+
 }
 
