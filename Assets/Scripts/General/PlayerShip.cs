@@ -6,7 +6,8 @@ public class PlayerShip : FiringShip {
 
 	#region Variables
 	public Weapons weapon;
-	private List<GameObject> weapons;
+	//private List<GameObject> weapons;
+	public Dictionary<Weapons, List<ShotSpawn>> ssList = new Dictionary<Weapons, List<ShotSpawn>>();
 	private Rigidbody rb;
 	protected float _speed = 2.0f;	
 	protected int _shotDamage = 20;
@@ -30,14 +31,26 @@ public class PlayerShip : FiringShip {
 			}
 		}
 		List<GameObject> ss = Utils.GetChildren (parentShotSpawn);
-		foreach (GameObject go in ss) {
-			switch (go.tag) {
-				case "NORMAL":
+
+		List<GameObject> normalSS = new List<GameObject> ();
+		List<GameObject> dualSS = new List<GameObject> ();
+		List<GameObject> triSS = new List<GameObject> ();
+
+		foreach (GameObject go in ss) {		// Get ref to all player shotspawns
+			ShotSpawn spawn = go.GetComponent<ShotSpawn>();
+			if (spawn != null) {
+				switch (go.tag) {
+				case "NormalSS":
+					normalSS.Add (spawn);
+					triSS.Add (spawn);
 					break;
-				case "DUAL":
+				case "DualSS":
+					dualSS.Add (spawn);
 					break;
-				case "TRI":
+				case "TriSS":
+					triSS.Add (spawn);
 					break;
+				}
 			}
 		}
 		rb = GetComponent<Rigidbody>();

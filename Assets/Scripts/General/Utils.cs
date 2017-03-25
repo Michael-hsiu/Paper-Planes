@@ -10,12 +10,14 @@ public static class Utils {
 	}
 
 	private static List<GameObject> GetChildrenHelper(GameObject go, List<GameObject> list) {
-		if (go == null || go.transform.childCount == 0) {
+		if (go == null) {
 			return list;
 		}
 		foreach (Transform t in go.transform) {
 			list.Add (t.gameObject);
-			GetChildrenHelper (t.gameObject, list);
+			if (t.transform.childCount > 0) {
+				GetChildrenHelper (t.gameObject, list);
+			}
 		}
 		return list;
 	}
