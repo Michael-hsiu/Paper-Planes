@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour {
 	// Player Damage
 	public int playerDamage = 20;
 
+	public int scoreMultiplier = 1;
+
 	// One instance of GameManager will run throughout game
 	private static GameManager singleton;
 
@@ -60,6 +62,10 @@ public class GameManager : MonoBehaviour {
 		
 
 	/************************ [METHODS] ************************/
+	public void UpdateScore(int ptIncrease) {
+		GameManager.Singleton.playerScore += ptIncrease * scoreMultiplier;	// Add new score in GameManager
+	}
+
 	public void Die() {
 		//UIManager.Instance.SetStatus(Constants.StatusDeadTapToStart);
 		this.GameState = GameState.Dead;
