@@ -5,15 +5,13 @@ using UnityEngine;
 public class PlayerShip : FiringShip {
 
 	#region Variables
-	//public Weapons weapon;
 	public List<ShotSpawn> activeSS;
-	//private List<GameObject> weapons;
 	public Dictionary<Weapons, List<ShotSpawn>> ssDict = new Dictionary<Weapons, List<ShotSpawn>>();
 	private Rigidbody rb;
 	protected float _speed = 2.0f;	
 	protected int _shotDamage = 20;
 
-	public enum Weapons {NORMAL, DUAL, TRI}; 
+	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
 	#endregion
 
 	#region Unity Life Cycle
@@ -61,6 +59,7 @@ public class PlayerShip : FiringShip {
 		List<ShotSpawn> normalSS = new List<ShotSpawn> ();
 		List<ShotSpawn> dualSS = new List<ShotSpawn> ();
 		List<ShotSpawn> triSS = new List<ShotSpawn> ();
+		List<ShotSpawn> sideSS = new List<ShotSpawn> ();
 
 		foreach (GameObject go in ss) {		// Get ref to all player shotspawns
 			ShotSpawn spawn = go.GetComponent<ShotSpawn>();
@@ -69,12 +68,16 @@ public class PlayerShip : FiringShip {
 					case "NormalSS":
 						normalSS.Add (spawn);
 						triSS.Add (spawn);
+						sideSS.Add (spawn);
 						break;
 					case "DualSS":
 						dualSS.Add (spawn);
 						break;
 					case "TriSS":
 						triSS.Add (spawn);
+						break;
+					case "SideSS":
+						sideSS.Add (spawn);
 						break;
 				}
 			}
@@ -84,6 +87,7 @@ public class PlayerShip : FiringShip {
 		ssDict.Add (Weapons.NORMAL, normalSS);
 		ssDict.Add (Weapons.DUAL, dualSS);
 		ssDict.Add (Weapons.TRI, triSS);
+		ssDict.Add (Weapons.SIDE, triSS);
 
 		// Starting properties
 		this.activeSS = ssDict [Weapons.NORMAL];

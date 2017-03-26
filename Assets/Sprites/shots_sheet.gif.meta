@@ -1,0 +1,742 @@
+fileFormatVersion: 2
+guid: 42b39b9057a314b96b59ee54746da7b8
+timeCreated: 1490506769
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: shots_sheet_0
+    21300002: shots_sheet_1
+    21300004: shots_sheet_2
+    21300006: shots_sheet_3
+    21300008: shots_sheet_4
+    21300010: shots_sheet_5
+    21300012: shots_sheet_6
+    21300014: shots_sheet_7
+    21300016: shots_sheet_8
+    21300018: shots_sheet_9
+    21300020: shots_sheet_10
+    21300022: shots_sheet_11
+    21300024: shots_sheet_12
+    21300026: shots_sheet_13
+    21300028: shots_sheet_14
+    21300030: shots_sheet_15
+    21300032: shots_sheet_16
+    21300034: shots_sheet_17
+    21300036: shots_sheet_18
+    21300038: shots_sheet_19
+    21300040: shots_sheet_20
+    21300042: shots_sheet_21
+    21300044: shots_sheet_22
+    21300046: shots_sheet_23
+    21300048: shots_sheet_24
+    21300050: shots_sheet_25
+    21300052: shots_sheet_26
+    21300054: shots_sheet_27
+    21300056: shots_sheet_28
+    21300058: shots_sheet_29
+    21300060: shots_sheet_30
+    21300062: shots_sheet_31
+    21300064: shots_sheet_32
+    21300066: shots_sheet_33
+    21300068: shots_sheet_34
+    21300070: shots_sheet_35
+    21300072: shots_sheet_36
+    21300074: shots_sheet_37
+    21300076: shots_sheet_38
+    21300078: shots_sheet_39
+    21300080: shots_sheet_40
+    21300082: shots_sheet_41
+    21300084: shots_sheet_42
+    21300086: shots_sheet_43
+    21300088: shots_sheet_44
+    21300090: shots_sheet_45
+    21300092: shots_sheet_46
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: shots_sheet_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 240
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_1
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 239
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_2
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 237
+        width: 13
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 244
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_4
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 244
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_5
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 245
+        width: 8
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_6
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 245
+        width: 6
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_7
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 216
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_8
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 231
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_9
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 217
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_10
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 216
+        width: 24
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_11
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 214
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_12
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 218
+        width: 31
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_13
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 174
+        width: 21
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_14
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 164
+        width: 21
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_15
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 160
+        width: 28
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_16
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 158
+        width: 32
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_17
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 163
+        width: 14
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_18
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 159
+        width: 16
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_19
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 129
+        width: 44
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_20
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 128
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_21
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 124
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_22
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 131
+        width: 18
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_23
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 129
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_24
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 125
+        width: 32
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_25
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 132
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_26
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 126
+        width: 10
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_27
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 130
+        width: 22
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_28
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 97
+        width: 17
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_29
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 84
+        width: 24
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_30
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 78
+        width: 62
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_31
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 107
+        width: 4
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_32
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 113
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_33
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 114
+        width: 8
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_34
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 117
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_35
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 116
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_36
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 88
+        width: 25
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_37
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 107
+        width: 15
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_38
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 96
+        width: 29
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_39
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 104
+        width: 7
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_40
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 101
+        width: 11
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_41
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 99
+        width: 4
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_42
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 78
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_43
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 88
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_44
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 86
+        width: 19
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_45
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 291
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: shots_sheet_46
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 38
+        width: 46
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

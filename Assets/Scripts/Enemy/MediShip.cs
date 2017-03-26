@@ -68,7 +68,7 @@ public class MediShip : Ship {
 
 				Kill ();
 
-				GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
+				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI
 
 				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");
@@ -92,7 +92,7 @@ public class MediShip : Ship {
 
 			// Retrieve the script that implements IDamageable
 			Ship s = go.GetComponent (typeof(Ship)) as Ship;
-			if (s != null) {
+			if (s != null && !go.CompareTag(Constants.PlayerTag)) {
 				s.BuffSpeed ();
 				if (s is FiringShip) {
 					FiringShip fs = (FiringShip) s;

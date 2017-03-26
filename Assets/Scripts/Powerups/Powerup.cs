@@ -7,7 +7,7 @@ public class Powerup : MonoBehaviour {
 
 	public PlayerShip player;
 	public List<ShotSpawn> prevSS = new List<ShotSpawn> ();
-	private float powerDuration = 3.0f;
+	private float powerDuration = 10.0f;
 	private bool isVisible;
 	protected string id = "";
 

@@ -87,7 +87,7 @@ public class AssassinShip : Ship {
 
 				Kill ();
 
-				GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
+				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI
 
 				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");

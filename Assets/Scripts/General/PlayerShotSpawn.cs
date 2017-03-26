@@ -6,6 +6,12 @@ public class PlayerShotSpawn : ShotSpawn {
 
 	public GameObject shot;
 	public GameObject fasterShot;
+	public GameObject ultimateShot;
+	public GameObject waveShot;
+
+	public bool ultimateShotEnabled = false;
+	public int ultiShotInterval = 5;
+	public int shotCounter = 0;
 
 	//public GameObject targetRotation;
 	//public bool multiFire = false;
@@ -18,36 +24,24 @@ public class PlayerShotSpawn : ShotSpawn {
 		// Rotate shotSpawn relative to parent Player
 		transform.localRotation = targetRotation.transform.rotation;	
 
-		if (!isFiringBuffed) {
-			// Straight shot
-			GameObject shot1 = Instantiate (shot, transform.position, 
-				transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
-
-			if (multiFire) {
-				// Left angled
-				GameObject shot2 = Instantiate (shot, transform.position, 
-					transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 10)))) as GameObject;
-
-				// Right angled
-				GameObject shot3 = Instantiate (shot, transform.position, 
-					transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
-
-			}
+		if (shotCounter == ultiShotInterval) {
+			GameObject shot1 = Instantiate (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
+			shotCounter = 0;
 		} else {
-			// Straight shot
-			GameObject shot1 = Instantiate (fasterShot, transform.position, 
-				transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
-
-			if (multiFire) {
-				// Left angled
-				GameObject shot2 = Instantiate (fasterShot, transform.position, 
-					transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 10)))) as GameObject;
-
-				// Right angled
-				GameObject shot3 = Instantiate (fasterShot, transform.position, 
-					transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
-
-			}
+			GameObject shot1 = Instantiate (shot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 		}
+		// Straight shot
+
+		shotCounter += 1;	// Increment shot count
+
+	}
+
+	public void EnableUltimateShot() {
+		ultimateShotEnabled = true;
+	}
+
+
+	public void DisableUltimateShot() {
+		ultimateShotEnabled = false;
 	}
 }
