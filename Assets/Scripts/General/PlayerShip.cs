@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class PlayerShip : FiringShip {
 
+	private class SSContainer {
+		private Weapons id;
+		private int priority;
+		private List<ShotSpawn> ss;
+
+		SSContainer(Weapons id, int priority, List<ShotSpawn> ss) {
+			this.id = id;
+			this.priority = priority;
+			this.ss = ss;
+		}
+	}
+
 	#region Variables
 	public List<ShotSpawn> activeSS;
 	public Dictionary<Weapons, List<ShotSpawn>> ssDict = new Dictionary<Weapons, List<ShotSpawn>>();

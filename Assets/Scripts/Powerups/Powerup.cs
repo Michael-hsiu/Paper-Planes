@@ -6,7 +6,8 @@ using UnityEngine;
 public class Powerup : MonoBehaviour {
 
 	public PlayerShip player;
-	public List<ShotSpawn> prevSS = new List<ShotSpawn> ();
+	//public List<ShotSpawn> prevSS = new List<ShotSpawn> ();
+	public Stack<ShotSpawn> prevSS = new Stack<ShotSpawn> ();
 	private float powerDuration = 10.0f;
 	private bool isVisible;
 	protected string id = "";
@@ -48,7 +49,7 @@ public class Powerup : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
-			prevSS = other.GetComponent<PlayerShip>().activeSS;		// Get the previous state
+			prevSS.Push(other.GetComponent<PlayerShip>().activeSS);		// Add the previous state
 			if (player == null) {
 				player = other.GetComponent<PlayerShip> ();
 			}

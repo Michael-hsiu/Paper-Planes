@@ -10,8 +10,11 @@ public class PlayerShotSpawn : ShotSpawn {
 	public GameObject waveShot;
 
 	public bool ultimateShotEnabled = false;
+	public bool waveShotEnabled = false;
 	public int ultiShotInterval = 5;
+	public int waveShotInterval = 5;
 	public int shotCounter = 0;
+	public int waveShotCounter = 0;
 
 	//public GameObject targetRotation;
 	//public bool multiFire = false;
@@ -43,5 +46,14 @@ public class PlayerShotSpawn : ShotSpawn {
 
 	public void DisableUltimateShot() {
 		ultimateShotEnabled = false;
+	}
+
+	public void EnableWaveShot() {
+		waveShotEnabled = true;
+	}
+
+
+	public void DisableWaveShot() {
+		waveShotEnabled = false;
 	}
 }
