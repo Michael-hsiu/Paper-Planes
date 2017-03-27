@@ -5,7 +5,7 @@ using System;
 
 public class PlayerShip : FiringShip {
 
-	private class SSContainer : IComparable<SSContainer> {
+	public class SSContainer : IComparable<SSContainer> {
 		private Weapons id;
 		private int priority;
 		private List<ShotSpawn> ss;
@@ -117,17 +117,11 @@ public class PlayerShip : FiringShip {
 	}
 
 	public void SetWeapons(Weapons id) {
-		SSContainer curr = ssDict [id];
-		bool comp = curr.compareTo (activeSS.Peek());		// Compare to most recent entry in Stack
-		if (comp == 0) {
-			// Add full duration
+		this.activeSS.Push(activeSS[id]);
+	}
 
-		} else if (comp == -1) {
-			// Deque and add more duration to new
-		} else {
-			
-		}
-		//this.activeSS.Add();
+	public void RemovePowerup() {
+		this.activeSS.Pop ();
 	}
 
 	public override void Fire() {

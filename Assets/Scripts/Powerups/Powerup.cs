@@ -8,8 +8,9 @@ public class Powerup : MonoBehaviour {
 	public PlayerShip player;
 	//public List<ShotSpawn> prevSS = new List<ShotSpawn> ();
 	public Stack<ShotSpawn> prevSS = new Stack<ShotSpawn> ();
-	private float powerDuration = 10.0f;
-	private bool isVisible;
+	protected float powerDuration = 10.0f;
+	protected float endTime;
+	protected bool isVisible;
 	protected string id = "";
 
 	void Spawn() {
@@ -22,12 +23,28 @@ public class Powerup : MonoBehaviour {
 	}
 
 	public virtual void ActivatePower() {
-		CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
-		Invoke ("DeactivatePower", powerDuration);	// Reset to state before powerup obtained
+		PlayerShip.SSContainer curr = player.ssDict [id];
+		PlayerShip.SSContainer activePowerup = (PlayerShip.SSContainer) player.activeSS.Peek ();	// Get the active powerup's shotspawns
+		bool comp = curr.compareTo (activePowerup);		// Compare to most recent entry in Stack
+		if (comp == 0) {
+			// Add full duration
+			CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
+			Invoke ("DeactivatePower", powerDuration);	// Reset to state before powerup obtained
+			endTime = Time.time + powerDuration;		// Record end time of powerup
+		} else if (comp == -1) {
+			// Deque and add more duration to new (hardcoded to 1/2)
+			player.activeSS.Pop();		// Remove last powerup
+			CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
+			endTime = endTime + powerDuration * 0.5f;		// Set new end time
+			Invoke ("DeactivatePower", endTime);	// Reset to state after extended duration
+		} else {
+			// No duration added from worse powerup (no effect)
+		}
 	}
 
+
 	public virtual void DeactivatePower() {
-		CancelInvoke ("DeactivatePower");			// Just in case we removed a powerup through override
+		//CancelInvoke ("DeactivatePower");			// Just in case we removed a powerup through override
 		Debug.Log ("POWERUP DEACTIVATED: " + id);
 	}
 
