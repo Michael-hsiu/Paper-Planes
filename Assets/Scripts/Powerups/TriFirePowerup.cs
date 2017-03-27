@@ -10,7 +10,10 @@ public class TriFirePowerup : Powerup {
 	}
 
 	public override void DeactivatePower() {
-		player.activeSS = prevSS;
+		//player.activeSS = prevSS;
+
+		// Unprotected deque op
+		player.activeSS.Pop();
 		base.DeactivatePower ();
 	}
 }

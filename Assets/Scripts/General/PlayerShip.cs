@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerShip : FiringShip {
 
-	private class SSContainer {
+	private class SSContainer : IComparable<SSContainer> {
 		private Weapons id;
 		private int priority;
 		private List<ShotSpawn> ss;
@@ -14,11 +15,20 @@ public class PlayerShip : FiringShip {
 			this.priority = priority;
 			this.ss = ss;
 		}
+
+		public int compareTo(SSContainer other) {
+			return this.priority - other.priority;
+		}
+
+		public Weapons ID { get { return id; } }
+		public int Priority { get { return priority; } }
+		public int SS { get { return ss; } }
+
 	}
 
 	#region Variables
-	public List<ShotSpawn> activeSS;
-	public Dictionary<Weapons, List<ShotSpawn>> ssDict = new Dictionary<Weapons, List<ShotSpawn>>();
+	public Stack<List<SSContainer>> activeSS;
+	public Dictionary<Weapons, SSContainer> ssDict = new Dictionary<Weapons, SSContainer>();
 	private Rigidbody rb;
 	protected float _speed = 2.0f;	
 	protected int _shotDamage = 20;
@@ -97,21 +107,30 @@ public class PlayerShip : FiringShip {
 		}
 
 		// Mapping enum vals to shotspawn lists
-		ssDict.Add (Weapons.NORMAL, normalSS);
-		ssDict.Add (Weapons.DUAL, dualSS);
-		ssDict.Add (Weapons.TRI, triSS);
-		ssDict.Add (Weapons.SIDE, triSS);
+		ssDict.Add (Weapons.NORMAL, new SSContainer(Weapons.NORMAL, (int) Weapons.NORMAL, normalSS));
+		ssDict.Add (Weapons.DUAL, new SSContainer(Weapons.DUAL, (int) Weapons.DUAL, dualSS));
+		ssDict.Add (Weapons.TRI, new SSContainer(Weapons.TRI, (int) Weapons.TRI, triSS));
+		//ssDict.Add (Weapons.SIDE, sideSS);
 
-		// Starting properties
-		this.activeSS = ssDict [Weapons.NORMAL];
+		// Starting properties - add normal SS list to stack
+		this.activeSS.Push(ssDict[Weapons.NORMAL]);
 	}
 
 	public void SetWeapons(Weapons id) {
-		this.activeSS = ssDict [id];
+		SSContainer curr = ssDict [id];
+		bool comp = curr.compareTo (activeSS.Peek());		// Compare to most recent entry in Stack
+		if (comp == 0) {
+			// Add full duration
+
+		} else if (comp == -1) {
+			// Deque and add more duration to new
+		} else {
+			
+		}
+		//this.activeSS.Add();
 	}
 
 	public override void Fire() {
-
 		if (!isFiringBuffed) {
 			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
 		} else {
@@ -126,13 +145,11 @@ public class PlayerShip : FiringShip {
 	}
 
 	public override void Damage(int damageTaken) {
-
 		base.Damage (damageTaken);
 		Debug.Log ("OLD PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
 		GameManager.Singleton.playerHealth -= damageTaken;
 		Debug.Log ("NEW PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
 		UIManager.Singleton.UpdateHealth ();
-
 	}
 
 	private void CheckForInput() {

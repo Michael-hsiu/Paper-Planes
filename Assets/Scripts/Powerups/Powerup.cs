@@ -27,6 +27,7 @@ public class Powerup : MonoBehaviour {
 	}
 
 	public virtual void DeactivatePower() {
+		CancelInvoke ("DeactivatePower");			// Just in case we removed a powerup through override
 		Debug.Log ("POWERUP DEACTIVATED: " + id);
 	}
 
