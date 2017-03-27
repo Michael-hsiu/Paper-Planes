@@ -56,6 +56,7 @@ public class PlayerShip : FiringShip {
 			return;
 		}
 
+		// Collections of shotspawns
 		List<ShotSpawn> normalSS = new List<ShotSpawn> ();
 		List<ShotSpawn> dualSS = new List<ShotSpawn> ();
 		List<ShotSpawn> triSS = new List<ShotSpawn> ();
@@ -91,7 +92,6 @@ public class PlayerShip : FiringShip {
 
 		// Starting properties
 		this.activeSS = ssDict [Weapons.NORMAL];
-		//this.weapon = Weapons.NORMAL;
 	}
 
 	public void SetWeapons(Weapons id) {
@@ -102,19 +102,11 @@ public class PlayerShip : FiringShip {
 
 		if (!isFiringBuffed) {
 			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
-			//Debug.Log("COOLDOWN REACHED #1");
-			//Debug.Log ("NEXTFIRE: " + nextFire);
 		} else {
 			nextFire = Time.time + fireRate / buffedFiringRateFactor;
-			//Debug.Log("COOLDOWN REACHED #2");
 		}
-
-		// Look inside list of active shotspawns
-		//Debug.Log ("FIRING");
-
 		foreach(ShotSpawn s in activeSS) {
 			if (s != null) {
-				//Debug.Log("SHOT CREATED");
 				s.CreateShot (isFiringBuffed);	// Fire the shot!
 			}
 		}

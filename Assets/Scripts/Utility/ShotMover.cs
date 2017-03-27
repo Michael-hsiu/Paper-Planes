@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShotMover : MonoBehaviour {
 
-	public float speed;
+	public float speed = 1.0f;
 	public float lifeTime = 3.0f;
 
 
