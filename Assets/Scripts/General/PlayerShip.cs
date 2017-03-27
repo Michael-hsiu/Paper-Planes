@@ -68,7 +68,7 @@ public class PlayerShip : FiringShip {
 				switch (go.tag) {
 					case "NormalSS":
 						normalSS.Add (spawn);
-						triSS.Add (spawn);
+						//triSS.Add (spawn);
 						sideSS.Add (spawn);
 						break;
 					case "DualSS":
