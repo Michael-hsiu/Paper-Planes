@@ -10,24 +10,24 @@ public class PlayerShip : FiringShip {
 		private int priority;
 		private List<ShotSpawn> ss;
 
-		SSContainer(Weapons id, int priority, List<ShotSpawn> ss) {
+		public SSContainer(Weapons id, int priority, List<ShotSpawn> ss) {
 			this.id = id;
 			this.priority = priority;
 			this.ss = ss;
 		}
 
-		public int compareTo(SSContainer other) {
+		public int CompareTo(SSContainer other) {
 			return this.priority - other.priority;
 		}
 
 		public Weapons ID { get { return id; } }
 		public int Priority { get { return priority; } }
-		public int SS { get { return ss; } }
+		public List<ShotSpawn> SS { get { return ss; } }
 
 	}
 
 	#region Variables
-	public Stack<List<SSContainer>> activeSS;
+	public Stack<SSContainer> activeSS;
 	public Dictionary<Weapons, SSContainer> ssDict = new Dictionary<Weapons, SSContainer>();
 	private Rigidbody rb;
 	protected float _speed = 2.0f;	
@@ -113,11 +113,11 @@ public class PlayerShip : FiringShip {
 		//ssDict.Add (Weapons.SIDE, sideSS);
 
 		// Starting properties - add normal SS list to stack
-		this.activeSS.Push(ssDict[Weapons.NORMAL]);
+		this.activeSS.Push((SSContainer) ssDict[Weapons.NORMAL]);
 	}
 
 	public void SetWeapons(Weapons id) {
-		this.activeSS.Push(activeSS[id]);
+		this.activeSS.Push(ssDict[id]);
 	}
 
 	public void RemovePowerup() {
@@ -130,6 +130,7 @@ public class PlayerShip : FiringShip {
 		} else {
 			nextFire = Time.time + fireRate / buffedFiringRateFactor;
 		}
+
 		foreach(ShotSpawn s in activeSS) {
 			if (s != null) {
 				s.CreateShot (isFiringBuffed);	// Fire the shot!

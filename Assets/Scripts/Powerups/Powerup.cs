@@ -23,9 +23,9 @@ public class Powerup : MonoBehaviour {
 	}
 
 	public virtual void ActivatePower() {
-		PlayerShip.SSContainer curr = player.ssDict [id];
+		PlayerShip.SSContainer curr = player.ssDict [PlayerShip.Weapons.NORMAL];
 		PlayerShip.SSContainer activePowerup = (PlayerShip.SSContainer) player.activeSS.Peek ();	// Get the active powerup's shotspawns
-		bool comp = curr.compareTo (activePowerup);		// Compare to most recent entry in Stack
+		int comp = curr.CompareTo (activePowerup);		// Compare to most recent entry in Stack
 		if (comp == 0) {
 			// Add full duration
 			CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
