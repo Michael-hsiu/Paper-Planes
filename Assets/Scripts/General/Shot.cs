@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shot : MonoBehaviour, IMovement {
+public class Shot : PoolObject, IMovement {
 
 	/** INSTANCE VARS */
 
@@ -12,16 +12,18 @@ public class Shot : MonoBehaviour, IMovement {
 	public float speed = 1.0f;
 	public float speedMultiplier = 1.0f;
 	public float lifeTime = 3.0f;
+	//public bool readyToDestroy = false;
 
 	private Rigidbody rb;
 
 	/** INTERFACE METHODS */
 
+	public override void OnObjectReuse() {
+		GetComponent<Rigidbody> ().velocity = Vector3.zero;		// Reset velocity
+	}
+
 	public void Move() {
-
 		rb.velocity = transform.up * speed * speedMultiplier * Time.deltaTime;		// Propel shot forward
-
-		//rb.AddForce(transform.up * speed * Time.deltaTime);		// Propel shot forward
 	}
 
 
@@ -29,7 +31,8 @@ public class Shot : MonoBehaviour, IMovement {
 
 	// Destroy shot after its lifetime
 	protected void Awake () {
-		Destroy (gameObject, lifeTime);
+		StartCoroutine (DestroyAfterLifeTime (lifeTime));		// Delay, then "destroy" aka hide
+		//Destroy (gameObject, lifeTime);
 	}
 
 
@@ -44,8 +47,17 @@ public class Shot : MonoBehaviour, IMovement {
 
 	protected void FixedUpdate() {
 		Move ();	// Shot starts traveling
+		//gameObject.SetActive (false);
+		//Debug.Log (gameObject.activeInHierarchy);
 	}
 
+	IEnumerator DestroyAfterLifeTime(float lifeTime) {
+		yield return new WaitForSeconds (lifeTime);
+		gameObject.SetActive (false);
+		//gameObject.GetComponent<MeshRenderer>().enabled = false;
+		//gameObject.GetComponent<Collider>().enabled = false;
+		Debug.Log ("SHOULD HAVE DESTROYED");
+	}
 
 	/** PROPERTIES */
 	public int ShotDamage { 

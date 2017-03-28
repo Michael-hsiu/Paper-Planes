@@ -28,10 +28,12 @@ public class PlayerShotSpawn : ShotSpawn {
 		transform.localRotation = targetRotation.transform.rotation;	
 
 		if (shotCounter == ultiShotInterval) {
-			GameObject shot1 = Instantiate (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
+			PoolManager.Instance.ReuseObject (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+			//GameObject shot1 = Instantiate (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 			shotCounter = 0;
 		} else {
-			GameObject shot1 = Instantiate (shot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
+			PoolManager.Instance.ReuseObject (shot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+			//GameObject shot1 = Instantiate (shot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 		}
 		// Straight shot
 

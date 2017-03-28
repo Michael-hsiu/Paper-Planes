@@ -65,8 +65,11 @@
      <Compile Include="Assets\Scripts\General\FOV2D.cs" />
      <Compile Include="Assets\Scripts\General\FasterShot.cs" />
      <Compile Include="Assets\Scripts\General\FiringShip.cs" />
+     <Compile Include="Assets\Scripts\General\GamePoolManager.cs" />
      <Compile Include="Assets\Scripts\General\PlayerShip.cs" />
      <Compile Include="Assets\Scripts\General\PlayerShotSpawn.cs" />
+     <Compile Include="Assets\Scripts\General\PoolManager.cs" />
+     <Compile Include="Assets\Scripts\General\PoolObject.cs" />
      <Compile Include="Assets\Scripts\General\Shields.cs" />
      <Compile Include="Assets\Scripts\General\Ship.cs" />
      <Compile Include="Assets\Scripts\General\Shot.cs" />
