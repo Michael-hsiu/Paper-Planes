@@ -21,14 +21,17 @@ public class DualFirePowerup : Powerup {
 			if (comp == 0) {
 				// [POWERUPS EQUAL] Add full duration
 				CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
-				Invoke ("DeactivatePower", powerDuration);	// Reset to state before powerup obtained
-				endTime = PlayerShip.SSContainer.weaponTime + powerDuration;		// Record end time of powerup
+				Invoke ("DeactivatePower", (PlayerShip.SSContainer.weaponTime - Time.time) + powerDuration);	// Reset to state before powerup obtained
+				Debug.Log("REMAINING TIME: " + (PlayerShip.SSContainer.weaponTime - Time.time));
+				endTime = Time.time + (PlayerShip.SSContainer.weaponTime - Time.time) + powerDuration;		// Record end time of powerup
+				PlayerShip.SSContainer.weaponTime = endTime;						// Record new end time
 				Debug.Log("EQUAL POWERUP!");
 			} else if (comp == -1) {
 				// [NEW POWERUP BETTER] Deque and add more duration to new (hardcoded to 1/2)
 				player.RemovePowerup();							// Remove last powerup
 				player.SetWeapons (PlayerShip.Weapons.DUAL);	// Set weapons
 				endTime = PlayerShip.SSContainer.weaponTime + powerDuration * 0.5f;		// Set new end time
+				PlayerShip.SSContainer.weaponTime = endTime;						// Record new end time
 				CancelInvoke ("DeactivatePower");				// Enables powerup duration extension
 				Invoke ("DeactivatePower", endTime - Time.time);	// Reset to state after extended duration
 				Debug.Log("GOT BETTER POWERUP!");
