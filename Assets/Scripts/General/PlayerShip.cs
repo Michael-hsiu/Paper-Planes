@@ -18,7 +18,13 @@ public class PlayerShip : FiringShip {
 		}
 
 		public int CompareTo(SSContainer other) {
-			return this.priority - other.priority;
+			if (this.priority < other.priority) {
+				return -1;
+			} else if (this.priority > other.priority) {
+				return 1;
+			} else {
+				return 0;
+			}
 		}
 
 		public Weapons ID { get { return id; } }
