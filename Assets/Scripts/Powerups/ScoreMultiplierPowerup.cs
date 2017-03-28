@@ -7,13 +7,11 @@ public class ScoreMultiplierPowerup : Powerup {
 
 	public override void ActivatePower() {
 		GameManager.Singleton.scoreMultiplier *= 2;		// Scale score multiplier by 2
-		base.ActivatePower ();
 	}
 
 	public override void DeactivatePower() {
 		if (GameManager.Singleton.scoreMultiplier > 1) {
 			GameManager.Singleton.scoreMultiplier *= 1 / 2;
 		}
-		base.DeactivatePower ();
 	}
 }
