@@ -6,6 +6,7 @@ using System;
 public class PlayerShip : FiringShip {
 
 	public class SSContainer : IComparable<SSContainer> {
+		public static float weaponTime;
 		private Weapons id;
 		private int priority;
 		private List<ShotSpawn> ss;
@@ -27,7 +28,7 @@ public class PlayerShip : FiringShip {
 	}
 
 	#region Variables
-	public Stack<SSContainer> activeSS;
+	public Stack<SSContainer> activeSS = new Stack<SSContainer>();
 	public Dictionary<Weapons, SSContainer> ssDict = new Dictionary<Weapons, SSContainer>();
 	private Rigidbody rb;
 	protected float _speed = 2.0f;	
@@ -131,12 +132,13 @@ public class PlayerShip : FiringShip {
 			nextFire = Time.time + fireRate / buffedFiringRateFactor;
 		}
 
-		foreach(ShotSpawn s in activeSS) {
-			if (s != null) {
-				s.CreateShot (isFiringBuffed);	// Fire the shot!
+		SSContainer ss = activeSS.Peek ();		// Get active ss container object
+		List<ShotSpawn> list = ss.SS;	// Get list of shotspawns
+		if (list != null) {
+			foreach(ShotSpawn spawn in list) {
+				spawn.CreateShot (isFiringBuffed);	// Fire the shot!
 			}
 		}
-
 	}
 
 	public override void Damage(int damageTaken) {

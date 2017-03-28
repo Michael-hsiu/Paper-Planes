@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TriFirePowerup : Powerup {
 
+	private string id = "TriFirePowerup";
+
 	public override void ActivatePower() {
 		player.SetWeapons (PlayerShip.Weapons.TRI);
 		base.ActivatePower ();

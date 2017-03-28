@@ -8,10 +8,11 @@ public class Powerup : MonoBehaviour {
 	public PlayerShip player;
 	//public List<ShotSpawn> prevSS = new List<ShotSpawn> ();
 	public Stack<ShotSpawn> prevSS = new Stack<ShotSpawn> ();
-	protected float powerDuration = 10.0f;
-	protected float endTime;
+	public float powerDuration = 3.0f;
+	public float endTime;
+	public float timeObtained;
 	protected bool isVisible;
-	protected string id = "";
+	//protected string id = "";
 
 	void Spawn() {
 		transform.position = Vector3.zero;	// Temp fixed location
@@ -23,6 +24,11 @@ public class Powerup : MonoBehaviour {
 	}
 
 	public virtual void ActivatePower() {
+		
+		endTime = Time.time + powerDuration;
+		timeObtained = Time.time;
+		Debug.Log ("POWERUP ACTIVATED!");
+
 		PlayerShip.SSContainer curr = player.ssDict [PlayerShip.Weapons.NORMAL];
 		PlayerShip.SSContainer activePowerup = (PlayerShip.SSContainer) player.activeSS.Peek ();	// Get the active powerup's shotspawns
 		int comp = curr.CompareTo (activePowerup);		// Compare to most recent entry in Stack
@@ -31,21 +37,24 @@ public class Powerup : MonoBehaviour {
 			CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
 			Invoke ("DeactivatePower", powerDuration);	// Reset to state before powerup obtained
 			endTime = Time.time + powerDuration;		// Record end time of powerup
+			Debug.Log("EQUAL POWERUP!");
 		} else if (comp == -1) {
 			// Deque and add more duration to new (hardcoded to 1/2)
 			player.activeSS.Pop();		// Remove last powerup
 			CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
 			endTime = endTime + powerDuration * 0.5f;		// Set new end time
 			Invoke ("DeactivatePower", endTime);	// Reset to state after extended duration
+			Debug.Log("GOT BETTER POWERUP!");
 		} else {
 			// No duration added from worse powerup (no effect)
+			Debug.Log("GOT WORSE POWERUP!");
 		}
 	}
 
 
 	public virtual void DeactivatePower() {
 		//CancelInvoke ("DeactivatePower");			// Just in case we removed a powerup through override
-		Debug.Log ("POWERUP DEACTIVATED: " + id);
+		//Debug.Log ("POWERUP DEACTIVATED: " + id);
 	}
 
 	void ShowInScene() {
@@ -67,13 +76,13 @@ public class Powerup : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
-			prevSS.Push(other.GetComponent<PlayerShip>().activeSS);		// Add the previous state
+			//prevSS.Push(other.GetComponent<PlayerShip>().activeSS);		// Add the previous state
 			if (player == null) {
 				player = other.GetComponent<PlayerShip> ();
 			}
 			ActivatePower ();
 			HideInScene ();
-			Debug.Log ("PICKED UP POWERUP: " + this.id);	// Print message to console
+			//Debug.Log ("PICKED UP POWERUP: " + this.id);	// Print message to console
 		}
 	}
 
