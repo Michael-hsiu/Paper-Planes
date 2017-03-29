@@ -10,6 +10,7 @@ public class PlayerShip : FiringShip {
 		private Weapons id;
 		private int priority;
 		private List<ShotSpawn> ss;
+		public Powerup activePowerup;
 
 		public SSContainer(Weapons id, int priority, List<ShotSpawn> ss) {
 			this.id = id;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DualFirePowerup : Powerup {
 
@@ -35,12 +36,16 @@ public class DualFirePowerup : Powerup {
 				player.SetWeapons (PlayerShip.Weapons.DUAL);	// Set weapons
 
 				Debug.Log("REMAINING TIME: " + (PlayerShip.SSContainer.weaponTime - Time.time));
+				Debug.Log(String.Format("ID: {0}, ENDTIME: {1}", id, PlayerShip.SSContainer.weaponTime));		// Test to see if we're starting this new powerup at correct time
 
 				endTime = Time.time + (PlayerShip.SSContainer.weaponTime - Time.time) + powerDuration * 0.5f;		// Set new end time
 				PlayerShip.SSContainer.weaponTime = endTime;						// Record new end time
 
+				activePowerup.activePowerup.CancelInvoke ("DeactivatePower");	// Stop the other power from deactivating (hence popping the better powerup)
 				CancelInvoke ("DeactivatePower");				// Enables powerup duration extension
 				Invoke ("DeactivatePower", endTime - Time.time);	// Reset to state after extended duration
+
+				Debug.Log(String.Format("ID: {0}, REMAININGTIME2: {1} ; ENDTIME: {2}", id, (endTime - Time.time), endTime));
 
 				Debug.Log("GOT BETTER POWERUP!");
 			} else {
@@ -53,6 +58,9 @@ public class DualFirePowerup : Powerup {
 
 			endTime = Time.time + powerDuration;
 			PlayerShip.SSContainer.weaponTime = endTime;		// Set end time
+
+			PlayerShip.SSContainer activePowerup2 = (PlayerShip.SSContainer) player.activeSS.Peek ();	// Get the active powerup's shotspawns
+			activePowerup2.activePowerup = this;
 
 			CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
 			Invoke ("DeactivatePower", powerDuration);	// Reset to state before powerup obtained
@@ -68,5 +76,9 @@ public class DualFirePowerup : Powerup {
 		// Unprotected deque op
 		player.activeSS.Pop();
 		base.DeactivatePower ();
+	}
+
+	public void CancelInvoke() {
+		CancelInvoke ("DeactivatePower");				// Enables powerup duration extension
 	}
 }

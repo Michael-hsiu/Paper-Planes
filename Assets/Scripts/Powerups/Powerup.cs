@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 // API inspired by: https://github.com/antfarmar/Unity-3D-Asteroids/blob/master/Assets/Asteroids/Scripts/Powerups/Powerup.cs
 public class Powerup : MonoBehaviour {
@@ -54,7 +55,7 @@ public class Powerup : MonoBehaviour {
 
 	public virtual void DeactivatePower() {
 		//CancelInvoke ("DeactivatePower");			// Just in case we removed a powerup through override
-		//Debug.Log ("POWERUP DEACTIVATED: " + id);
+		Debug.Log (String.Format("POWERUP DEACTIVATED AT ENDTIME: {0}", Time.time));
 	}
 
 	void ShowInScene() {
@@ -90,5 +91,8 @@ public class Powerup : MonoBehaviour {
 		//HideInScene ();		// Powerups start out hidden
 	}
 
+	public void CancelInvoke() {
+		CancelInvoke ("DeactivatePower");				// Enables powerup duration extension
+	}
 }
 
