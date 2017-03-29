@@ -28,11 +28,22 @@ public class PlayerShotSpawn : ShotSpawn {
 		transform.localRotation = targetRotation.transform.rotation;	
 
 		if (shotCounter == ultiShotInterval) {
-			PoolManager.Instance.ReuseObject (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
-			//GameObject shot1 = Instantiate (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
-			shotCounter = 0;
+			try {
+				PoolManager.Instance.ReuseObject (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+				//GameObject shot1 = Instantiate (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
+				shotCounter = 0;
+			} catch (MissingReferenceException e) {
+				GameObject shot1 = Instantiate (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
+				shotCounter = 0;
+				Debug.Log ("MISSING REFERENCE - ulti shot!");
+			}
 		} else {
-			PoolManager.Instance.ReuseObject (shot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+			try {
+				PoolManager.Instance.ReuseObject (shot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+			} catch (MissingReferenceException e) {
+				GameObject shot1 = Instantiate (shot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
+				Debug.Log ("MISSING REFERENCE - normal shot!");
+			}
 			//GameObject shot1 = Instantiate (shot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 		}
 		// Straight shot

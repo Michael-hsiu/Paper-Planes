@@ -8,8 +8,8 @@ public class PoolObject : MonoBehaviour {
 
 	}
 
-	protected void Destroy() {
-		Debug.Log ("THIS WAS REACHED");
-		//gameObject.SetActive (false);
+	public void DestroyForReuse() {
+		Debug.Log ("DestroyForReuse() WAS REACHED");
+		gameObject.SetActive (false);
 	}
 }

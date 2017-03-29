@@ -10,9 +10,9 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject playerUltiShot;
 
 	void Start () {
-		PoolManager.Instance.CreatePool (playerSingleShot, 10);
-		PoolManager.Instance.CreatePool (playerDualShot, 10);
-		PoolManager.Instance.CreatePool (playerTriShot, 10);
-		PoolManager.Instance.CreatePool (playerUltiShot, 10);
+		PoolManager.Instance.CreatePool (playerSingleShot, 50);
+		PoolManager.Instance.CreatePool (playerDualShot, 50);
+		PoolManager.Instance.CreatePool (playerTriShot, 50);
+		PoolManager.Instance.CreatePool (playerUltiShot, 25);
 	}
 }

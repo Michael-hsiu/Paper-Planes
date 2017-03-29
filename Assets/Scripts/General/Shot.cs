@@ -12,7 +12,6 @@ public class Shot : PoolObject, IMovement {
 	public float speed = 1.0f;
 	public float speedMultiplier = 1.0f;
 	public float lifeTime = 3.0f;
-	//public bool readyToDestroy = false;
 
 	private Rigidbody rb;
 
@@ -29,34 +28,26 @@ public class Shot : PoolObject, IMovement {
 
 	/** UNITY CALLBACKS */
 
-	// Destroy shot after its lifetime
-	protected void Awake () {
+	// Activate shot countdown when object is enabled
+	void OnEnable() {
 		StartCoroutine (DestroyAfterLifeTime (lifeTime));		// Delay, then "destroy" aka hide
-		//Destroy (gameObject, lifeTime);
 	}
-
 
 	protected void Start () {
 
 		rb = GetComponent<Rigidbody> ();	// Find rigidbody
 		//shotSpawn = transform.parent.gameObject;		// Initially spawned as child of shotSpawn
-
 		//transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
 
 	}
 
 	protected void FixedUpdate() {
 		Move ();	// Shot starts traveling
-		//gameObject.SetActive (false);
-		//Debug.Log (gameObject.activeInHierarchy);
 	}
 
 	IEnumerator DestroyAfterLifeTime(float lifeTime) {
 		yield return new WaitForSeconds (lifeTime);
-		gameObject.SetActive (false);
-		//gameObject.GetComponent<MeshRenderer>().enabled = false;
-		//gameObject.GetComponent<Collider>().enabled = false;
-		Debug.Log ("SHOULD HAVE DESTROYED");
+		DestroyForReuse ();		// "Destroy" the shot, place in object pool
 	}
 
 	/** PROPERTIES */

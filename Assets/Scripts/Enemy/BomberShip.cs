@@ -97,7 +97,7 @@ public class BomberShip : Ship {
 		// If player shot hits us...
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
 
-			Destroy (other.gameObject);		// Destroy the shot that hit us
+			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
 
 			health -= GameManager.Singleton.playerDamage;			// We lost health
 

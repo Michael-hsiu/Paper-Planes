@@ -66,7 +66,9 @@ public class PoolManager : MonoBehaviour {
 		}
 
 		public void Reuse(Vector3 position, Quaternion rotation) {
-			gameObject.SetActive (true);		// Shows object in scene
+			if (gameObject != null) {
+				gameObject.SetActive (true);		// Shows object in scene
+			}
 			transform.position = position;
 			transform.rotation = rotation;
 
