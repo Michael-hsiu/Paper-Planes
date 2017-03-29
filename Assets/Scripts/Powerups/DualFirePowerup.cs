@@ -12,7 +12,7 @@ public class DualFirePowerup : Powerup {
 		//endTime = Time.time + powerDuration;
 		timeObtained = Time.time;
 
-		Debug.Log ("POWERUP ACTIVATED!: " + id);	// Identify powerup
+		//Debug.Log ("POWERUP ACTIVATED!: " + id);	// Identify powerup
 
 		PlayerShip.SSContainer curr = player.ssDict [PlayerShip.Weapons.DUAL];
 		PlayerShip.SSContainer activePowerup = (PlayerShip.SSContainer) player.activeSS.Peek ();	// Get the active powerup's shotspawns
@@ -67,6 +67,7 @@ public class DualFirePowerup : Powerup {
 
 			Debug.Log("GOT FIRST POWERUP (NONE ACTIVE PRIOR)!");
 		}
+		Debug.Log (String.Format("{0} POWERUP ACTIVATED @: " + Time.time, id));	// Identify powerup
 	}
 
 	public override void DeactivatePower() {
