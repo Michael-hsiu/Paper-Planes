@@ -11,9 +11,14 @@ public class TripMineWeapon : PoolObject {
 	public List<Mine> mines = new List<Mine> ();
 	protected bool isVisible;
 	private IEnumerator cr;
+	private GameObject player;
 
 	private SpecialWeapons id = SpecialWeapons.TRIPMINES;
 
+
+	void Start() {
+		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
+	}
 
 	void ActivateWeapon(string id) {
 		WeaponsManager.Instance.ActivateWeapon (id);	// Logic should be flipped
@@ -23,12 +28,12 @@ public class TripMineWeapon : PoolObject {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			// Do weapons logic; spawn things
-			SpawnMines(other.gameObject);
+			SpawnMines();
 			HideInScene ();
 		}
 	}
 
-	void SpawnMines(GameObject player) {
+	void SpawnMines() {
 		
 		// spawns, radius, rotations, explosions
 		Vector3 pos = player.transform.position;
@@ -42,7 +47,7 @@ public class TripMineWeapon : PoolObject {
 			Vector3 newPos = new Vector3 (newX, newY, newZ);
 			Mine m = (Mine) PoolManager.Instance.ReuseObjectRef (mine, newPos, Quaternion.identity);
 
-			m.GetComponent<Rigidbody> ().AddForce(new Vector3(radius * Mathf.Sin(angle * Mathf.Deg2Rad), radius * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z) * 30);		// Outwards radiating movement
+			m.GetComponent<Rigidbody> ().AddForce(new Vector3(radius * Mathf.Sin(angle * Mathf.Deg2Rad), radius * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z) * 30);		// Outwards radiating movement, using position relative to world origin
 
 			mines.Add(m);		// Add mines to a list
 			angle += 72.0f;		// Spawn in 5 timess
