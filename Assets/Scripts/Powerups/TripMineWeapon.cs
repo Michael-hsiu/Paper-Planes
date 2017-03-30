@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class TripMineWeapon : PoolObject {
 
-	public GameObject player;
 	public GameObject mine;
 
 	public float radius = 3.0f;
 	public float mineFuse = 19.0f;
 	public List<Mine> mines = new List<Mine> ();
 	protected bool isVisible;
+	private IEnumerator cr;
 
 	private SpecialWeapons id = SpecialWeapons.TRIPMINES;
+
 
 	void ActivateWeapon(string id) {
 		WeaponsManager.Instance.ActivateWeapon (id);	// Logic should be flipped
@@ -22,12 +23,12 @@ public class TripMineWeapon : PoolObject {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			// Do weapons logic; spawn things
-			SpawnMines();
+			SpawnMines(other.gameObject);
 			HideInScene ();
 		}
 	}
 
-	void SpawnMines() {
+	void SpawnMines(GameObject player) {
 		
 		// spawns, radius, rotations, explosions
 		Vector3 pos = player.transform.position;
@@ -39,10 +40,15 @@ public class TripMineWeapon : PoolObject {
 			float newZ = pos.z;
 
 			Vector3 newPos = new Vector3 (newX, newY, newZ);
-			mines.Add((Mine) PoolManager.Instance.ReuseObjectRef (mine, newPos, Quaternion.identity));		// Add mines to a list
+			Mine m = (Mine) PoolManager.Instance.ReuseObjectRef (mine, newPos, Quaternion.identity);
+
+			m.GetComponent<Rigidbody> ().AddForce(new Vector3(radius * Mathf.Sin(angle * Mathf.Deg2Rad), radius * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z) * 30);		// Outwards radiating movement
+
+			mines.Add(m);		// Add mines to a list
 			angle += 72.0f;		// Spawn in 5 timess
 		}
-		StartCoroutine (BeginCountdown (mineFuse));		// Begin detonation countdown
+		cr = BeginCountdown (mineFuse);
+		StartCoroutine (cr);		// Begin detonation countdown
 	}
 
 	IEnumerator BeginCountdown(float mineFuse) {
@@ -66,5 +72,6 @@ public class TripMineWeapon : PoolObject {
 		this.isVisible = isVisible;
 		gameObject.GetComponent<Renderer>().enabled = this.isVisible;
 		gameObject.GetComponent<Collider>().enabled = this.isVisible;
+
 	}
 }
