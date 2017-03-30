@@ -46,9 +46,24 @@ public class PoolManager : MonoBehaviour {
 		}
 	}
 
+	// Different signature for returning ref to reused gameobject
+	public PoolObject ReuseObjectRef(GameObject prefab, Vector3 position, Quaternion rotation) {
+		int poolKey = prefab.GetInstanceID ();
+
+		if (poolDictionary.ContainsKey (poolKey)) {
+			ObjectInstance objectToReuse = poolDictionary [poolKey].Dequeue ();
+			poolDictionary [poolKey].Enqueue (objectToReuse);
+
+			objectToReuse.Reuse (position, rotation);
+
+			return objectToReuse.gameObject.GetComponent<PoolObject>();
+		}
+		return null;
+	}
+
 	public class ObjectInstance {
 
-		GameObject gameObject;
+		public GameObject gameObject;
 		Transform transform;
 
 		bool hasPoolObjectComponent;

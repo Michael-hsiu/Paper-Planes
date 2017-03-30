@@ -1,41 +1,43 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/Shot.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/TripMineWeapon.cs">
     <Files>
-      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="28" Column="4" />
-      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="72" Column="3" />
-      <File FileName="Assets/Scripts/Enemy/MediShip.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/General/Shot.cs" Line="39" Column="46" />
+      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="13" Column="32" />
+      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="81" Column="25" />
+      <File FileName="Assets/Scripts/Enemy/MediShip.cs" Line="63" Column="66" />
       <File FileName="Assets/Scripts/Enemy/DoT.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/DropShip.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/DropShip.cs" Line="135" Column="66" />
       <File FileName="Assets/Scripts/General/FOV2D.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/Shields.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/PawnShip.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip.cs" Line="143" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/RangedShip.cs" Line="58" Column="4" />
+      <File FileName="Assets/Scripts/Enemy/PawnShip.cs" Line="51" Column="66" />
       <File FileName="Assets/Scripts/General/FiringShip.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/Ship.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/DropShipShotSpawn.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/Shot.cs" Line="28" Column="2" />
-      <File FileName="Assets/Scripts/General/ShotSpawn.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/General/ShotSpawn.cs" Line="36" Column="125" />
+      <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="157" Column="66" />
       <File FileName="Assets/Scripts/Utility/ColliderHelper.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Game/Constants.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Enemy/BomberCollisionHelper.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Game/UIManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/AssassinShip.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/AssassinShip.cs" Line="82" Column="66" />
       <File FileName="Assets/Scripts/Enemy/AssassinCollisionHelper.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Powerups/PowerupManager.cs" Line="9" Column="1" />
       <File FileName="Assets/Scripts/General/Utils.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="35" Column="4" />
-      <File FileName="Assets/Scripts/Powerups/DualFirePowerup.cs" Line="21" Column="7" />
-      <File FileName="Assets/Scripts/Powerups/TriFirePowerup.cs" Line="48" Column="1" />
+      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="32" Column="39" />
+      <File FileName="Assets/Scripts/Powerups/DualFirePowerup.cs" Line="71" Column="1" />
+      <File FileName="Assets/Scripts/Powerups/TriFirePowerup.cs" Line="52" Column="1" />
       <File FileName="Assets/Scripts/Powerups/ScoreMultiplierPowerup.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Game/StartMenuManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/FasterShot.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="13" Column="5" />
-      <File FileName="Assets/Scripts/General/PoolManager.cs" Line="69" Column="1" />
-      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="10" Column="19" />
+      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="8" Column="50" />
+      <File FileName="Assets/Scripts/General/PoolManager.cs" Line="10" Column="1" />
+      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="23" Column="2" />
+      <File FileName="Assets/Scripts/General/TripMineWeapon.cs" Line="22" Column="43" />
+      <File FileName="Assets/Scripts/General/WeaponsManager.cs" Line="6" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

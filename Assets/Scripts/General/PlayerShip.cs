@@ -139,13 +139,18 @@ public class PlayerShip : FiringShip {
 			nextFire = Time.time + fireRate / buffedFiringRateFactor;
 		}
 
-		SSContainer ss = activeSS.Peek ();		// Get active ss container object
-		List<ShotSpawn> list = ss.SS;	// Get list of shotspawns
-		if (list != null) {
-			foreach(ShotSpawn spawn in list) {
-				spawn.CreateShot (isFiringBuffed);	// Fire the shot!
+		try {
+			SSContainer ss = activeSS.Peek ();		// Get active ss container object
+			List<ShotSpawn> list = ss.SS;	// Get list of shotspawns
+			if (list != null) {
+				foreach(ShotSpawn spawn in list) {
+					spawn.CreateShot (isFiringBuffed);	// Fire the shot!
+				}
 			}
+		} catch (InvalidOperationException e) {
+			Debug.Log ("INVALID Peek() call");
 		}
+
 	}
 
 	public override void Damage(int damageTaken) {

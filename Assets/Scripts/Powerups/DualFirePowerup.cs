@@ -75,7 +75,9 @@ public class DualFirePowerup : Powerup {
 		//player.activeSS = prevSS;
 
 		// Unprotected deque op
-		player.activeSS.Pop();
+		if (!player.activeSS.Peek ().ID.Equals (PlayerShip.Weapons.NORMAL)) {
+			player.activeSS.Pop ();
+		}
 		base.DeactivatePower ();
 	}
 

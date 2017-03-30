@@ -10,6 +10,7 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject playerUltiShot;
 	public GameObject enemySingleShot;
 	public GameObject enemyFasterShot;
+	public GameObject tripMines;
 
 	void Start () {
 		PoolManager.Instance.CreatePool (playerSingleShot, 50);
@@ -18,6 +19,6 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (playerUltiShot, 25);
 		PoolManager.Instance.CreatePool (enemySingleShot, 200);
 		PoolManager.Instance.CreatePool (enemyFasterShot, 200);
-
+		PoolManager.Instance.CreatePool (tripMines, 20);
 	}
 }
