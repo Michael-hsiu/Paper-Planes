@@ -9,7 +9,7 @@ public class TripMineWeapon : PoolObject {
 
 	public float radius = 3.0f;
 	public float mineFuse = 19.0f;
-	public List<PoolObject> mines = new List<PoolObject> ();
+	public List<Mine> mines = new List<Mine> ();
 	protected bool isVisible;
 
 	private SpecialWeapons id = SpecialWeapons.TRIPMINES;
@@ -39,7 +39,7 @@ public class TripMineWeapon : PoolObject {
 			float newZ = pos.z;
 
 			Vector3 newPos = new Vector3 (newX, newY, newZ);
-			mines.Add(PoolManager.Instance.ReuseObjectRef (mine, newPos, Quaternion.identity));		// Add mines to a list
+			mines.Add((Mine) PoolManager.Instance.ReuseObjectRef (mine, newPos, Quaternion.identity));		// Add mines to a list
 			angle += 72.0f;		// Spawn in 5 timess
 		}
 		StartCoroutine (BeginCountdown (mineFuse));		// Begin detonation countdown
@@ -49,10 +49,11 @@ public class TripMineWeapon : PoolObject {
 		yield return new WaitForSeconds (mineFuse);
 
 		// Destroy for reuse by pool
-		foreach (PoolObject m in mines) {
+		foreach (Mine m in mines) {
 			if (m != null) {
+
 				// Need to object pool explosions too
-				m.DestroyForReuse ();
+				m.Explode();
 			}
 		}
 	}

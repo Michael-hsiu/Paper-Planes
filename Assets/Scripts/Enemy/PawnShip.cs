@@ -15,10 +15,6 @@ public class PawnShip : Ship {
 	#endregion
 
 	#region Game Logic
-	protected override void Initialize() {
-		// Do normal initalization
-		base.Initialize ();
-	}
 
 	public override void Move () {
 		

@@ -81,6 +81,7 @@
      <Compile Include="Assets\Scripts\Interfaces\IKillable.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />
      <Compile Include="Assets\Scripts\Powerups\DualFirePowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\Mine.cs" />
      <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />
      <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />
