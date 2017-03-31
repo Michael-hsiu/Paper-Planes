@@ -164,19 +164,21 @@ public class PlayerShip : FiringShip {
 	private void CheckForInput() {
 
 		if (Input.GetKey(KeyCode.D)) {
-			transform.Rotate(new Vector3(0, 0, 90) * Time.deltaTime);
+			transform.Rotate(new Vector3(0, 0, 110) * Time.deltaTime);
 		}
 
 		if (Input.GetKey(KeyCode.A)) {
-			transform.Rotate(new Vector3(0, 0, -90) * Time.deltaTime);
+			transform.Rotate(new Vector3(0, 0, -110) * Time.deltaTime);
 		}
 
 		if (Input.GetKey(KeyCode.W)) {
-			rb.AddForce(transform.up * speed);
+			transform.Translate (Vector2.up * Time.deltaTime * speed);
+			//rb.AddForce(transform.up * speed);
 		}
 
 		if (Input.GetKey(KeyCode.S)) {
-			rb.AddForce(-transform.up * speed);
+			transform.Translate (Vector2.down * Time.deltaTime * speed);
+			//rb.AddForce(-transform.up * speed);
 		}
 	}
 	#endregion

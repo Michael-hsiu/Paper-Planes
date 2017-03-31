@@ -5,11 +5,17 @@ using UnityEngine;
 public class ShurikenObj : PoolObject {
 
 	public GameObject explosion;
-	public float dmg = 20.0f;
-	public float rotationFactor = 150.0f;
+	public int dmg = 5;
+	public float rotationFactor = 300.0f;
+	public float dmgDelay = 0.1f;
 	private IEnumerator cr;
+	private IEnumerator dd;
+	[SerializeField]
+	private bool canDmg = true;
 
 	void OnEnable() {
+		StopAllCoroutines ();
+		canDmg = true;
 		GetComponent<Rigidbody> ().velocity = Vector3.zero;
 		cr = CircularRotate ();
 		StartCoroutine (cr);	
@@ -20,7 +26,12 @@ public class ShurikenObj : PoolObject {
 
 		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
 			if (other.gameObject != null) {
-				other.gameObject.GetComponent<IDamageable<float>>().Damage(dmg);		// Inflict damage
+				if (canDmg && other.gameObject.GetComponent<IDamageable<int>>() != null) {
+					other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);		// Inflict damage
+					Instantiate (explosion, transform.position, Quaternion.identity);
+					dd = DamageDelay(dmgDelay);
+					StartCoroutine (dd);
+				}
 			}
 		}
 	}
@@ -36,6 +47,12 @@ public class ShurikenObj : PoolObject {
 			transform.Rotate(Vector3.forward * rotationFactor * Time.deltaTime);	// Enemy normally rotates in circle
 			yield return null;
 		}
+	}
+
+	IEnumerator DamageDelay(float dmgDelay) {
+		canDmg = false;
+		yield return new WaitForSeconds (dmgDelay);
+		canDmg = true;
 	}
 
 	public virtual void OnObjectReuse() {
