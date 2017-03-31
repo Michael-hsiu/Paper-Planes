@@ -33,7 +33,7 @@ public class Mine : PoolObject {
 		while (true) {
 			transform.Rotate(Vector3.forward * rotationFactor * Time.deltaTime);	// Enemy normally rotates in circle
 			//GetComponent<Rigidbody> ().AddForce (transform.forward * 100);		// Outwards radiating movement
-			Debug.Log(transform.forward);
+			//Debug.Log(transform.forward);
 			yield return null;
 		}
 	}

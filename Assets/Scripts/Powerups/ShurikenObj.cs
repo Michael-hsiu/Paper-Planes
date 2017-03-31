@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shuriken : PoolObject {
+public class ShurikenObj : PoolObject {
 
 	public GameObject explosion;
 	public float dmg = 20.0f;

@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shuriken : PoolObject {
+public class ShurikenPowerup : PoolObject {
 
 	public GameObject shuriken;
+	public GameObject player;
 	protected bool isVisible;
 	public float lifeTime = 10.0f;
 
 	private IEnumerator cr;
-	private GameObject player;
-	private Shuriken sken;
+	private ShurikenObj sken;
 
 	private SpecialWeapons id = SpecialWeapons.SHURIKEN;
 
@@ -33,9 +33,19 @@ public class Shuriken : PoolObject {
 		// spawns, radius, rotations, explosions
 		Vector3 pos = player.transform.position;
 
-		Shuriken m = (Shuriken) PoolManager.Instance.ReuseObjectRef (shuriken, pos, Quaternion.identity);
+		Debug.Log ("PLAYER POS: " + pos);
+		Debug.Log ("PLAYER FORWARD: " + player.transform.forward);
 
-		m.GetComponent<Rigidbody> ().AddForce(pos * 30);		// Outwards radiating movement, using position relative to world origin
+
+		float newX = pos.x + Mathf.Sin(player.transform.localEulerAngles.x * Mathf.Deg2Rad);
+		float newY = pos.y + Mathf.Cos(player.transform.localEulerAngles.y * Mathf.Deg2Rad);
+		float newZ = pos.z;
+
+		Vector3 newPos = new Vector3 (newX, newY, newZ);
+
+		ShurikenObj s = (ShurikenObj) PoolManager.Instance.ReuseObjectRef (shuriken, pos, Quaternion.identity);
+
+		s.GetComponent<Rigidbody> ().AddForce(player.transform.TransformDirection(newPos) * 10);		// Outwards radiating movement, using position relative to world origin
 
 		cr = BeginCountdown (lifeTime);
 		StartCoroutine (cr);		// Begin detonation countdown

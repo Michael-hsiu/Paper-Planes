@@ -11,6 +11,7 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject enemySingleShot;
 	public GameObject enemyFasterShot;
 	public GameObject tripMines;
+	public GameObject shurikenObj;
 
 	void Start () {
 		PoolManager.Instance.CreatePool (playerSingleShot, 50);
@@ -20,5 +21,6 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (enemySingleShot, 200);
 		PoolManager.Instance.CreatePool (enemyFasterShot, 200);
 		PoolManager.Instance.CreatePool (tripMines, 40);
+		PoolManager.Instance.CreatePool (shurikenObj, 10);
 	}
 }
