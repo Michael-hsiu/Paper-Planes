@@ -19,7 +19,9 @@ public class ShurikenObj : PoolObject {
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
-			other.gameObject.GetComponent<IDamageable<float>>().Damage(dmg);		// Inflict damage
+			if (other.gameObject != null) {
+				other.gameObject.GetComponent<IDamageable<float>>().Damage(dmg);		// Inflict damage
+			}
 		}
 	}
 
