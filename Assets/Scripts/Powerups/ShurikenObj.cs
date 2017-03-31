@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShurikenObj : PoolObject {
 
 	public GameObject explosion;
-	public int dmg = 5;
+	public int dmg = 1;
 	public float rotationFactor = 300.0f;
 	public float dmgDelay = 0.1f;
 	private IEnumerator cr;
@@ -30,7 +30,7 @@ public class ShurikenObj : PoolObject {
 					other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);		// Inflict damage
 					Instantiate (explosion, transform.position, Quaternion.identity);
 					dd = DamageDelay(dmgDelay);
-					StartCoroutine (dd);
+					//StartCoroutine (dd);
 				}
 			}
 		}

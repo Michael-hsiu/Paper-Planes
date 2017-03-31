@@ -54,6 +54,7 @@ public class MediShip : Ship {
 	}
 
 	public override void Move () {
+		// Move logic in other fxns
 	}
 
 	void OnTriggerEnter(Collider other) {

@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Mine : PoolObject {
 
 	public GameObject explosion;
 	public float rotationFactor = 150.0f;
+	public int explosionDmg = 20;
+	public float dmgRange = 4.0f;
 	private IEnumerator cr;
 
 	void OnEnable() {
@@ -18,13 +21,26 @@ public class Mine : PoolObject {
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
-			other.gameObject.GetComponent<IKillable>().Kill();
 			Explode ();
+		}
+	}
+
+	void DamageArea() {
+		// Get all colliders in area
+		Collider[] hitColliders = Physics.OverlapSphere(transform.position, dmgRange);
+		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
+
+		foreach (GameObject go in targets) {
+			IDamageable<int> i = go.GetComponent (typeof(IDamageable<int>)) as IDamageable<int>;
+			if (i != null && go.CompareTag(Constants.EnemyTag)) {
+				i.Damage(explosionDmg);
+			}
 		}
 	}
 
 	public void Explode() {
 		StopCoroutine (cr);
+		DamageArea ();	// Deal AoE dmg
 		Instantiate (explosion, transform.position, Quaternion.identity);
 		DestroyForReuse();		// Recycle this fab
 	}
