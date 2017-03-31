@@ -51,7 +51,8 @@ public class ShurikenPowerup : PoolObject {
 		//float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
 		//Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-		s.GetComponent<Rigidbody> ().AddForce(-dist * 200);		// Outwards radiating movement, using position relative to world origin
+		s.GetComponent<Rigidbody> ().AddForce(player.transform.up * 600);		// Outwards radiating movement, using position relative to world origin
+		//s.GetComponent<Rigidbody> ().AddForce(-dist * 200);		// Outwards radiating movement, using position relative to world origin
 		//s.GetComponent<Rigidbody> ().AddForce(player.transform.TransformDirection(newPos) * 10);		// Outwards radiating movement, using position relative to world origin
 
 		cr = BeginCountdown (lifeTime);
