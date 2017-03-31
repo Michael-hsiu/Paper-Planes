@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum SpecialWeapons {TRIPMINES, DASH, RUSH};
+public enum SpecialWeapons {TRIPMINES, SHURIKEN, DASH, RUSH};
 
 public class WeaponsManager : MonoBehaviour {
 

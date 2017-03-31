@@ -85,6 +85,8 @@
      <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />
      <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\Shuriken.cs" />
+     <Compile Include="Assets\Scripts\Powerups\ShurikenPowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\TriFirePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\TripMineWeapon.cs" />
      <Compile Include="Assets\Scripts\Powerups\WeaponsManager.cs" />
