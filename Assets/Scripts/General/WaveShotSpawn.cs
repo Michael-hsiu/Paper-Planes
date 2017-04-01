@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class WaveShotSpawn : ShotSpawn {
 
-	public static float randomVal;
-
 	public GameObject waveShot;
 
 	public float waveChance = 0.15f;
@@ -20,10 +18,7 @@ public class WaveShotSpawn : ShotSpawn {
 		// Rotate shotSpawn relative to parent Player
 		transform.localRotation = targetRotation.transform.rotation;	
 
-		// Set new random value
-		randomVal = Random.value;
-
-		if (randomVal <= waveChance) {
+		if (WaveShotManager.Instance.randomVal <= waveChance) {
 			try {
 				if (gameObject.CompareTag("RightSideSS")) {
 					PoolManager.Instance.ReuseObject (waveShot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation) * Quaternion.Euler(0, 0, 90));

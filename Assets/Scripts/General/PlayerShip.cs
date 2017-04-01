@@ -5,8 +5,8 @@ using System;
 
 public class PlayerShip : FiringShip {
 
-	public List<GameObject> waveSpawns = new List<GameObject>();
-	public bool waveShotEnabled = true;
+	//public List<GameObject> waveSpawns = new List<GameObject>();
+	//public bool waveShotEnabled = true;
 
 	public class SSContainer : IComparable<SSContainer> {
 		public static float weaponTime;
@@ -152,7 +152,6 @@ public class PlayerShip : FiringShip {
 				}
 			}
 			// Simple wave shot logic
-			Debug.Log(String.Format("waveShotEnabled: {0}", waveShotEnabled));
 			WaveShotManager.Instance.CreateWaveShots();
 		} catch (InvalidOperationException e) {
 			Debug.Log ("INVALID Peek() call");
