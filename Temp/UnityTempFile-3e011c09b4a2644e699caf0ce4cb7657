@@ -110,6 +110,7 @@
 'Assets/Scripts/General/ShotSpawn.cs'
 'Assets/Scripts/General/TurretShotSpawn.cs'
 'Assets/Scripts/General/Utils.cs'
+'Assets/Scripts/General/WaveShotSpawn.cs'
 'Assets/Scripts/Interfaces/IDamageable.cs'
 'Assets/Scripts/Interfaces/IFires.cs'
 'Assets/Scripts/Interfaces/IKillable.cs'

@@ -1,22 +1,22 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Powerups/ShurikenPowerup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/MediShip.cs">
     <Files>
-      <File FileName="Assets/Scripts/Powerups/Mine.cs" Line="36" Column="6" />
-      <File FileName="Assets/Scripts/Powerups/TripMineWeapon.cs" Line="50" Column="151" />
+      <File FileName="Assets/Scripts/Powerups/Mine.cs" Line="31" Column="84" />
+      <File FileName="Assets/Scripts/Powerups/TripMineWeapon.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/Shot.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="9" Column="2" />
-      <File FileName="Assets/Scripts/Enemy/MediShip.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="180" Column="39" />
+      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/MediShip.cs" Line="6" Column="16" />
       <File FileName="Assets/Scripts/Enemy/DoT.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Enemy/DropShip.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/FOV2D.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/Shields.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip.cs" Line="154" Column="4" />
       <File FileName="Assets/Scripts/Enemy/RangedShip.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Enemy/PawnShip.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/FiringShip.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/Ship.cs" Line="27" Column="3" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="15" Column="26" />
       <File FileName="Assets/Scripts/General/DropShipShotSpawn.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/ShotSpawn.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="1" Column="1" />
@@ -28,7 +28,7 @@
       <File FileName="Assets/Scripts/Enemy/AssassinCollisionHelper.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Powerups/PowerupManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/Utils.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="27" Column="48" />
+      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Powerups/DualFirePowerup.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Powerups/TriFirePowerup.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Powerups/ScoreMultiplierPowerup.cs" Line="1" Column="1" />
@@ -37,11 +37,11 @@
       <File FileName="Assets/Scripts/General/FasterShot.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/PoolObject.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/General/PoolManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="24" Column="53" />
-      <File FileName="Assets/Scripts/Powerups/ShurikenPowerup.cs" Line="63" Column="3" />
-      <File FileName="Assets/Scripts/Powerups/WeaponsManager.cs" Line="5" Column="50" />
+      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Powerups/ShurikenPowerup.cs" Line="41" Column="60" />
+      <File FileName="Assets/Scripts/Powerups/WeaponsManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Interfaces/IDamageable.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Powerups/ShurikenObj.cs" Line="22" Column="24" />
+      <File FileName="Assets/Scripts/Powerups/ShurikenObj.cs" Line="33" Column="8" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

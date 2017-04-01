@@ -89,8 +89,6 @@ public class BomberShip : Ship {
 	}		
 
 
-
-
 	// For shots
 	protected void OnTriggerEnter(Collider other) {
 
