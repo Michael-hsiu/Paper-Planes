@@ -65,6 +65,6 @@ public class ShurikenPowerup : PoolObject {
 	}
 
 	void Update() {
-		Debug.Log ("LOCAL EULER Z: " + -1 * (360 - player.transform.localEulerAngles.z));
+		//Debug.Log ("LOCAL EULER Z: " + -1 * (360 - player.transform.localEulerAngles.z));
 	}
 }

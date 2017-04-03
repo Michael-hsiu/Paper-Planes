@@ -77,7 +77,7 @@ public class PlayerShip : FiringShip {
 
 	#region Game Logic
 	private void InitializeSS() {
-		input = InputManager.Instance.GetActiveInput();
+		input = InputManager.Instance.GetActiveInput();		// Get valid input source
 		GameObject parentShotSpawn = null;		// This contains all shotspawns
 		foreach(Transform s in transform) {
 			if (s.gameObject.CompareTag(Constants.ParentSS)) {
