@@ -39,6 +39,7 @@ public class PlayerShip : FiringShip {
 	}
 
 	#region Variables
+	public InputComponent input;
 	public Stack<SSContainer> activeSS = new Stack<SSContainer>();
 	public Dictionary<Weapons, SSContainer> ssDict = new Dictionary<Weapons, SSContainer>();
 	private Rigidbody rb;
@@ -57,7 +58,7 @@ public class PlayerShip : FiringShip {
 	protected override void Update () {
 
 		// Firing logic
-		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
+		/*if (Input.GetButton ("Fire1") && Time.time > nextFire) {
 			Fire ();
 		}
 
@@ -68,13 +69,15 @@ public class PlayerShip : FiringShip {
 		}
 
 		// Check for user input
-		CheckForInput ();
+		CheckForInput ();*/
+		UpdateInput ();
 
 	}
 	#endregion
 
 	#region Game Logic
 	private void InitializeSS() {
+		input = InputManager.Instance.GetActiveInput();
 		GameObject parentShotSpawn = null;		// This contains all shotspawns
 		foreach(Transform s in transform) {
 			if (s.gameObject.CompareTag(Constants.ParentSS)) {
@@ -167,7 +170,7 @@ public class PlayerShip : FiringShip {
 		UIManager.Singleton.UpdateHealth ();
 	}
 
-	private void CheckForInput() {
+	/*private void CheckForInput() {
 
 		if (Input.GetKey(KeyCode.D)) {
 			transform.Rotate(new Vector3(0, 0, 110) * Time.deltaTime);
@@ -186,6 +189,11 @@ public class PlayerShip : FiringShip {
 			transform.Translate (Vector2.down * Time.deltaTime * speed);
 			//rb.AddForce(-transform.up * speed);
 		}
+	}*/
+
+	private void UpdateInput() {
+		input.UpdateInput (this);
 	}
+
 	#endregion
 }

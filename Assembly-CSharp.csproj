@@ -59,6 +59,9 @@
      <Compile Include="Assets\Scripts\Game\Constants.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\GameState.cs" />
+     <Compile Include="Assets\Scripts\Game\InputComponent.cs" />
+     <Compile Include="Assets\Scripts\Game\InputManager.cs" />
+     <Compile Include="Assets\Scripts\Game\PlayerInput.cs" />
      <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
      <Compile Include="Assets\Scripts\Game\UIManager.cs" />
      <Compile Include="Assets\Scripts\General\DropShipShotSpawn.cs" />

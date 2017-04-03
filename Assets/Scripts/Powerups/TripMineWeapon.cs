@@ -62,7 +62,6 @@ public class TripMineWeapon : PoolObject {
 		// Destroy for reuse by pool
 		foreach (Mine m in mines) {
 			if (m != null) {
-
 				// Need to object pool explosions too
 				m.Explode();
 			}

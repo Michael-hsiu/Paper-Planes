@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Utils {
+
+	//public GameObject inputManager;
 	
 	public static List<GameObject> GetChildren(GameObject go) {
 		List<GameObject> list = new List<GameObject>();
