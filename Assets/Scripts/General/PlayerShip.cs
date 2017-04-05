@@ -51,7 +51,8 @@ public class PlayerShip : FiringShip {
 
 	#region Unity Life Cycle
 	protected override void Start () {
-		InitializeSS ();
+		input = InputManager.Instance.GetActiveInput();		// Get valid input source
+		InitializeSS ();		// Get active shotspawn
 		rb = GetComponent<Rigidbody>();
 	}
 		
@@ -77,7 +78,6 @@ public class PlayerShip : FiringShip {
 
 	#region Game Logic
 	private void InitializeSS() {
-		input = InputManager.Instance.GetActiveInput();		// Get valid input source
 		GameObject parentShotSpawn = null;		// This contains all shotspawns
 		foreach(Transform s in transform) {
 			if (s.gameObject.CompareTag(Constants.ParentSS)) {
@@ -193,6 +193,10 @@ public class PlayerShip : FiringShip {
 
 	private void UpdateInput() {
 		input.UpdateInput (this);
+	}
+
+	public void BurstRush() {
+		
 	}
 
 	#endregion

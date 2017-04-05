@@ -13,6 +13,12 @@ public class PlayerInput : InputComponent {
 			player.Fire ();
 		}
 
+		// Temp Burst Rush Fire logic
+		if (Input.GetButton ("D") && Time.time > player.nextFire) {
+			//player.Fire ();
+
+		}
+
 		// Temp logic for player destruction
 		if (GameManager.Singleton.playerHealth <= 0) {
 			Instantiate (player.explosion, transform.position, transform.rotation);
