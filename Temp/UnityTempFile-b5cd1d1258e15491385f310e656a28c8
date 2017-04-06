@@ -121,6 +121,7 @@
 'Assets/Scripts/Interfaces/IFires.cs'
 'Assets/Scripts/Interfaces/IKillable.cs'
 'Assets/Scripts/Interfaces/IMovement.cs'
+'Assets/Scripts/Powerups/BurstRushColliders.cs'
 'Assets/Scripts/Powerups/BurstRushPowerup.cs'
 'Assets/Scripts/Powerups/DualFirePowerup.cs'
 'Assets/Scripts/Powerups/Mine.cs'

@@ -6,8 +6,10 @@ public class BurstRushPowerup : PoolObject {
 
 	public GameObject burstRushColliders;		// Assign in inspector
 	public bool isActive;
+	public bool isCharging = false;
 	public float chargeTime = 3.0f;
 	public float thrust = 80.0f;
+	public float radius = 2.5f;
 	protected bool isVisible;
 	private IEnumerator cr1;
 	private IEnumerator cr2;
@@ -37,15 +39,25 @@ public class BurstRushPowerup : PoolObject {
 		}
 	}
 
+	// Draw Charge ring
+	public void OnDrawGizmos() {
+		if (isCharging) {
+			Gizmos.color = Color.white;
+			Gizmos.DrawWireSphere(player.transform.position, radius);
+		}
+	}
+
 	// Phase I - charge stage.
 	IEnumerator StartCharge() {
 
 		// Activate Burst Rush colliders and disable firing and moving
+		isCharging = true;
 		burstRushColliders.SetActive (true);	// Enable charge collider
 		yield return new WaitForSeconds (chargeTime);
 		burstRushColliders.SetActive (false);		// Disable charge collider
 
 		// Begin Phase II - rush stage.
+		isCharging = false;
 		StartRush ();
 		//cr2 = StartRush ();
 		//StartCoroutine (cr2);

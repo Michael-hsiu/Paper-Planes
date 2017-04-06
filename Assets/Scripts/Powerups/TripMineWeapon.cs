@@ -6,7 +6,7 @@ public class TripMineWeapon : PoolObject {
 
 	public GameObject mine;
 
-	public float radius = 3.0f;
+	public float radius = 2.5f;
 	public float mineFuse = 19.0f;
 	public List<Mine> mines = new List<Mine> ();
 	protected bool isVisible;
