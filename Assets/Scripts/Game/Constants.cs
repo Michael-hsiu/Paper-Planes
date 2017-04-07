@@ -13,6 +13,8 @@ public static class Constants {
 	public static readonly string PlayerColliders = "PlayerColliders";
 	public static readonly string EnemyShot = "EnemyShot";
 	public static readonly string ParentSS = "ParentSS";
+	public static readonly string RushColliders = "RushColliders";
+
 
 
 

@@ -6,25 +6,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-	/************************ [VARIABLES & PROPERTIES] ************************/
-
-
-	// Player health
 	public int playerHealth = 100;
-
-	// Player score
 	public int playerScore = 0;
-
-	// Player Damage
 	public int playerDamage = 20;
-
 	public int scoreMultiplier = 1;
+	public bool axisInput = true;
 
-	// One instance of GameManager will run throughout game
 	private static GameManager singleton;
-
-
-	// Property for GameManager instance
 	public static GameManager Singleton {
 		get {
 			if (singleton == null) {

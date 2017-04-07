@@ -23,4 +23,26 @@ public static class Utils {
 		}
 		return list;
 	}
+
+	public static List<Collider> GetColliders(GameObject go) {
+		List<Collider> list = new List<Collider>();
+		return GetCollidersHelper (go, list);
+	}
+
+	private static List<Collider> GetCollidersHelper(GameObject go, List<Collider> list) {
+		if (go == null) {
+			return list;
+		}
+		foreach (Transform t in go.transform) {
+			if (t.GetComponent<Collider>() != null) {
+				list.Add (t.GetComponent<Collider> ());
+			}
+			// Recursive depth-first search for colliders
+			if (t.transform.childCount > 0) {
+				GetCollidersHelper (t.gameObject, list);
+			}
+		}
+		return list;
+	}
+
 }

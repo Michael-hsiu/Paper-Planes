@@ -67,7 +67,7 @@ public class DualFirePowerup : Powerup {
 
 			Debug.Log("GOT FIRST POWERUP (NONE ACTIVE PRIOR)!");
 		}
-		Debug.Log (String.Format("{0} POWERUP ACTIVATED @: " + Time.time, id));	// Identify powerup
+		//Debug.Log (String.Format("{0} POWERUP ACTIVATED @: " + Time.time, id));	// Identify powerup
 	}
 
 	public override void DeactivatePower() {

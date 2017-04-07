@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class BurstRushPowerup : PoolObject {
 
-	public GameObject burstRushColliders;		// Assign in inspector
+	public GameObject burstChargeColliders;		// Assign in inspector
+	public GameObject burstRushColliders;
 	public bool isActive;
 	public bool isCharging = false;
 	public float chargeTime = 3.0f;
+	public float rushTime = 3.0f;
 	public float thrust = 80.0f;
 	public float radius = 2.5f;
+	public List<Collider> colliders;
 	protected bool isVisible;
 	private IEnumerator cr1;
 	private IEnumerator cr2;
@@ -20,7 +23,9 @@ public class BurstRushPowerup : PoolObject {
 
 	void Start() {
 		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
+		burstChargeColliders.SetActive (false);
 		burstRushColliders.SetActive (false);
+		//colliders = Utils.GetChildren (burstRushColliders);		// Get all phase II (rush) colliders
 	}
 
 	void ActivateWeapon(string id) {
@@ -49,51 +54,34 @@ public class BurstRushPowerup : PoolObject {
 
 	// Phase I - charge stage.
 	IEnumerator StartCharge() {
-
+		
 		// Activate Burst Rush colliders and disable firing and moving
 		isCharging = true;
-		burstRushColliders.SetActive (true);	// Enable charge collider
+		GameManager.Singleton.axisInput = false;	// So we can't move while charging
+		burstChargeColliders.SetActive (true);	// Enable charge collider
+
 		yield return new WaitForSeconds (chargeTime);
-		burstRushColliders.SetActive (false);		// Disable charge collider
+
+		GameManager.Singleton.axisInput = true;		// Re-enable movement
+		burstChargeColliders.SetActive (false);		// Disable charge collider
 
 		// Begin Phase II - rush stage.
 		isCharging = false;
-		StartRush ();
-		//cr2 = StartRush ();
-		//StartCoroutine (cr2);
 
-
-		/*// spawns, radius, rotations, explosions
-		Vector3 pos = player.transform.position;
-		float angle = 0f;
-		while (angle < 360.0f) {
-
-			float newX = pos.x + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
-			float newY = pos.y + radius * Mathf.Cos(angle * Mathf.Deg2Rad);
-			float newZ = pos.z;
-
-			Vector3 newPos = new Vector3 (newX, newY, newZ);
-			Mine m = (Mine) PoolManager.Instance.ReuseObjectRef (mine, newPos, Quaternion.identity);
-
-			m.GetComponent<Rigidbody> ().AddForce(new Vector3(radius * Mathf.Sin(angle * Mathf.Deg2Rad), radius * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z) * 30);		// Outwards radiating movement, using position relative to world origin
-
-			mines.Add(m);		// Add mines to a list
-			angle += 72.0f;		// Spawn in 5 timess
-		}
-		cr = BeginCountdown (mineFuse);
-		StartCoroutine (cr);		// Begin detonation countdown*/
+		cr2 = StartRush ();
+		StartCoroutine (cr2);
 	}
 
-	private void StartRush() {
+	IEnumerator StartRush() {
+		burstRushColliders.SetActive (true);
 		player.GetComponent<Rigidbody> ().AddForce (player.transform.up * thrust);		// Propel player forward
+
+		yield return new WaitForSeconds (rushTime);		// Also need to disable inputs
+
+		burstRushColliders.SetActive (false);
 		Debug.Log ("FORCE APPLIED!");
-		/*// Destroy for reuse by pool
-		foreach (Mine m in mines) {
-			if (m != null) {
-				// Need to object pool explosions too
-				m.Explode();
-			}
-		}*/
+
+		cr2 = null;
 	}
 
 	void HideInScene() {

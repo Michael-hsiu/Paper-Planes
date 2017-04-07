@@ -33,8 +33,8 @@ public class ShurikenPowerup : PoolObject {
 		// spawns, radius, rotations, explosions
 		Vector3 pos = player.transform.position;
 
-		Debug.Log ("PLAYER POS: " + pos);
-		Debug.Log ("PLAYER FORWARD: " + player.transform.forward);
+		//Debug.Log ("PLAYER POS: " + pos);
+		//Debug.Log ("PLAYER FORWARD: " + player.transform.forward);
 
 		ShurikenObj s = (ShurikenObj) PoolManager.Instance.ReuseObjectRef (shuriken, pos, Quaternion.identity);
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BurstRushColliders : MonoBehaviour {
+public class BurstChargeColliders : MonoBehaviour {
 
 	public GameObject explosion;
 	public int dmg = 20;
