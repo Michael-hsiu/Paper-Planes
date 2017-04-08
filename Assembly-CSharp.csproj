@@ -94,6 +94,7 @@
      <Compile Include="Assets\Scripts\Powerups\HomingMissileManager.cs" />
      <Compile Include="Assets\Scripts\Powerups\HomingMissilePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\Mine.cs" />
+     <Compile Include="Assets\Scripts\Powerups\Missile.cs" />
      <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />
      <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />

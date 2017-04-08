@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HomingMissilePowerup : MonoBehaviour {
+public class HomingMissilePowerup : Powerup {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public int numMissiles = 5;
+
+	public override void ActivatePower() {
+		HomingMissileManager.Instance.CreateMissiles (numMissiles);		// Fire the missiles (this -> HomingMissileManager -> PlayerSS)
 	}
 }

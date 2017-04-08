@@ -5,7 +5,6 @@ using UnityEngine;
 public class HomingMissileManager : MonoBehaviour {
 
 	public GameObject missileSpawn;		// Assigned to normal player shotspawn in inspector
-	public int numMissiles = 5;
 	static HomingMissileManager _instance;
 	public static HomingMissileManager Instance {
 		get {
@@ -16,9 +15,9 @@ public class HomingMissileManager : MonoBehaviour {
 		}
 	}
 
-	public void CreateMissiles() {
+	public void CreateMissiles(int numMissiles) {
 		if (missileSpawn.GetComponent<PlayerShotSpawn>() != null) {
-			missileSpawn.GetComponent<PlayerShotSpawn>().CreateMissiles (numMissiles);	// Fire the missile!
+			missileSpawn.GetComponent<PlayerShotSpawn>().CreateMissiles (numMissiles);	// Fire the missiles!
 		}
 	}
 }
