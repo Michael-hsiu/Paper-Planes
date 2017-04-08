@@ -25,7 +25,7 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (tripMines, 40);
 		PoolManager.Instance.CreatePool (shurikenObj, 10);
 		PoolManager.Instance.CreatePool (waveShot, 20);
-		PoolManager.Instance.CreatePool (missiles, 20);
+		PoolManager.Instance.CreatePool (missiles, 100);
 
 
 	}

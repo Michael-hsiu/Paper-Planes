@@ -12,13 +12,16 @@ public class Missile : PoolObject {
 	public float rotationSpeed = 90.0f;
 	public float speed = 5.0f;
 	public float dmgDelay = 0.1f;
+	public bool seekingTarget = false;
+	public float seekDelay = 0.1f;
 
 	[SerializeField]
 	private bool canDmg = true;		// Helps us register hit delays
 
 	void OnEnable() {
 		StopAllCoroutines ();
-		FindTarget ();		// Find target as soon we go active
+		transform.rotation = Quaternion.identity;
+		StartCoroutine(SeekAndMove());		// Find target as soon we go active
 	}
 
 	void Update() {
@@ -28,12 +31,11 @@ public class Missile : PoolObject {
 	public void FindTarget() {
 		// Get all colliders in area
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
-		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
-
+		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();	// Still contains other missiles and ineligible targets
 
 		// Find the first unmarked enemy ship
 		foreach (GameObject go in targets) {
-			if (go.GetComponent<Ship> () != null && !(((Ship) go.GetComponent<Ship> ()).isMarked)) {
+			if (go.CompareTag(Constants.EnemyTag) && go.GetComponent<Ship> () != null && !(((Ship) go.GetComponent<Ship> ()).isMarked)) {
 				target = go;		// Assign our target to first eligible ship
 				((Ship) go.GetComponent<Ship> ()).isMarked = true;	// Ship is now marked as target
 				break;
@@ -41,26 +43,57 @@ public class Missile : PoolObject {
 		}
 
 		// CASE: more missiles active than enemies; handle by selecting random enemy to target within valid range
-		if (target == null) {
-			target = targets[Random.Range (0, targets.Count())];
+		while (target == null || !target.activeSelf) {
+			GameObject go = targets[Random.Range (0, targets.Count())];
+			if (go.GetComponent<Ship>() != null) {
+				target = go;
+			}
 		}
+	}
+
+	IEnumerator SeekAndMove() {
+		seekingTarget = true;		// Bool flag
+		while (target == null) {
+			// Seek a new target
+			FindTarget ();
+
+			// Determine if we found a target, then either delay or leave loop and reset bool flag
+			if (target == null) {
+				yield return new WaitForSeconds(seekDelay);
+			} else {
+				yield return null;
+			}
+		}
+		seekingTarget = false;		// Bool flag
 	}
 
 	public void Move () {
 
 		// We need to re-assign a target if original target has died (or is inactive, by object pool)
 		if (target == null || !target.activeSelf) {
-			FindTarget ();
-			Debug.Log ("LOOKING FOR TARGET");
-		} else {
-			
-			Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-			dist.Normalize ();		// Get unit vector
+			// If already looking for new target
+			if (seekingTarget) {
+				// Just move forward
+				this.GetComponent<Rigidbody> ().AddForce (transform.up * 1);
+			} else {
+				// Start search for new target
+				StopAllCoroutines ();
+				StartCoroutine(SeekAndMove());
 
-			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+				Debug.Log ("LOOKING FOR TARGET");
+			}
 
-			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+		} else if (!seekingTarget) {	// Already found target
+
+			// Code for fixed rotation around z-axis https://forum.unity3d.com/threads/solved-confused-by-slerp-lerp.323462/
+			Quaternion newRotation = Quaternion.LookRotation(transform.position - target.transform.position, Vector3.forward);
+			newRotation.x = 0;
+			newRotation.y = 0;
+			transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * rotationSpeed);
+
+			//transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+			//transform.rotation = Quaternion.RotateTowards (Quaternion.Euler(0, 0, tempZ), desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+
 			transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);		// Move towards the enemy
 		}
 	}	
