@@ -45,7 +45,8 @@ public class Missile : PoolObject {
 		// CASE: more missiles active than enemies; handle by selecting random enemy to target within valid range
 		while (target == null || !target.activeSelf) {
 			GameObject go = targets[Random.Range (0, targets.Count())];
-			if (go.GetComponent<Ship>() != null) {
+			// Check if it's a valid target, even if already targeted
+			if (go != null && go.activeSelf && go.CompareTag(Constants.EnemyTag)) {
 				target = go;
 			}
 		}
@@ -53,7 +54,9 @@ public class Missile : PoolObject {
 
 	IEnumerator SeekAndMove() {
 		seekingTarget = true;		// Bool flag
-		while (target == null) {
+
+		// Continue process while target is null or if it's inactive (pooled)
+		while (target == null || !target.activeSelf) {
 			// Seek a new target
 			FindTarget ();
 
@@ -77,9 +80,7 @@ public class Missile : PoolObject {
 				this.GetComponent<Rigidbody> ().AddForce (transform.up * 1);
 			} else {
 				// Start search for new target
-				StopAllCoroutines ();
 				StartCoroutine(SeekAndMove());
-
 				Debug.Log ("LOOKING FOR TARGET");
 			}
 
