@@ -91,6 +91,8 @@
      <Compile Include="Assets\Scripts\Powerups\BurstRushCollider.cs" />
      <Compile Include="Assets\Scripts\Powerups\BurstRushPowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\DualFirePowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\HomingMissileManager.cs" />
+     <Compile Include="Assets\Scripts\Powerups\HomingMissilePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\Mine.cs" />
      <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />

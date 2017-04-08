@@ -8,6 +8,7 @@ public class PlayerShotSpawn : ShotSpawn {
 	public GameObject fasterShot;
 	public GameObject ultimateShot;
 	public GameObject waveShot;
+	public GameObject missile;
 
 	public bool ultimateShotEnabled = false;
 	public bool waveShotEnabled = false;
@@ -49,6 +50,22 @@ public class PlayerShotSpawn : ShotSpawn {
 		// Straight shot
 
 		shotCounter += 1;	// Increment shot count
+
+	}
+
+	public void CreateMissiles(int numMissiles) {
+
+		// The parent should be the player or enemy sprite
+		targetRotation = transform.parent.parent.gameObject;		
+
+		// Rotate shotSpawn relative to parent Player
+		transform.localRotation = targetRotation.transform.rotation;	
+
+		// Logic for firing multiple missiles in many directions
+		while (numMissiles > 0) {
+			PoolObject missileFab = PoolManager.Instance.ReuseObjectRef (missile, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+			numMissiles -= 1;
+		}
 
 	}
 
