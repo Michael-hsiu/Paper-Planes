@@ -63,7 +63,7 @@ public class PlayerShotSpawn : ShotSpawn {
 
 		// Logic for firing multiple missiles in many directions
 		while (numMissiles > 0) {
-			PoolObject missileFab = PoolManager.Instance.ReuseObjectRef (missile, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+			PoolManager.Instance.ReuseObject(missile, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
 			numMissiles -= 1;
 		}
 

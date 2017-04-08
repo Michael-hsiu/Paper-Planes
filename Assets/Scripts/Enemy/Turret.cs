@@ -2,29 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKillable {
 
 	#region Variables
 	[Header("References")]
 	public GameObject target;
+	public bool isMarked = false;
+
 	public GameObject explosion;
-
-	[Space]
-
-	[Header("Properties")]
 	public float rotationSpeed = 90.0f;
 	public int health = 100;
 	public int enemyPoints = 100;
 
-	[Space]
-
-	[Header("Shot References")]
 	public GameObject shot;
 	public Transform shotSpawn;
 
-	[Space]
-
-	[Header("Shot Properties")]
 	public int shotDamage = 10;
 	public float fireRate = .1f;
 	public float burstFireDelay = 1.0f;

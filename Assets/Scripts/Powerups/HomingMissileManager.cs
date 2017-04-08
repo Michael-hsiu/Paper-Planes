@@ -18,6 +18,7 @@ public class HomingMissileManager : MonoBehaviour {
 	public void CreateMissiles(int numMissiles) {
 		if (missileSpawn.GetComponent<PlayerShotSpawn>() != null) {
 			missileSpawn.GetComponent<PlayerShotSpawn>().CreateMissiles (numMissiles);	// Fire the missiles!
+			Debug.Log ("MISSILE MANAGER ACCESSED");
 		}
 	}
 }

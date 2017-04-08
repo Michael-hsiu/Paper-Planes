@@ -18,7 +18,7 @@ public class BurstRushPowerup : PoolObject {
 	private IEnumerator cr2;
 	public GameObject player;
 
-	private SpecialWeapons id = SpecialWeapons.RUSH;
+	public SpecialWeapons id = SpecialWeapons.RUSH;
 
 
 	void Start() {

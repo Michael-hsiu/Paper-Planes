@@ -40,13 +40,6 @@ public class BomberShip : Ship {
 
 		// Do normal initalization
 		base.Initialize ();
-		//HP_MAX = health;
-
-		// Adjust attributes
-		//this.Speed = _speed;
-		//this.RotationSpeed = _rotationSpeed;
-		//this.Health = _health;
-		//this.EnemyPoints = _enemyPoints;
 
 		rb = GetComponent<Rigidbody> ();	// For use in adjusting velocity
 	}
@@ -74,12 +67,9 @@ public class BomberShip : Ship {
 			dist.Normalize ();		// Get unit vector
 
 			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-
 			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
 			transform.Rotate(Vector3.forward * rotationFactor * Time.deltaTime);	// Enemy normally rotates in circle
-
-			/** MOVEMENT UPDATE */
 			transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
 
 		}

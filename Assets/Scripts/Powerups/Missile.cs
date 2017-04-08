@@ -33,23 +33,25 @@ public class Missile : PoolObject {
 
 		// Find the first unmarked enemy ship
 		foreach (GameObject go in targets) {
-			if (go.GetComponent<Ship> () != null && !((Ship) go.GetComponent<Ship> ().isMarked)) {
+			if (go.GetComponent<Ship> () != null && !(((Ship) go.GetComponent<Ship> ()).isMarked)) {
 				target = go;		// Assign our target to first eligible ship
+				((Ship) go.GetComponent<Ship> ()).isMarked = true;	// Ship is now marked as target
 				break;
 			}
 		}
 
 		// CASE: more missiles active than enemies; handle by selecting random enemy to target within valid range
 		if (target == null) {
-			target = Random.Range (0, hitColliders.Length);
+			target = targets[Random.Range (0, targets.Count())];
 		}
 	}
 
 	public void Move () {
 
-		// We need to re-assign a target if original target has died
-		if (target == null) {
+		// We need to re-assign a target if original target has died (or is inactive, by object pool)
+		if (target == null || !target.activeSelf) {
 			FindTarget ();
+			Debug.Log ("LOOKING FOR TARGET");
 		} else {
 			
 			Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
@@ -67,11 +69,28 @@ public class Missile : PoolObject {
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
+			
 			if (other.gameObject != null) {
+				
 				if (canDmg && other.gameObject.GetComponent<IDamageable<int>>() != null) {
-					other.gameObject.GetComponent<IDamageable<int>>().Damage(damage);		// Inflict damage
+
+					if (((Ship)other.GetComponent<Ship> ()) != null) {
+						((Ship)other.GetComponent<Ship> ()).isMarked = false;	// Unmark target ship
+
+					}
+
+					if (((Turret) other.GetComponent<Turret> ()) != null) {
+						((Turret) other.GetComponent<Turret> ()).isMarked = false;	// Unmark target turret
+
+					}
+
+					if (other.gameObject.GetComponent<IDamageable<int>> () != null) {
+						other.gameObject.GetComponent<IDamageable<int>>().Damage(damage);		// Inflict damage
+					}
+
 					Instantiate (explosion, transform.position, Quaternion.identity);
 					Debug.Log ("MISSILE EXPLODED!");
+
 					DestroyForReuse ();		// We explode after one hit
 				}
 			}
@@ -88,13 +107,11 @@ public class Missile : PoolObject {
 		// Anything to reset? Transform, velocity, etc.
 		StopAllCoroutines ();
 
-		transform.position = Vector3.zero;
-		transform.rotation = Quaternion.identity;
-
+		//transform.rotation = Quaternion.identity;
 		canDmg = true;
 
 		Debug.Log ("MISSILE REUSED!");
 
-		GetComponent<Rigidbody> ().velocity = Vector3.zero;
+		//GetComponent<Rigidbody> ().velocity = Vector3.zero;
 	}
 }
