@@ -68,8 +68,6 @@ public class BomberShip : Ship {
 			return;		// Break out of method
 
 		} else {
-			
-			/** ROTATION UPDATE */
 
 			// Enemy ship turns to face player
 			Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
@@ -133,15 +131,6 @@ public class BomberShip : Ship {
 		//List<GameObject> targets = new List<GameObject> ();
 		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
 
-
-		/*// Add the gameobjects connected to colliders
-		foreach (Collider c in hitColliders) {
-			targets.Add (c.gameObject);
-		} 
-
-		foreach(GameObject go in targets) {
-			Debug.Log ("Target: " + go);
-		}*/
 
 		// Damage all gameobjects 
 		foreach (GameObject go in targets) {

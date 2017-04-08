@@ -80,7 +80,6 @@
 -define:UNITY_EDITOR_64
 -define:UNITY_EDITOR_OSX
 -define:UNITY_TEAM_LICENSE
-'Assets/Prefabs/Powerups/Bur.cs'
 'Assets/Scripts/Enemy/AssassinCollisionHelper.cs'
 'Assets/Scripts/Enemy/AssassinShip.cs'
 'Assets/Scripts/Enemy/BomberCollisionHelper.cs'
@@ -126,8 +125,10 @@
 'Assets/Scripts/Powerups/BurstRushCollider.cs'
 'Assets/Scripts/Powerups/BurstRushPowerup.cs'
 'Assets/Scripts/Powerups/DualFirePowerup.cs'
+'Assets/Scripts/Powerups/HomingMissileManager.cs'
 'Assets/Scripts/Powerups/HomingMissilePowerup.cs'
 'Assets/Scripts/Powerups/Mine.cs'
+'Assets/Scripts/Powerups/Missile.cs'
 'Assets/Scripts/Powerups/Powerup.cs'
 'Assets/Scripts/Powerups/PowerupManager.cs'
 'Assets/Scripts/Powerups/ScoreMultiplierPowerup.cs'
