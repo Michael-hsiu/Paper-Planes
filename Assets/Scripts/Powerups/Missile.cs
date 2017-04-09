@@ -77,7 +77,7 @@ public class Missile : PoolObject {
 			// If already looking for new target
 			if (seekingTarget) {
 				// Just move forward
-				this.GetComponent<Rigidbody> ().AddForce (transform.up * 1);
+				//this.GetComponent<Rigidbody> ().AddForce (transform.up * 1);
 			} else {
 				// Start search for new target
 				StartCoroutine(SeekAndMove());

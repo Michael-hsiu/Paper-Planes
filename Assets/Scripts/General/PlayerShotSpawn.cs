@@ -63,9 +63,25 @@ public class PlayerShotSpawn : ShotSpawn {
 
 		// Logic for firing multiple missiles in many directions
 		while (numMissiles > 0) {
-			PoolManager.Instance.ReuseObject(missile, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+			Vector3 randomRot = RandomRotation ();
+			Missile m = (Missile) PoolManager.Instance.ReuseObjectRef(missile, transform.position, Quaternion.Euler(randomRot) * Quaternion.Inverse (targetRotation.transform.rotation));
+			//m.GetComponent<Rigidbody> ().AddForce(randomRot * 20);		// Random propulsion in semicircular range (0-180deg)
 			numMissiles -= 1;
 		}
+	}
+
+	public Vector3 RandomRotation() {
+
+		// The parent should be the player or enemy sprite
+		targetRotation = transform.parent.parent.gameObject;	
+
+		// Get Euler repr of parent gameobject
+		Vector3 pos = targetRotation.transform.position;
+
+		float angle = Random.Range (0, 180);	// Missiles will only spread in a semicircle in front of player
+
+		Vector3 result = new Vector3(1 * Mathf.Sin(angle * Mathf.Deg2Rad), 1 * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z).normalized;
+		return result;
 
 	}
 

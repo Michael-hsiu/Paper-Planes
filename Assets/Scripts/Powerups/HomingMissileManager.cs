@@ -5,6 +5,8 @@ using UnityEngine;
 public class HomingMissileManager : MonoBehaviour {
 
 	public GameObject missileSpawn;		// Assigned to normal player shotspawn in inspector
+	public GameObject missile;			// Assigned in inspector
+	public GameObject player;
 	static HomingMissileManager _instance;
 	public static HomingMissileManager Instance {
 		get {
@@ -13,6 +15,10 @@ public class HomingMissileManager : MonoBehaviour {
 			}
 			return _instance;
 		}
+	}
+
+	void Start() {
+		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
 	}
 
 	public void CreateMissiles(int numMissiles) {

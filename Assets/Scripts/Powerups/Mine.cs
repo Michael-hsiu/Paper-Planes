@@ -53,11 +53,4 @@ public class Mine : PoolObject {
 			yield return null;
 		}
 	}
-
-	public virtual void OnObjectReuse() {
-		// Anything to reset? Transform, velocity, etc.
-		transform.position = Vector3.zero;
-		transform.rotation = Quaternion.identity;
-		//StartCoroutine (cr);
-	}
 }
