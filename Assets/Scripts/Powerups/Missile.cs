@@ -42,9 +42,11 @@ public class Missile : PoolObject {
 			}
 		}
 
+		List<GameObject> validTargets = (from c in targets where c.CompareTag(Constants.EnemyTag) select c.gameObject).ToList();	// Still contains other missiles and ineligible targets
+
 		// CASE: more missiles active than enemies; handle by selecting random enemy to target within valid range
 		while (target == null || !target.activeSelf) {
-			GameObject go = targets[Random.Range (0, targets.Count())];
+			GameObject go = validTargets[Random.Range (0, validTargets.Count())];
 			// Check if it's a valid target, even if already targeted
 			if (go != null && go.activeSelf && go.CompareTag(Constants.EnemyTag)) {
 				target = go;
@@ -64,7 +66,7 @@ public class Missile : PoolObject {
 			if (target == null) {
 				yield return new WaitForSeconds(seekDelay);
 			} else {
-				yield return null;
+				break;
 			}
 		}
 		seekingTarget = false;		// Bool flag
