@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 	public int playerDamage = 20;
 	public int scoreMultiplier = 1;
 	public bool axisInput = true;
+	public bool speedCapped = true;
 
 	private static GameManager singleton;
 	public static GameManager Singleton {

@@ -35,7 +35,7 @@ public class Missile : PoolObject {
 		try {
 			// Get all colliders in area
 			Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
-			Debug.Log ("FIND TARGET 1");
+			//Debug.Log ("FIND TARGET 1");
 			if (hitColliders.Length == 0) {
 				//noEnemies = true;
 				Debug.Log ("NO ENEMIES");
@@ -63,7 +63,7 @@ public class Missile : PoolObject {
 				}
 			} 
 		} catch {
-			Debug.Log ("Find target try-catch!!!");
+			//Debug.Log ("Find target try-catch!!!");
 		}
 	}
 

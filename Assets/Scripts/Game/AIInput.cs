@@ -47,8 +47,15 @@ public class AIInput : InputComponent {
 			}
 		}
 
-		// Limit player's maximum velocity
-		player.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, player.maxForward);
-		Debug.Log (player.GetComponent<Rigidbody> ().velocity.sqrMagnitude);		// Should be the square of maxForward
+		// Check if our speed cap is on (off if we're dashing!!!)
+		if (GameManager.Singleton.speedCapped) {
+			// Limit player's maximum velocity
+			player.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, player.maxForward);
+
+			// Comparing squared vector magnitudes
+			if (player.GetComponent<Rigidbody>().velocity.sqrMagnitude == Mathf.Pow(player.maxForward, 2)) {
+				Debug.Log ("MAX VELOCITY REACHED: " + player.GetComponent<Rigidbody> ().velocity.sqrMagnitude);		// Should be the square of maxForward
+			}
+		}
 	}
 }

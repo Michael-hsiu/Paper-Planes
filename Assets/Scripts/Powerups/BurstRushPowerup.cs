@@ -62,12 +62,12 @@ public class BurstRushPowerup : PoolObject {
 		player.GetComponent<Rigidbody> ().velocity = Vector3.zero;		// Naive fix: non-force impl of halting player entirely
 		isCharging = true;
 		GameManager.Singleton.axisInput = false;	// So we can't move while charging
-		burstChargeColliders.SetActive (true);	// Enable charge collider
+		BurstRushManager.Instance.burstChargeColliders.SetActive (true);	// Enable charge collider
 
 		yield return new WaitForSeconds (chargeTime);
 
 		GameManager.Singleton.axisInput = true;		// Re-enable movement
-		burstChargeColliders.SetActive (false);		// Disable charge collider
+		BurstRushManager.Instance.burstChargeColliders.SetActive (false);		// Disable charge collider
 
 		// Begin Phase II - rush stage.
 		isCharging = false;
@@ -77,12 +77,12 @@ public class BurstRushPowerup : PoolObject {
 	}
 
 	IEnumerator StartRush() {
-		burstRushColliders.SetActive (true);
+		BurstRushManager.Instance.burstRushColliders.SetActive (true);
 		player.GetComponent<Rigidbody> ().AddForce (player.transform.up * thrust);		// Propel player forward
 
 		yield return new WaitForSeconds (rushTime);		// Also need to disable inputs
 
-		burstRushColliders.SetActive (false);
+		BurstRushManager.Instance.burstRushColliders.SetActive (false);
 		Debug.Log ("FORCE APPLIED!");
 
 		cr2 = null;
