@@ -6,18 +6,7 @@ using UnityEngine;
 public class DashPowerup : PoolObject {
 
 	public GameObject player;
-	public float thrust = 5.0f;
-	public float dashDur = 3.0f;
-	public IEnumerator cr1;
-	public SpecialWeapons id = SpecialWeapons.DASH;
-
-
-	public enum DashState 
-	{
-		Ready,
-		Dashing,
-		Cooldown
-	}
+	public bool isVisible = true;
 
 	void Start() {
 		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
@@ -32,14 +21,19 @@ public class DashPowerup : PoolObject {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			// Do weapons logic; spawn things
-			Dash ();
-			Debug.Log ("DASH STARTED");
+			HideInScene ();
+
+			GameManager.Singleton.isDashing = true;
+			GameManager.Singleton.speedCapped = false;
+
+			//Dash ();
+			Debug.Log ("DASH BEGUN FROM POWERUP");
 			//cr1 = StartDash ();
 			//StartCoroutine (cr1);
 		}
 	}
 
-	IEnumerator DashDelay() {
+	/*IEnumerator DashDelay() {
 		yield return new WaitForSeconds (dashDur);		// Allow player to break speed cap during this time
 		GameManager.Singleton.speedCapped = true;		// Re-enable speed cap
 	}
@@ -51,5 +45,16 @@ public class DashPowerup : PoolObject {
 		// Player can break speed limit
 		cr1 = DashDelay ();
 		StartCoroutine (cr1);
+	}*/
+
+	void HideInScene() {
+		SetVisibility(false);
+	}
+
+	void SetVisibility(bool isVisible) {
+		this.isVisible = isVisible;
+		gameObject.GetComponent<Renderer>().enabled = this.isVisible;
+		gameObject.GetComponent<Collider>().enabled = this.isVisible;
+
 	}
 }

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
 	public int scoreMultiplier = 1;
 	public bool axisInput = true;
 	public bool speedCapped = true;
+	public bool isDashing = false;
 
 	private static GameManager singleton;
 	public static GameManager Singleton {

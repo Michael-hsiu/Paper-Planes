@@ -2,10 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Dash components modelled after: http://answers.unity3d.com/questions/892955/dashing-mechanic-using-rigidbodyaddforce.html
 public class AIInput : InputComponent {
 
 	public float speed = 5.0f;
 
+	public Vector2 savedVelocity;
+	//public DashState dashState;		// Stores current dash state
+
+	public IEnumerator cr1;
+
+	//public enum DashState { Ready, Dashing, Cooldown}
+
+	// Called during PlayerShip's FixedUpdate()
 	public override void UpdateInput(PlayerShip player) {
 
 		// Auto-fire
@@ -56,6 +65,36 @@ public class AIInput : InputComponent {
 			if (player.GetComponent<Rigidbody>().velocity.sqrMagnitude == Mathf.Pow(player.maxForward, 2)) {
 				Debug.Log ("MAX VELOCITY REACHED: " + player.GetComponent<Rigidbody> ().velocity.sqrMagnitude);		// Should be the square of maxForward
 			}
+		} else if (GameManager.Singleton.isDashing) {
+			//Debug.Log ("GETS TO ISDASHING");
+			if (!player.dashStarted) {
+
+				player.dashStarted = true;		// Only 1 dash at a time
+				player.dashEndTime = Time.time + player.dashDuration;		// Set end time for dash
+
+				// Start dash co-routine
+				cr1 = StartDash (player);
+				StartCoroutine (cr1);
+				Debug.Log ("STARTED COROUTINE");
+
+			}
 		}
+
+	}
+
+	IEnumerator StartDash(PlayerShip player) {
+
+		savedVelocity = player.GetComponent<Rigidbody> ().velocity;		// Store velocity pre-dash
+		Debug.Log ("INITIAL: " + player.dashStarted);
+		Debug.Log ("ENDING: " + player.dashStarted);
+
+		while (Time.time < player.dashEndTime) {
+			player.GetComponent < Rigidbody> ().AddForce (player.transform.up * player.thrust);	// Push player forward for dash (may make this increase over time)
+			Debug.Log ("DASH ACTIVE!!!");
+			yield return new WaitForFixedUpdate ();
+		}
+
+		Debug.Log ("DASH ENDED!");
+		player.GetComponent<Rigidbody> ().velocity = savedVelocity;		// Return to pre-dash velocity
 	}
 }

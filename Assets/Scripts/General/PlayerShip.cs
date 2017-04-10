@@ -47,6 +47,12 @@ public class PlayerShip : FiringShip {
 	protected int _shotDamage = 20;
 	public float maxForward = 3.0f;
 
+	public float dashEndTime = 0.0f;
+	public float thrust = 300.0f;
+	public float maxDash = 20.0f;
+	public float dashDuration = 5f;
+	public bool dashStarted = false;
+
 	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
 	#endregion
 
@@ -72,8 +78,12 @@ public class PlayerShip : FiringShip {
 
 		// Check for user input
 		CheckForInput ();*/
-		UpdateInput ();
+		//UpdateInput ();
 
+	}
+
+	void FixedUpdate() {
+		UpdateInput ();		// This currently takes care of both input and physics; consider separating them
 	}
 	#endregion
 
