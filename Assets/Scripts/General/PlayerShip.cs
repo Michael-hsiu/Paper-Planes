@@ -45,6 +45,7 @@ public class PlayerShip : FiringShip {
 	private Rigidbody rb;
 	protected float _speed = 2.0f;	
 	protected int _shotDamage = 20;
+	public float maxForward = 3.0f;
 
 	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
 	#endregion

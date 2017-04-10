@@ -46,5 +46,9 @@ public class AIInput : InputComponent {
 				player.GetComponent<Rigidbody>().AddRelativeForce(-transform.up * speed);
 			}
 		}
+
+		// Limit player's maximum velocity
+		player.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, player.maxForward);
+		Debug.Log (player.GetComponent<Rigidbody> ().velocity.sqrMagnitude);		// Should be the square of maxForward
 	}
 }

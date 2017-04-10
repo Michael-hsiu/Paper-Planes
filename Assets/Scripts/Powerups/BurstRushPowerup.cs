@@ -59,6 +59,7 @@ public class BurstRushPowerup : PoolObject {
 	IEnumerator StartCharge() {
 		
 		// Activate Burst Rush colliders and disable firing and moving
+		player.GetComponent<Rigidbody> ().velocity = Vector3.zero;		// Naive fix: non-force impl of halting player entirely
 		isCharging = true;
 		GameManager.Singleton.axisInput = false;	// So we can't move while charging
 		burstChargeColliders.SetActive (true);	// Enable charge collider
