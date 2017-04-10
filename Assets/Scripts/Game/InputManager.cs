@@ -23,10 +23,10 @@ public class InputManager : MonoBehaviour {
 	}
 
 	public InputComponent GetActiveInput() {
-		Debug.Log ("CHILDCOUNT: " + transform.childCount);
+		//Debug.Log ("CHILDCOUNT: " + transform.childCount);
 		for (int i = 0; i < transform.childCount; i++) {
 			GameObject currChild = transform.GetChild (i).gameObject;
-			Debug.Log ("LOOP ITER: " + i);
+			//Debug.Log ("LOOP ITER: " + i);
 			if (currChild.activeSelf) {
 				return currChild.GetComponent<InputComponent> ();
 			}

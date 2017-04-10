@@ -7,13 +7,13 @@ public class HomingMissileManager : MonoBehaviour {
 	public GameObject missileSpawn;		// Assigned to normal player shotspawn in inspector
 	public GameObject missile;			// Assigned in inspector
 	public GameObject player;
-	static HomingMissileManager _instance;
+	static HomingMissileManager instance;
 	public static HomingMissileManager Instance {
 		get {
-			if (_instance == null) {
-				_instance = FindObjectOfType<HomingMissileManager> ();
+			if (instance == null) {
+				instance = FindObjectOfType<HomingMissileManager> ();
 			}
-			return _instance;
+			return instance;
 		}
 	}
 

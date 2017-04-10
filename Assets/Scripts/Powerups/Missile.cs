@@ -13,6 +13,7 @@ public class Missile : PoolObject {
 	public float speed = 5.0f;
 	public float dmgDelay = 0.1f;
 	public bool seekingTarget = false;
+	public bool noEnemies = false;
 	public float seekDelay = 0.1f;
 
 	[SerializeField]
@@ -29,28 +30,40 @@ public class Missile : PoolObject {
 	}
 
 	public void FindTarget() {
-		// Get all colliders in area
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
-		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();	// Still contains other missiles and ineligible targets
 
-		// Find the first unmarked enemy ship
-		foreach (GameObject go in targets) {
-			if (go.CompareTag(Constants.EnemyTag) && go.GetComponent<Ship> () != null && !(((Ship) go.GetComponent<Ship> ()).isMarked)) {
-				target = go;		// Assign our target to first eligible ship
-				((Ship) go.GetComponent<Ship> ()).isMarked = true;	// Ship is now marked as target
-				break;
-			}
-		}
+		// @ISSUE: Something is breaking here when no enemies are in the map!!!
+		try {
+			// Get all colliders in area
+			Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
+			Debug.Log ("FIND TARGET 1");
+			if (hitColliders.Length == 0) {
+				//noEnemies = true;
+				Debug.Log ("NO ENEMIES");
+			} else {
+				List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();	// Still contains other missiles and ineligible targets
 
-		List<GameObject> validTargets = (from c in targets where c.CompareTag(Constants.EnemyTag) select c.gameObject).ToList();	// Still contains other missiles and ineligible targets
+				// Find the first unmarked enemy ship
+				foreach (GameObject go in targets) {
+					if (go.CompareTag(Constants.EnemyTag) && go.GetComponent<Ship> () != null && !(((Ship) go.GetComponent<Ship> ()).isMarked)) {
+						target = go;		// Assign our target to first eligible ship
+						((Ship) go.GetComponent<Ship> ()).isMarked = true;	// Ship is now marked as target
+						break;
+					}
+				}
 
-		// CASE: more missiles active than enemies; handle by selecting random enemy to target within valid range
-		while (target == null || !target.activeSelf) {
-			GameObject go = validTargets[Random.Range (0, validTargets.Count())];
-			// Check if it's a valid target, even if already targeted
-			if (go != null && go.activeSelf && go.CompareTag(Constants.EnemyTag)) {
-				target = go;
-			}
+				List<GameObject> validTargets = (from c in targets where c.CompareTag(Constants.EnemyTag) select c.gameObject).ToList();	// Still contains other missiles and ineligible targets
+
+				// CASE: more missiles active than enemies; handle by selecting random enemy to target within valid range
+				while (target == null || !target.activeSelf) {
+					GameObject go = validTargets[Random.Range (0, validTargets.Count())];
+					// Check if it's a valid target, even if already targeted
+					if (go != null && go.activeSelf && go.CompareTag(Constants.EnemyTag)) {
+						target = go;
+					}
+				}
+			} 
+		} catch {
+			Debug.Log ("Find target try-catch!!!");
 		}
 	}
 

@@ -37,13 +37,13 @@ public class AIInput : InputComponent {
 
 		if (axisInput) {
 			if (Input.GetKey(KeyCode.W)) {
-				player.transform.Translate (Vector2.up * Time.deltaTime * speed);
-				//rb.AddForce(transform.up * speed);
+				//player.transform.Translate (Vector2.up * Time.deltaTime * speed);
+				player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * speed);
 			}
 
 			if (Input.GetKey(KeyCode.S)) {
-				player.transform.Translate (Vector2.down * Time.deltaTime * speed);
-				//rb.AddForce(-transform.up * speed);
+				//player.transform.Translate (Vector2.down * Time.deltaTime * speed);
+				player.GetComponent<Rigidbody>().AddRelativeForce(-transform.up * speed);
 			}
 		}
 	}

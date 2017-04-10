@@ -23,8 +23,11 @@ public class BurstRushPowerup : PoolObject {
 
 	void Start() {
 		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
-		burstChargeColliders.SetActive (false);
-		burstRushColliders.SetActive (false);
+		burstChargeColliders = BurstRushManager.Instance.burstChargeColliders;
+		burstRushColliders = BurstRushManager.Instance.burstRushColliders;
+
+		//burstChargeColliders.SetActive (false);
+		//burstRushColliders.SetActive (false);
 		//colliders = Utils.GetChildren (burstRushColliders);		// Get all phase II (rush) colliders
 	}
 

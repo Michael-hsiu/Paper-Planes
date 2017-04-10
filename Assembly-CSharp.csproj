@@ -89,6 +89,7 @@
      <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />
      <Compile Include="Assets\Scripts\Powerups\BurstChargeColliders.cs" />
      <Compile Include="Assets\Scripts\Powerups\BurstRushCollider.cs" />
+     <Compile Include="Assets\Scripts\Powerups\BurstRushManager.cs" />
      <Compile Include="Assets\Scripts\Powerups\BurstRushPowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\DualFirePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\HomingMissileManager.cs" />

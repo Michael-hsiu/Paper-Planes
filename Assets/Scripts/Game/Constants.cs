@@ -14,6 +14,9 @@ public static class Constants {
 	public static readonly string EnemyShot = "EnemyShot";
 	public static readonly string ParentSS = "ParentSS";
 	public static readonly string RushColliders = "RushColliders";
+	public static readonly string RushChargeColliders = "RushChargeColliders";
+	public static readonly string RushThrustColliders = "RushThrustColliders";
+
 
 
 
