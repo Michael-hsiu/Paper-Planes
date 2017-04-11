@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
 	public Text levelText;
 	public Text healthText;
 	public Text dashStoreText;
+	public Text burshRushText;
 
 	//Singleton implementation
 	private static UIManager singleton;
@@ -52,4 +53,8 @@ public class UIManager : MonoBehaviour {
 		dashStoreText.text = "Stored Dashes: " + dashes;
 	}
 		
+	public void UpdateBurstRushText() {
+		burshRushText.text = "Burst Rushes: " + GameManager.Singleton.rushes.Count;		// See how many rushes are left in our list
+	}
+
 }

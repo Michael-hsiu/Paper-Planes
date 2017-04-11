@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+[SelectionBase]
 public class BomberShip : Ship {
 
 	#region Variables

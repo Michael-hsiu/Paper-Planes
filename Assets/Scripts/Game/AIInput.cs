@@ -62,14 +62,22 @@ public class AIInput : InputComponent {
 
 
 		// Powerup input keys
-		if (Input.GetKey(KeyCode.G)) {
-			if (GameManager.Singleton.dashes > 0) {
+		if (Input.GetKey(KeyCode.G)) {		// Use Dash powerup
+			if (GameManager.Singleton.dashes > 0 && !player.rushStarted) {
 				Dash (player);
 				Debug.Log ("DASH KEY REGISTERED!");
 			}
 		}
 
-		// Check if our speed cap is on (off if we're dashing!!!)
+		if (Input.GetKey(KeyCode.H)) {		// Use Burst Rush powerup
+			if (GameManager.Singleton.rushes.Count > 0 && !player.dashStarted) {
+				player.rushStarted = true;		// To make sure we can't activate 2 at a time
+				GameManager.Singleton.rushes.Dequeue ().TriggerCharge (player);	// Get the FIFO rush powerup; tell it to activate a rush!!!
+				Debug.Log ("RUSH KEY REGISTERED!");
+			}
+		}
+
+		// Check if our speed cap is on (off if w			e're dashing!!!)
 		if (GameManager.Singleton.speedCapped) {
 			// Limit player's maximum velocity
 			player.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, player.maxForward);
@@ -129,7 +137,9 @@ public class AIInput : InputComponent {
 
 		Debug.Log ("DASH ENDED!");
 
+
 		yield return new WaitForSeconds (0.1f);		// Short delay for player to re-orient after dash
+
 
 		player.gameObject.GetComponent<Collider>().enabled = true;		// Can now be hit after dashing
 		player.GetComponent<Rigidbody> ().velocity = savedVelocity;		// Return to pre-dash velocity
@@ -138,6 +148,8 @@ public class AIInput : InputComponent {
 		GameManager.Singleton.isDashing = false;
 		GameManager.Singleton.speedCapped = true;
 	}
+
+
 
 
 }

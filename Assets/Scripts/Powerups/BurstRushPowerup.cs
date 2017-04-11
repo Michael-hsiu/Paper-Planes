@@ -14,15 +14,16 @@ public class BurstRushPowerup : PoolObject {
 	public float radius = 2.5f;
 	public List<Collider> colliders;
 	protected bool isVisible;
+
 	private IEnumerator cr1;
 	private IEnumerator cr2;
-	public GameObject player;
+	public PlayerShip player;
 
 	public SpecialWeapons id = SpecialWeapons.RUSH;
 
 
 	void Start() {
-		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
+		//player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
 		burstChargeColliders = BurstRushManager.Instance.burstChargeColliders;
 		burstRushColliders = BurstRushManager.Instance.burstRushColliders;
 
@@ -39,10 +40,10 @@ public class BurstRushPowerup : PoolObject {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			// Do weapons logic; spawn things
+
 			HideInScene ();
-			// Begin Phase I, which will initiate Phase II
-			cr1 = StartCharge ();
-			StartCoroutine (cr1);
+			GameManager.Singleton.rushes.Enqueue(this);		// Add a Rush to our count
+			UIManager.Singleton.UpdateBurstRushText ();
 
 		}
 	}
@@ -55,9 +56,22 @@ public class BurstRushPowerup : PoolObject {
 		}
 	}
 
+
+	// This is called from our Input module
+	public void TriggerCharge(PlayerShip player) {
+		// Begin Phase I, which will initiate Phase II
+		this.player = player;	// Keep track of the player so we can chage its rushStarted bool flag
+
+		UIManager.Singleton.UpdateBurstRushText ();
+		cr1 = StartCharge ();
+		StartCoroutine (cr1);
+	}
+
 	// Phase I - charge stage.
 	IEnumerator StartCharge() {
-		
+
+		player.rushStarted = true;			// Player cannot use other powerups
+
 		// Activate Burst Rush colliders and disable firing and moving
 		player.GetComponent<Rigidbody> ().velocity = Vector3.zero;		// Naive fix: non-force impl of halting player entirely
 		isCharging = true;
@@ -91,6 +105,9 @@ public class BurstRushPowerup : PoolObject {
 		Debug.Log ("FORCE APPLIED!");
 
 		cr2 = null;
+
+		player.rushStarted = false;		// Allow player to now use other powerups
+
 	}
 
 	void HideInScene() {

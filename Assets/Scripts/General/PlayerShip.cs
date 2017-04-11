@@ -54,6 +54,8 @@ public class PlayerShip : FiringShip {
 	public float dashDuration = 5f;
 	public bool dashStarted = false;
 
+	public bool rushStarted = false;
+
 	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
 	#endregion
 
