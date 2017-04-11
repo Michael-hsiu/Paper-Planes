@@ -23,11 +23,14 @@ public class DashPowerup : PoolObject {
 			// Do weapons logic; spawn things
 			HideInScene ();
 
-			GameManager.Singleton.isDashing = true;
-			GameManager.Singleton.speedCapped = false;
+			// Player can hold at most 3 dashes at a time
+			if (GameManager.Singleton.dashes < 3) {
+				GameManager.Singleton.dashes += 1;		// Increase # of dashes stored
+				UIManager.Singleton.UpdateDashText (GameManager.Singleton.dashes);		// Update dash displayed text
+			}
 
 			//Dash ();
-			Debug.Log ("DASH BEGUN FROM POWERUP");
+			Debug.Log ("DASH PICKED UP");
 			//cr1 = StartDash ();
 			//StartCoroutine (cr1);
 		}

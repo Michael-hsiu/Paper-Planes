@@ -7,7 +7,10 @@ public class UIManager : MonoBehaviour {
 
 	/************************ [VARIABLES & PROPERTIES] ************************/
 
-	public Text scoreText, levelText, healthText;
+	public Text scoreText;
+	public Text levelText;
+	public Text healthText;
+	public Text dashStoreText;
 
 	//Singleton implementation
 	private static UIManager singleton;
@@ -43,6 +46,10 @@ public class UIManager : MonoBehaviour {
 
 	public void UpdateHealth() {
 		healthText.text = "Health: " + GameManager.Singleton.playerHealth.ToString () + " / 100";
+	}
+
+	public void UpdateDashText(int dashes) {
+		dashStoreText.text = "Stored Dashes: " + dashes;
 	}
 		
 }

@@ -36,6 +36,8 @@ public class AIInput : InputComponent {
 			transform.gameObject.SetActive (false);
 		}
 
+
+		// Standard inputs
 		// Can't turn whilst dashing
 		if (Input.GetKey(KeyCode.D) && !player.dashStarted) {
 			player.transform.Rotate(new Vector3(0, 0, 110) * Time.deltaTime);
@@ -58,6 +60,15 @@ public class AIInput : InputComponent {
 			}
 		}
 
+
+		// Powerup input keys
+		if (Input.GetKey(KeyCode.G)) {
+			if (GameManager.Singleton.dashes > 0) {
+				Dash (player);
+				Debug.Log ("DASH KEY REGISTERED!");
+			}
+		}
+
 		// Check if our speed cap is on (off if we're dashing!!!)
 		if (GameManager.Singleton.speedCapped) {
 			// Limit player's maximum velocity
@@ -67,22 +78,28 @@ public class AIInput : InputComponent {
 			if (player.GetComponent<Rigidbody>().velocity.sqrMagnitude == Mathf.Pow(player.maxForward, 2)) {
 				Debug.Log ("MAX VELOCITY REACHED: " + player.GetComponent<Rigidbody> ().velocity.sqrMagnitude);		// Should be the square of maxForward
 			}
-		} else if (GameManager.Singleton.isDashing) {
+		} 
+
+	}
+
+	// Dash powerup for player
+	void Dash(PlayerShip player) {
+
+		if (!player.dashStarted) {		// Makes sure we only have 1 dash at a time
 			
-			//Debug.Log ("GETS TO ISDASHING");
+			GameManager.Singleton.isDashing = true;
+			GameManager.Singleton.speedCapped = false;
+			GameManager.Singleton.dashes -= 1;
+			UIManager.Singleton.UpdateDashText (GameManager.Singleton.dashes);
 
-			if (!player.dashStarted) {
+			player.dashStarted = true;		// Only 1 dash at a time
+			player.dashEndTime = Time.time + player.dashDuration;		// Set end time for dash
 
-				player.dashStarted = true;		// Only 1 dash at a time
-				player.dashEndTime = Time.time + player.dashDuration;		// Set end time for dash
+			// Start dash co-routine
+			cr1 = StartDash (player);
+			StartCoroutine (cr1);
 
-				// Start dash co-routine
-				cr1 = StartDash (player);
-				StartCoroutine (cr1);
-
-			}
 		}
-
 	}
 
 	IEnumerator StartDash(PlayerShip player) {
@@ -90,21 +107,31 @@ public class AIInput : InputComponent {
 		Debug.Log ("STARTED COROUTINE");
 
 		savedVelocity = player.GetComponent<Rigidbody> ().velocity;		// Store velocity pre-dash
-		Debug.Log ("INITIAL: " + player.dashStarted);
-		Debug.Log ("ENDING: " + player.dashStarted);
 
 		Vector3 forceToAdd = player.transform.up;		// Starting force, to be incremented every fixedUpdate
 
+		player.gameObject.GetComponent<Collider>().enabled = false;		// Can't be hit when dashing
+
+		player.GetComponent<Rigidbody> ().velocity = player.transform.up;
+
 		while (Time.time < player.dashEndTime) {
 			//if (player.GetComponent<Rigidbody>().velocity < )
-			player.GetComponent<Rigidbody> ().velocity *= 1.3f;
+			//player.GetComponent<Rigidbody> ().velocity *= 1.3f;
+
+			player.GetComponent<Rigidbody> ().velocity *= 1.4f;
+		
+
 			//forceToAdd += new Vector3 (forceToAdd.x * 1.001f, forceToAdd.y * 1.001f, forceToAdd.z * 1.001f);
-			player.GetComponent < Rigidbody> ().AddForce (forceToAdd);	// Push player forward for dash (may make this increase over time)
+			//player.GetComponent < Rigidbody> ().AddForce (forceToAdd);	// Push player forward for dash (may make this increase over time)
 			Debug.Log ("DASH ACTIVE!!!");
 			yield return new WaitForFixedUpdate ();
 		}
 
 		Debug.Log ("DASH ENDED!");
+
+		yield return new WaitForSeconds (0.1f);		// Short delay for player to re-orient after dash
+
+		player.gameObject.GetComponent<Collider>().enabled = true;		// Can now be hit after dashing
 		player.GetComponent<Rigidbody> ().velocity = savedVelocity;		// Return to pre-dash velocity
 
 		player.dashStarted = false;		// Player is no longer dashing

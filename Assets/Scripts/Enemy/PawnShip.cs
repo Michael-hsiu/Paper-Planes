@@ -5,6 +5,8 @@ using UnityEngine.Assertions;
 
 public class PawnShip : Ship {
 
+
+
 	#region Unity Life Cycle
 	protected override void Start () {
 		// Call our overridden initalization method
@@ -42,6 +44,7 @@ public class PawnShip : Ship {
 		
 	void OnTriggerEnter(Collider other) {
 
+		// Handle collisions with player shots
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
 
 			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
@@ -59,7 +62,17 @@ public class PawnShip : Ship {
 
 				Debug.Log("PAWN KILLED! Obtained: " + enemyPoints + "points!");
 			}
+
+		// Handle collisions with player
+		} else if (other.gameObject.CompareTag(Constants.PlayerTag)) {
+
+			Debug.Log ("INNER REACHED!");
+
+			Instantiate (explosion, transform.position, transform.rotation);
+			Destroy (transform.gameObject);
+
 		}
 	}
+
 	#endregion
 }
