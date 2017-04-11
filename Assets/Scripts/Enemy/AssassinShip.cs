@@ -94,7 +94,9 @@ public class AssassinShip : Ship {
 			}
 
 			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
+
 		}
+
 	}
 
 	IEnumerator BeginRush() {
