@@ -47,6 +47,7 @@ public class PlayerShip : FiringShip {
 	protected int _shotDamage = 20;
 	public float maxForward = 3.0f;
 
+	public float colliderRadius = 1.2f;		// This is set manually based on normal colliders of player
 	public float dashEndTime = 0.0f;
 	public float thrust = 300.0f;
 	public float maxDash = 20.0f;
@@ -85,6 +86,15 @@ public class PlayerShip : FiringShip {
 	void FixedUpdate() {
 		UpdateInput ();		// This currently takes care of both input and physics; consider separating them
 	}
+
+	public void OnDrawGizmos() {
+		// Only draw when we're dashing
+		if (dashStarted) {
+			Gizmos.color = Color.white;
+			Gizmos.DrawWireSphere(transform.position, colliderRadius);
+		}
+	}
+
 	#endregion
 
 	#region Game Logic

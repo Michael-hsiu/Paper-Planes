@@ -77,12 +77,17 @@ public class BurstRushPowerup : PoolObject {
 	}
 
 	IEnumerator StartRush() {
+
+		GameManager.Singleton.speedCapped = false;
 		BurstRushManager.Instance.burstRushColliders.SetActive (true);
+
 		player.GetComponent<Rigidbody> ().AddForce (player.transform.up * thrust);		// Propel player forward
 
 		yield return new WaitForSeconds (rushTime);		// Also need to disable inputs
 
+		GameManager.Singleton.speedCapped = true;
 		BurstRushManager.Instance.burstRushColliders.SetActive (false);
+
 		Debug.Log ("FORCE APPLIED!");
 
 		cr2 = null;

@@ -111,4 +111,6 @@ public class AIInput : InputComponent {
 		GameManager.Singleton.isDashing = false;
 		GameManager.Singleton.speedCapped = true;
 	}
+
+
 }
