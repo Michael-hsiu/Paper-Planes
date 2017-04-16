@@ -55,6 +55,7 @@ public class AssassinShip : Ship {
 
 			if (!isAttacking) {
 				StartCoroutine(BeginRush());
+				Debug.Log ("STARTED ASSASSIN COROUTINE");
 			}
 
 			return;
@@ -71,9 +72,6 @@ public class AssassinShip : Ship {
 			*/
 		}
 	}
-		
-
-
 
 	void OnTriggerEnter(Collider other) {
 
@@ -102,8 +100,9 @@ public class AssassinShip : Ship {
 	IEnumerator BeginRush() {
 		isAttacking = true;		// Singleton co-routine
 
-		currPos = transform.position;
-		Quaternion playerRot = target.transform.rotation;
+		currPos = transform.position;	// Store start position
+		Quaternion playerRot = target.transform.rotation;	// Store start rotation
+
 		playerPos = target.transform.position;	// Get player position (to rush to)
 		playerDir = (target.transform.position - transform.position).normalized * rushDist;		// Get player direction and scale it
 
@@ -131,9 +130,11 @@ public class AssassinShip : Ship {
 
 		Instantiate (explosion, transform.position, transform.rotation);	// Debug animation while playing 
 
+
 		onStandby = true;
 		yield return new WaitForSeconds (timeBtwnAtk);
 		onStandby = false;
+
 		//startTargeting = false;
 		isAttacking = false;
 	}

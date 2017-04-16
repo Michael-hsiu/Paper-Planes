@@ -56,6 +56,9 @@
      <Compile Include="Assets\Scripts\Enemy\PawnShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\RangedShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\Turret.cs" />
+     <Compile Include="Assets\Scripts\FSM\EntityState.cs" />
+     <Compile Include="Assets\Scripts\FSM\MoveState.cs" />
+     <Compile Include="Assets\Scripts\FSM\RangedMS.cs" />
      <Compile Include="Assets\Scripts\Game\AIInput.cs" />
      <Compile Include="Assets\Scripts\Game\Constants.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />

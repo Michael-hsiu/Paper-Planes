@@ -112,7 +112,7 @@ public class AIInput : InputComponent {
 
 	IEnumerator StartDash(PlayerShip player) {
 
-		Debug.Log ("STARTED COROUTINE");
+		Debug.Log ("STARTED DASH COROUTINE");
 
 		savedVelocity = player.GetComponent<Rigidbody> ().velocity;		// Store velocity pre-dash
 

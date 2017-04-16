@@ -13,6 +13,7 @@ public class AssassinCollisionHelper : MonoBehaviour {
 
 			if (GetComponentInParent<AssassinShip>() != null && !GetComponentInParent<AssassinShip>().onStandby) {
 				GetComponentInParent<AssassinShip>().startTargeting = true;
+				Debug.Log ("COLLIDER HELPER CALLED TRIGGER");
 
 			}
 		}
