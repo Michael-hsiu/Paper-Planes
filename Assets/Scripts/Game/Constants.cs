@@ -16,6 +16,8 @@ public static class Constants {
 	public static readonly string RushColliders = "RushColliders";
 	public static readonly string RushChargeColliders = "RushChargeColliders";
 	public static readonly string RushThrustColliders = "RushThrustColliders";
+	public static readonly string FiringRangeColliders = "FiringRangeColliders";
+	public static readonly string SafeDistanceColliders = "SafeDistanceColliders";
 
 
 

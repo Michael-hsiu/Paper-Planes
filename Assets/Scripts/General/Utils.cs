@@ -45,4 +45,24 @@ public static class Utils {
 		return list;
 	}
 
+	// Finds and returns first child with desired tag
+	public static GameObject FindChildWithTag(GameObject go, string tag) {
+		if (go == null) {
+			return null;
+		}
+
+		foreach (Transform t in go.transform) {
+			if (t.CompareTag(tag)) {
+				return t;
+			}
+			if (t.transform.childCount > 0) {
+				GameObject child = FindChildWithTag (t.gameObject, tag);
+				if (child != null) {
+					return child;
+				}
+			}
+		}
+		return null;
+	}
+
 }

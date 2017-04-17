@@ -18,7 +18,7 @@ public abstract class Ship : MonoBehaviour, IMovement, IDamageable<int>, IKillab
 	public float buffedSpeedFactor = 10.0f;
 	public bool isMarked = false;
 
-	protected Vector2 initialPos;
+	public Vector2 initialPos;
 
 
 	/** INTERFACE METHODS */

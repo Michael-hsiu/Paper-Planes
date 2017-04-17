@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class RangedShip : FiringShip {
 
+	#region Variables
+	// States
+	public EntityState moveState;
+
+	public GameObject firingRangeColliders;
+	public GameObject safeDistanceColliders;
 	public float offsetY = 3.0f;
+	#endregion
+
 
 	#region Unity Life Cycle
 	protected override void Start () {
 
 		// Call our overridden initalization method
 		Initialize ();
+		firingRangeColliders = Utils.FindChildWithTag (this, Constants.RushChargeColliders);
+		safeDistanceColliders = Utils.FindChildWithTag (this, Constants.RushThrustColliders);
+		moveState = new RangedMS ();
 
 		// Check that we're calling the right Start() method
 		//Debug.Log("RANGED SHIP START");
@@ -20,8 +31,11 @@ public class RangedShip : FiringShip {
 	protected override void Update() {
 
 		// Use default movement
-		base.Update ();
+		//base.Update ();
 
+		// State controls movement (satisfies inheritance impl, with state modularizing control)
+		Move ();
+		
 		// Basic AI - firing logic
 		if (Time.time > nextFire) {
 			Fire ();
@@ -33,11 +47,16 @@ public class RangedShip : FiringShip {
 	protected override void Initialize() {
 		// Do normal initalization
 		base.Initialize ();
+
+		// Get the state needed
+
 	}
 
 	public override void Move () {
-		
-		// Move enemy ship up and down
+		// Allows movement state to control movement
+		moveState.UpdateState (this);
+
+		/*// Move enemy ship up and down
 		this.transform.position = Vector2.Lerp (initialPos - new Vector2(0, offsetY), initialPos + new Vector2(0, offsetY), (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
 
 
@@ -49,7 +68,7 @@ public class RangedShip : FiringShip {
 
 		Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-		transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+		transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy*/
 	}		
 
 	void OnTriggerEnter(Collider other) {

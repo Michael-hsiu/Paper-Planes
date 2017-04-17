@@ -77,7 +77,7 @@ public class AIInput : InputComponent {
 			}
 		}
 
-		// Check if our speed cap is on (off if w			e're dashing!!!)
+		// Check if our speed cap is on (off if we're dashing!!!)
 		if (GameManager.Singleton.speedCapped) {
 			// Limit player's maximum velocity
 			player.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, player.maxForward);
