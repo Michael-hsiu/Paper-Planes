@@ -18,7 +18,7 @@ public class AIInput : InputComponent {
 	public override void UpdateInput(PlayerShip player) {
 
 		// Auto-fire
-		if (Time.time > player.nextFire) {
+		if (Time.time > player.nextFire && !player.rushStarted && !player.dashStarted) {
 			player.Fire ();
 		}
 

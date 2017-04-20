@@ -46,21 +46,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\SafeDistanceCollider.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
-     <Compile Include="Assets\Scripts\Enemy\BomberCollisionHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\BomberShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\DoT.cs" />
      <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\MediShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\PawnShip.cs" />
-     <Compile Include="Assets\Scripts\Enemy\RangedShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\BomberCollisionHelper.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\FiringRangeCollider.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedFS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedMS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\SafeDistanceCollider.cs" />
      <Compile Include="Assets\Scripts\Enemy\Turret.cs" />
      <Compile Include="Assets\Scripts\FSM\FSMManager.cs" />
      <Compile Include="Assets\Scripts\FSM\IEntityState.cs" />
      <Compile Include="Assets\Scripts\FSM\IMoveState.cs" />
-     <Compile Include="Assets\Scripts\FSM\RangedMS.cs" />
      <Compile Include="Assets\Scripts\Game\AIInput.cs" />
      <Compile Include="Assets\Scripts\Game\Constants.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />

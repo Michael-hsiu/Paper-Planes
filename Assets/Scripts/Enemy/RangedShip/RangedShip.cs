@@ -7,6 +7,7 @@ public class RangedShip : FiringShip {
 	#region Variables
 	// States
 	public RangedMS moveState;
+	public RangedFS firingState;
 
 	public GameObject firingRangeColliders;
 	public GameObject safeDistanceColliders;
@@ -21,7 +22,10 @@ public class RangedShip : FiringShip {
 		Initialize ();
 		firingRangeColliders = Utils.FindChildWithTag (this.gameObject, Constants.RushChargeColliders);
 		safeDistanceColliders = Utils.FindChildWithTag (this.gameObject, Constants.RushThrustColliders);
+
+		// Component state initialization
 		moveState = new RangedMS ();
+		firingState = new RangedFS ();
 
 		// Check that we're calling the right Start() method
 		//Debug.Log("RANGED SHIP START");
@@ -56,20 +60,11 @@ public class RangedShip : FiringShip {
 		// Allows movement state to control movement
 		moveState.UpdateState (this);
 
-		/*// Move enemy ship up and down
-		this.transform.position = Vector2.Lerp (initialPos - new Vector2(0, offsetY), initialPos + new Vector2(0, offsetY), (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
+	}	
 
-
-		// Enemy ship turns to face player
-		Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-		dist.Normalize ();		// Get unit vector
-
-		float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-
-		Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-
-		transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy*/
-	}		
+	public override void Fire() {
+		firingState.UpdateState (this);
+	}
 
 	void OnTriggerEnter(Collider other) {
 
