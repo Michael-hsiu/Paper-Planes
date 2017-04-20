@@ -53,7 +53,7 @@ public static class Utils {
 
 		foreach (Transform t in go.transform) {
 			if (t.CompareTag(tag)) {
-				return t;
+				return t.gameObject;
 			}
 			if (t.transform.childCount > 0) {
 				GameObject child = FindChildWithTag (t.gameObject, tag);

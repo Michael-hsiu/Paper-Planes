@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class RangedShip : FiringShip {
 
 	#region Variables
 	// States
-	public EntityState moveState;
+	public RangedMS moveState;
 
 	public GameObject firingRangeColliders;
 	public GameObject safeDistanceColliders;
@@ -19,8 +19,8 @@ public class RangedShip : FiringShip {
 
 		// Call our overridden initalization method
 		Initialize ();
-		firingRangeColliders = Utils.FindChildWithTag (this, Constants.RushChargeColliders);
-		safeDistanceColliders = Utils.FindChildWithTag (this, Constants.RushThrustColliders);
+		firingRangeColliders = Utils.FindChildWithTag (this.gameObject, Constants.RushChargeColliders);
+		safeDistanceColliders = Utils.FindChildWithTag (this.gameObject, Constants.RushThrustColliders);
 		moveState = new RangedMS ();
 
 		// Check that we're calling the right Start() method
@@ -73,7 +73,9 @@ public class RangedShip : FiringShip {
 
 	void OnTriggerEnter(Collider other) {
 
-		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
+		if (other.gameObject.activeSelf && other.gameObject.CompareTag (Constants.PlayerShot)) {
+
+			Debug.Log (String.Format("RANGED SHIP HIT BY PLAYER {0}", other.name));
 
 			if (other != null) {
 				other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
