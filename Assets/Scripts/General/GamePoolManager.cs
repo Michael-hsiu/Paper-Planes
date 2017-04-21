@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class GamePoolManager : MonoBehaviour {
 
+	// Shot prefabs
 	public GameObject playerSingleShot;
 	public GameObject playerDualShot;
 	public GameObject playerTriShot;
 	public GameObject playerUltiShot;
 	public GameObject enemySingleShot;
 	public GameObject enemyFasterShot;
+
+	// Player powerups / related items
 	public GameObject tripMines;
 	public GameObject shurikenObj;
 	public GameObject waveShot;
 	public GameObject missiles;
+
+	// Enemy prefabs
+	public GameObject pawnShip;
+	public GameObject rangedShip;
 
 	void Start () {
 		PoolManager.Instance.CreatePool (playerSingleShot, 50);
@@ -26,7 +33,8 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (shurikenObj, 10);
 		PoolManager.Instance.CreatePool (waveShot, 20);
 		PoolManager.Instance.CreatePool (missiles, 100);
-
+		PoolManager.Instance.CreatePool (pawnShip, 50);
+		PoolManager.Instance.CreatePool (rangedShip, 50);
 
 	}
 }
