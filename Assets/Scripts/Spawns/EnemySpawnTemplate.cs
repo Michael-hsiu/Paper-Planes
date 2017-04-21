@@ -23,7 +23,8 @@ public class EnemySpawnTemplate : MonoBehaviour {
 
 	private IEnumerator WaitAndFire(float spawnDelay) {
 		while (numEnemies < maxEnemies) {
-			GameObject spawnedEnemy = Instantiate (enemy, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
+			//GameObject spawnedEnemy = Instantiate (enemy, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
+			Ship spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, transform.position, Quaternion.identity);
 			spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
 				
 			numEnemies += 1;	// Increment number of enemies this spawn has created
@@ -31,6 +32,7 @@ public class EnemySpawnTemplate : MonoBehaviour {
 			print ("Enemy # " + numEnemies + " spawned!");
 
 			yield return new WaitForSeconds (spawnDelay);	// Delay between spawning new enemies
+
 		}
 	}
 }

@@ -159,7 +159,7 @@ public class Missile : PoolObject {
 		//transform.rotation = Quaternion.identity;
 		canDmg = true;
 
-		Debug.Log ("MISSILE REUSED!");
+		//Debug.Log ("MISSILE REUSED!");
 
 		//GetComponent<Rigidbody> ().velocity = Vector3.zero;
 	}

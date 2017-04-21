@@ -22,7 +22,7 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject pawnShip;
 	public GameObject rangedShip;
 
-	void Start () {
+	void Awake () {
 		PoolManager.Instance.CreatePool (playerSingleShot, 50);
 		PoolManager.Instance.CreatePool (playerDualShot, 50);
 		PoolManager.Instance.CreatePool (playerTriShot, 50);
