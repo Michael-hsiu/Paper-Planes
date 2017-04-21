@@ -4,28 +4,33 @@ using UnityEngine;
 
 public class EnemySpawnTemplate : MonoBehaviour {
 
-	// In this example we show how to invoke a coroutine and 
-	// continue executing the function in parallel.
-
 	public GameObject enemy;
 	public float spawnDelay = 3.0f;
-	public int maxEnemies = 100;
+	public int maxEnemies = 100;	// Could be capped per lvl
+	public float spawnRadius = 3.0f;
 
-	private IEnumerator coroutine;
+	private IEnumerator cr;
 	private int numEnemies = 0;
 	private GameObject spawnContainer;
+	private Ship spawnedEnemy;
 
 	void Start() {
 		spawnContainer = new GameObject ("SpawnContainer");		// Create container to hold all spawned enemies
-		coroutine = WaitAndFire(spawnDelay);	// Assign co-routine
-		StartCoroutine(coroutine);	// Begin eternal enemy spawn
+		cr = WaitAndFire(spawnDelay);	// Assign co-routine
+		StartCoroutine(cr);				// Begin eternal enemy spawn
 	}
 
 	private IEnumerator WaitAndFire(float spawnDelay) {
+		
 		while (numEnemies < maxEnemies) {
+			
 			//GameObject spawnedEnemy = Instantiate (enemy, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
-			Ship spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, transform.position, Quaternion.identity);
+
+			Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
+
+			spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, transform.position, Quaternion.identity);
 			spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
+			spawnedEnemy.name = spawnedEnemy.GetInstanceID () + " " + numEnemies;
 				
 			numEnemies += 1;	// Increment number of enemies this spawn has created
 
@@ -35,4 +40,6 @@ public class EnemySpawnTemplate : MonoBehaviour {
 
 		}
 	}
+
+
 }

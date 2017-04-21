@@ -65,4 +65,12 @@ public static class Utils {
 		return null;
 	}
 
+	// Returns a random position within a certain radius (on x-y plane)
+	public static Vector3 RandomPos(Transform t, float radius) {
+		float x = t.position.x + Random.Range (-radius, radius);
+		float y = t.position.y + Random.Range (-radius, radius);
+
+		return new Vector3 (x, y, t.position.z);
+	}
+
 }
