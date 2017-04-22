@@ -21,8 +21,26 @@ public class RangedFS : MonoBehaviour, IMoveState {
 	}
 
 	public void UpdateState(Ship s) {
+
+		if (rs == null) {
+			rs = (RangedShip) s;
+		}
+		bool playerIsDashing = GameManager.Singleton.isDashing;
+
+		// If player is dashing, use math to check if player is too far from us.
+		if (playerIsDashing) {
+			if (Utils.SquaredEuclideanDistance(rs.gameObject, rs.target.gameObject) > rs.sqFireDist) {
+				Debug.Log ("PLAYER TOO FAR AWAY TO FIRE!");
+				mode = FiringMode.NotFiring;
+			} else {
+				mode = FiringMode.Firing;
+			}
+		}
+
+
+		// Apply method based on player direction
 		if (mode == FiringMode.Firing) {
-			FireAtPlayer (s);
+			FireAtPlayer (rs);
 		}		
 	}
 

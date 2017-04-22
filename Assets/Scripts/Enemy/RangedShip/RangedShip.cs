@@ -22,12 +22,12 @@ public class RangedShip : FiringShip {
 
 		// Call our overridden initalization method
 		Initialize ();
-		firingRangeColliders = Utils.FindChildWithTag (this.gameObject, Constants.RushChargeColliders);
-		safeDistanceColliders = Utils.FindChildWithTag (this.gameObject, Constants.RushThrustColliders);
+		firingRangeColliders = Utils.FindChildWithTag (this.gameObject, Constants.FiringRangeColliders);
+		safeDistanceColliders = Utils.FindChildWithTag (this.gameObject, Constants.SafeDistanceColliders);
 
 		// This is the squared distance, used when Player dashes and we need to see if they're too far from enemy
-		sqMoveDist = Math.Pow (((CapsuleCollider) safeDistanceColliders).radius, 2);
-		sqFireDist = Math.Pow (((CapsuleCollider) firingRangeColliders).radius, 2);
+		sqMoveDist = Mathf.Pow (((CapsuleCollider) safeDistanceColliders.GetComponent<Collider>()).radius, 2);
+		sqFireDist = Mathf.Pow (((CapsuleCollider) firingRangeColliders.GetComponent<Collider>()).radius, 2);
 
 		// Component state initialization
 		moveState = new RangedMS ();

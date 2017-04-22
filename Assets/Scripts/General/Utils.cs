@@ -74,7 +74,7 @@ public static class Utils {
 	}
 
 	// Returns squared straight-line distance between 2 pts
-	public static float SquaredEuclideanDistance(Transform t1, Transform t2) {
-		return Mathf.Pow((t1.position.x - t2.position.x), 2) + Mathf.Pow((t1.position.y - t2.position.y), 2);
+	public static float SquaredEuclideanDistance(GameObject t1, GameObject t2) {
+		return Mathf.Pow((t1.transform.position.x - t2.transform.position.x), 2) + Mathf.Pow((t1.transform.position.y - t2.transform.position.y), 2);
 	}
 }

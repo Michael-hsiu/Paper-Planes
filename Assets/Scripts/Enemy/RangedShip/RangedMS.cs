@@ -31,7 +31,7 @@ public class RangedMS : MonoBehaviour, IMoveState {
 
 		// If player is dashing, use math to check if player is too far from us.
 		if (playerIsDashing) {
-			if (Utils.SquaredEuclideanDistance(rs, rs.target) > rs.sqMoveDist) {
+			if (Utils.SquaredEuclideanDistance(rs.gameObject, rs.target.gameObject) > rs.sqMoveDist) {
 				direction = Direction.Forwards;
 			} else {
 				direction = Direction.TooClose;
