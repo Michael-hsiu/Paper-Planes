@@ -4,13 +4,11 @@ using UnityEngine;
 
 public static class Utils {
 
-	//public GameObject inputManager;
-	
+	// Recursively gets all children of a gameobject
 	public static List<GameObject> GetChildren(GameObject go) {
 		List<GameObject> list = new List<GameObject>();
 		return GetChildrenHelper (go, list);
 	}
-
 	private static List<GameObject> GetChildrenHelper(GameObject go, List<GameObject> list) {
 		if (go == null) {
 			return list;
@@ -23,12 +21,13 @@ public static class Utils {
 		}
 		return list;
 	}
+		
 
+	// Recursively gets all colliders on a gameobject
 	public static List<Collider> GetColliders(GameObject go) {
 		List<Collider> list = new List<Collider>();
 		return GetCollidersHelper (go, list);
 	}
-
 	private static List<Collider> GetCollidersHelper(GameObject go, List<Collider> list) {
 		if (go == null) {
 			return list;
@@ -44,6 +43,7 @@ public static class Utils {
 		}
 		return list;
 	}
+
 
 	// Finds and returns first child with desired tag
 	public static GameObject FindChildWithTag(GameObject go, string tag) {
@@ -65,6 +65,7 @@ public static class Utils {
 		return null;
 	}
 
+
 	// Returns a random position within a certain radius (on x-y plane)
 	public static Vector3 RandomPos(Transform t, float radius) {
 		float x = t.position.x + Random.Range (-radius, radius);
@@ -72,6 +73,7 @@ public static class Utils {
 
 		return new Vector3 (x, y, t.position.z);
 	}
+
 
 	// Returns squared straight-line distance between 2 pts
 	public static float SquaredEuclideanDistance(GameObject t1, GameObject t2) {
