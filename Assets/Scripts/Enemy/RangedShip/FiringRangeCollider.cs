@@ -5,6 +5,7 @@ using System;
 
 public class FiringRangeCollider : MonoBehaviour {
 
+	public bool targetInRange;
 
 	void OnTriggerEnter(Collider other) {
 
@@ -17,6 +18,16 @@ public class FiringRangeCollider : MonoBehaviour {
 				Debug.LogError (e);
 				//Debug.Break ();
 			}	
+		}
+	}
+
+	void Update() {
+		targetInRange = false;
+	}
+
+	void OnTriggerStay(Collider other) {
+		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
+			targetInRange = true;
 		}
 	}
 

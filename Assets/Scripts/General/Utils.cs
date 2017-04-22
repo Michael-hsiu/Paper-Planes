@@ -73,4 +73,8 @@ public static class Utils {
 		return new Vector3 (x, y, t.position.z);
 	}
 
+	// Returns squared straight-line distance between 2 pts
+	public static float SquaredEuclideanDistance(Transform t1, Transform t2) {
+		return Mathf.Pow((t1.position.x - t2.position.x), 2) + Mathf.Pow((t1.position.y - t2.position.y), 2);
+	}
 }

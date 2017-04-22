@@ -12,6 +12,8 @@ public class RangedShip : FiringShip {
 	public GameObject firingRangeColliders;
 	public GameObject safeDistanceColliders;
 	public float offsetY = 3.0f;
+	public float sqFireDist;
+	public float sqMoveDist;
 	#endregion
 
 
@@ -22,6 +24,10 @@ public class RangedShip : FiringShip {
 		Initialize ();
 		firingRangeColliders = Utils.FindChildWithTag (this.gameObject, Constants.RushChargeColliders);
 		safeDistanceColliders = Utils.FindChildWithTag (this.gameObject, Constants.RushThrustColliders);
+
+		// This is the squared distance, used when Player dashes and we need to see if they're too far from enemy
+		sqMoveDist = Math.Pow (((CapsuleCollider) safeDistanceColliders).radius, 2);
+		sqFireDist = Math.Pow (((CapsuleCollider) firingRangeColliders).radius, 2);
 
 		// Component state initialization
 		moveState = new RangedMS ();
