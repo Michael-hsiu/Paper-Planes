@@ -13,6 +13,7 @@ public enum Direction {
 public class RangedMS : MonoBehaviour, IMoveState {
 
 	public Direction direction;
+	public RangedShip rs;
 
 	public void EnterState (Ship s) {
 
@@ -37,7 +38,9 @@ public class RangedMS : MonoBehaviour, IMoveState {
 
 	public void MoveToPlayer (Ship s) {
 
-		RangedShip rs = (RangedShip) s;
+		if (rs == null) {
+			rs = (RangedShip) s;
+		}
 
 		if (rs.target != null) {
 			Vector3 dist = rs.target.transform.position - rs.transform.position;	// Find vector difference between target and this
@@ -61,7 +64,9 @@ public class RangedMS : MonoBehaviour, IMoveState {
 
 	public void MoveBackwards (Ship s) {
 
-		RangedShip rs = (RangedShip) s;
+		if (rs == null) {
+			rs = (RangedShip) s;
+		}
 
 		if (rs.target != null) {
 			Vector3 dist = rs.target.transform.position - rs.transform.position;	// Find vector difference between target and this

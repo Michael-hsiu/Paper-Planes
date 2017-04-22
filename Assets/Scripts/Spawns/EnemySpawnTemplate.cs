@@ -28,7 +28,7 @@ public class EnemySpawnTemplate : MonoBehaviour {
 
 			Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
 
-			spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, transform.position, Quaternion.identity);
+			spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, randomPos, Quaternion.identity);
 			spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
 			spawnedEnemy.name = spawnedEnemy.GetInstanceID () + " " + numEnemies;
 				

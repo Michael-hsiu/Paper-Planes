@@ -13,6 +13,8 @@ public class WaveShot : PoolObject, IMovement {
 	public float speedMultiplier = 1.0f;
 	public float lifeTime = 3.0f;
 
+	public GameObject debugExplosion;
+
 	private Rigidbody rb;
 
 	/** INTERFACE METHODS */
@@ -46,9 +48,13 @@ public class WaveShot : PoolObject, IMovement {
 	}
 
 	void OnTriggerEnter(Collider other) {
+		
 		if (other.gameObject.CompareTag(Constants.EnemyTag)) {
+			
 			if (other.gameObject.GetComponent<IDamageable<int>>() != null) {
+				
 				other.gameObject.GetComponent<IDamageable<int>>().Damage (30);
+				Instantiate (debugExplosion, transform.position, Quaternion.identity);		// Visual indication that we hit an enemy
 				Debug.Log ("ENEMY HIT BY WAVE!");
 			}
 		}

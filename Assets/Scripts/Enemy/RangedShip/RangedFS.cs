@@ -10,6 +10,7 @@ public enum FiringMode {
 public class RangedFS : MonoBehaviour, IMoveState {
 
 	public FiringMode mode = FiringMode.NotFiring;
+	public RangedShip rs;
 
 	public void EnterState (Ship s) {
 
@@ -32,7 +33,9 @@ public class RangedFS : MonoBehaviour, IMoveState {
 
 	public void FireAtPlayer (Ship s) {
 
-		RangedShip rs = (RangedShip) s;
+		if (rs == null) {
+			rs = (RangedShip) s;
+		}
 
 		if (!rs.isFiringBuffed) {
 			rs.nextFire = Time.time + rs.fireRate;	// Cooldown time for projectile firing
