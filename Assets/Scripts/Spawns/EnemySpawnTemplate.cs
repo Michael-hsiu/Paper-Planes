@@ -6,7 +6,7 @@ public class EnemySpawnTemplate : MonoBehaviour {
 
 	public GameObject enemy;
 	public float spawnDelay = 3.0f;
-	public int maxEnemies = 100;	// Could be capped per lvl
+	//public int maxEnemies = 100;	// Could be capped per lvl
 	public float spawnRadius = 3.0f;
 
 	private IEnumerator cr;
@@ -21,8 +21,9 @@ public class EnemySpawnTemplate : MonoBehaviour {
 	}
 
 	private IEnumerator WaitAndFire(float spawnDelay) {
-		
-		while (numEnemies < maxEnemies) {
+
+		while (true) {
+		//while (numEnemies < maxEnemies) {
 			
 			//GameObject spawnedEnemy = Instantiate (enemy, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
 

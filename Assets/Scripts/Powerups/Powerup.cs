@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 // API inspired by: https://github.com/antfarmar/Unity-3D-Asteroids/blob/master/Assets/Asteroids/Scripts/Powerups/Powerup.cs
-public class Powerup : MonoBehaviour {
+public class Powerup : PoolObject {
 
 	public PlayerShip player;
 	//public List<ShotSpawn> prevSS = new List<ShotSpawn> ();

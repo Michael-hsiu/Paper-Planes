@@ -11,7 +11,8 @@ public class FiringRangeCollider : MonoBehaviour {
 
 		Debug.Log ("Reached firing range from player!");
 
-		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
+		// Either-or: either trigger processes, or Euclidean calc processes
+		if (other.gameObject.CompareTag (Constants.PlayerTag) /* && !GameManager.Singleton.onDashCooldown*/) {
 			try {
 				GetComponentInParent<RangedShip>().firingState.mode = FiringMode.Firing;
 			} catch (NullReferenceException e) {
