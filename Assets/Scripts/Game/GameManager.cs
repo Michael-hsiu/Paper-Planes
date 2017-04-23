@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour {
 	public bool axisInput = true;
 	public bool speedCapped = true;
 	public bool isDashing = false;
+	public bool onDashCooldown = false;
 	public int dashes = 0;
+
 	public Queue<BurstRushPowerup> rushes = new Queue<BurstRushPowerup>();
 	//public int rushes = 0;
 

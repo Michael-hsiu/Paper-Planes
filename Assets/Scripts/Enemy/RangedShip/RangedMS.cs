@@ -27,10 +27,10 @@ public class RangedMS : MonoBehaviour, IMoveState {
 		if (rs == null) {
 			rs = (RangedShip) s;
 		}
-		bool playerIsDashing = GameManager.Singleton.isDashing;
+		bool playerOnDashCooldown = GameManager.Singleton.onDashCooldown;
 
 		// If player is dashing, use math to check if player is too far from us.
-		if (playerIsDashing) {
+		if (playerOnDashCooldown) {
 			if (Utils.SquaredEuclideanDistance(rs.gameObject, rs.target.gameObject) > rs.sqMoveDist) {
 				direction = Direction.Forwards;
 			} else {

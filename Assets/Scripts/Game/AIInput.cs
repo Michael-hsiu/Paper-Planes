@@ -104,6 +104,9 @@ public class AIInput : InputComponent {
 			player.dashEndTime = Time.time + player.dashDuration;		// Set end time for dash
 
 			// Start dash co-routine
+			if (cr1 != null) {
+				StopCoroutine (cr1);
+			}
 			cr1 = StartDash (player);
 			StartCoroutine (cr1);
 
@@ -112,7 +115,9 @@ public class AIInput : InputComponent {
 
 	IEnumerator StartDash(PlayerShip player) {
 
+		GameManager.Singleton.onDashCooldown = true;
 		Debug.Log ("STARTED DASH COROUTINE");
+
 
 		savedVelocity = player.GetComponent<Rigidbody> ().velocity;		// Store velocity pre-dash
 
@@ -137,19 +142,26 @@ public class AIInput : InputComponent {
 
 		Debug.Log ("DASH ENDED!");
 
-
 		yield return new WaitForSeconds (0.1f);		// Short delay for player to re-orient after dash
+
+		player.dashStarted = false;		// Player is no longer dashing
 
 
 		player.gameObject.GetComponent<Collider>().enabled = true;		// Can now be hit after dashing
 		player.GetComponent<Rigidbody> ().velocity = savedVelocity;		// Return to pre-dash velocity
 
-		player.dashStarted = false;		// Player is no longer dashing
 		GameManager.Singleton.isDashing = false;
+		GameManager.Singleton.onDashCooldown = false;
+
 		GameManager.Singleton.speedCapped = true;
+
+		yield return new WaitForSeconds (0.1f);
+		GameManager.Singleton.onDashCooldown = false;
+
 	}
 
-
-
+	//IEnumerator OnDashCoolDown() {
+				
+	//}
 
 }
