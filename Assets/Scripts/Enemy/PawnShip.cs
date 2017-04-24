@@ -54,7 +54,9 @@ public class PawnShip : Ship {
 			if (health <= 0) {
 				
 				Instantiate (explosion, transform.position, transform.rotation);
-				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
+				DestroyForReuse ();
+
+				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 
 				GameManager.Singleton.UpdateScore (enemyPoints);
 				//GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
@@ -69,7 +71,8 @@ public class PawnShip : Ship {
 			Debug.Log ("INNER REACHED!");
 
 			Instantiate (explosion, transform.position, transform.rotation);
-			Destroy (transform.gameObject);
+			DestroyForReuse ();
+			//Destroy (transform.gameObject);
 
 		}
 	}

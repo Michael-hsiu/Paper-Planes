@@ -12,7 +12,7 @@ public class EnemySpawnTemplate : MonoBehaviour {
 	private IEnumerator cr;
 	private int numEnemies = 0;
 	private GameObject spawnContainer;
-	private Ship spawnedEnemy;
+	//private Ship spawnedEnemy;
 
 	void Start() {
 		spawnContainer = new GameObject ("SpawnContainer");		// Create container to hold all spawned enemies
@@ -29,9 +29,10 @@ public class EnemySpawnTemplate : MonoBehaviour {
 
 			Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
 
-			spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, randomPos, Quaternion.identity);
-			spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
-			spawnedEnemy.name = spawnedEnemy.GetInstanceID () + " " + numEnemies;
+			
+			Ship spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, randomPos, Quaternion.identity);
+			//spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
+			//spawnedEnemy.name = spawnedEnemy.GetInstanceID () + " " + numEnemies;
 				
 			numEnemies += 1;	// Increment number of enemies this spawn has created
 
