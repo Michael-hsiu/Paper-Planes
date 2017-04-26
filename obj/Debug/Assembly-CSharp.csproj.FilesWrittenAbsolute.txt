@@ -19,3 +19,5 @@
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.Purchasing.dll
+/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.Advertisements.dll

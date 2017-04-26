@@ -40,6 +40,7 @@ public class EnemySpawnTemplate : MonoBehaviour {
 
 				yield return new WaitForSeconds (spawnDelay);	// Delay between spawning new enemies
 			}
+			yield return null;
 		}
 	}
 }

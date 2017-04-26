@@ -23,11 +23,12 @@ public class UIManager : MonoBehaviour {
 
 	public void StartLevel(int level, int goal) {
 		levelGoalCR = DisplayLevelGoalText (level, goal);
-		StopAllCoroutines ();
+		//StopAllCoroutines ();
 		StartCoroutine (levelGoalCR);
 	}
 
 	IEnumerator DisplayLevelGoalText(int level, int goal) {
+		
 		levelGoalText.gameObject.SetActive (true);
 		levelGoalText.text = String.Format("Level {0}: Defeat {1} Pawns.", level, goal);
 

@@ -16,40 +16,53 @@ public class GameManager : MonoBehaviour {
 	public bool onDashCooldown = false;
 	public int dashes = 99;
 
+	// Level logic
+	public int level = 1;
+	public int enemiesToKill = 30;
+
 	// Enemy spawners
 	public List<GameObject> levelSpawns_1 = new List<GameObject>();
 	public List<GameObject> levelSpawns_2 = new List<GameObject>();
 
 	// Contains all Level objects for the game
-	public Dictionary<int, Level> levels;
+	public Dictionary<int, Level> levels = new Dictionary<int, Level>();
+	public Dictionary<int, List<GameObject>> levelSpawns;
+
 
 	// Container class for level info
 	public class Level {
-		int level;
-		int enemiesToKill;
-		List<GameObject> spawns;
+		public int currLevel;
+		public int enemiesToKill;
+		public List<GameObject> spawns;
 
-		Level(int level, int enemiesToKill, List<GameObject> spawns) {
-			this.level = level;
+		public Level(int currLevel, int enemiesToKill, List<GameObject> spawns) {
+			this.currLevel = currLevel;
 			this.enemiesToKill = enemiesToKill;
 			this.spawns = spawns;
 		}
 	}
 
+	// Called before Start()
+	void Awake() {
+		if (singleton == null) {
+			singleton = this;
 
-	// Level logic
-	public int level = 1;
-	public int waveEnemies;
+		} else {
+			DestroyImmediate(this);
+		}
+	}
 
 	public void BeginLevel(int level) {
+		
 		// Spawn / setup logic for each level
-		if (level == 1) {
-			// Activate all the spawns
-			foreach (GameObject go in levelSpawns_1) {
-				go.SetActive (true);
-				go.GetComponent<EnemySpawnTemplate> ().startSpawning = true;
-			}	
-		}
+		Level currLvl = this.levels [level];
+		List<GameObject> spawnList = currLvl.spawns;
+
+		// Activate all the spawns
+		foreach (GameObject go in spawnList) {
+			go.SetActive (true);
+			go.GetComponent<EnemySpawnTemplate> ().startSpawning = true;
+		}	
 
 		// UI logic
 		UIManager.Singleton.StartLevel (level, 3);
@@ -72,20 +85,24 @@ public class GameManager : MonoBehaviour {
 	/************************ [CONSTRUCTORS] *************************/
 	protected GameManager() {
 		GameState = GameState.Start;	// Set current gamestate
+		// Get all the spawn lists
+
+
+		// Make all the levels
+		for (int i = 1; i < 2; i++) {
+			Level currLvl = new Level (level, enemiesToKill, levelSpawns_1);
+			this.levels.Add (i, currLvl);	// k=lvl, v=lvlObj
+			this.level += 1;
+			this.enemiesToKill += 30;
+		}
+
 		//CanSwipe = false;
 	}
 
 
 	/************************ [UNITY FUNCTIONS] ************************/
 
-	// Called before Start()
-	void Awake() {
-		if (singleton == null) {
-			singleton = this;
-		} else {
-			DestroyImmediate(this);
-		}
-	}
+
 
 
 
