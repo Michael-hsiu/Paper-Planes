@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using ExtendedCollections;
 
 public class GameManager : MonoBehaviour {
 
@@ -25,12 +26,12 @@ public class GameManager : MonoBehaviour {
 	public List<GameObject> levelSpawns_2 = new List<GameObject>();
 
 	// Contains all Level objects for the game
-	public Dictionary<int, Level> levels = new Dictionary<int, Level>();
+	public IntLevelDictionary levels = new IntLevelDictionary();
 	public Dictionary<int, List<GameObject>> levelSpawns;
 
 
 	// Container class for level info
-	public class Level {
+	[Serializable] public class Level {
 		public int currLevel;
 		public int enemiesToKill;
 		public List<GameObject> spawns;
@@ -95,6 +96,7 @@ public class GameManager : MonoBehaviour {
 			this.level += 1;
 			this.enemiesToKill += 30;
 		}
+
 
 		//CanSwipe = false;
 	}

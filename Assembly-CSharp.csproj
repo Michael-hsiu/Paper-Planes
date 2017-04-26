@@ -66,11 +66,13 @@
      <Compile Include="Assets\Scripts\FSM\IMoveState.cs" />
      <Compile Include="Assets\Scripts\Game\AIInput.cs" />
      <Compile Include="Assets\Scripts\Game\Constants.cs" />
+     <Compile Include="Assets\Scripts\Game\DictionaryDrawer.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\GameState.cs" />
      <Compile Include="Assets\Scripts\Game\InputComponent.cs" />
      <Compile Include="Assets\Scripts\Game\InputManager.cs" />
      <Compile Include="Assets\Scripts\Game\PlayerInput.cs" />
+     <Compile Include="Assets\Scripts\Game\SerializableDictionary.cs" />
      <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
      <Compile Include="Assets\Scripts\Game\UIManager.cs" />
      <Compile Include="Assets\Scripts\General\DropShipShotSpawn.cs" />
@@ -134,9 +136,6 @@
      <Compile Include="Assets\Scripts\Utility\ParticleSystemAutoDestroy.cs" />
      <Compile Include="Assets\Scripts\Utility\RotationUpdate.cs" />
      <Compile Include="Assets\Scripts\Utility\ShotMover.cs" />
- <Reference Include="UnityEngine.Purchasing">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
@@ -148,9 +147,6 @@
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
