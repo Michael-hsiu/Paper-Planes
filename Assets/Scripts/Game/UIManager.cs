@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
 
 public class UIManager : MonoBehaviour {
 
@@ -12,6 +13,28 @@ public class UIManager : MonoBehaviour {
 	public Text healthText;
 	public Text dashStoreText;
 	public Text burshRushText;
+
+	// Level update text
+	public Text levelGoalText;
+	public Text levelEndText;
+	public IEnumerator levelGoalCR;
+
+	public float displayLength = 3.0f;
+
+	public void StartLevel(int level, int goal) {
+		levelGoalCR = DisplayLevelGoalText (level, goal);
+		StopAllCoroutines ();
+		StartCoroutine (levelGoalCR);
+	}
+
+	IEnumerator DisplayLevelGoalText(int level, int goal) {
+		levelGoalText.gameObject.SetActive (true);
+		levelGoalText.text = String.Format("Level {0}: Defeat {1} Pawns.", level, goal);
+
+		yield return new WaitForSeconds (displayLength);	// Show the level goal text on screen
+		levelGoalText.gameObject.SetActive (false);		// Hide the text
+	
+	}
 
 	//Singleton implementation
 	private static UIManager singleton;

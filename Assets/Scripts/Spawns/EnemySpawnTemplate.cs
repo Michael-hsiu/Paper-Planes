@@ -8,6 +8,7 @@ public class EnemySpawnTemplate : MonoBehaviour {
 	public float spawnDelay = 3.0f;
 	//public int maxEnemies = 100;	// Could be capped per lvl
 	public float spawnRadius = 3.0f;
+	public bool startSpawning = false;
 
 	private IEnumerator cr;
 	private int numEnemies = 0;
@@ -26,22 +27,19 @@ public class EnemySpawnTemplate : MonoBehaviour {
 		//while (numEnemies < maxEnemies) {
 			
 			//GameObject spawnedEnemy = Instantiate (enemy, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
-
-			Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
-
-			
-			Ship spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, randomPos, Quaternion.identity);
-			//spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
-			//spawnedEnemy.name = spawnedEnemy.GetInstanceID () + " " + numEnemies;
+			if (startSpawning) {
 				
-			numEnemies += 1;	// Increment number of enemies this spawn has created
+				Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
+				Ship spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, randomPos, Quaternion.identity);
+				//spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
+				//spawnedEnemy.name = spawnedEnemy.GetInstanceID () + " " + numEnemies;
 
-			print ("Enemy # " + numEnemies + " spawned!");
+				numEnemies += 1;	// Increment number of enemies this spawn has created
 
-			yield return new WaitForSeconds (spawnDelay);	// Delay between spawning new enemies
+				print ("Enemy # " + numEnemies + " spawned!");
 
+				yield return new WaitForSeconds (spawnDelay);	// Delay between spawning new enemies
+			}
 		}
 	}
-
-
 }

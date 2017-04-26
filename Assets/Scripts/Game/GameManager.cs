@@ -16,6 +16,46 @@ public class GameManager : MonoBehaviour {
 	public bool onDashCooldown = false;
 	public int dashes = 99;
 
+	// Enemy spawners
+	public List<GameObject> levelSpawns_1 = new List<GameObject>();
+	public List<GameObject> levelSpawns_2 = new List<GameObject>();
+
+	// Contains all Level objects for the game
+	public Dictionary<int, Level> levels;
+
+	// Container class for level info
+	public class Level {
+		int level;
+		int enemiesToKill;
+		List<GameObject> spawns;
+
+		Level(int level, int enemiesToKill, List<GameObject> spawns) {
+			this.level = level;
+			this.enemiesToKill = enemiesToKill;
+			this.spawns = spawns;
+		}
+	}
+
+
+	// Level logic
+	public int level = 1;
+	public int waveEnemies;
+
+	public void BeginLevel(int level) {
+		// Spawn / setup logic for each level
+		if (level == 1) {
+			// Activate all the spawns
+			foreach (GameObject go in levelSpawns_1) {
+				go.SetActive (true);
+				go.GetComponent<EnemySpawnTemplate> ().startSpawning = true;
+			}	
+		}
+
+		// UI logic
+		UIManager.Singleton.StartLevel (level, 3);
+	}
+
+	// Powerup logic
 	public Queue<BurstRushPowerup> rushes = new Queue<BurstRushPowerup>();
 	//public int rushes = 0;
 
