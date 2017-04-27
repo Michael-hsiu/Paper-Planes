@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour {
 	public bool lvlActive = true;
 
 	// Current level cache
-	public Level currLvl;
-	public List<GameObject> currLvlSpawners;
+	public Level currLvl = null;
+	public List<GameObject> currLvlSpawners = new List<GameObject>();
 
 	// Enemy spawners
 	public List<GameObject> levelSpawns_1 = new List<GameObject>();
@@ -109,7 +109,8 @@ public class GameManager : MonoBehaviour {
 	// Turn off the spawners for current level
 	public void DisableSpawns() {
 
-		foreach (GameObject go in this.currLvlSpawners) {
+		List<GameObject> currLvlSpawns = currLvl.spawns;
+		foreach (GameObject go in currLvlSpawns) {
 			go.GetComponent<EnemySpawnTemplate> ().startSpawning = false;
 		}
 	}
