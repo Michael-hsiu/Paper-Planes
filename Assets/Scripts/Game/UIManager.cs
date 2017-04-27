@@ -21,6 +21,11 @@ public class UIManager : MonoBehaviour {
 
 	public float displayLength = 3.0f;
 
+	public void StartGame() {
+		StartLevel(GameManager.Singleton.level, GameManager.Singleton.levels[1].enemiesToKill);		// Display lvl 1 logic
+	}
+
+	// goal=enemiesToKill
 	public void StartLevel(int level, int goal) {
 		levelGoalCR = DisplayLevelGoalText (level, goal);
 		//StopAllCoroutines ();

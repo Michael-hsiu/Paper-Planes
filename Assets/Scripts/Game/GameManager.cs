@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using ExtendedCollections;
 
 public class GameManager : MonoBehaviour {
 
@@ -17,6 +16,8 @@ public class GameManager : MonoBehaviour {
 	public bool onDashCooldown = false;
 	public int dashes = 99;
 
+	public int test = 0;
+
 	// Level logic
 	public int level = 1;
 	public int enemiesToKill = 30;
@@ -26,12 +27,12 @@ public class GameManager : MonoBehaviour {
 	public List<GameObject> levelSpawns_2 = new List<GameObject>();
 
 	// Contains all Level objects for the game
-	public IntLevelDictionary levels = new IntLevelDictionary();
+	public Dictionary<int, Level> levels = new Dictionary<int, Level>();
 	public Dictionary<int, List<GameObject>> levelSpawns;
 
 
 	// Container class for level info
-	[Serializable] public class Level {
+	public class Level {
 		public int currLevel;
 		public int enemiesToKill;
 		public List<GameObject> spawns;
@@ -90,12 +91,16 @@ public class GameManager : MonoBehaviour {
 
 
 		// Make all the levels
+		int lvlCount = this.level;
 		for (int i = 1; i < 2; i++) {
 			Level currLvl = new Level (level, enemiesToKill, levelSpawns_1);
 			this.levels.Add (i, currLvl);	// k=lvl, v=lvlObj
-			this.level += 1;
+			lvlCount += 1;
 			this.enemiesToKill += 30;
+			Debug.Log ("currLvl added!");
+			this.test = 999;
 		}
+
 
 
 		//CanSwipe = false;
