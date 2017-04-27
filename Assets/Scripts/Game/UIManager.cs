@@ -18,11 +18,12 @@ public class UIManager : MonoBehaviour {
 	public Text levelGoalText;
 	public Text levelEndText;
 	public IEnumerator levelGoalCR;
+	public IEnumerator levelEndCR;
 
-	public float displayLength = 3.0f;
+	public float displayLength = 3.0f;	// How long dialog appears on-screen
 
 	public void StartGame() {
-		StartLevel(GameManager.Singleton.level, GameManager.Singleton.levels[1].enemiesToKill);		// Display lvl 1 logic
+		StartLevel(GameManager.Singleton.currLevel, GameManager.Singleton.levels[1].enemiesToKill);		// Display lvl 1 logic
 	}
 
 	// goal=enemiesToKill
@@ -30,6 +31,12 @@ public class UIManager : MonoBehaviour {
 		levelGoalCR = DisplayLevelGoalText (level, goal);
 		//StopAllCoroutines ();
 		StartCoroutine (levelGoalCR);
+	}
+
+	public void EndLevel(int level) {
+		levelEndCR = DisplayLevelEndText (level);
+		//StopAllCoroutines ();
+		StartCoroutine (levelEndCR);
 	}
 
 	IEnumerator DisplayLevelGoalText(int level, int goal) {
@@ -40,6 +47,16 @@ public class UIManager : MonoBehaviour {
 		yield return new WaitForSeconds (displayLength);	// Show the level goal text on screen
 		levelGoalText.gameObject.SetActive (false);		// Hide the text
 	
+	}
+
+	IEnumerator DisplayLevelEndText(int level) {
+
+		levelEndText.gameObject.SetActive (true);
+		levelEndText.text = String.Format("Level {0}: Complete!", level);
+
+		yield return new WaitForSeconds (displayLength);	// Show the victory text on screen
+		levelEndText.gameObject.SetActive (false);		// Hide the text
+
 	}
 
 	//Singleton implementation

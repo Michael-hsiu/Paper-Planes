@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\Enemy\BomberShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\DoT.cs" />
      <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\MediShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\PawnShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\RangedShip\BomberCollisionHelper.cs" />
@@ -94,6 +95,7 @@
      <Compile Include="Assets\Scripts\General\WaveShotManager.cs" />
      <Compile Include="Assets\Scripts\General\WaveShotSpawn.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IDamageable.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IFires.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IKillable.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />

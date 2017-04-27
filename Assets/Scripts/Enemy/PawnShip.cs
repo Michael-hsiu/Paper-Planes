@@ -14,6 +14,16 @@ public class PawnShip : Ship {
 		//Debug.Log("PAWN SHIP START");
 
 	}
+
+	protected override void Update() {
+		base.Update ();
+		if (this.health <= 0) {
+			Kill ();
+			GameManager.Singleton.RecordKill ();	// This should cover Missiles and Shurikens registering damage / kills
+			Debug.Log ("Killed via Update");
+		}
+	}
+
 	#endregion
 
 	#region Game Logic
@@ -57,7 +67,7 @@ public class PawnShip : Ship {
 				DestroyForReuse ();
 
 				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
-
+				GameManager.Singleton.RecordKill ();
 				GameManager.Singleton.UpdateScore (enemyPoints);
 				//GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI

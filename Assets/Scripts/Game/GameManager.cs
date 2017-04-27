@@ -19,8 +19,10 @@ public class GameManager : MonoBehaviour {
 	public int test = 0;
 
 	// Level logic
-	public int level = 1;
+	public int currLevel = 1;
 	public int enemiesToKill = 30;
+	public int enemyGoal;
+
 
 	// Enemy spawners
 	public List<GameObject> levelSpawns_1 = new List<GameObject>();
@@ -59,6 +61,8 @@ public class GameManager : MonoBehaviour {
 		// Spawn / setup logic for each level
 		Level currLvl = this.levels [level];
 		List<GameObject> spawnList = currLvl.spawns;
+		enemyGoal = currLvl.enemiesToKill;	// Set # of enemies to defeat; this value will not be changed per enemy death, will be standard.
+		enemiesToKill = enemyGoal;			// This counts # of enemies defeated per round; decremented on each kill
 
 		// Activate all the spawns
 		foreach (GameObject go in spawnList) {
@@ -67,7 +71,21 @@ public class GameManager : MonoBehaviour {
 		}	
 
 		// UI logic
-		UIManager.Singleton.StartLevel (level, 3);
+		UIManager.Singleton.StartLevel (level, enemyGoal);		// Start a dialog box alerting player of mission goal: enemies to kill, etc.
+	}
+
+	// Called every time an enemy is defeated
+	public void RecordKill() {
+		
+		this.enemiesToKill -= 1;
+
+		if (this.enemiesToKill <= 0) {
+
+			Utils.KillAllEnemies ();
+			UIManager.Singleton.EndLevel (currLevel);
+
+			// Call a method to run level shutdown procedures, disable spawners, etc.
+		}
 	}
 
 	// Powerup logic
@@ -91,28 +109,18 @@ public class GameManager : MonoBehaviour {
 
 
 		// Make all the levels
-		int lvlCount = this.level;
+		int lvlCount = this.currLevel;
+		int enemyKillsNeeded = 30;
 		for (int i = 1; i < 2; i++) {
-			Level currLvl = new Level (level, enemiesToKill, levelSpawns_1);
+			Level currLvl = new Level (i, enemyKillsNeeded, levelSpawns_1);
 			this.levels.Add (i, currLvl);	// k=lvl, v=lvlObj
 			lvlCount += 1;
-			this.enemiesToKill += 30;
-			Debug.Log ("currLvl added!");
-			this.test = 999;
+			enemyKillsNeeded += 30;
 		}
-
-
-
-		//CanSwipe = false;
 	}
 
 
 	/************************ [UNITY FUNCTIONS] ************************/
-
-
-
-
-
 
 	void Start() {
 		InvokeRepeating ("HealthTest", 1, 1);	// Starts 1 second after start, then calls in 1 sec intervals

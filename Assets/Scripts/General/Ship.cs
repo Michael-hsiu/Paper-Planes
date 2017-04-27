@@ -43,15 +43,17 @@ public abstract class Ship : PoolObject, IMovement, IDamageable<int>, IKillable 
 	public virtual void Damage(int damageTaken) {
 
 		health -= damageTaken;		// We lose health
-
-		if (health <= 0) {			// Check if we died, and if so, destroy us
+		if (this.health <= 0) {
 			Kill ();
+			Debug.Log ("Killed via projectile weapon");
 		}
 	}
 
 	public virtual void Kill() {
 		//Destroy (transform.gameObject);		// Destroy our gameobject
-		transform.gameObject.SetActive(false);	// "Destroy" our gameobject
+		//transform.gameObject.SetActive(false);	// "Destroy" our gameobject
+		DestroyForReuse ();
+		GameManager.Singleton.RecordKill ();	// This should cover Missiles and Shurikens registering damage / kills
 		Instantiate(explosion, transform.position, transform.rotation);
 	}
 

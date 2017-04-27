@@ -79,4 +79,28 @@ public static class Utils {
 	public static float SquaredEuclideanDistance(GameObject t1, GameObject t2) {
 		return Mathf.Pow((t1.transform.position.x - t2.transform.position.x), 2) + Mathf.Pow((t1.transform.position.y - t2.transform.position.y), 2);
 	}
+
+	// Disable all enemies in scene
+	public static void KillAllEnemies() {
+		GameObject poolManager = GameObject.Find ("PoolManager");
+		DisableChildren (poolManager);
+	}
+
+	// Recursively gets & disables all children of a gameobject
+	public static void DisableChildren(GameObject go) {
+		if (go == null) {
+			return;
+		}
+		foreach (Transform t in go.transform) {
+			if (t.CompareTag(Constants.EnemyTag)) {
+				PoolObject po = t.GetComponent<PoolObject> ();
+				if (po != null) {
+					po.DestroyForReuse ();
+				}
+			}
+			if (t.transform.childCount > 0) {
+				DisableChildren (t.gameObject);
+			}
+		}
+	}
 }

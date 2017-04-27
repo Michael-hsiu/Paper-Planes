@@ -8,7 +8,7 @@ public class EnemySpawnTemplate : MonoBehaviour {
 	public float spawnDelay = 3.0f;
 	//public int maxEnemies = 100;	// Could be capped per lvl
 	public float spawnRadius = 3.0f;
-	public bool startSpawning = false;
+	public bool startSpawning = true;	// Should be controlled by GameManager
 
 	private IEnumerator cr;
 	private int numEnemies = 0;

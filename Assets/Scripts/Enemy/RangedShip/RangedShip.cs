@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-public class RangedShip : FiringShip {
+
+public class RangedShip : FiringShip, IEnemy {
 
 	#region Variables
 	// States
@@ -87,8 +88,10 @@ public class RangedShip : FiringShip {
 			if (health <= 0) {
 
 				Instantiate (explosion, transform.position, transform.rotation);
-				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
+				DestroyForReuse ();
+				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 
+				GameManager.Singleton.RecordKill ();
 				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI
 
