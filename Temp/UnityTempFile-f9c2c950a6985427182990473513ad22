@@ -86,6 +86,7 @@
 'Assets/Scripts/Enemy/BomberShip.cs'
 'Assets/Scripts/Enemy/DoT.cs'
 'Assets/Scripts/Enemy/DropShip.cs'
+'Assets/Scripts/Enemy/EnemyShip.cs'
 'Assets/Scripts/Enemy/MediShip.cs'
 'Assets/Scripts/Enemy/PawnShip.cs'
 'Assets/Scripts/Enemy/RangedShip/BomberCollisionHelper.cs'

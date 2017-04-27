@@ -93,6 +93,13 @@ public static class Utils {
 		}
 		foreach (Transform t in go.transform) {
 			if (t.CompareTag(Constants.EnemyTag)) {
+				Ship ship = t.GetComponent<Ship> ();
+				/*// Either call Kill, to get death animations....
+				if (ship != null) {
+					ship.Kill ();
+				} 
+				// ....or be content with pooling them again
+				else {*/
 				PoolObject po = t.GetComponent<PoolObject> ();
 				if (po != null) {
 					po.DestroyForReuse ();

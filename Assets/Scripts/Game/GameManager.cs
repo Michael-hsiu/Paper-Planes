@@ -20,9 +20,13 @@ public class GameManager : MonoBehaviour {
 
 	// Level logic
 	public int currLevel = 1;
-	public int enemiesToKill = 30;
+	public int enemiesToKill = 10;
 	public int enemyGoal;
+	public bool lvlActive = true;
 
+	// Current level cache
+	public Level currLvl;
+	public List<GameObject> currLvlSpawners;
 
 	// Enemy spawners
 	public List<GameObject> levelSpawns_1 = new List<GameObject>();
@@ -56,15 +60,17 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	// Only occurs on button click atm
 	public void BeginLevel(int level) {
 		
 		// Spawn / setup logic for each level
-		Level currLvl = this.levels [level];
-		List<GameObject> spawnList = currLvl.spawns;
-		enemyGoal = currLvl.enemiesToKill;	// Set # of enemies to defeat; this value will not be changed per enemy death, will be standard.
-		enemiesToKill = enemyGoal;			// This counts # of enemies defeated per round; decremented on each kill
+		this.currLvl = this.levels [level];		// Cache the current lvl object
+		this.currLvlSpawners = currLvl.spawns;
+		this.enemyGoal = currLvl.enemiesToKill;	// Set # of enemies to defeat; this value will not be changed per enemy death, will be standard.
+		this.enemiesToKill = enemyGoal;			// This counts # of enemies defeated per round; decremented on each kill
 
 		// Activate all the spawns
+		List<GameObject> spawnList = currLvl.spawns;
 		foreach (GameObject go in spawnList) {
 			go.SetActive (true);
 			go.GetComponent<EnemySpawnTemplate> ().startSpawning = true;
@@ -74,17 +80,37 @@ public class GameManager : MonoBehaviour {
 		UIManager.Singleton.StartLevel (level, enemyGoal);		// Start a dialog box alerting player of mission goal: enemies to kill, etc.
 	}
 
+	public void EndLevel(int level) {
+
+		// Kill all enemies in scene
+		Utils.KillAllEnemies ();
+
+		// Takedown logic for each level
+		level += 1;
+
+		// Disable all the spawners for this level
+		DisableSpawns ();
+		UIManager.Singleton.EndLevel (currLevel);
+	
+	}
+
 	// Called every time an enemy is defeated
 	public void RecordKill() {
 		
 		this.enemiesToKill -= 1;
 
 		if (this.enemiesToKill <= 0) {
-
-			Utils.KillAllEnemies ();
-			UIManager.Singleton.EndLevel (currLevel);
-
 			// Call a method to run level shutdown procedures, disable spawners, etc.
+			lvlActive = false;
+			EndLevel (currLevel);
+		}
+	}
+
+	// Turn off the spawners for current level
+	public void DisableSpawns() {
+
+		foreach (GameObject go in this.currLvlSpawners) {
+			go.GetComponent<EnemySpawnTemplate> ().startSpawning = false;
 		}
 	}
 
