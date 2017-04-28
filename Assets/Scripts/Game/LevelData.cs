@@ -20,7 +20,7 @@ public class LevelData : ScriptableObject {
 		{ EnemyType.Bomber, 0},
 	};
 
-	public List<GameObject> spawns = new List<GameObject>();
+	//public List<GameObject> spawns = new List<GameObject>();	// Doesn't work b/c assets can't reference scene objects
 
 }
 

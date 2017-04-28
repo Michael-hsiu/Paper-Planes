@@ -27,8 +27,24 @@ public class UIManager : MonoBehaviour {
 	}
 
 	// goal=enemiesToKill
-	public void StartLevel(int level, int goal) {
-		levelGoalCR = DisplayLevelGoalText (level, goal);
+	public void StartLevel(int level, 
+		int pawnsLeft, 
+		int rangedLeft, 
+		int medicsLeft, 
+		int turretsLeft, 
+		int dropshipsLeft, 
+		int assassinsLeft, 
+		int bombersLeft) {
+
+		levelGoalCR = DisplayLevelGoalText (level, 
+			pawnsLeft, 
+			rangedLeft, 
+			medicsLeft, 
+			turretsLeft, 
+			dropshipsLeft, 
+			assassinsLeft, 
+			bombersLeft
+		);
 		//StopAllCoroutines ();
 		StartCoroutine (levelGoalCR);
 	}
@@ -39,9 +55,22 @@ public class UIManager : MonoBehaviour {
 		StartCoroutine (levelEndCR);
 	}
 
-	IEnumerator DisplayLevelGoalText(int level, int goal) {
+	IEnumerator DisplayLevelGoalText(int level, 
+		int pawnsLeft,
+		int rangedLeft,
+		int medicsLeft,
+		int turretsLeft,
+		int dropshipsLeft,
+		int assassinsLeft,
+		int bombersLeft
+		) {
 		
 		levelGoalText.gameObject.SetActive (true);
+
+		String goalText = "Level " + level + ": Defeat ";
+
+
+
 		levelGoalText.text = String.Format("Level {0}: Defeat {1} Pawns.", level, goal);
 
 		yield return new WaitForSeconds (displayLength);	// Show the level goal text on screen

@@ -6,7 +6,28 @@ using UnityObject = UnityEngine.Object;
 using ExtendedCollections;
 
 namespace ExtendedCollectionsDrawers {
-	
+
+
+	[CustomPropertyDrawer(typeof(IntLevelDictionary))]
+	public class IntLevelDictionaryDrawer : DictionaryDrawer<int, GameManager.Level> { }
+
+	[CustomPropertyDrawer(typeof(EnemyTypeCountsDictionary))]
+	public class EnemyTypeCountsDictionaryDrawer : DictionaryDrawer<EnemyType, int> { }
+
+	//[CustomPropertyDrawer(typeof(MyDictionary2))]
+	//public class MyDictionaryDrawer2 : DictionaryDrawer<KeyCode, GameObject> { }
+
+
+	//[Serializable] public class MyDictionary1 : SerializableDictionary<string, int> { }
+	//[Serializable] public class MyDictionary2 : SerializableDictionary<KeyCode, GameObject> { }
+
+	//public class Test : MonoBehaviour
+	//{
+	//public MyDictionary1 dictionary1;
+	//public MyDictionary2 dictionary2;
+	//}
+
+
 	// From https://forum.unity3d.com/threads/finally-a-serializable-dictionary-for-unity-extracted-from-system-collections-generic.335797/
 	public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer {
 		
@@ -176,22 +197,5 @@ namespace ExtendedCollectionsDrawers {
 		}
 	}
 
-	[CustomPropertyDrawer(typeof(IntLevelDictionary))]
-	public class IntLevelDictionaryDrawer : DictionaryDrawer<int, GameManager.Level> { }
 
-	[CustomPropertyDrawer(typeof(EnemyTypeCountsDictionary))]
-	public class EnemyTypeCountsDictionaryDrawer : DictionaryDrawer<EnemyType, int> { }
-
-	//[CustomPropertyDrawer(typeof(MyDictionary2))]
-	//public class MyDictionaryDrawer2 : DictionaryDrawer<KeyCode, GameObject> { }
-
-
-	//[Serializable] public class MyDictionary1 : SerializableDictionary<string, int> { }
-	//[Serializable] public class MyDictionary2 : SerializableDictionary<KeyCode, GameObject> { }
-
-	//public class Test : MonoBehaviour
-	//{
-		//public MyDictionary1 dictionary1;
-		//public MyDictionary2 dictionary2;
-	//}
 }
