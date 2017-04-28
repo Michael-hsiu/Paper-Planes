@@ -33,8 +33,8 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (shurikenObj, 10);
 		PoolManager.Instance.CreatePool (waveShot, 20);
 		PoolManager.Instance.CreatePool (missiles, 100);
-		PoolManager.Instance.CreatePool (pawnShip, 100);
-		PoolManager.Instance.CreatePool (rangedShip, 50);
+		PoolManager.Instance.CreatePool (pawnShip, 500);
+		PoolManager.Instance.CreatePool (rangedShip, 100);
 
 	}
 }

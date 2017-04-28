@@ -110,4 +110,12 @@ public static class Utils {
 			}
 		}
 	}
+
+	// Disables all Powerups in scene (naive impl., needs to be optimized); can be combined w/ DisableChildren eventually
+	public static void DisablePowerups() {
+		GameObject[] list = GameObject.FindGameObjectsWithTag (Constants.Powerup);
+		foreach (GameObject go in list) {
+			UnityEngine.Object.Destroy (go);
+		}
+	}
 }

@@ -69,12 +69,15 @@ public class GameManager : MonoBehaviour {
 		this.enemyGoal = currLvl.enemiesToKill;	// Set # of enemies to defeat; this value will not be changed per enemy death, will be standard.
 		this.enemiesToKill = enemyGoal;			// This counts # of enemies defeated per round; decremented on each kill
 
-		// Activate all the spawns
+		// Activate all the enemy spawners
 		List<GameObject> spawnList = currLvl.spawns;
 		foreach (GameObject go in spawnList) {
 			go.SetActive (true);
 			go.GetComponent<EnemySpawnTemplate> ().startSpawning = true;
-		}	
+		}
+
+		// Activate powerup spawner
+		PowerupSpawner.Singleton.spawnEnabled = true;
 
 		// UI logic
 		UIManager.Singleton.StartLevel (level, enemyGoal);		// Start a dialog box alerting player of mission goal: enemies to kill, etc.
@@ -84,9 +87,11 @@ public class GameManager : MonoBehaviour {
 
 		// Kill all enemies in scene
 		Utils.KillAllEnemies ();
-
+		Utils.DisablePowerups ();
 		// Takedown logic for each level
 		level += 1;
+		// Activate powerup spawner
+		PowerupSpawner.Singleton.spawnEnabled = false;	
 
 		// Disable all the spawners for this level
 		DisableSpawns ();
