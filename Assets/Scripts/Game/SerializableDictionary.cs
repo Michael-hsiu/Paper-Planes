@@ -8,6 +8,7 @@ using UnityEngine;
 namespace ExtendedCollections {
 
 	[Serializable] public class IntLevelDictionary : SerializableDictionary<int, GameManager.Level> { }
+	[Serializable] public class EnemyTypeCountsDictionary : SerializableDictionary<EnemyType, int> { }
 
 	// From: https://forum.unity3d.com/threads/finally-a-serializable-dictionary-for-unity-extracted-from-system-collections-generic.335797/
 	[Serializable, DebuggerDisplay("Count = {Count}")]

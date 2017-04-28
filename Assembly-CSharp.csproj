@@ -72,6 +72,7 @@
      <Compile Include="Assets\Scripts\Game\GameState.cs" />
      <Compile Include="Assets\Scripts\Game\InputComponent.cs" />
      <Compile Include="Assets\Scripts\Game\InputManager.cs" />
+     <Compile Include="Assets\Scripts\Game\LevelData.cs" />
      <Compile Include="Assets\Scripts\Game\PlayerInput.cs" />
      <Compile Include="Assets\Scripts\Game\SerializableDictionary.cs" />
      <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />

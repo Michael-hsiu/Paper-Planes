@@ -179,6 +179,9 @@ namespace ExtendedCollectionsDrawers {
 	[CustomPropertyDrawer(typeof(IntLevelDictionary))]
 	public class IntLevelDictionaryDrawer : DictionaryDrawer<int, GameManager.Level> { }
 
+	[CustomPropertyDrawer(typeof(EnemyTypeCountsDictionary))]
+	public class EnemyTypeCountsDictionaryDrawer : DictionaryDrawer<EnemyType, int> { }
+
 	//[CustomPropertyDrawer(typeof(MyDictionary2))]
 	//public class MyDictionaryDrawer2 : DictionaryDrawer<KeyCode, GameObject> { }
 

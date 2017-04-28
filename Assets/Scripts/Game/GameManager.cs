@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour {
 	public int test = 0;
 
 	// Level logic
+	public LevelData[] levels;
+	public LevelData activeLevel;
+
 	public int currLevel = 1;
 	public int enemiesToKill = 10;
 	public int enemyGoal;
@@ -33,7 +36,7 @@ public class GameManager : MonoBehaviour {
 	public List<GameObject> levelSpawns_2 = new List<GameObject>();
 
 	// Contains all Level objects for the game
-	public Dictionary<int, Level> levels = new Dictionary<int, Level>();
+	//public Dictionary<int, Level> levels = new Dictionary<int, Level>();
 	public Dictionary<int, List<GameObject>> levelSpawns;
 
 
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour {
 	public void BeginLevel(int level) {
 		
 		// Spawn / setup logic for each level
-		this.currLvl = this.levels [level];		// Cache the current lvl object
+		//this.currLvl = this.levels [level];		// Cache the current lvl object
 		this.currLvlSpawners = currLvl.spawns;
 		this.enemyGoal = currLvl.enemiesToKill;	// Set # of enemies to defeat; this value will not be changed per enemy death, will be standard.
 		this.enemiesToKill = enemyGoal;			// This counts # of enemies defeated per round; decremented on each kill
@@ -145,7 +148,7 @@ public class GameManager : MonoBehaviour {
 		int enemyKillsNeeded = 30;
 		for (int i = 1; i < 2; i++) {
 			Level currLvl = new Level (i, enemyKillsNeeded, levelSpawns_1);
-			this.levels.Add (i, currLvl);	// k=lvl, v=lvlObj
+			//this.levels.Add (i, currLvl);	// k=lvl, v=lvlObj
 			lvlCount += 1;
 			enemyKillsNeeded += 30;
 		}
