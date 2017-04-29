@@ -36,7 +36,7 @@ public class EnemySpawnTemplate : MonoBehaviour {
 
 				numEnemies += 1;	// Increment number of enemies this spawn has created
 
-				print ("Enemy # " + numEnemies + " spawned!");
+				//print ("Enemy # " + numEnemies + " spawned!");
 
 				yield return new WaitForSeconds (spawnDelay);	// Delay between spawning new enemies
 			}

@@ -17,14 +17,10 @@ public class GameManager : MonoBehaviour {
 	public bool onDashCooldown = false;
 	public int dashes = 99;
 
-	public int test = 0;
-
 	// Level logic
 	public LevelData[] levels;		// Stores each LevelData SO as an asset
 	public LevelData activeLevel;
 	public int activeLevelNum = 1;
-
-	//public int enemiesToKill = 10;
 
 	// Store how many enemies we need to defeat per level
 	public int pawnsLeft;
@@ -43,28 +39,7 @@ public class GameManager : MonoBehaviour {
 	public List<GameObject> currLvlSpawners;	// Get from index (currLvl-1)
 
 	// Enemy spawners
-	public List<Row> levelSpawners = new List<Row>();		// Populate this manually in inspector
-	//public List<List<GameObject>> levelSpawners = new List<List<GameObject>>();		// Populate this manually in inspector
-	//public List<GameObject> levelSpawns_1 = new List<GameObject>();
-	//public List<GameObject> levelSpawns_2 = new List<GameObject>();
-
-	// Contains all Level objects for the game
-	//public Dictionary<int, Level> levels = new Dictionary<int, Level>();
-	//public Dictionary<int, List<GameObject>> levelSpawns;
-
-
-	// Container class for level info
-	/*public class Level {
-		public int currLevel;
-		public int enemiesToKill;
-		public List<GameObject> spawns;
-
-		public Level(int currLevel, int enemiesToKill, List<GameObject> spawns) {
-			this.currLevel = currLevel;
-			this.enemiesToKill = enemiesToKill;
-			this.spawns = spawns;
-		}
-	}*/
+	public List<Row> levelSpawners = new List<Row>();		// Populate this manually in inspector; Row is a container class so we can emulate 2D list behavior
 
 	// Called before Start()
 	void Awake() {
@@ -77,33 +52,26 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void StartGame() {
-		LevelData firstLevel = GameManager.Singleton.levels [0];	// All levels are zero-indexed!
-		activeLevelNum = 1;
-		EnemyTypeCountsDictionary enemyCountsDict = firstLevel.enemyCounts;
 
 		// Start + Display lvl 1 logic
+		if (activeLevelNum < 1) {
+			activeLevelNum = 1;
+		}
 		BeginLevel (activeLevelNum);
-		UIManager.Singleton.StartLevel(activeLevelNum, 
-			enemyCountsDict[EnemyType.Pawn], 
-			enemyCountsDict[EnemyType.Ranged], 
-			enemyCountsDict[EnemyType.Medic], 
-			enemyCountsDict[EnemyType.Turret], 
-			enemyCountsDict[EnemyType.DropShip], 
-			enemyCountsDict[EnemyType.Assassin], 
-			enemyCountsDict[EnemyType.Bomber]
-			);		
+				
 	}
 
 
 	// Only occurs on button click atm
 	public void BeginLevel(int level) {
-		
+		lvlActive = true;
 		// Spawn / setup logic for each level
 		activeLevelNum = level;		// The numerical repr of current lvl
 		activeLevel = levels [activeLevelNum - 1];		// Cache the current lvl object
 		currLvlSpawners = levelSpawners[activeLevelNum - 1].row;	// B/c zero-indexed
 
 		// Populate enemy bodycounts
+		// This counts # of enemies defeated per round; decremented on each kill
 		pawnsLeft = activeLevel.enemyCounts[EnemyType.Pawn];
 		rangedLeft = activeLevel.enemyCounts[EnemyType.Ranged];
 		medicsLeft = activeLevel.enemyCounts[EnemyType.Medic];
@@ -112,10 +80,7 @@ public class GameManager : MonoBehaviour {
 		assassinsLeft = activeLevel.enemyCounts[EnemyType.Assassin];
 		bombersLeft = activeLevel.enemyCounts[EnemyType.Bomber];
 
-		//this.enemyGoal = currLvl.enemiesToKill;	// Set # of enemies to defeat; this value will not be changed per enemy death, will be standard.
-		//this.enemiesToKill = enemyGoal;			// This counts # of enemies defeated per round; decremented on each kill
-
-		// Activate all the enemy spawners
+		// Activate all the enemy spawners for this lvl
 		foreach (GameObject go in currLvlSpawners) {
 			go.SetActive (true);
 			go.GetComponent<EnemySpawnTemplate> ().startSpawning = true;
@@ -129,22 +94,30 @@ public class GameManager : MonoBehaviour {
 			level, 
 			pawnsLeft, rangedLeft, medicsLeft, turretsLeft, dropshipsLeft, assassinsLeft, bombersLeft
 			);		// Start a dialog box alerting player of mission goal: enemies to kill, etc.
+
+	}
+
+	// Debug button purposes
+	public void BeginNextLevel() {
+		activeLevelNum += 1;
+		BeginLevel (activeLevelNum);
 	}
 
 	public void EndLevel(int level) {
-
+		lvlActive = false;
 		// Kill all enemies in scene
 		Utils.KillAllEnemies ();
 		Utils.DisablePowerups ();
 		// Takedown logic for each level
-		level += 1;
 		// Activate powerup spawner
 		PowerupSpawner.Singleton.spawnEnabled = false;	
 
 		// Disable all the spawners for this level
 		DisableSpawns ();
 		UIManager.Singleton.EndLevel (activeLevelNum);
-	
+
+		activeLevelNum += 1;
+
 	}
 
 	// Called every time an enemy is defeated
@@ -175,7 +148,6 @@ public class GameManager : MonoBehaviour {
 			turretsLeft <= 0) {
 
 			// Call a method to run level shutdown procedures, disable spawners, etc.
-			lvlActive = false;
 			EndLevel (activeLevelNum);
 		}
 	}
@@ -205,18 +177,6 @@ public class GameManager : MonoBehaviour {
 	/************************ [CONSTRUCTORS] *************************/
 	protected GameManager() {
 		GameState = GameState.Start;	// Set current gamestate
-		// Get all the spawn lists
-
-
-		/*// Make all the levels
-		int lvlCount = this.activeLevelNum;
-		int enemyKillsNeeded = 30;
-		for (int i = 1; i < 2; i++) {
-			Level currLvl = new Level (i, enemyKillsNeeded, levelSpawns_1);
-			//this.levels.Add (i, currLvl);	// k=lvl, v=lvlObj
-			lvlCount += 1;
-			enemyKillsNeeded += 30;
-		}*/
 	}
 
 
@@ -224,7 +184,6 @@ public class GameManager : MonoBehaviour {
 
 	void Start() {
 		InvokeRepeating ("HealthTest", 1, 1);	// Starts 1 second after start, then calls in 1 sec intervals
-		//Debug.Log ("REACHED!");
 	}
 		
 

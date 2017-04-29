@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour {
 	// Level update text
 	public Text levelGoalText;
 	public Text levelEndText;
+	public Text startGameText;
 	public IEnumerator levelGoalCR;
 	public IEnumerator levelEndCR;
 
@@ -42,11 +43,17 @@ public class UIManager : MonoBehaviour {
 			assassinsLeft, 
 			bombersLeft
 		);
+		if (level == 1) {
+			startGameText.text = "Press to cont.";
+		}
+		startGameText.transform.parent.gameObject.SetActive(false);
+
 		//StopAllCoroutines ();
 		StartCoroutine (levelGoalCR);
 	}
 
 	public void EndLevel(int level) {
+		startGameText.transform.parent.gameObject.SetActive(true);
 		levelEndCR = DisplayLevelEndText (level);
 		//StopAllCoroutines ();
 		StartCoroutine (levelEndCR);
@@ -67,25 +74,25 @@ public class UIManager : MonoBehaviour {
 		String goalText = "Level " + level + ": Defeat ";
 
 		if (pawnsLeft > 0) {
-			goalText += (pawnsLeft + " Pawns");
+			goalText += (pawnsLeft + " Pawns, ");
 		}
 		if (rangedLeft > 0) {
-			goalText += (rangedLeft + " Ranged");
+			goalText += (rangedLeft + " Ranged, ");
 		}
 		if (medicsLeft > 0) {
-			goalText += (medicsLeft + " Medics");
+			goalText += (medicsLeft + " Medics, ");
 		}
 		if (turretsLeft > 0) {
-			goalText += (turretsLeft + " Turrets");
+			goalText += (turretsLeft + " Turrets, ");
 		}
 		if (dropshipsLeft > 0) {
-			goalText += (dropshipsLeft + " DropShips");
+			goalText += (dropshipsLeft + " DropShips, ");
 		}
 		if (assassinsLeft > 0) {
-			goalText += (assassinsLeft + " Assassins");
+			goalText += (assassinsLeft + " Assassins, ");
 		}
 		if (bombersLeft > 0) {
-			goalText += (bombersLeft + " Bombers");
+			goalText += (bombersLeft + " Bombers, ");
 		}
 
 		goalText += ".";
