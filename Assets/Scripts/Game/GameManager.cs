@@ -97,11 +97,6 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	// Debug button purposes
-	public void BeginNextLevel() {
-		activeLevelNum += 1;
-		BeginLevel (activeLevelNum);
-	}
 
 	public void EndLevel(int level) {
 		lvlActive = false;
@@ -117,6 +112,7 @@ public class GameManager : MonoBehaviour {
 		UIManager.Singleton.EndLevel (activeLevelNum);
 
 		activeLevelNum += 1;
+
 
 	}
 
