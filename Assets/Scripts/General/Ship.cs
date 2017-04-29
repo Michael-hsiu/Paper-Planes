@@ -53,7 +53,6 @@ public abstract class Ship : PoolObject, IMovement, IDamageable<int>, IKillable 
 		//Destroy (transform.gameObject);		// Destroy our gameobject
 		//transform.gameObject.SetActive(false);	// "Destroy" our gameobject
 		DestroyForReuse ();
-		GameManager.Singleton.RecordKill ();	// This should cover Missiles and Shurikens registering damage / kills
 		Instantiate(explosion, transform.position, transform.rotation);
 	}
 

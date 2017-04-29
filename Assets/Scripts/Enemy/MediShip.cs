@@ -7,6 +7,8 @@ using System.Linq;
 public class MediShip : Ship {
 
 	#region Variables
+	public EnemyType enemyType = EnemyType.Medic;
+
 	public float buffRange = 5.0f;			// Range that buff works
 	public float healRange = 15.0f;
 	public float followDistance = 4.0f;		// How far away from heal target MediShip will stay away

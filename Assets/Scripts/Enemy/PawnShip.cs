@@ -5,6 +5,7 @@ using UnityEngine.Assertions;
 
 public class PawnShip : Ship {
 
+	public EnemyType enemyType = EnemyType.Pawn;
 
 
 	#region Unity Life Cycle
@@ -23,6 +24,12 @@ public class PawnShip : Ship {
 	#endregion
 
 	#region Game Logic
+
+	public override void Kill() {
+		base.Kill ();
+		GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+
+	}
 
 	public override void Move () {
 		
@@ -65,7 +72,7 @@ public class PawnShip : Ship {
 				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 				if (GameManager.Singleton.lvlActive) {
 					
-					GameManager.Singleton.RecordKill ();
+					GameManager.Singleton.RecordKill (this.enemyType);
 					GameManager.Singleton.UpdateScore (enemyPoints);
 					//GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
 					UIManager.Singleton.UpdateScore ();	// Update score in UI

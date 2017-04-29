@@ -6,7 +6,8 @@ using UnityEngine;
 public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKillable {
 
 	#region Variables
-	[Header("References")]
+	public EnemyType enemyType = EnemyType.Turret;
+
 	public GameObject target;
 	public bool isMarked = false;
 

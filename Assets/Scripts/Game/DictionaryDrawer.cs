@@ -8,8 +8,8 @@ using ExtendedCollections;
 namespace ExtendedCollectionsDrawers {
 
 
-	[CustomPropertyDrawer(typeof(IntLevelDictionary))]
-	public class IntLevelDictionaryDrawer : DictionaryDrawer<int, GameManager.Level> { }
+	//[CustomPropertyDrawer(typeof(IntLevelDictionary))]
+	//public class IntLevelDictionaryDrawer : DictionaryDrawer<int, GameManager.Level> { }
 
 	[CustomPropertyDrawer(typeof(EnemyTypeCountsDictionary))]
 	public class EnemyTypeCountsDictionaryDrawer : DictionaryDrawer<EnemyType, int> { }

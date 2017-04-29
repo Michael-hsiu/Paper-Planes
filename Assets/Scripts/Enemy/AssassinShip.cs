@@ -7,6 +7,8 @@ using System.Linq;
 public class AssassinShip : Ship {
 
 	#region Variables
+	public EnemyType enemyType = EnemyType.Assassin;
+
 	public float detectionDist;		// How far away to detect Player
 	public float rushDelay = 1.0f;
 	public float rushSpeed = 3.0f;
@@ -18,6 +20,8 @@ public class AssassinShip : Ship {
 	public Vector3 currPos;
 	public Vector3 playerPos;
 	public Vector3 playerDir;
+
+
 
 	private Vector2 offset = new Vector2(0, 3);
 	#endregion

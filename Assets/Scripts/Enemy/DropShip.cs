@@ -6,7 +6,8 @@ public class DropShip : Ship {
 
 
 	#region Variables
-	[Header("References")]
+	public EnemyType enemyType = EnemyType.DropShip;
+
 	public GameObject shipToSpawn;
 
 	public float timeUntilNextSpawnMode = 10.0f;		// Time between when a ship leaves spawn mode and can re-enter spawn mode
@@ -16,8 +17,7 @@ public class DropShip : Ship {
 	public bool isSpawning = false;					// Tracks if ship is in spawn mode
 
 	private Vector2 offset = new Vector2(0, 3);
-	[SerializeField]
-	private float nextSpawn;
+	public float nextSpawn;
 	#endregion
 
 	#region Unity Life Cycle

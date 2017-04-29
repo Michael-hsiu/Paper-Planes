@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using ExtendedCollections;
 
 public class GameManager : MonoBehaviour {
 
@@ -19,10 +20,10 @@ public class GameManager : MonoBehaviour {
 	public int test = 0;
 
 	// Level logic
-	public LevelData[] levels;
+	public LevelData[] levels;		// Stores each LevelData SO as an asset
 	public LevelData activeLevel;
+	public int activeLevelNum = 1;
 
-	public int currLevel = 1;
 	//public int enemiesToKill = 10;
 
 	// Store how many enemies we need to defeat per level
@@ -74,12 +75,30 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void StartGame() {
+		LevelData firstLevel = GameManager.Singleton.levels [0];	// All levels are zero-indexed!
+		EnemyTypeCountsDictionary enemyCountsDict = firstLevel.enemyCounts;
+
+		// Display lvl 1 logic
+		UIManager.Singleton.StartLevel(activeLevelNum, 
+			enemyCountsDict[EnemyType.Pawn], 
+			enemyCountsDict[EnemyType.Ranged], 
+			enemyCountsDict[EnemyType.Medic], 
+			enemyCountsDict[EnemyType.Turret], 
+			enemyCountsDict[EnemyType.DropShip], 
+			enemyCountsDict[EnemyType.Assassin], 
+			enemyCountsDict[EnemyType.Bomber]
+			);		
+	}
+
+
 	// Only occurs on button click atm
 	public void BeginLevel(int level) {
 		
 		// Spawn / setup logic for each level
-		activeLevel = levels [currLevel];		// Cache the current lvl object
-		currLvlSpawners = levelSpawners[activeLevel - 1];	// B/c zero-indexed
+		activeLevelNum = level;		// The numerical repr of current lvl
+		activeLevel = levels [activeLevelNum];		// Cache the current lvl object
+		currLvlSpawners = levelSpawners[activeLevelNum - 1];	// B/c zero-indexed
 
 		// Populate enemy bodycounts
 		pawnsLeft = activeLevel.enemyCounts[EnemyType.Pawn];
@@ -121,27 +140,47 @@ public class GameManager : MonoBehaviour {
 
 		// Disable all the spawners for this level
 		DisableSpawns ();
-		UIManager.Singleton.EndLevel (currLevel);
+		UIManager.Singleton.EndLevel (activeLevelNum);
 	
 	}
 
 	// Called every time an enemy is defeated
-	public void RecordKill() {
-		
-		this.enemiesToKill -= 1;
+	public void RecordKill(EnemyType et) {
 
-		if (this.enemiesToKill <= 0) {
+		if (et == EnemyType.Assassin) {
+			this.assassinsLeft -= 1;
+		} else if (et == EnemyType.Bomber) {
+			this.bombersLeft -= 1;
+		} else if (et == EnemyType.DropShip) {
+			this.dropshipsLeft -= 1;
+		} else if (et == EnemyType.Medic) {
+			this.medicsLeft -= 1;
+		} else if (et == EnemyType.Pawn) {
+			this.pawnsLeft -= 1;
+		} else if (et == EnemyType.Ranged) {
+			this.rangedLeft -= 1;
+		} else if (et == EnemyType.Turret) {
+			this.turretsLeft -= 1;
+		}
+
+		if (assassinsLeft <= 0 &&
+			bombersLeft <= 0 &&
+			dropshipsLeft <= 0 && 
+			medicsLeft <= 0 &&
+			pawnsLeft <= 0 &&
+			rangedLeft <= 0 &&
+			turretsLeft <= 0) {
+
 			// Call a method to run level shutdown procedures, disable spawners, etc.
 			lvlActive = false;
-			EndLevel (currLevel);
+			EndLevel (activeLevelNum);
 		}
 	}
 
 	// Turn off the spawners for current level
 	public void DisableSpawns() {
 
-		List<GameObject> currLvlSpawns = currLvl.spawns;
-		foreach (GameObject go in currLvlSpawns) {
+		foreach (GameObject go in currLvlSpawners) {
 			go.GetComponent<EnemySpawnTemplate> ().startSpawning = false;
 		}
 	}
@@ -166,15 +205,15 @@ public class GameManager : MonoBehaviour {
 		// Get all the spawn lists
 
 
-		// Make all the levels
-		int lvlCount = this.currLevel;
+		/*// Make all the levels
+		int lvlCount = this.activeLevelNum;
 		int enemyKillsNeeded = 30;
 		for (int i = 1; i < 2; i++) {
 			Level currLvl = new Level (i, enemyKillsNeeded, levelSpawns_1);
 			//this.levels.Add (i, currLvl);	// k=lvl, v=lvlObj
 			lvlCount += 1;
 			enemyKillsNeeded += 30;
-		}
+		}*/
 	}
 
 

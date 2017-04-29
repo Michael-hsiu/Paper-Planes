@@ -6,6 +6,8 @@ using System;
 public class RangedShip : FiringShip, IEnemy {
 
 	#region Variables
+	public EnemyType enemyType = EnemyType.Ranged;
+
 	// States
 	public RangedMS moveState;
 	public RangedFS firingState;
@@ -63,6 +65,12 @@ public class RangedShip : FiringShip, IEnemy {
 
 	}
 
+	public override void Kill() {
+		base.Kill ();
+		GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+
+	}
+
 	public override void Move () {
 		// Allows movement state to control movement
 		moveState.UpdateState (this);
@@ -91,7 +99,7 @@ public class RangedShip : FiringShip, IEnemy {
 				DestroyForReuse ();
 				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 
-				GameManager.Singleton.RecordKill ();
+				GameManager.Singleton.RecordKill (this.enemyType);
 				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI
 

@@ -22,9 +22,6 @@ public class UIManager : MonoBehaviour {
 
 	public float displayLength = 3.0f;	// How long dialog appears on-screen
 
-	public void StartGame() {
-		StartLevel(GameManager.Singleton.currLevel, GameManager.Singleton.levels[1].enemiesToKill);		// Display lvl 1 logic
-	}
 
 	// goal=enemiesToKill
 	public void StartLevel(int level, 
@@ -69,9 +66,29 @@ public class UIManager : MonoBehaviour {
 
 		String goalText = "Level " + level + ": Defeat ";
 
+		if (pawnsLeft > 0) {
+			goalText += (pawnsLeft + " Pawns");
+		}
+		if (rangedLeft > 0) {
+			goalText += (rangedLeft + " Ranged");
+		}
+		if (medicsLeft > 0) {
+			goalText += (medicsLeft + " Medics");
+		}
+		if (turretsLeft > 0) {
+			goalText += (turretsLeft + " Turrets");
+		}
+		if (dropshipsLeft > 0) {
+			goalText += (dropshipsLeft + " DropShips");
+		}
+		if (assassinsLeft > 0) {
+			goalText += (assassinsLeft + " Assassins");
+		}
+		if (bombersLeft > 0) {
+			goalText += (bombersLeft + " Bombers");
+		}
 
-
-		levelGoalText.text = String.Format("Level {0}: Defeat {1} Pawns.", level, goal);
+		levelGoalText.text = goalText;
 
 		yield return new WaitForSeconds (displayLength);	// Show the level goal text on screen
 		levelGoalText.gameObject.SetActive (false);		// Hide the text
