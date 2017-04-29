@@ -6,7 +6,9 @@ using UnityEngine.Assertions;
 public class PawnShip : Ship {
 
 	public EnemyType enemyType = EnemyType.Pawn;
-
+	// States
+	public PawnMS moveState;
+	//public RangedFS firingState;
 
 	#region Unity Life Cycle
 	protected override void Start () {
@@ -14,11 +16,15 @@ public class PawnShip : Ship {
 		Initialize ();
 		//Debug.Log("PAWN SHIP START");
 
+		// Component state initialization
+		moveState = new PawnMS ();
+		//firingState = new RangedFS ();
+
 	}
 
 	protected override void Update() {
-		base.Update ();
-
+		//base.Update ();
+		Move ();
 	}
 
 	#endregion
@@ -32,27 +38,8 @@ public class PawnShip : Ship {
 	}
 
 	public override void Move () {
-		
-		if (target != null) {
-			Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-			dist.Normalize ();		// Get unit vector
-
-			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) + 180;	// Angle of rotation around z-axis (pointing upwards)
-
-			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-
-			transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
-
-			/** MOVEMENT UPDATE */
-			if (!isSpeedBuffed) {
-				transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
-			} else {
-				transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed * buffedSpeedFactor);
-
-			}
-				
-		}
-
+		// Allows movement state to control movement
+		moveState.UpdateState (this);
 	}	
 		
 	void OnTriggerEnter(Collider other) {

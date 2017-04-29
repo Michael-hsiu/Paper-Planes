@@ -54,7 +54,8 @@
      <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\MediShip.cs" />
-     <Compile Include="Assets\Scripts\Enemy\PawnShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnMS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\RangedShip\BomberCollisionHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\RangedShip\FiringRangeCollider.cs" />
      <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedFS.cs" />
