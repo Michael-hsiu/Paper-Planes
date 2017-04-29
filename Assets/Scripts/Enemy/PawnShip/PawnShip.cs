@@ -17,7 +17,7 @@ public class PawnShip : Ship {
 		//Debug.Log("PAWN SHIP START");
 
 		// Component state initialization
-		moveState = new PawnMS ();
+		moveState = GetComponent<PawnMS>();
 		//firingState = new PawnFS ();
 
 	}
