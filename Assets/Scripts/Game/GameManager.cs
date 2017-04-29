@@ -43,7 +43,8 @@ public class GameManager : MonoBehaviour {
 	public List<GameObject> currLvlSpawners;	// Get from index (currLvl-1)
 
 	// Enemy spawners
-	public List<List<GameObject>> levelSpawners = new List<List<GameObject>>();		// Populate this manually in inspector
+	public List<Row> levelSpawners = new List<Row>();		// Populate this manually in inspector
+	//public List<List<GameObject>> levelSpawners = new List<List<GameObject>>();		// Populate this manually in inspector
 	//public List<GameObject> levelSpawns_1 = new List<GameObject>();
 	//public List<GameObject> levelSpawns_2 = new List<GameObject>();
 
@@ -77,9 +78,11 @@ public class GameManager : MonoBehaviour {
 
 	public void StartGame() {
 		LevelData firstLevel = GameManager.Singleton.levels [0];	// All levels are zero-indexed!
+		activeLevelNum = 1;
 		EnemyTypeCountsDictionary enemyCountsDict = firstLevel.enemyCounts;
 
-		// Display lvl 1 logic
+		// Start + Display lvl 1 logic
+		BeginLevel (activeLevelNum);
 		UIManager.Singleton.StartLevel(activeLevelNum, 
 			enemyCountsDict[EnemyType.Pawn], 
 			enemyCountsDict[EnemyType.Ranged], 
@@ -97,8 +100,8 @@ public class GameManager : MonoBehaviour {
 		
 		// Spawn / setup logic for each level
 		activeLevelNum = level;		// The numerical repr of current lvl
-		activeLevel = levels [activeLevelNum];		// Cache the current lvl object
-		currLvlSpawners = levelSpawners[activeLevelNum - 1];	// B/c zero-indexed
+		activeLevel = levels [activeLevelNum - 1];		// Cache the current lvl object
+		currLvlSpawners = levelSpawners[activeLevelNum - 1].row;	// B/c zero-indexed
 
 		// Populate enemy bodycounts
 		pawnsLeft = activeLevel.enemyCounts[EnemyType.Pawn];

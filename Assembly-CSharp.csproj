@@ -86,6 +86,7 @@
      <Compile Include="Assets\Scripts\General\PlayerShotSpawn.cs" />
      <Compile Include="Assets\Scripts\General\PoolManager.cs" />
      <Compile Include="Assets\Scripts\General\PoolObject.cs" />
+     <Compile Include="Assets\Scripts\General\Row.cs" />
      <Compile Include="Assets\Scripts\General\Shields.cs" />
      <Compile Include="Assets\Scripts\General\Ship.cs" />
      <Compile Include="Assets\Scripts\General\Shot.cs" />

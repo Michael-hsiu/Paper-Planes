@@ -88,6 +88,8 @@ public class UIManager : MonoBehaviour {
 			goalText += (bombersLeft + " Bombers");
 		}
 
+		goalText += ".";
+
 		levelGoalText.text = goalText;
 
 		yield return new WaitForSeconds (displayLength);	// Show the level goal text on screen
