@@ -8,7 +8,7 @@ public class PawnShip : Ship {
 	public EnemyType enemyType = EnemyType.Pawn;
 	// States
 	public PawnMS moveState;
-	//public RangedFS firingState;
+	//public PawnFS firingState;
 
 	#region Unity Life Cycle
 	protected override void Start () {
@@ -18,7 +18,7 @@ public class PawnShip : Ship {
 
 		// Component state initialization
 		moveState = new PawnMS ();
-		//firingState = new RangedFS ();
+		//firingState = new PawnFS ();
 
 	}
 
