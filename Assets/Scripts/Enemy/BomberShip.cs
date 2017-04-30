@@ -47,6 +47,12 @@ public class BomberShip : Ship {
 		rb = GetComponent<Rigidbody> ();	// For use in adjusting velocity
 	}
 
+	public override void Kill() {
+		base.Kill ();
+		GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+
+	}
+
 	public override void Move () {
 
 		/** MOVEMENT UPDATE */
