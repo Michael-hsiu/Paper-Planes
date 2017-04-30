@@ -7,6 +7,14 @@ public class BomberCollisionHelper : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 
+		if (other.CompareTag(Constants.PlayerShot)) {
+			// Naive way of ignoring collisions with player shots; could also use layer-based collisions
+			// This actually doesn't work; now using layer-based collision system
+			//Physics.IgnoreCollision (other.GetComponent<Collider> (), GetComponent<Collider> ());
+			Debug.Log ("PLAYER SHOT COLLISION REGISTERED");
+			return;
+		} 
+
 		Debug.Log ("COLLISION REGISTERED");
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {

@@ -11,7 +11,7 @@ public class BomberShip : Ship {
 
 	public int explosionDamage = 50;
 	public float explosionDelay = 3.0f;
-	public float damageRange = 7.0f;
+	public float damageRange = 8.0f;
 	public float rotationFactor = 150.0f;
 	public bool isExploding = false;
 	public bool explosionActive = false;
@@ -43,7 +43,7 @@ public class BomberShip : Ship {
 
 		// Do normal initalization
 		base.Initialize ();
-
+		//damageRange = GetComponentInChildren<BomberCollisionHelper> ().GetComponent<CapsuleCollider> ().radius;
 		rb = GetComponent<Rigidbody> ();	// For use in adjusting velocity
 	}
 

@@ -21,6 +21,7 @@ public class GamePoolManager : MonoBehaviour {
 	// Enemy prefabs
 	public GameObject pawnShip;
 	public GameObject rangedShip;
+	public GameObject bomberShip;
 
 	void Awake () {
 		PoolManager.Instance.CreatePool (playerSingleShot, 50);
@@ -35,6 +36,8 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (missiles, 100);
 		PoolManager.Instance.CreatePool (pawnShip, 500);
 		PoolManager.Instance.CreatePool (rangedShip, 100);
+		PoolManager.Instance.CreatePool (bomberShip, 100);
+
 
 	}
 }

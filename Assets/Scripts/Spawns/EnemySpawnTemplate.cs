@@ -31,8 +31,8 @@ public class EnemySpawnTemplate : MonoBehaviour {
 				
 				Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
 				Ship spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, randomPos, Quaternion.identity);
-				IEnumerator cr = StartDash (spawnedEnemy);
-				StartCoroutine (cr);
+				//IEnumerator cr = StartDash (spawnedEnemy);
+				//StartCoroutine (cr);
 				//spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
 				//spawnedEnemy.name = spawnedEnemy.GetInstanceID () + " " + numEnemies;
 
@@ -46,7 +46,7 @@ public class EnemySpawnTemplate : MonoBehaviour {
 		}
 	}
 
-	IEnumerator StartDash(Ship ship) {
+	/*IEnumerator StartDash(Ship ship) {
 
 		//GameManager.Singleton.onDashCooldown = true;
 		Debug.Log ("STARTED DASH COROUTINE");
@@ -84,5 +84,5 @@ public class EnemySpawnTemplate : MonoBehaviour {
 		yield return new WaitForSeconds (0.1f);
 		//GameManager.Singleton.onDashCooldown = false;
 
-	}
+	}*/
 }
