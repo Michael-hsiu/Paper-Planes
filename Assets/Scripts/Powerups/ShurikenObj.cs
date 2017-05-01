@@ -10,8 +10,7 @@ public class ShurikenObj : PoolObject {
 	public float dmgDelay = 0.1f;
 	private IEnumerator cr;
 	private IEnumerator dd;
-	[SerializeField]
-	private bool canDmg = true;
+	public bool canDmg = true;
 
 	void OnEnable() {
 		StopAllCoroutines ();
@@ -32,6 +31,10 @@ public class ShurikenObj : PoolObject {
 					dd = DamageDelay(dmgDelay);
 					//StartCoroutine (dd);
 				}
+			}
+		} else if (other.gameObject.CompareTag(Constants.GameBorder)) {
+			if (other.gameObject != null) {
+				transform.position = Vector3.Reflect (transform.position, transform.right);
 			}
 		}
 	}
