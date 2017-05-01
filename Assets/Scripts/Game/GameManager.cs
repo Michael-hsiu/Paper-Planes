@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 	public bool isDashing = false;
 	public bool onDashCooldown = false;
 	public int dashes = 99;
+	public PowerupSpawner powerupSpawner;
 
 	// Level logic
 	public LevelData[] levels;		// Stores each LevelData SO as an asset
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour {
 		} else {
 			DestroyImmediate(this);
 		}
+		powerupSpawner = GetComponent<PowerupSpawner> ();
 	}
 
 	public void StartGame() {
@@ -87,7 +89,8 @@ public class GameManager : MonoBehaviour {
 		}
 
 		// Activate powerup spawner
-		PowerupSpawner.Singleton.spawnEnabled = true;
+		powerupSpawner.spawnEnabled = true;
+		powerupSpawner.powerups = activeLevel.powerups;		// Feed PowerupSpawner the activeLvl's list of allowed powerups
 
 		// UI logic
 		UIManager.Singleton.StartLevel (
@@ -105,7 +108,7 @@ public class GameManager : MonoBehaviour {
 		Utils.DisablePowerups ();
 		// Takedown logic for each level
 		// Activate powerup spawner
-		PowerupSpawner.Singleton.spawnEnabled = false;	
+		powerupSpawner.spawnEnabled = false;	
 
 		// Disable all the spawners for this level
 		DisableSpawns ();

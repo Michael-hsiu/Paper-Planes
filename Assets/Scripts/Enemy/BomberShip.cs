@@ -59,7 +59,7 @@ public class BomberShip : Ship {
 		if (isExploding) {
 
 			transform.Rotate(Vector3.forward * rotationFactor * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment
-			rotationFactor += 5.0f;		// Could maybe use lerp for incremeneting exponentially
+			rotationFactor += 5.0f;		// Could maybe use lerp for incrementing exponentially
 
 			// If co-routine not running
 			if (!explosionActive) {

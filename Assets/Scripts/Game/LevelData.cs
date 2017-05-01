@@ -8,8 +8,6 @@ public class LevelData : ScriptableObject {
 
 	public int currLevel;
 
-	public int enemiesToKill;
-
 	public EnemyTypeCountsDictionary enemyCounts = new EnemyTypeCountsDictionary() {
 		{ EnemyType.Pawn, 0},
 		{ EnemyType.Ranged, 0},
@@ -19,6 +17,8 @@ public class LevelData : ScriptableObject {
 		{ EnemyType.Assassin, 0},
 		{ EnemyType.Bomber, 0},
 	};
+
+	public List<GameObject> powerups = new List<GameObject>();
 
 	//public List<GameObject> spawns = new List<GameObject>();	// Doesn't work b/c assets can't reference scene objects
 
