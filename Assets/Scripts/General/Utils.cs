@@ -115,7 +115,10 @@ public static class Utils {
 	public static void DisablePowerups() {
 		GameObject[] list = GameObject.FindGameObjectsWithTag (Constants.Powerup);
 		foreach (GameObject go in list) {
-			UnityEngine.Object.Destroy (go);
+			if (go.GetComponent<PoolObject>() != null) {
+				go.GetComponent<PoolObject>().DestroyForReuse ();
+			}
+			//UnityEngine.Object.Destroy (go);
 		}
 	}
 }

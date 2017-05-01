@@ -49,7 +49,8 @@ public class PowerupSpawner : MonoBehaviour {
 
 				// Spawn a random powerup at a random location within bounds of collider
 				Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
-				Instantiate (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
+				PoolManager.Instance.ReuseObject (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
+				//Instantiate (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
 
 				Debug.Log ("POWERUP SPAWNED!");
 			}
