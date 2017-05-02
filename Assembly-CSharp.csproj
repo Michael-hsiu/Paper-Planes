@@ -46,7 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\PowerupSpawner.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\BomberShip.cs" />
@@ -76,6 +75,7 @@
      <Compile Include="Assets\Scripts\Game\InputManager.cs" />
      <Compile Include="Assets\Scripts\Game\LevelData.cs" />
      <Compile Include="Assets\Scripts\Game\PlayerInput.cs" />
+     <Compile Include="Assets\Scripts\Game\PowerupSpawner.cs" />
      <Compile Include="Assets\Scripts\Game\SerializableDictionary.cs" />
      <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
      <Compile Include="Assets\Scripts\Game\UIManager.cs" />

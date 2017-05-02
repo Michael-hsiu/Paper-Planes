@@ -34,7 +34,15 @@ public class ShurikenObj : PoolObject {
 			}
 		} else if (other.gameObject.CompareTag(Constants.GameBorder)) {
 			if (other.gameObject != null) {
-				transform.position = Vector3.Reflect (transform.position, transform.right);
+				Debug.Log ("Original pos: " + transform.position);
+
+				Vector3 proj = Vector3.Project (transform.up, Vector3.up);
+				//proj.y = transform.position.y;
+				transform.position = Vector3.Reflect (transform.up, proj);
+
+				Debug.Log ("New pos: " + transform.position);
+
+				//transform.position = Vector3.Reflect (transform.position, transform.right);
 			}
 		}
 	}
@@ -47,7 +55,7 @@ public class ShurikenObj : PoolObject {
 
 	IEnumerator CircularRotate() {
 		while (true) {
-			transform.Rotate(Vector3.forward * rotationFactor * Time.deltaTime);	// Enemy normally rotates in circle
+			//transform.Rotate(Vector3.forward * rotationFactor * Time.deltaTime);	// Enemy normally rotates in circle
 			yield return null;
 		}
 	}
