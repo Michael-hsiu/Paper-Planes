@@ -20,6 +20,9 @@ public static class Constants {
 	public static readonly string SafeDistanceColliders = "SafeDistanceColliders";
 	public static readonly string Powerup = "Powerup";
 	public static readonly string GameBorder = "GameBorder";
+	public static readonly string GameBorderTop = "GameBorderTop";
+	public static readonly string GameBorderSide = "GameBorderSide";
+
 
 
 
