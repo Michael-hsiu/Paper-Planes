@@ -34,6 +34,8 @@ public class ShurikenObj : PoolObject {
 					//StartCoroutine (dd);
 				}
 			}
+
+		// Ricochet logic
 		} else if (other.gameObject.CompareTag(Constants.GameBorderTop)) {
 			if (other.gameObject != null) {
 				Vector3 oldVel = transform.GetComponent<Rigidbody> ().velocity;

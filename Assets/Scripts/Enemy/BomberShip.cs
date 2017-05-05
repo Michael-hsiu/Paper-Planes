@@ -118,6 +118,7 @@ public class BomberShip : Ship {
 
 		// Set this to have only one co-routine running
 		explosionActive = true;
+		GetComponentInChildren<SpriteRenderer> ().color = Color.red;
 
 		//Debug.Log ("EXPLOSION COUNTDOWN BEGINS!");
 
