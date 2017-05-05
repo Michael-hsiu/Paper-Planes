@@ -11,6 +11,7 @@ public class ShurikenObj : PoolObject {
 	private IEnumerator cr;
 	private IEnumerator dd;
 	public bool canDmg = true;
+	public int speed = 3;
 
 	void OnEnable() {
 		StopAllCoroutines ();
@@ -34,17 +35,43 @@ public class ShurikenObj : PoolObject {
 			}
 		} else if (other.gameObject.CompareTag(Constants.GameBorder)) {
 			if (other.gameObject != null) {
-				Debug.Log ("Original pos: " + transform.position);
+				//Debug.Log ("Original pos: " + transform.position);
 
-				Vector3 proj = Vector3.Project (transform.up, Vector3.up);
-				//proj.y = transform.position.y;
-				transform.position = Vector3.Reflect (transform.up, proj);
+				//Vector3 reflectDir = new Vector3(other.transform.position.x, other.transform.position.y, 0);
+				//Debug.Log (reflectDir.y);
+				Vector3 oldVel = transform.GetComponent<Rigidbody> ().velocity;
 
-				Debug.Log ("New pos: " + transform.position);
+
+				//transform.GetComponent<Rigidbody> ().velocity = -1 * new Vector3(oldVel.x, oldVel.y, 0);
+				transform.GetComponent<Rigidbody>().velocity = Vector3.Reflect (oldVel, Vector3.up);
 
 				//transform.position = Vector3.Reflect (transform.position, transform.right);
 			}
 		}
+	}
+
+
+
+	void Update() {
+		Debug.DrawLine(Vector3.zero, transform.GetComponent<Rigidbody> ().velocity, Color.red);
+
+		/*Ray ray = new Ray (transform.position, transform.up);
+		RaycastHit hit;
+
+		if (Physics.Raycast(ray, out hit, Time.deltaTime * speed + .1f)) {
+			Vector3 reflectDir = Vector3.Reflect (ray.direction, hit.normal);
+			float rot = Mathf.Atan2 (reflectDir.z, reflectDir.x) * Mathf.Rad2Deg;
+			transform.position = new Vector3 (0, rot, 0);
+			Debug.Log ("New rot: " + transform.eulerAngles);
+		}*/
+
+		//Vector3 proj = Vector3.Project (transform.up, Vector3.up);
+		//proj.y = transform.position.y;
+		//Vector3 reflectDir = Vector3.Reflect (transform.up, Vector3.up);
+
+
+		//transform.position = Vector3.Reflect (transform.up, proj);
+
 	}
 
 	public void FinishExistence() {
