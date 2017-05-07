@@ -7,6 +7,7 @@ using ExtendedCollections;
 
 public class GameManager : MonoBehaviour {
 
+	public PlayerShip playerShip;
 	public int playerHealth = 100;
 	public int playerScore = 0;
 	public int playerDamage = 20;
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour {
 		} else {
 			DestroyImmediate(this);
 		}
+		playerShip = GameObject.FindGameObjectWithTag (Constants.PlayerTag).GetComponent<PlayerShip>();
 		powerupSpawner = GetComponent<PowerupSpawner> ();
 	}
 

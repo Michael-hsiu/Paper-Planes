@@ -10,6 +10,9 @@ public class EnemySpawnTemplate : MonoBehaviour {
 	public float spawnRadius = 3.0f;
 	public bool startSpawning = true;	// Should be controlled by GameManager
 
+	[Range(0,360)]
+	public float spawnAngle;
+
 	private IEnumerator cr;
 	private int numEnemies = 0;
 	private GameObject spawnContainer;
@@ -27,12 +30,24 @@ public class EnemySpawnTemplate : MonoBehaviour {
 		//while (numEnemies < maxEnemies) {
 			
 			//GameObject spawnedEnemy = Instantiate (enemy, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
+			GameObject player = GameManager.Singleton.playerShip.gameObject;
 			if (startSpawning) {
 				
 				Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
 				Ship spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, randomPos, Quaternion.identity);
-				//IEnumerator cr = StartDash (spawnedEnemy);
-				//StartCoroutine (cr);
+
+				//spawnedEnemy.transform.LookAt (GameManager.Singleton.playerShip.gameObject.transform, Vector3.forward);	// Start off pointing towards the player
+				//Vector3 target = new Vector3 (player.transform.rotation.x, player.transform.rotation.y, 0);
+				Vector3 target = player.transform.position;
+				Quaternion newRot = Quaternion.LookRotation ((target - spawnedEnemy.transform.position).normalized);
+				newRot.x = 0;
+				newRot.y = 0;
+				spawnedEnemy.transform.rotation = newRot;	// Set immediately to face the player (vector logic now expressed thru quaternion)
+
+				//spawnedEnemy.transform.rotation = Quaternion.Euler(0, 0, spawnedEnemy.transform.rotation.z);
+
+				//spawnedEnemy.transform.rotation *= Quaternion.Euler (0, 0, Random.Range(0,360));	// Small offset from the player
+
 				//spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
 				//spawnedEnemy.name = spawnedEnemy.GetInstanceID () + " " + numEnemies;
 
@@ -45,44 +60,4 @@ public class EnemySpawnTemplate : MonoBehaviour {
 			yield return null;
 		}
 	}
-
-	/*IEnumerator StartDash(Ship ship) {
-
-		//GameManager.Singleton.onDashCooldown = true;
-		Debug.Log ("STARTED DASH COROUTINE");
-
-		Vector3 savedVelocity = ship.GetComponent<Rigidbody> ().velocity;		// Store velocity pre-dash
-
-		Vector3 forceToAdd = ship.transform.up;		// Starting force, to be incremented every fixedUpdate
-
-		ship.gameObject.GetComponent<Collider>().enabled = false;		// Can't be hit when dashing
-
-		ship.GetComponent<Rigidbody> ().velocity = ship.transform.up;
-
-		while (Time.time < 1.0f) {
-			ship.GetComponent<Rigidbody> ().velocity *= 1.01f;
-
-
-			//forceToAdd += new Vector3 (forceToAdd.x * 1.001f, forceToAdd.y * 1.001f, forceToAdd.z * 1.001f);
-			//player.GetComponent < Rigidbody> ().AddForce (forceToAdd);	// Push player forward for dash (may make this increase over time)
-			Debug.Log ("DASH ACTIVE!!!");
-			yield return new WaitForFixedUpdate ();
-		}
-
-		Debug.Log ("DASH ENDED!");
-
-		yield return new WaitForSeconds (0.15f);		// Short delay for player to re-orient after dash
-
-		ship.GetComponent<Rigidbody> ().velocity = savedVelocity;		// Return to pre-dash velocity
-		ship.gameObject.GetComponent<Collider>().enabled = true;		// Can now be hit after dashing
-
-		//ship.dashStarted = false;		// Player is no longer dashing
-
-		//GameManager.Singleton.isDashing = false;
-		//GameManager.Singleton.onDashCooldown = false;
-		//GameManager.Singleton.speedCapped = true;
-		yield return new WaitForSeconds (0.1f);
-		//GameManager.Singleton.onDashCooldown = false;
-
-	}*/
 }
