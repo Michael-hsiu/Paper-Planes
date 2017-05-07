@@ -136,6 +136,7 @@
      <Compile Include="Assets\Scripts\Spawns\DropShipSpawn.cs" />
      <Compile Include="Assets\Scripts\Spawns\EnemySpawnCappedTemplate.cs" />
      <Compile Include="Assets\Scripts\Spawns\EnemySpawnTemplate.cs" />
+     <Compile Include="Assets\Scripts\Spawns\MovingSpawn.cs" />
      <Compile Include="Assets\Scripts\Utility\ColliderHelper.cs" />
      <Compile Include="Assets\Scripts\Utility\EngineUpdate.cs" />
      <Compile Include="Assets\Scripts\Utility\HealthPickup.cs" />
