@@ -35,7 +35,7 @@ public class PawnMS : MonoBehaviour, IMoveState {
 			Vector3 dist = ps.target.transform.position - ps.transform.position;	// Find vector difference between target and this
 			dist.Normalize ();		// Get unit vector
 
-			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) + 180;	// Angle of rotation around z-axis (pointing upwards)
+			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
 
 			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 

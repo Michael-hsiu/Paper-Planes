@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[SelectionBase]
 public class PawnShip : Ship {
 
 	public EnemyType enemyType = EnemyType.Pawn;

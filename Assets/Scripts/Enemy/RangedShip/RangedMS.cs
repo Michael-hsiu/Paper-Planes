@@ -57,24 +57,24 @@ public class RangedMS : MonoBehaviour, IMoveState {
 			rs = (RangedShip) s;
 		}
 
-		/*if (rs.target != null) {
+		if (rs.target != null) {
 			Vector3 dist = rs.target.transform.position - rs.transform.position;	// Find vector difference between target and this
 			dist.Normalize ();		// Get unit vector
 
-			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) + 180;	// Angle of rotation around z-axis (pointing upwards)
+			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
 
 			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-			//rs.transform.rotation = Quaternion.RotateTowards (rs.transform.rotation, desiredRotation, rs.rotationSpeed * Time.deltaTime);	// Rotate the enemy
+			rs.transform.rotation = Quaternion.RotateTowards (rs.transform.rotation, desiredRotation, rs.rotationSpeed * Time.deltaTime);	// Rotate the enemy
 
 			/** MOVEMENT UPDATE */
-			/*if (!rs.isSpeedBuffed) {
+			if (!rs.isSpeedBuffed) {
 				rs.transform.position = Vector2.MoveTowards (rs.transform.position, rs.target.transform.position, Time.deltaTime * rs.speed);
 			} else {
 				rs.transform.position = Vector2.MoveTowards (rs.transform.position, rs.target.transform.position, Time.deltaTime * rs.speed * rs.buffedSpeedFactor);
 
 			}	
-		} */
+		}
 	}	
 
 	public void MoveBackwards (Ship s) {
