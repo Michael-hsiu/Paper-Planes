@@ -26,30 +26,30 @@ public class EnemySpawnTemplate : MonoBehaviour {
 
 	private IEnumerator WaitAndFire(float spawnDelay) {
 
+		GameObject player = GameManager.Singleton.playerShip.gameObject;
 		while (true) {
 		//while (numEnemies < maxEnemies) {
 			
 			//GameObject spawnedEnemy = Instantiate (enemy, transform.position, Quaternion.identity);	// Instantiate an enemy prefab
-			GameObject player = GameManager.Singleton.playerShip.gameObject;
+			Vector3 target = player.transform.position;
 			if (startSpawning) {
 				
 				Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
 				Ship spawnedEnemy = (Ship) PoolManager.Instance.ReuseObjectRef(enemy, randomPos, Quaternion.identity);
 
-				//spawnedEnemy.transform.LookAt (GameManager.Singleton.playerShip.gameObject.transform, Vector3.forward);	// Start off pointing towards the player
-				//Vector3 target = new Vector3 (player.transform.rotation.x, player.transform.rotation.y, 0);
-				Vector3 target = player.transform.position;
-				Quaternion newRot = Quaternion.LookRotation ((target - spawnedEnemy.transform.position).normalized);
-				newRot.x = 0;
-				newRot.y = 0;
-				spawnedEnemy.transform.rotation = newRot;	// Set immediately to face the player (vector logic now expressed thru quaternion)
+				//Quaternion newRot = Quaternion.LookRotation ((target - spawnedEnemy.transform.position).normalized);
+				//Quaternion newRot = Quaternion.LookRotation ((spawnedEnemy.transform.position - target).normalized);
+				Vector3 dist = target - spawnedEnemy.transform.position;
+				float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) + 180;	// Angle of rotation around z-axis (pointing upwards)
+				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-				//spawnedEnemy.transform.rotation = Quaternion.Euler(0, 0, spawnedEnemy.transform.rotation.z);
 
-				//spawnedEnemy.transform.rotation *= Quaternion.Euler (0, 0, Random.Range(0,360));	// Small offset from the player
+				//Debug.Log ((spawnedEnemy as RangedShip).enemyType);
 
-				//spawnedEnemy.transform.parent = spawnContainer.transform;		// Set parent of spawned enemies to parent container
-				//spawnedEnemy.name = spawnedEnemy.GetInstanceID () + " " + numEnemies;
+				// Appears that this prevents rotation around x and y-axes
+				//newRot.x = 0;
+				//newRot.y = 0;
+				spawnedEnemy.transform.rotation = desiredRotation;	// Set immediately to face the player (vector logic now expressed thru quaternion)
 
 				numEnemies += 1;	// Increment number of enemies this spawn has created
 

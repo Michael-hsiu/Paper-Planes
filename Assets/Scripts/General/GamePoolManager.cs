@@ -35,6 +35,8 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject rangedShip;
 	public GameObject bomberShip;
 
+	public GameObject rangedTest;
+
 	void Awake () {
 		
 		// Shots
@@ -67,6 +69,11 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (pawnShip, 500);
 		PoolManager.Instance.CreatePool (rangedShip, 100);
 		PoolManager.Instance.CreatePool (bomberShip, 100);
+
+		PoolManager.Instance.CreatePool (rangedTest, 100);
+
+
+
 
 
 	}

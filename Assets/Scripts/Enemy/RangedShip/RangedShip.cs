@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[SelectionBase]
 public class RangedShip : FiringShip, IEnemy {
 
 	#region Variables
