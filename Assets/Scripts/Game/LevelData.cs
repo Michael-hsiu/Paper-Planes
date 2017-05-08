@@ -8,6 +8,7 @@ public class LevelData : ScriptableObject {
 
 	public int currLevel;
 
+	// Enemies that will spawn during this level
 	public EnemyTypeCountsDictionary enemyCounts = new EnemyTypeCountsDictionary() {
 		{ EnemyType.Pawn, 0},
 		{ EnemyType.Ranged, 0},
@@ -17,6 +18,9 @@ public class LevelData : ScriptableObject {
 		{ EnemyType.Assassin, 0},
 		{ EnemyType.Bomber, 0},
 	};
+
+	// Moving spawn: deterministic enemy spawns
+	public List<DictRow> movingEnemySpawn = new List<DictRow>();
 
 	public List<GameObject> powerups = new List<GameObject>();
 

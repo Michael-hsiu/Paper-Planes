@@ -69,6 +69,7 @@
      <Compile Include="Assets\Scripts\Game\AIInput.cs" />
      <Compile Include="Assets\Scripts\Game\Constants.cs" />
      <Compile Include="Assets\Scripts\Game\DictionaryDrawer.cs" />
+     <Compile Include="Assets\Scripts\Game\EnemySquad.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\GameState.cs" />
      <Compile Include="Assets\Scripts\Game\InputComponent.cs" />
@@ -79,6 +80,7 @@
      <Compile Include="Assets\Scripts\Game\SerializableDictionary.cs" />
      <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
      <Compile Include="Assets\Scripts\Game\UIManager.cs" />
+     <Compile Include="Assets\Scripts\General\DictRow.cs" />
      <Compile Include="Assets\Scripts\General\DropShipShotSpawn.cs" />
      <Compile Include="Assets\Scripts\General\FOV2D.cs" />
      <Compile Include="Assets\Scripts\General\FasterShot.cs" />
