@@ -20,7 +20,7 @@ public class LevelData : ScriptableObject {
 	};
 
 	// Moving spawn: deterministic enemy spawns
-	public List<DictRow> movingEnemySpawn = new List<DictRow>();
+	public List<EnemySquad> movingEnemySpawn = new List<EnemySquad>();
 
 	public List<GameObject> powerups = new List<GameObject>();
 
