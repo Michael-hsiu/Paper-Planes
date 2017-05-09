@@ -26,7 +26,7 @@ public class MovingSpawn : PoolObject {
 
 	void OnEnable() {
 		//GameManager.Singleton.startLevelEvent += Initialize;	// Subscribe to start lvl event
-		if (/*wasReused &&*/ GameManager.Singleton.activeLevel != null) {
+		if (/*wasReused &&*/ GameManager.Singleton.lvlActive) {
 			Initialize ();		// Initialize if we spawned it after the lvl started
 		}
 	}
@@ -42,25 +42,27 @@ public class MovingSpawn : PoolObject {
 	}
 
 	void Initialize() {
-		GameManager.Singleton.startLevelEvent -= Initialize;	// Unsubscribe from lvl event
+		if (GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
+			GameManager.Singleton.startLevelEvent -= Initialize;	// Unsubscribe from lvl event
 
-		if (player == null) {
-			
-			// Initialization / assignments
-			player = GameManager.Singleton.playerShip.gameObject;
-		}
-		// Assign 1 unique squad to this Moving Spawn (may change this so we have 1 moving spawn for ea. spawn per level; they'll be pooled and just be enabled wherever when needed)
-		List<EnemySquad> listSquads = GameManager.Singleton.activeLevel.movingEnemySpawn;
-		EnemySquad chosenSquad = listSquads [Random.Range (0, listSquads.Count)];
+			if (player == null) {
 
-		// Add mapping of each EnemyType to # of each enemy in squad
-		foreach (KeyValuePair<EnemyType, int> kv in chosenSquad.enemyCounts) {
-			dict.Add(kv.Key, kv.Value);		// Make a copy of the EnemyType and corresponding # of minion spawns, which we will edit
-			enemyTypes.Add(kv.Key);
-			squadTotal += kv.Value;			// This just stores total # of enemies in that enemySquad
+				// Initialization / assignments
+				player = GameManager.Singleton.playerShip.gameObject;
+			}
+			// Assign 1 unique squad to this Moving Spawn (may change this so we have 1 moving spawn for ea. spawn per level; they'll be pooled and just be enabled wherever when needed)
+			List<EnemySquad> listSquads = GameManager.Singleton.activeLevel.movingEnemySpawn;
+			EnemySquad chosenSquad = listSquads [Random.Range (0, listSquads.Count)];
+
+			// Add mapping of each EnemyType to # of each enemy in squad
+			foreach (KeyValuePair<EnemyType, int> kv in chosenSquad.enemyCounts) {
+				dict.Add(kv.Key, kv.Value);		// Make a copy of the EnemyType and corresponding # of minion spawns, which we will edit
+				enemyTypes.Add(kv.Key);
+				squadTotal += kv.Value;			// This just stores total # of enemies in that enemySquad
+			}
+			cr = WaitAndFire(spawnDelay);	// Assign co-routine
+			StartCoroutine(cr);				// Begin eternal enemy spawn
 		}
-		cr = WaitAndFire(spawnDelay);	// Assign co-routine
-		StartCoroutine(cr);				// Begin eternal enemy spawn
 	}
 		
 	void Awake() {
@@ -126,9 +128,9 @@ public class MovingSpawn : PoolObject {
 			}
 			yield return null;
 		}
-		//if (squadTotal == 0) {
+		if (squadTotal == 0 || !GameManager.Singleton.lvlActive) {
 			Debug.Log ("DESTROYING MOVING SPAWN");
 			Destroy (this.gameObject);
-		//}
+		}
 	}
 }

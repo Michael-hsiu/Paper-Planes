@@ -46,11 +46,15 @@ public class MovingSpawnManager : MonoBehaviour {
 		while (true) {			
 			while (spawnEnabled) {
 
-				Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
-				Instantiate (movingSpawn, spawnLoc, Quaternion.identity);
-				//PoolManager.Instance.ReuseObject (movingSpawn, spawnLoc, Quaternion.identity);
+				if (GameManager.Singleton.activeLevel.movingEnemySpawn != null && GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
+					Debug.Log ("CHECK SPAWN STATUS");
 
-				Debug.Log ("MovingSpawn spawned!");
+					Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
+					Instantiate (movingSpawn, spawnLoc, Quaternion.identity);
+					//PoolManager.Instance.ReuseObject (movingSpawn, spawnLoc, Quaternion.identity);
+
+					Debug.Log ("MovingSpawn spawned!" + spawnLoc);
+				}
 				yield return new WaitForSeconds (spawnDelay);	// Currently, moving spawns spawn at fixed intervals
 
 			}
