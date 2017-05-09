@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
 	public bool onDashCooldown = false;
 	public int dashes = 99;
 	public PowerupSpawner powerupSpawner;
+	public MovingSpawnManager movingSpawnManager;
 
 	// Level logic
 	public LevelData[] levels;		// Stores each LevelData SO as an asset
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour {
 		}
 		playerShip = GameObject.FindGameObjectWithTag (Constants.PlayerTag).GetComponent<PlayerShip>();
 		powerupSpawner = GetComponent<PowerupSpawner> ();
+		movingSpawnManager = GetComponent<MovingSpawnManager> ();
 	}
 
 	public void StartGame() {
@@ -97,6 +99,9 @@ public class GameManager : MonoBehaviour {
 		powerupSpawner.spawnEnabled = true;
 		powerupSpawner.powerups = activeLevel.powerups;		// Feed PowerupSpawner the activeLvl's list of allowed powerups
 
+		// Activate moving spawn manager
+		movingSpawnManager.spawnEnabled = true;
+
 		// Announce to dependencies (Moving Spawners, etc.)
 		if (startLevelEvent != null) {
 			startLevelEvent ();		// Tell all of our listeners to fire
@@ -116,9 +121,13 @@ public class GameManager : MonoBehaviour {
 		// Kill all enemies in scene
 		Utils.KillAllEnemies ();
 		Utils.DisablePowerups ();
+
 		// Takedown logic for each level
-		// Activate powerup spawner
-		powerupSpawner.spawnEnabled = false;	
+		// Deactivate powerup spawner
+		powerupSpawner.spawnEnabled = false;
+
+		// Deactivate moving spawn manager
+		movingSpawnManager.spawnEnabled = false;	
 
 		// Disable all the spawners for this level
 		DisableSpawns ();

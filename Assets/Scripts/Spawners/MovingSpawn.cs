@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ExtendedCollections;
 
-public class MovingSpawn : MonoBehaviour {
+public class MovingSpawn : PoolObject {
 
 	// List that stores prefabs that are valid for this squad; we'll select randomly from this list and link to our counts dictionary
 	List<EnemyType> enemyTypes = new List<EnemyType>();
@@ -14,6 +14,7 @@ public class MovingSpawn : MonoBehaviour {
 	public EnemyTypeCountsDictionary dict = new EnemyTypeCountsDictionary ();
 	public int squadTotal;		// Tracks total # of enemies in squad; when this reaches 0, whole squad has spawned and this spawn can disappear~
 	public GameObject player;
+	public bool wasReused = false;
 
 	[Range(0,360)]
 	public float spawnAngle;
@@ -24,7 +25,20 @@ public class MovingSpawn : MonoBehaviour {
 	//private Ship spawnedEnemy;
 
 	void OnEnable() {
-		GameManager.Singleton.startLevelEvent += Initialize;	// Subscribe to start lvl event
+		//GameManager.Singleton.startLevelEvent += Initialize;	// Subscribe to start lvl event
+		if (/*wasReused &&*/ GameManager.Singleton.activeLevel != null) {
+			Initialize ();		// Initialize if we spawned it after the lvl started
+		}
+	}
+
+	public override void OnObjectReuse() {
+		wasReused = true;
+		base.OnObjectReuse ();
+	}
+
+	public override void DestroyForReuse() {
+		wasReused = false;
+		base.DestroyForReuse ();
 	}
 
 	void Initialize() {
@@ -49,7 +63,7 @@ public class MovingSpawn : MonoBehaviour {
 		StartCoroutine(cr);				// Begin eternal enemy spawn
 	}
 		
-	void Start() {
+	void Awake() {
 		GameManager.Singleton.startLevelEvent += Initialize;	// Subscribe to start lvl event
 
 		spawnContainer = new GameObject ("SpawnContainer");		// Create container to hold all spawned enemies
@@ -58,7 +72,7 @@ public class MovingSpawn : MonoBehaviour {
 		
 	private IEnumerator WaitAndFire(float spawnDelay) {
 
-		while (squadTotal > 0) {
+		while (squadTotal > 0 && GameManager.Singleton.lvlActive) {
 
 			Vector3 target = player.transform.position;
 
@@ -112,5 +126,9 @@ public class MovingSpawn : MonoBehaviour {
 			}
 			yield return null;
 		}
+		//if (squadTotal == 0) {
+			Debug.Log ("DESTROYING MOVING SPAWN");
+			Destroy (this.gameObject);
+		//}
 	}
 }

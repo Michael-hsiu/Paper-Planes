@@ -52,6 +52,9 @@ public class GamePoolManager : MonoBehaviour {
 
 	public GameObject rangedTest;
 
+	//[Header("Spawners")] // Spawner prefabs
+	//public GameObject movingSpawn;
+
 	void Awake () {
 
 		if (singleton == null) {
@@ -93,6 +96,9 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (bomberShip, 100);
 
 		PoolManager.Instance.CreatePool (rangedTest, 100);
+
+		// Spawners
+		//PoolManager.Instance.CreatePool (movingSpawn, 20);
 
 
 

@@ -135,19 +135,17 @@
      <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyShootingDistanceType.cs" />
      <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerShooting.cs" />
-     <Compile Include="Assets\Scripts\Spawns\DropShipSpawn.cs" />
-     <Compile Include="Assets\Scripts\Spawns\EnemySpawnCappedTemplate.cs" />
-     <Compile Include="Assets\Scripts\Spawns\EnemySpawnTemplate.cs" />
-     <Compile Include="Assets\Scripts\Spawns\MovingSpawn.cs" />
+     <Compile Include="Assets\Scripts\Spawners\DropShipSpawn.cs" />
+     <Compile Include="Assets\Scripts\Spawners\EnemySpawnCappedTemplate.cs" />
+     <Compile Include="Assets\Scripts\Spawners\EnemySpawnTemplate.cs" />
+     <Compile Include="Assets\Scripts\Spawners\MovingSpawn.cs" />
+     <Compile Include="Assets\Scripts\Spawners\MovingSpawnManager.cs" />
      <Compile Include="Assets\Scripts\Utility\ColliderHelper.cs" />
      <Compile Include="Assets\Scripts\Utility\EngineUpdate.cs" />
      <Compile Include="Assets\Scripts\Utility\HealthPickup.cs" />
      <Compile Include="Assets\Scripts\Utility\ParticleSystemAutoDestroy.cs" />
      <Compile Include="Assets\Scripts\Utility\RotationUpdate.cs" />
      <Compile Include="Assets\Scripts\Utility\ShotMover.cs" />
- <Reference Include="UnityEngine.Purchasing">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
@@ -159,9 +157,6 @@
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>

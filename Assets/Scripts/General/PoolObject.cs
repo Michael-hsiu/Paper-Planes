@@ -8,7 +8,7 @@ public class PoolObject : MonoBehaviour {
 		// Anything to reset? Transform, velocity, etc.
 	}
 
-	public void DestroyForReuse() {
+	public virtual void DestroyForReuse() {
 		//Debug.Log ("DestroyForReuse() WAS REACHED");
 		gameObject.SetActive (false);	// Naive implementation; need to customize to improve performance (only disabling scripts, sprite, etc. instead of whole GO)
 	}
