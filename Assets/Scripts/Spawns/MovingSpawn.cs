@@ -43,16 +43,17 @@ public class MovingSpawn : MonoBehaviour {
 		foreach (KeyValuePair<EnemyType, int> kv in chosenSquad.enemyCounts) {
 			dict.Add(kv.Key, kv.Value);		// Make a copy of the EnemyType and corresponding # of minion spawns, which we will edit
 			enemyTypes.Add(kv.Key);
-			squadTotal += 1;
+			squadTotal += kv.Value;			// This just stores total # of enemies in that enemySquad
 		}
+		cr = WaitAndFire(spawnDelay);	// Assign co-routine
+		StartCoroutine(cr);				// Begin eternal enemy spawn
 	}
 		
 	void Start() {
 		GameManager.Singleton.startLevelEvent += Initialize;	// Subscribe to start lvl event
 
 		spawnContainer = new GameObject ("SpawnContainer");		// Create container to hold all spawned enemies
-		cr = WaitAndFire(spawnDelay);	// Assign co-routine
-		StartCoroutine(cr);				// Begin eternal enemy spawn
+
 	}
 		
 	private IEnumerator WaitAndFire(float spawnDelay) {
@@ -68,7 +69,13 @@ public class MovingSpawn : MonoBehaviour {
 
 				// Need to adapt object pool to give us back an enemy prefab if we give it enum value
 
-				EnemyType randType = enemyTypes [Random.Range (0, enemyTypes.Count)];
+				EnemyType randType = 0;
+
+				// Must choose another enemy if it's null (need to make this reusable multiple times per level though...)
+				while (dict[randType] == 0) {
+					randType = enemyTypes [Random.Range (0, enemyTypes.Count)];
+				}
+
 				GameObject prefabRef = null;
 				if (randType == EnemyType.Pawn) {
 					prefabRef = GamePoolManager.Singleton.pawnShip;
@@ -86,9 +93,12 @@ public class MovingSpawn : MonoBehaviour {
 					prefabRef = GamePoolManager.Singleton.bomberShip;
 				}
 					
+				Debug.Log ("PREFABREF: " + prefabRef == null);
 				if (prefabRef != null) {
 					Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
 					PoolObject spawnedEnemy = PoolManager.Instance.ReuseObjectRef(prefabRef, randomPos, Quaternion.identity);
+					dict [randType] -= 1;	// Subtract for dict of counts
+					squadTotal -= 1;	// Minus 1 from total # of enemies
 
 					Vector3 dist = target - spawnedEnemy.transform.position;
 					float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)

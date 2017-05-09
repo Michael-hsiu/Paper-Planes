@@ -71,11 +71,6 @@ public class GameManager : MonoBehaviour {
 	// Only occurs on button click atm
 	public void BeginLevel(int level) {
 
-		// Announce to dependencies (Moving Spawners, etc.)
-		if (startLevelEvent != null) {
-			startLevelEvent ();		// Tell all of our listeners to fire
-		}
-
 		// Spawn / setup logic for each level
 		lvlActive = true;
 		activeLevelNum = level;		// The numerical repr of current lvl
@@ -101,6 +96,11 @@ public class GameManager : MonoBehaviour {
 		// Activate powerup spawner
 		powerupSpawner.spawnEnabled = true;
 		powerupSpawner.powerups = activeLevel.powerups;		// Feed PowerupSpawner the activeLvl's list of allowed powerups
+
+		// Announce to dependencies (Moving Spawners, etc.)
+		if (startLevelEvent != null) {
+			startLevelEvent ();		// Tell all of our listeners to fire
+		}
 
 		// UI logic
 		UIManager.Singleton.StartLevel (
