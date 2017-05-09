@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour {
 	public LevelData[] levels;		// Stores each LevelData SO as an asset
 	public LevelData activeLevel;
 	public int activeLevelNum = 1;
+	public delegate void StartALevel ();
+	public event StartALevel startLevelEvent;
 
 	// Store how many enemies we need to defeat per level
 	public int pawnsLeft;
@@ -68,8 +70,14 @@ public class GameManager : MonoBehaviour {
 
 	// Only occurs on button click atm
 	public void BeginLevel(int level) {
-		lvlActive = true;
+
+		// Announce to dependencies (Moving Spawners, etc.)
+		if (startLevelEvent != null) {
+			startLevelEvent ();		// Tell all of our listeners to fire
+		}
+
 		// Spawn / setup logic for each level
+		lvlActive = true;
 		activeLevelNum = level;		// The numerical repr of current lvl
 		activeLevel = levels [activeLevelNum - 1];		// Cache the current lvl object
 		currLvlSpawners = levelSpawners[activeLevelNum - 1].row;	// B/c zero-indexed

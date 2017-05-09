@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class GamePoolManager : MonoBehaviour {
 
+	private static GamePoolManager singleton;
+	public static GamePoolManager Singleton {
+		get {
+			if (singleton == null) {
+				singleton = new GamePoolManager();
+			}
+			return singleton;
+		}
+	}
+		
+
 	[Header("Shots")] // Shot prefabs
 	public GameObject playerSingleShot;
 	public GameObject playerDualShot;
@@ -33,12 +44,23 @@ public class GamePoolManager : MonoBehaviour {
 	[Header("Enemies")] // Enemy prefabs
 	public GameObject pawnShip;
 	public GameObject rangedShip;
+	public GameObject mediShip;
+	public GameObject turret;
+	public GameObject dropShip;
+	public GameObject assassinShip;
 	public GameObject bomberShip;
 
 	public GameObject rangedTest;
 
 	void Awake () {
-		
+
+		if (singleton == null) {
+			singleton = this;
+
+		} else {
+			DestroyImmediate(this);
+		}
+
 		// Shots
 		PoolManager.Instance.CreatePool (playerSingleShot, 50);
 		PoolManager.Instance.CreatePool (playerDualShot, 50);
