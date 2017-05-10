@@ -7,7 +7,8 @@ using ExtendedCollections;
 public class EnemySquad : ScriptableObject {
 
 	// Enemies that will be part of the squad
-	public EnemyTypeCountsDictionary enemyCounts = new EnemyTypeCountsDictionary() {
+	public EnemyTypeCountsDictionary enemyCounts;
+	/*= new EnemyTypeCountsDictionary() {
 		{ EnemyType.Pawn, 0},
 		{ EnemyType.Ranged, 0},
 		{ EnemyType.Medic, 0},
@@ -15,5 +16,5 @@ public class EnemySquad : ScriptableObject {
 		{ EnemyType.DropShip, 0},
 		{ EnemyType.Assassin, 0},
 		{ EnemyType.Bomber, 0},
-	};
+	};*/
 }

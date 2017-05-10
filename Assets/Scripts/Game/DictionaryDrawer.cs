@@ -35,6 +35,13 @@ namespace ExtendedCollectionsDrawers {
 		private bool _Foldout;
 		private const float kButtonWidth = 18f;
 
+		private void UpdateSerializedProperties(SerializedProperty property) {
+			// Check for changes
+			EditorUtility.SetDirty( property.serializedObject.targetObject ); // Repaint
+			property.serializedObject.ApplyModifiedProperties();
+			property.serializedObject.Update();
+		}
+
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
 			CheckInitialize(property, label);
@@ -63,6 +70,7 @@ namespace ExtendedCollectionsDrawers {
 			if (GUI.Button(buttonRect, new GUIContent("+", "Add item"), EditorStyles.miniButton))
 			{
 				AddNewItem();
+				UpdateSerializedProperties (property);
 			}
 
 			buttonRect.x -= kButtonWidth;
@@ -70,6 +78,7 @@ namespace ExtendedCollectionsDrawers {
 			if (GUI.Button(buttonRect, new GUIContent("X", "Clear dictionary"), EditorStyles.miniButtonRight))
 			{
 				ClearDictionary();
+				UpdateSerializedProperties (property);
 			}
 
 			if (!_Foldout)
@@ -98,6 +107,7 @@ namespace ExtendedCollectionsDrawers {
 					{
 						Debug.Log(e.Message);
 					}
+					UpdateSerializedProperties (property);
 					break;
 				}
 
@@ -109,6 +119,7 @@ namespace ExtendedCollectionsDrawers {
 				if (EditorGUI.EndChangeCheck())
 				{
 					_Dictionary[key] = value;
+					UpdateSerializedProperties (property);
 					break;
 				}
 
@@ -118,8 +129,10 @@ namespace ExtendedCollectionsDrawers {
 				if (GUI.Button(removeRect, new GUIContent("x", "Remove item"), EditorStyles.miniButtonRight))
 				{
 					RemoveItem(key);
+					UpdateSerializedProperties (property);
 					break;
 				}
+
 			}
 		}
 
@@ -141,6 +154,8 @@ namespace ExtendedCollectionsDrawers {
 				}
 
 				_Foldout = EditorPrefs.GetBool(label.text);
+
+				UpdateSerializedProperties (property);
 			}
 		}
 

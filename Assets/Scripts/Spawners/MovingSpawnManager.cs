@@ -71,7 +71,7 @@ public class MovingSpawnManager : MonoBehaviour {
 		if (GameManager.Singleton.lvlActive && GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
 			spawnTimerText.text = "Spawn Timer: " + (toSpawnTime - Time.time);
 		} else {
-			spawnTimerText.text = "N/A";
+			spawnTimerText.text = "Spawn Timer: N/A";
 		}
 	}
 
