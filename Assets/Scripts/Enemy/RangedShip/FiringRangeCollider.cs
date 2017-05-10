@@ -9,7 +9,7 @@ public class FiringRangeCollider : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 
-		Debug.Log ("Reached firing range from player!");
+		//Debug.Log ("Reached firing range from player!");
 
 		// Either-or: either trigger processes, or Euclidean calc processes
 		if (other.gameObject.CompareTag (Constants.PlayerTag) /* && !GameManager.Singleton.onDashCooldown*/) {
@@ -33,7 +33,7 @@ public class FiringRangeCollider : MonoBehaviour {
 	}
 
 	void OnTriggerExit(Collider other) {
-		Debug.Log ("Leaving firing range from player!");
+		//Debug.Log ("Leaving firing range from player!");
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			try {

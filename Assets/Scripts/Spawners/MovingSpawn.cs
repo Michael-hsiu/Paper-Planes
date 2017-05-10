@@ -109,7 +109,7 @@ public class MovingSpawn : PoolObject {
 					prefabRef = GamePoolManager.Singleton.bomberShip;
 				}
 					
-				Debug.Log ("PREFABREF: " + prefabRef == null);
+				//Debug.Log ("PREFABREF: " + prefabRef == null);
 				if (prefabRef != null) {
 					Vector3 randomPos = Utils.RandomPos (transform, spawnRadius);
 					PoolObject spawnedEnemy = PoolManager.Instance.ReuseObjectRef(prefabRef, randomPos, Quaternion.identity);
@@ -121,12 +121,9 @@ public class MovingSpawn : PoolObject {
 					Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
 					spawnedEnemy.transform.rotation = desiredRotation;	// Set immediately to face the player (vector logic now expressed thru quaternion)*/
-					yield return new WaitForSeconds (spawnDelay);	// Delay between spawning new enemies
-				} else {
-					yield return null;
 				}
-			}
-			yield return null;
+				yield return new WaitForSeconds (spawnDelay);	// Delay between spawning new enemies
+			} 
 		}
 		if (squadTotal == 0 || !GameManager.Singleton.lvlActive) {
 			Debug.Log ("DESTROYING MOVING SPAWN");

@@ -9,7 +9,7 @@ public class SafeDistanceCollider : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 
-		Debug.Log ("Too close to player!");
+		//Debug.Log ("Too close to player!");
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			try {
@@ -23,7 +23,7 @@ public class SafeDistanceCollider : MonoBehaviour {
 
 	void OnTriggerExit(Collider other) {
 
-		Debug.Log ("Too far from player!");
+		//Debug.Log ("Too far from player!");
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			try {

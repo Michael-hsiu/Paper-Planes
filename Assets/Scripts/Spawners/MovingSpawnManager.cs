@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MovingSpawnManager : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class MovingSpawnManager : MonoBehaviour {
 	public float yBound;
 	public float spawnDelay = 5.0f;
 	public bool spawnEnabled = false;
+	public Text spawnTimerText;
+	public float toSpawnTime;
 
 	public IEnumerator cr1;
 	public GameObject movingSpawn;
@@ -47,19 +50,32 @@ public class MovingSpawnManager : MonoBehaviour {
 			while (spawnEnabled) {
 
 				if (GameManager.Singleton.activeLevel.movingEnemySpawn != null && GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
-					Debug.Log ("CHECK SPAWN STATUS");
 
 					Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
 					Instantiate (movingSpawn, spawnLoc, Quaternion.identity);
 					//PoolManager.Instance.ReuseObject (movingSpawn, spawnLoc, Quaternion.identity);
 
-					Debug.Log ("MovingSpawn spawned!" + spawnLoc);
+					Debug.Log ("MovingSpawn spawned!");
+					toSpawnTime = Time.time + spawnDelay;
+					yield return new WaitForSeconds (spawnDelay);	// Currently, moving spawns spawn at fixed intervals
 				}
-				yield return new WaitForSeconds (spawnDelay);	// Currently, moving spawns spawn at fixed intervals
+				yield return null;
 
 			}
 			yield return null;
 		}
+	}
+
+	void UpdateSpawnTimer() {
+		if (GameManager.Singleton.lvlActive) {
+			spawnTimerText.text = "Spawn Timer: " + (toSpawnTime - Time.time);
+		} else {
+			spawnTimerText.text = "N/A";
+		}
+	}
+
+	void Update() {
+		UpdateSpawnTimer ();
 	}
 
 }
