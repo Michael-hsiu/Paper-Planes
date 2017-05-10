@@ -1,13 +1,15 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Spawns/MovingSpawn.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Spawners/MovingSpawn.cs">
     <Files>
-      <File FileName="Assets/Scripts/Spawns/DropShipSpawn.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Game/EnemySquad.cs" Line="11" Column="24" />
       <File FileName="Assets/Scripts/Game/LevelData.cs" Line="25" Column="49" />
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="142" Column="25" />
-      <File FileName="Assets/Scripts/Spawns/MovingSpawn.cs" Line="80" Column="51" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="79" Column="1" />
       <File FileName="Assets/Scripts/General/PoolManager.cs" Line="50" Column="19" />
-      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="16" Column="3" />
+      <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="5" Column="46" />
+      <File FileName="Assets/Scripts/Spawners/MovingSpawn.cs" Line="24" Column="36" />
+      <File FileName="Assets/Scripts/Spawners/MovingSpawnManager.cs" Line="56" Column="52" />
+      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="101" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

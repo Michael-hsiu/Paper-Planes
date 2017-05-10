@@ -27,15 +27,10 @@ public class AIInput : InputComponent {
 		// Temp logic for player destruction
 		if (GameManager.Singleton.playerHealth <= 0) {
 			Instantiate (player.explosion, transform.position, transform.rotation);
-			transform.gameObject.SetActive (false);
+			player.gameObject.SetActive (false);
+			Debug.LogError ("PLAYER DIED!");
+			Debug.Break ();
 		}
-
-		// Temp logic for player destruction
-		if (GameManager.Singleton.playerHealth <= 0) {
-			Instantiate (player.explosion, transform.position, transform.rotation);
-			transform.gameObject.SetActive (false);
-		}
-
 
 		// Standard inputs
 		// Can't turn whilst dashing
