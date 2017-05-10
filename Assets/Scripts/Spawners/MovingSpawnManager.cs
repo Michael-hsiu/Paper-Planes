@@ -56,6 +56,7 @@ public class MovingSpawnManager : MonoBehaviour {
 					//PoolManager.Instance.ReuseObject (movingSpawn, spawnLoc, Quaternion.identity);
 
 					Debug.Log ("MovingSpawn spawned!");
+					spawnDelay = Random.Range (15.0f, 30.0f);		// Spawns can occur anywhere from every 15 s to every 30 s
 					toSpawnTime = Time.time + spawnDelay;
 					yield return new WaitForSeconds (spawnDelay);	// Currently, moving spawns spawn at fixed intervals
 				}
@@ -67,7 +68,7 @@ public class MovingSpawnManager : MonoBehaviour {
 	}
 
 	void UpdateSpawnTimer() {
-		if (GameManager.Singleton.lvlActive) {
+		if (GameManager.Singleton.lvlActive && GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
 			spawnTimerText.text = "Spawn Timer: " + (toSpawnTime - Time.time);
 		} else {
 			spawnTimerText.text = "N/A";
