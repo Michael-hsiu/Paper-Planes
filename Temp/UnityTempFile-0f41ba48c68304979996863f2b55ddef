@@ -80,6 +80,7 @@
 -define:UNITY_EDITOR_64
 -define:UNITY_EDITOR_OSX
 -define:UNITY_TEAM_LICENSE
+'Assets/PromotionArea.cs'
 'Assets/Scripts/Enemy/AssassinCollisionHelper.cs'
 'Assets/Scripts/Enemy/AssassinShip.cs'
 'Assets/Scripts/Enemy/BomberShip.cs'
