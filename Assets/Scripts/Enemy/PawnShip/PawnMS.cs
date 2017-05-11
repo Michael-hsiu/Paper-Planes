@@ -5,6 +5,16 @@ using UnityEngine;
 public class PawnMS : MonoBehaviour, IMoveState {
 
 	public Direction direction;
+	public Direction Direction {
+		get
+		{
+			return direction;
+		}
+		set
+		{
+			direction = value;
+		}
+	}
 	public PawnShip ps;
 
 	public void EnterState (Ship s) {

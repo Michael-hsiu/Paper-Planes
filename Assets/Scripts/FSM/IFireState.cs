@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IMoveState : EntityState {
-	Direction Direction
+public interface IFireState : EntityState {
+	FiringMode Mode
 	{
 		get;
 		set;

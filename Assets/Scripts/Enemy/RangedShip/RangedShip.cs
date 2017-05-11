@@ -10,8 +10,8 @@ public class RangedShip : FiringShip, IEnemy {
 	public EnemyType enemyType = EnemyType.Ranged;
 
 	// States
-	public RangedMS moveState;
-	public RangedFS firingState;
+	public IMoveState moveState;
+	public IFireState firingState;
 
 	public GameObject firingRangeColliders;
 	public GameObject safeDistanceColliders;
@@ -34,8 +34,8 @@ public class RangedShip : FiringShip, IEnemy {
 		sqFireDist = Mathf.Pow (((CapsuleCollider) firingRangeColliders.GetComponent<Collider>()).radius, 2);
 
 		// Component state initialization
-		moveState = GetComponent<RangedMS>();
-		firingState = GetComponent<RangedFS>();
+		moveState = GetComponent<IMoveState>();
+		firingState = GetComponent<IFireState>();
 
 		// Check that we're calling the right Start() method
 		//Debug.Log("RANGED SHIP START");

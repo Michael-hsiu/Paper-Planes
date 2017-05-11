@@ -13,6 +13,16 @@ public enum Direction {
 public class RangedMS : MonoBehaviour, IMoveState {
 
 	public Direction direction;
+	public Direction Direction {
+		get
+		{
+			return direction;
+		}
+		set
+		{
+			direction = value;
+		}
+	}
 	public RangedShip rs;
 
 	public void EnterState (Ship s) {

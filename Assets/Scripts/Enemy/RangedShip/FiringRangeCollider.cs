@@ -14,7 +14,7 @@ public class FiringRangeCollider : MonoBehaviour {
 		// Either-or: either trigger processes, or Euclidean calc processes
 		if (other.gameObject.CompareTag (Constants.PlayerTag) /* && !GameManager.Singleton.onDashCooldown*/) {
 			try {
-				GetComponentInParent<RangedShip>().firingState.mode = FiringMode.Firing;
+				GetComponentInParent<RangedShip>().firingState.Mode = FiringMode.Firing;
 			} catch (NullReferenceException e) {
 				Debug.LogError (e);
 				//Debug.Break ();
@@ -37,7 +37,7 @@ public class FiringRangeCollider : MonoBehaviour {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			try {
-				GetComponentInParent<RangedShip>().firingState.mode = FiringMode.NotFiring;
+				GetComponentInParent<RangedShip>().firingState.Mode = FiringMode.NotFiring;
 			} catch (NullReferenceException e) {
 				Debug.LogError (e);
 				//Debug.Break ();

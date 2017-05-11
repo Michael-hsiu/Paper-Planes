@@ -1,32 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 
 [SelectionBase]
 public class PromotionArea : MonoBehaviour {
 
 	public float attrRadius;		// Attraction radius
-	public float smooth;
+	public float smooth;			// Force amplification
+	public int quota;			// How many enemies we need to absorb to summon mini-boss
+	public List<GameObject> minibosses;		// Spawn a random miniboss (weighted) if quota is reached!
+	public Text quotaText;
+
 	//public float delay;			// Btwn collision detections
 	//public bool attrEnemies;	// Bool flag for attracting enemies
-	public int quota;			// How many enemies we need to absorb to summon mini-boss
 
 	//public IEnumerator cr;
 
 	void Awake() {
+		quotaText.text = quota.ToString ();
 		//attrRadius = GetComponent<CapsuleCollider> ().radius;
 	}
 
 
 	// Attracts + destroys enemies
-	void Update() {
+	void FixedUpdate() {
 		AttractEnemies ();
-		/*if (!attrEnemies) {
-			// Only attract if we're not destroyed, or if our quota hasn't been reached
-			cr = IEAttractEnemies ();
-			StartCoroutine (cr);
-		}*/
 
 	}
 
@@ -35,24 +35,15 @@ public class PromotionArea : MonoBehaviour {
 		Gizmos.DrawWireSphere(transform.position, attrRadius);
 	}
 
-
-	/*IEnumerator IEAttractEnemies() {
-		attrEnemies = true;
-		AttractEnemies ();
-		yield return new WaitForSeconds (delay);
-		attrEnemies = false;
-	}*/
-
-
 	public void AttractEnemies() {
 		// Get all colliders in area
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position, attrRadius);
 		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
 
-		Debug.Log (targets.Count);
+		//Debug.Log (targets.Count);
 		// Attract all gameobjects to us, like a black hole
 		foreach (GameObject go in targets) {
-			Debug.Log (go.name);
+			//Debug.Log (go.name);
 			if (go.CompareTag(Constants.EnemyTag)) {
 				//Debug.Log (go.name);
 				Vector3 gravityDir = (transform.position - go.transform.position).normalized;
@@ -67,10 +58,23 @@ public class PromotionArea : MonoBehaviour {
 
 		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
 			other.gameObject.GetComponent<IKillable>().Kill();		// Destroy the shot that hit us
+			// Decrement quota
+			quota -= 1;
+			if (quota > 0) {
+				UpdateQuotaText ();
+			} else {
+				SpawnMiniboss ();
+			}
 		}
+	}
 
-		// Decrement quota
-		quota -= 1;
+	private void UpdateQuotaText() {
+		quotaText.text = quota.ToString ();
+	}
+
+	private void SpawnMiniboss() {
+		Instantiate (minibosses [Random.Range (0, minibosses.Count)], transform.position, Quaternion.identity);
+		Destroy (this.gameObject);
 	}
 
 

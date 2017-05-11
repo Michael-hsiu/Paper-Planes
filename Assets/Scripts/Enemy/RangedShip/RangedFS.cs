@@ -7,10 +7,21 @@ public enum FiringMode {
 	NotFiring
 }
 
-public class RangedFS : MonoBehaviour, IMoveState {
+public class RangedFS : MonoBehaviour, IFireState {
 
 	public FiringMode mode = FiringMode.NotFiring;
+	public FiringMode Mode {
+		get
+		{
+			return mode;
+		}
+		set
+		{
+			mode = value;
+		}
+	}
 	public RangedShip rs;
+
 
 	public void EnterState (Ship s) {
 

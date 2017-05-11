@@ -9,6 +9,10 @@ public class BomberShip : Ship {
 	#region Variables
 	public EnemyType enemyType = EnemyType.Bomber;
 
+	// States
+	public IMoveState moveState;
+	public IFireState firingState;
+
 	public int explosionDamage = 50;
 	public float explosionDelay = 3.0f;
 	public float damageRange = 8.0f;

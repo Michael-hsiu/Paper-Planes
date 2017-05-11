@@ -100,6 +100,7 @@
 'Assets/Scripts/Enemy/Turret.cs'
 'Assets/Scripts/FSM/FSMManager.cs'
 'Assets/Scripts/FSM/IEntityState.cs'
+'Assets/Scripts/FSM/IFireState.cs'
 'Assets/Scripts/FSM/IMoveState.cs'
 'Assets/Scripts/Game/AIInput.cs'
 'Assets/Scripts/Game/Constants.cs'

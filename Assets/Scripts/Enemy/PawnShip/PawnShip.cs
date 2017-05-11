@@ -8,8 +8,8 @@ public class PawnShip : Ship {
 
 	public EnemyType enemyType = EnemyType.Pawn;
 	// States
-	public PawnMS moveState;
-	//public PawnFS firingState;
+	public IMoveState moveState;
+	//public IFireState firingState;
 
 	#region Unity Life Cycle
 	protected override void Start () {
