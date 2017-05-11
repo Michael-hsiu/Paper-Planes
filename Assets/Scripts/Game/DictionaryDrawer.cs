@@ -35,6 +35,7 @@ namespace ExtendedCollectionsDrawers {
 		private bool _Foldout;
 		private const float kButtonWidth = 18f;
 
+		// Amalgam of suggestions from: http://answers.unity3d.com/questions/505697/how-to-repaint-from-a-property-drawer.html
 		private void UpdateSerializedProperties(SerializedProperty property) {
 			// Check for changes
 			EditorUtility.SetDirty( property.serializedObject.targetObject ); // Repaint
