@@ -49,7 +49,9 @@
      <Compile Include="Assets\PromotionArea.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
-     <Compile Include="Assets\Scripts\Enemy\BomberShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberFS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberMS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\DoT.cs" />
      <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyShip.cs" />

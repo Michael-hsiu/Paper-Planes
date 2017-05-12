@@ -29,6 +29,10 @@ public class BomberShip : Ship {
 		// Call our overridden initalization method
 		Initialize ();
 
+		// Component state initialization
+		moveState = GetComponent<IMoveState>();
+		firingState = GetComponent<IFireState>();
+
 		// Check that we're calling the right Start() method
 		//Debug.Log("BOMBER SHIP START");
 
@@ -58,35 +62,7 @@ public class BomberShip : Ship {
 	}
 
 	public override void Move () {
-
-		/** MOVEMENT UPDATE */
-		if (isExploding) {
-
-			transform.Rotate(Vector3.forward * rotationFactor * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment
-			rotationFactor += 5.0f;		// Could maybe use lerp for incrementing exponentially
-
-			// If co-routine not running
-			if (!explosionActive) {
-				//Debug.Log ("STARTED COROUTINE");
-				StartCoroutine(BeginExplosion());
-			}
-
-			return;		// Break out of method
-
-		} else {
-
-			// Enemy ship turns to face player
-			Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-			dist.Normalize ();		// Get unit vector
-
-			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-
-			transform.Rotate(Vector3.forward * rotationFactor * Time.deltaTime);	// Enemy normally rotates in circle
-			transform.position = Vector2.MoveTowards (transform.position, target.transform.position, Time.deltaTime * speed);
-
-		}
-
+		moveState.UpdateState (this);
 	}		
 
 
@@ -115,6 +91,9 @@ public class BomberShip : Ship {
 		}
 	}
 
+	public void StartExploding() {
+		StartCoroutine (BeginExplosion ());
+	}
 
 	/** CO-ROUTINES */
 

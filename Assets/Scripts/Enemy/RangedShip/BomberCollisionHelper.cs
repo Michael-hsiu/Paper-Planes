@@ -7,16 +7,6 @@ public class BomberCollisionHelper : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 
-		if (other.CompareTag(Constants.PlayerShot)) {
-			// Naive way of ignoring collisions with player shots; could also use layer-based collisions
-			// This actually doesn't work; now using layer-based collision system
-			//Physics.IgnoreCollision (other.GetComponent<Collider> (), GetComponent<Collider> ());
-			Debug.Log ("PLAYER SHOT COLLISION REGISTERED");
-			return;
-		} 
-
-		Debug.Log ("COLLISION REGISTERED");
-
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 
 			GetComponentInParent<Rigidbody>().velocity = Vector3.zero; 	// We stop moving, precautionary measure
@@ -26,6 +16,15 @@ public class BomberCollisionHelper : MonoBehaviour {
 
 			}
 		}
+
+		/*if (other.CompareTag(Constants.PlayerShot)) {
+			// Naive way of ignoring collisions with player shots; could also use layer-based collisions
+			// This actually doesn't work; now using layer-based collision system
+			//Physics.IgnoreCollision (other.GetComponent<Collider> (), GetComponent<Collider> ());
+			Debug.Log ("PLAYER SHOT COLLISION REGISTERED");
+			return;
+		} */
+
 	}
 
 	/*void OnTriggerStay2D(Collider2D other) {
