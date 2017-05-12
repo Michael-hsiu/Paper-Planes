@@ -126,6 +126,7 @@
      <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\ShurikenObj.cs" />
      <Compile Include="Assets\Scripts\Powerups\ShurikenPowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\StraightMissile.cs" />
      <Compile Include="Assets\Scripts\Powerups\TriFirePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\TripMineWeapon.cs" />
      <Compile Include="Assets\Scripts\Powerups\WaveShotPowerup.cs" />
