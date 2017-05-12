@@ -12,6 +12,7 @@ public class PlayerShotSpawn : ShotSpawn {
 
 	public bool ultimateShotEnabled = false;
 	public bool waveShotEnabled = false;
+	public bool multShotEnabled = false;
 	public int ultiShotInterval = 5;
 	public int waveShotInterval = 5;
 	public int shotCounter = 0;
@@ -41,13 +42,22 @@ public class PlayerShotSpawn : ShotSpawn {
 		} else {
 			try {
 				PoolManager.Instance.ReuseObject (shot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+				if (multShotEnabled) {
+					// Left angled
+					PoolManager.Instance.ReuseObject (shot, transform.position,transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 5))));
+					//GameObject shot2 = Instantiate (firingShip.fasterShot, transform.position,transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 10)))) as GameObject;
+
+					// Right angled
+					PoolManager.Instance.ReuseObject (shot, transform.position,transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 5))));
+					//GameObject shot3 = Instantiate (firingShip.fasterShot, transform.position, transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
+
+				}
 			} catch (MissingReferenceException e) {
 				GameObject shot1 = Instantiate (shot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 				Debug.Log ("MISSING REFERENCE - normal shot!");
 			}
 			//GameObject shot1 = Instantiate (shot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
 		}
-		// Straight shot
 
 		shotCounter += 1;	// Increment shot count
 
