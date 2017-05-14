@@ -76,10 +76,10 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			//angleChange += 90.0f;
 			angleChange += (Random.Range (0.0f, 1.0f) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f);		// Micro-adjustments of angle per frame
 			//angleChange = angleChange % 360.0f;
-			Debug.Log ("NEW ANGLE: " + angleChange);
+			//Debug.Log ("NEW ANGLE: " + angleChange);
 			float angleDiff = Utils.Mod (angleChange - oldAngle, 360.0f);
 
-			Debug.Log ("ANGLE DIFF: " + angleDiff);
+			//Debug.Log ("ANGLE DIFF: " + angleDiff);
 			wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleDiff);		// Add a micro-rotation to last rotation
 			//mb.transform.rotation = wanderAngle;
 
@@ -107,8 +107,8 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 		float length = v.magnitude;
 		float angleX = wanderAngle.eulerAngles.z;
 		float angleY = wanderAngle.eulerAngles.y;
-		Debug.Log ("ANGLE X: " + angleX);
-		Debug.Log ("ANGLE Y: " + angleY);
+		//Debug.Log ("ANGLE X: " + angleX);
+		//Debug.Log ("ANGLE Y: " + angleY);
 
 		float cosX = Mathf.Cos (angleX) * Mathf.Rad2Deg;
 		float sinY = Mathf.Sin (angleX) * Mathf.Rad2Deg;
@@ -118,6 +118,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
 		return v;
 	}
+
 
 	public void OnDrawGizmos() {
 		// Draw wander circle

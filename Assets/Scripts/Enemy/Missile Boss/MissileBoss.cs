@@ -145,6 +145,16 @@ public class MissileBoss : Ship, IEnemy {
 		Debug.Log ("UPDATING");
 	}
 
+	void OnTriggerEnter(Collider other) {
+		if (other.gameObject.CompareTag(Constants.GameBorderTop) || other.gameObject.CompareTag(Constants.GameBorderSide)) {
+			Vector3 vel = GetComponent<Rigidbody> ().velocity;
+			transform.position = Vector3.zero;
+			//GetComponent<Rigidbody> ().AddForce (-vel * 10);
+			//GetComponent<Rigidbody> ().velocity *= -1;
+			Debug.Log ("COLLIDED WITH GAME BORDER");
+		}
+	}
+
 	// This is how far away we can detect the player and take measures to atk player
 	public void OnDrawGizmos() {
 		// Draw spin atk radius
