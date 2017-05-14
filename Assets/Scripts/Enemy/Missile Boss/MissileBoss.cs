@@ -44,7 +44,7 @@ public class MissileBoss : Ship, IEnemy {
 		
 		moveState = GetComponent<IMoveState>();
 
-		GetComponent<Rigidbody> ().AddForce (transform.up * 0.001f);
+		GetComponent<Rigidbody> ().AddForce (transform.up * 0.01f);
 		nextAtkTime = Random.Range (2, 3);
 		StartCoroutine (UseAttack ());
 	}

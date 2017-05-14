@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public static class Utils {
 
@@ -68,8 +69,8 @@ public static class Utils {
 
 	// Returns a random position within a certain radius (on x-y plane)
 	public static Vector3 RandomPos(Transform t, float radius) {
-		float x = t.position.x + Random.Range (-radius, radius);
-		float y = t.position.y + Random.Range (-radius, radius);
+		float x = t.position.x + UnityEngine.Random.Range (-radius, radius);
+		float y = t.position.y + UnityEngine.Random.Range (-radius, radius);
 
 		return new Vector3 (x, y, t.position.z);
 	}
@@ -120,5 +121,22 @@ public static class Utils {
 			}
 			//UnityEngine.Object.Destroy (go);
 		}
+	}
+
+
+	// From http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
+	public static float Mod(float a, float n) {
+		if (n == 0)
+			throw new ArgumentOutOfRangeException("n", "(a mod 0) is undefined.");
+
+		//puts a in the [-n+1, n-1] range using the remainder operator
+		float remainder = a % n;
+
+		//if the remainder is less than zero, add n to put it in the [0, n-1] range if n is positive
+		//if the remainder is greater than zero, add n to put it in the [n-1, 0] range if n is negative
+		if ((n > 0 && remainder < 0) ||
+			(n < 0 && remainder > 0))
+			return remainder + n;
+		return remainder;
 	}
 }

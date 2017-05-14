@@ -12,6 +12,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	public float CIRCLE_RADIUS = 1.0f;		// Radius of circle
 	public float ANGLE_CHANGE = 10.0f;		// How many angle changes every frame
 	public float displInterval = 2.0f;		// How often direction gets changed
+	public float angleChange;
 	public bool rotSetOnce = false;
 	public bool startedWander = false;
 	public Quaternion wanderAngle;		// Stores the rotation of each displacement vector
@@ -59,32 +60,46 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 		while (true) {
 			vel = mb.GetComponent<Rigidbody> ().velocity;				// Cache original velocity vector
 			circleCenter = new Vector3 (vel.x, vel.y, 0).normalized;	// Calc center of circle (normalized)
-			displacement = circleCenter.normalized;				// Calc displacement
+			displacement = circleCenter;								// Calc displacement
 			circleCenter = circleCenter * DIST_TO_CIRCLE;						// Scale dist from circle center
 
 			if (!rotSetOnce) {
-				wanderAngle = Quaternion.LookRotation (vel, Vector3.forward);	// Initial wander angle is just facing in same direction as enemy is heading		
+				//wanderAngle = Quaternion.LookRotation (vel, Vector3.forward);	// Initial wander angle is just facing in same direction as enemy is heading		
+				wanderAngle = Quaternion.Euler (0, 0, 0);
+				angleChange = 0.0f;
 				rotSetOnce = true;
 			}
 			displacement = SetAngle (displacement, wanderAngle).normalized * CIRCLE_RADIUS;		// Set the angle of displacement every frame
 
-			float angleChange = Random.Range (0, 5) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f;		// Micro-adjustments of angle per frame
-			wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleChange);		// Add a micro-rotation to last rotation
+			float oldAngle = angleChange;
+			//angleChange += Random.Range (-360.0f, 360.0f);
+			//angleChange += 90.0f;
+			angleChange += (Random.Range (0.0f, 1.0f) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f);		// Micro-adjustments of angle per frame
+			//angleChange = angleChange % 360.0f;
+			Debug.Log ("NEW ANGLE: " + angleChange);
+			float angleDiff = Utils.Mod (angleChange - oldAngle, 360.0f);
 
-			Vector3 wanderForce = circleCenter + displacement;			// Create the wander force vector
+			Debug.Log ("ANGLE DIFF: " + angleDiff);
+			wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleDiff);		// Add a micro-rotation to last rotation
+			//mb.transform.rotation = wanderAngle;
+
+			Vector3 wanderForce = (circleCenter + displacement).normalized * 2.0f;			// Create the wander force vector
 			mb.GetComponent<Rigidbody>().velocity = wanderForce;			// Now set the wander force
-			Debug.Log ("VEL CHANGED");
+			//Debug.Break ();
+			//yield return null;
 			yield return new WaitForSeconds (displInterval);
 		}
 	}
 
 	private Vector3 SetAngle(Vector3 v, Quaternion wanderAngle) {
 		float length = v.magnitude;
-		float angleX = wanderAngle.eulerAngles.x;
+		float angleX = wanderAngle.eulerAngles.z;
 		float angleY = wanderAngle.eulerAngles.y;
+		Debug.Log ("ANGLE X: " + angleX);
+		Debug.Log ("ANGLE Y: " + angleY);
 
 		float cosX = Mathf.Cos (angleX) * Mathf.Rad2Deg;
-		float sinY = Mathf.Sin (angleY) * Mathf.Rad2Deg;
+		float sinY = Mathf.Sin (angleX) * Mathf.Rad2Deg;
 
 		v.x = cosX * length;
 		v.y = sinY * length;	
