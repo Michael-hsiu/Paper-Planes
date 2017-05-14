@@ -69,7 +69,7 @@ public class PlayerShip : FiringShip {
 	protected override void Update () {
 
 		// Firing logic
-		/*if (Input.GetButton ("Fire1") && Time.time > nextFire) {
+		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
 			Fire ();
 		}
 
@@ -80,7 +80,7 @@ public class PlayerShip : FiringShip {
 		}
 
 		// Check for user input
-		CheckForInput ();*/
+		//CheckForInput ();
 		//UpdateInput ();
 
 	}
@@ -191,6 +191,13 @@ public class PlayerShip : FiringShip {
 		GameManager.Singleton.playerHealth -= damageTaken;
 		Debug.Log ("NEW PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
 		UIManager.Singleton.UpdateHealth ();
+	}
+
+	void OnTriggerEnter(Collider other) {
+		if (other.gameObject.CompareTag(Constants.EnemyShot)) {
+			other.gameObject.GetComponent<PoolObject> ().DestroyForReuse ();
+			Damage (10);
+		}
 	}
 
 	/*private void CheckForInput() {

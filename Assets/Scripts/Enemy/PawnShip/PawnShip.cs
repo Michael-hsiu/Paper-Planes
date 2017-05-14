@@ -74,6 +74,7 @@ public class PawnShip : Ship {
 
 			Debug.Log ("INNER REACHED!");
 
+			other.gameObject.GetComponent<PlayerShip> ().Damage(10);
 			Instantiate (explosion, transform.position, transform.rotation);
 			DestroyForReuse ();
 			//Destroy (transform.gameObject);

@@ -8,7 +8,10 @@ public class MissileBoss : Ship, IEnemy {
 	// Spec:
 	// Missile attack -> fires IF enemy is detected in certain range, and if certain time has passed
 	// Spin attack
+
 	// Roam behavior / movestate
+	// EMP blasts
+	// Health and other vars
 	
 	#region Variables
 	//public EnemyType enemyType = EnemyType.Ranged;
@@ -30,7 +33,7 @@ public class MissileBoss : Ship, IEnemy {
 
 	// States
 	public IMoveState moveState;
-	public IFireState firingState;
+	//public IFireState firingState;
 
 	public List<Row> missileSpawns;		// List of all the possible missile spawns we have
 	#endregion

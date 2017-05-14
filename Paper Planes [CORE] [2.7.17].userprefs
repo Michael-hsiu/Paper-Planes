@@ -1,14 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/BomberShip/BomberShip.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="37" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedMS.cs" Line="2" Column="34" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="50" Column="58" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedFS.cs" Line="7" Column="11" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="115" Column="84" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberFS.cs" Line="37" Column="25" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip/BomberCollisionHelper.cs" Line="18" Column="4" />
+      <File FileName="Assets/Scripts/General/ShotSpawn.cs" Line="6" Column="2" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="73" Column="44" />
+      <File FileName="Assets/PromotionArea.cs" Line="40" Column="83" />
+      <File FileName="Assets/Scripts/Powerups/StraightMissile.cs" Line="15" Column="61" />
+      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="91" Column="50" />
+      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="10" Column="2" />
+      <File FileName="Assets/Scripts/General/PoolManager.cs" Line="27" Column="1" />
+      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="93" Column="52" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="59" Column="42" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
