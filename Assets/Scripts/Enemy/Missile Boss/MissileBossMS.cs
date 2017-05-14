@@ -57,7 +57,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			wanderAngle = Quaternion.LookRotation (vel, Vector3.forward);	// Initial wander angle is just facing in same direction as enemy is heading		
 			rotSetOnce = true;
 		}
-		SetAngle (displacement, wanderAngle);		// Set the angle of displacement every frame
+		displacement = SetAngle (displacement, wanderAngle);		// Set the angle of displacement every frame
 
 		float angleChange = Random.Range (0, 5) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f;		// Micro-adjustments of angle per frame
 		wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleChange);		// Add a micro-rotation to last rotation
@@ -68,15 +68,18 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
 	}
 
-	private void SetAngle(Vector3 v, Quaternion wanderAngle) {
+	private Vector3 SetAngle(Vector3 v, Quaternion wanderAngle) {
 		float length = v.magnitude;
 		float angleX = wanderAngle.eulerAngles.x;
 		float angleY = wanderAngle.eulerAngles.y;
+
 		float cosX = Mathf.Cos (angleX) * Mathf.Rad2Deg;
 		float sinY = Mathf.Sin (angleY) * Mathf.Rad2Deg;
 
 		v.x = cosX * length;
 		v.y = sinY * length;	
+
+		return v;
 	}
 
 
