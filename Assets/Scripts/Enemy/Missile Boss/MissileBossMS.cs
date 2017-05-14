@@ -11,8 +11,13 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	public float DIST_TO_CIRCLE = 5.0f;	// Distance from circle to player
 	public float CIRCLE_RADIUS = 1.0f;		// Radius of circle
 	public float ANGLE_CHANGE = 10.0f;		// How many angle changes every frame
+	public float displInterval = 2.0f;		// How often direction gets changed
 	public bool rotSetOnce = false;
+	public bool startedWander = false;
 	public Quaternion wanderAngle;		// Stores the rotation of each displacement vector
+	public Vector3 vel;
+	public Vector3 circleCenter;
+	public Vector3 displacement;
 
 	public Direction Direction {
 		get
@@ -35,7 +40,10 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	}
 
 	public void UpdateState(Ship s) {
-		Wander (s);
+		if (!startedWander) {
+			StartCoroutine(Wander (s));
+			startedWander = true;
+		}
 	}
 
 	// Adjusts direction as needed
@@ -44,28 +52,30 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	}
 
 	// Based on logic from: https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-wander--gamedev-1624
-	private void Wander(Ship s) {
+	IEnumerator Wander(Ship s) {
 		if (mb == null) {
 			mb = (MissileBoss) s;
 		}
-		Vector3 vel = mb.GetComponent<Rigidbody> ().velocity;				// Cache original velocity vector
-		Vector3 circleCenter = new Vector3 (vel.x, vel.y, 0).normalized;	// Calc center of circle (normalized)
-		Vector3 displacement = circleCenter * CIRCLE_RADIUS;				// Calc displacement
-		circleCenter = circleCenter * DIST_TO_CIRCLE;						// Scale dist from circle center
+		while (true) {
+			vel = mb.GetComponent<Rigidbody> ().velocity;				// Cache original velocity vector
+			circleCenter = new Vector3 (vel.x, vel.y, 0).normalized;	// Calc center of circle (normalized)
+			displacement = circleCenter.normalized;				// Calc displacement
+			circleCenter = circleCenter * DIST_TO_CIRCLE;						// Scale dist from circle center
 
-		if (!rotSetOnce) {
-			wanderAngle = Quaternion.LookRotation (vel, Vector3.forward);	// Initial wander angle is just facing in same direction as enemy is heading		
-			rotSetOnce = true;
+			if (!rotSetOnce) {
+				wanderAngle = Quaternion.LookRotation (vel, Vector3.forward);	// Initial wander angle is just facing in same direction as enemy is heading		
+				rotSetOnce = true;
+			}
+			displacement = SetAngle (displacement, wanderAngle).normalized * CIRCLE_RADIUS;		// Set the angle of displacement every frame
+
+			float angleChange = Random.Range (0, 5) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f;		// Micro-adjustments of angle per frame
+			wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleChange);		// Add a micro-rotation to last rotation
+
+			Vector3 wanderForce = circleCenter + displacement;			// Create the wander force vector
+			mb.GetComponent<Rigidbody>().velocity = wanderForce;			// Now set the wander force
+			Debug.Log ("VEL CHANGED");
+			yield return new WaitForSeconds (displInterval);
 		}
-		displacement = SetAngle (displacement, wanderAngle);		// Set the angle of displacement every frame
-
-		float angleChange = Random.Range (0, 5) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f;		// Micro-adjustments of angle per frame
-		wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleChange);		// Add a micro-rotation to last rotation
-
-		Vector3 wanderForce = circleCenter + displacement;			// Create the wander force vector
-		mb.GetComponent<Rigidbody>().velocity = wanderForce;			// Now set the wander force
-		Debug.Log ("VEL CHANGEd");
-
 	}
 
 	private Vector3 SetAngle(Vector3 v, Quaternion wanderAngle) {
@@ -80,6 +90,31 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 		v.y = sinY * length;	
 
 		return v;
+	}
+
+	public void OnDrawGizmos() {
+		// Draw wander circle
+		Gizmos.color = Color.white;
+		if (circleCenter != null) {
+			Gizmos.DrawWireSphere(mb.transform.position + circleCenter, CIRCLE_RADIUS);
+		}
+
+		// Draw displacement
+		Gizmos.color = Color.blue;
+		if (displacement != null) {
+			Gizmos.DrawRay (mb.transform.position + circleCenter, displacement);
+		}
+		// Draw circle center
+		Gizmos.color = Color.green;
+		if (circleCenter != null) {
+			Gizmos.DrawRay (mb.transform.position, circleCenter);
+		}
+
+		// Draw added force
+		Gizmos.color = Color.red;
+		if (circleCenter != null) {
+			Gizmos.DrawRay (mb.transform.position, circleCenter + displacement);
+		}
 	}
 
 

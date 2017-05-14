@@ -44,7 +44,7 @@ public class MissileBoss : Ship, IEnemy {
 		
 		moveState = GetComponent<IMoveState>();
 
-		GetComponent<Rigidbody> ().AddForce (transform.up);
+		GetComponent<Rigidbody> ().AddForce (transform.up * 0.001f);
 		nextAtkTime = Random.Range (2, 3);
 		StartCoroutine (UseAttack ());
 	}
@@ -147,9 +147,12 @@ public class MissileBoss : Ship, IEnemy {
 
 	// This is how far away we can detect the player and take measures to atk player
 	public void OnDrawGizmos() {
+		// Draw spin atk radius
 		Gizmos.color = Color.white;
 		Gizmos.DrawWireSphere(transform.position, senseRadius);
+
 	}
+
 	#endregion
 
 }

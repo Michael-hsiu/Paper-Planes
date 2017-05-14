@@ -91,6 +91,7 @@
 'Assets/Scripts/Enemy/EnemyShip.cs'
 'Assets/Scripts/Enemy/MediShip.cs'
 'Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs'
+'Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs'
 'Assets/Scripts/Enemy/PawnShip/PawnFS.cs'
 'Assets/Scripts/Enemy/PawnShip/PawnMS.cs'
 'Assets/Scripts/Enemy/PawnShip/PawnShip.cs'

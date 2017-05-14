@@ -1,20 +1,27 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs">
     <Files>
+      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="182" Column="42" />
       <File FileName="Assets/Scripts/General/ShotSpawn.cs" Line="6" Column="2" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="73" Column="44" />
-      <File FileName="Assets/PromotionArea.cs" Line="40" Column="83" />
-      <File FileName="Assets/Scripts/Powerups/StraightMissile.cs" Line="15" Column="61" />
-      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="91" Column="50" />
-      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="10" Column="2" />
-      <File FileName="Assets/Scripts/General/PoolManager.cs" Line="27" Column="1" />
-      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="93" Column="52" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="59" Column="42" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="39" Column="22" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="146" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" Line="77" Column="51" />
+      <File FileName="Assets/Scripts/Spawners/EnemySpawnTemplate.cs" Line="41" Column="114" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="33" Column="3" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="85" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" line="51" column="1" />
+      <Breakpoint file="/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" line="72" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
