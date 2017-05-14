@@ -41,8 +41,11 @@ public class MissileBoss : Ship, IEnemy {
 
 	#region Unity Life Cycle
 	protected override void Start() {
-		Debug.Log ((float)1 / 2);
-		nextAtkTime = 1f;
+		
+		moveState = GetComponent<IMoveState>();
+
+		GetComponent<Rigidbody> ().AddForce (transform.up);
+		nextAtkTime = Random.Range (2, 3);
 		StartCoroutine (UseAttack ());
 	}
 	#endregion
@@ -138,7 +141,8 @@ public class MissileBoss : Ship, IEnemy {
 	}
 
 	public override void Move() {
-		// Dummy method	
+		moveState.UpdateState (this);
+		Debug.Log ("UPDATING");
 	}
 
 	// This is how far away we can detect the player and take measures to atk player
