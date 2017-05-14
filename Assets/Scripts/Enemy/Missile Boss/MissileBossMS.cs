@@ -59,7 +59,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 		}
 		while (true) {
 			vel = mb.GetComponent<Rigidbody> ().velocity;				// Cache original velocity vector
-			circleCenter = new Vector3 (vel.x, vel.y, 0).normalized;	// Calc center of circle (normalized)
+			circleCenter = new Vector3 (vel.x, vel.y, vel.z).normalized;	// Calc center of circle (normalized)
 			displacement = circleCenter;								// Calc displacement
 			circleCenter = circleCenter * DIST_TO_CIRCLE;						// Scale dist from circle center
 
@@ -83,8 +83,20 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleDiff);		// Add a micro-rotation to last rotation
 			//mb.transform.rotation = wanderAngle;
 
-			Vector3 wanderForce = (circleCenter + displacement).normalized * 2.0f;			// Create the wander force vector
+			Vector3 wanderForce = (circleCenter + displacement).normalized * 3;			// Create the wander force vector
 			mb.GetComponent<Rigidbody>().velocity = wanderForce;			// Now set the wander force
+			/*float mag = mb.transform.position.magnitude;
+
+			Vector3 dist = (wanderForce.normalized * mag) - mb.transform.position;		// Find vector difference between target and this
+			dist.Normalize ();													// Get unit vector
+			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg);	// Angle of rotation around z-axis (pointing upwards)
+			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+			mb.transform.rotation = desiredRotation;*/
+
+			//wanderForce.x = 0;
+			//wanderForce.y = 0;
+			//mb.transform.rotation = Quaternion.LookRotation (wanderForce, Vector3.forward);
+
 			//Debug.Break ();
 			//yield return null;
 			yield return new WaitForSeconds (displInterval);
