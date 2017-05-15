@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInput : InputComponent {
+public class PlayerInput : MonoBehaviour, InputComponent {
 
 	public float speed = 5.0f;
 
-	public override void UpdateInput(PlayerShip player) {
+	public void UpdateInput(PlayerShip player) {
 
 		Debug.Log ("USING PLAYERINPUT");
 		// Firing logic
@@ -54,4 +54,6 @@ public class PlayerInput : InputComponent {
 			}
 		}
 	}
+
+	public void DisableControls() {}
 }

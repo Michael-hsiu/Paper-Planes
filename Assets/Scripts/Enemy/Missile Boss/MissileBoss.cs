@@ -23,9 +23,11 @@ public class MissileBoss : Ship, IEnemy {
 	public float rotFactor;		// How fast spin atk rotates
 	public float atkPrefFactor = 1.5f;		// Similar to hashing; if one atk used too often, use other atk instead. Artificial balance.
 	public float sqMoveDist = 36.0f;				// Squared dist. from player (detection dist.)
+	public float spinAtkRadius = 2.0f;
 	public int numMissileAtks;		// For atk ratio
 	public int numSpinAtks;			// For atk ratio
 	public bool attacking;			// Tracks whether or not we're attacking
+	public bool usingSpinAtk = false;		// To draw the EMP wave
 
 	public GameObject straightMissile;	// Missile fab
 	public GameObject targetRot;	// The rotation we'll use to determine appropriate missile start rotation
@@ -43,7 +45,6 @@ public class MissileBoss : Ship, IEnemy {
 
 	#region Unity Life Cycle
 	protected override void Start() {
-
 		moveState = GetComponent<IMoveState>();
 
 		GetComponent<Rigidbody> ().AddForce (transform.up * 0.01f);
@@ -52,6 +53,10 @@ public class MissileBoss : Ship, IEnemy {
 	}
 	#endregion
 
+	void OnGui() {
+		Drawing.DrawCircle (Vector3.zero, 100, Color.red, 10.0f, 10);
+
+	}
 
 	#region Game Logic
 	// Logic for firing missiles, with delay btwn each, for a certain pd of time
@@ -113,26 +118,48 @@ public class MissileBoss : Ship, IEnemy {
 
 								// Spawn the missile
 								//Instantiate (missile, randomSpawn.transform.position, Quaternion.identity);
+								//PoolObject m = (PoolObject) PoolManager.Instance.ReuseObjectRef(straightMissile, 
+								//	randomSpawn.transform.position, Quaternion.Inverse (targetRot.transform.rotation));
 								PoolObject m = (PoolObject) PoolManager.Instance.ReuseObjectRef(straightMissile, 
-									randomSpawn.transform.position, Quaternion.Inverse (targetRot.transform.rotation));
+									randomSpawn.transform.position, targetRot.transform.rotation);
 							}
 							yield return new WaitForSeconds (missileDelay);		// Wait for delay btwn missile firings	
 						}
 					} else if (atkID == 1) {
+						usingSpinAtk = true;	// To inform MS to draw the circle
 						numSpinAtks += 1;		// We chose spin atks; record it.
-						Debug.Log ("SPIN ATTACK");
+						float oldSpinAtkRadius = spinAtkRadius;		// Cache spin atk radius
 
 						// Spin atk logic
 						float tempRotFactor = rotFactor;
 						float endTime = Time.time + spinAtkTime;
 
 						Quaternion oldRot = transform.rotation;
-						while (Time.time < endTime) {
+						int waveCount = 0;			// Counts how many EMP waves we've emitted
+						while (waveCount < 3 /*&& Time.time < endTime*/) {
+							// Spinning logic
 							transform.Rotate(Vector3.forward * tempRotFactor * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment
 							tempRotFactor += 5.0f;		// Could maybe use lerp for incrementing exponentially
+
+							// Emit growing EMP wave circle logic
+							if (spinAtkRadius > 18.0f) {
+								spinAtkRadius = oldSpinAtkRadius;	// Reset; we will emit multiple waves
+								waveCount += 1;
+							} else {
+								// If player got caught within EMP wave
+								if (Utils.SquaredEuclideanDistance(target.gameObject, this.gameObject) < spinAtkRadius * spinAtkRadius) {
+									// Stun the player - disable their control
+									InputManager.Instance.GetActiveInput().DisableControls ();
+									//Debug.Break ();
+								}
+
+								spinAtkRadius += 0.3f;
+							}
 							yield return null;
 						}
 						transform.rotation = oldRot;		// Reset rotation
+						spinAtkRadius = oldSpinAtkRadius;	// Reset EMP wave radius
+						usingSpinAtk = false;				// Tell MS to stop drawing EMP wave
 						Debug.Log ("SPIN ATTACK END");
 					}
 

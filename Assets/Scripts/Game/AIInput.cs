@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Dash components modelled after: http://answers.unity3d.com/questions/892955/dashing-mechanic-using-rigidbodyaddforce.html
-public class AIInput : InputComponent {
+public class AIInput : MonoBehaviour, InputComponent {
 
 	public float speed = 5.0f;
-
+	public bool controlsEnabled = true;
 	public Vector2 savedVelocity;
 	//public DashState dashState;		// Stores current dash state
 
@@ -15,74 +15,87 @@ public class AIInput : InputComponent {
 	//public enum DashState { Ready, Dashing, Cooldown}
 
 	// Called during PlayerShip's FixedUpdate()
-	public override void UpdateInput(PlayerShip player) {
+	public void UpdateInput(PlayerShip player) {
 
-		// Auto-fire
-		if (Time.time > player.nextFire && !player.rushStarted && !player.dashStarted) {
-			player.Fire ();
-		}
-
-		bool axisInput = GameManager.Singleton.axisInput;	// Check if we register hori/vert movement
-
-		// Temp logic for player destruction
-		if (GameManager.Singleton.playerHealth <= 0) {
-			Instantiate (player.explosion, transform.position, transform.rotation);
-			player.gameObject.SetActive (false);
-			Debug.LogError ("PLAYER DIED!");
-			Debug.Break ();
-		}
-
-		// Standard inputs
-		// Can't turn whilst dashing
-		if (Input.GetKey(KeyCode.D) && !player.dashStarted) {
-			player.transform.Rotate(new Vector3(0, 0, 110) * Time.deltaTime);
-		}
-
-		// Can't turn whilst dashing
-		if (Input.GetKey(KeyCode.A) && !player.dashStarted) {
-			player.transform.Rotate(new Vector3(0, 0, -110) * Time.deltaTime);
-		}
-
-		if (axisInput) {
-			if (Input.GetKey(KeyCode.W)) {
-				//player.transform.Translate (Vector2.up * Time.deltaTime * speed);
-				player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * speed);
+		if (controlsEnabled) {
+			// Auto-fire
+			if (Time.time > player.nextFire && !player.rushStarted && !player.dashStarted) {
+				player.Fire ();
 			}
 
-			if (Input.GetKey(KeyCode.S)) {
-				//player.transform.Translate (Vector2.down * Time.deltaTime * speed);
-				player.GetComponent<Rigidbody>().AddRelativeForce(-transform.up * speed);
+			bool axisInput = GameManager.Singleton.axisInput;	// Check if we register hori/vert movement
+
+			// Temp logic for player destruction
+			if (GameManager.Singleton.playerHealth <= 0) {
+				Instantiate (player.explosion, transform.position, transform.rotation);
+				player.gameObject.SetActive (false);
+				Debug.LogError ("PLAYER DIED!");
+				Debug.Break ();
 			}
+
+			// Standard inputs
+			// Can't turn whilst dashing
+			if (Input.GetKey(KeyCode.D) && !player.dashStarted) {
+				player.transform.Rotate(new Vector3(0, 0, 110) * Time.deltaTime);
+			}
+
+			// Can't turn whilst dashing
+			if (Input.GetKey(KeyCode.A) && !player.dashStarted) {
+				player.transform.Rotate(new Vector3(0, 0, -110) * Time.deltaTime);
+			}
+
+			if (axisInput) {
+				if (Input.GetKey(KeyCode.W)) {
+					//player.transform.Translate (Vector2.up * Time.deltaTime * speed);
+					player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * speed);
+				}
+
+				if (Input.GetKey(KeyCode.S)) {
+					//player.transform.Translate (Vector2.down * Time.deltaTime * speed);
+					player.GetComponent<Rigidbody>().AddRelativeForce(-transform.up * speed);
+				}
+			}
+
+
+			// Powerup input keys
+			if (Input.GetKey(KeyCode.G)) {		// Use Dash powerup
+				if (GameManager.Singleton.dashes > 0 && !player.rushStarted) {
+					Dash (player);
+					Debug.Log ("DASH KEY REGISTERED!");
+				}
+			}
+
+			if (Input.GetKey(KeyCode.H)) {		// Use Burst Rush powerup
+				if (GameManager.Singleton.rushes.Count > 0 && !player.dashStarted) {
+					player.rushStarted = true;		// To make sure we can't activate 2 at a time
+					GameManager.Singleton.rushes.Dequeue ().TriggerCharge (player);	// Get the FIFO rush powerup; tell it to activate a rush!!!
+					Debug.Log ("RUSH KEY REGISTERED!");
+				}
+			}
+
+			// Check if our speed cap is on (off if we're dashing!!!)
+			if (GameManager.Singleton.speedCapped) {
+				// Limit player's maximum velocity
+				player.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, player.maxForward);
+
+				// Comparing squared vector magnitudes
+				if (player.GetComponent<Rigidbody>().velocity.sqrMagnitude == Mathf.Pow(player.maxForward, 2)) {
+					Debug.Log ("MAX VELOCITY REACHED: " + player.GetComponent<Rigidbody> ().velocity.sqrMagnitude);		// Should be the square of maxForward
+				}
+			} 
 		}
+	}
 
+	// Disable player control - activated when hit my EMP wave
+	public void DisableControls() {
+		StopAllCoroutines ();
+		StartCoroutine (DisableControlsRoutine());
+	}
 
-		// Powerup input keys
-		if (Input.GetKey(KeyCode.G)) {		// Use Dash powerup
-			if (GameManager.Singleton.dashes > 0 && !player.rushStarted) {
-				Dash (player);
-				Debug.Log ("DASH KEY REGISTERED!");
-			}
-		}
-
-		if (Input.GetKey(KeyCode.H)) {		// Use Burst Rush powerup
-			if (GameManager.Singleton.rushes.Count > 0 && !player.dashStarted) {
-				player.rushStarted = true;		// To make sure we can't activate 2 at a time
-				GameManager.Singleton.rushes.Dequeue ().TriggerCharge (player);	// Get the FIFO rush powerup; tell it to activate a rush!!!
-				Debug.Log ("RUSH KEY REGISTERED!");
-			}
-		}
-
-		// Check if our speed cap is on (off if we're dashing!!!)
-		if (GameManager.Singleton.speedCapped) {
-			// Limit player's maximum velocity
-			player.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, player.maxForward);
-
-			// Comparing squared vector magnitudes
-			if (player.GetComponent<Rigidbody>().velocity.sqrMagnitude == Mathf.Pow(player.maxForward, 2)) {
-				Debug.Log ("MAX VELOCITY REACHED: " + player.GetComponent<Rigidbody> ().velocity.sqrMagnitude);		// Should be the square of maxForward
-			}
-		} 
-
+	IEnumerator DisableControlsRoutine() {
+		controlsEnabled = false;
+		yield return new WaitForSeconds (4.0f);
+		controlsEnabled = true;
 	}
 
 	// Dash powerup for player

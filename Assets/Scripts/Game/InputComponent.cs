@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class InputComponent : MonoBehaviour {
+public interface InputComponent {
 
 	//public PlayerShip player = GameObject.FindGameObjectWithTag(Constants.PlayerTag);
-
-	public abstract void UpdateInput (PlayerShip player);
+	void DisableControls ();
+	void UpdateInput (PlayerShip player);
 
 }
