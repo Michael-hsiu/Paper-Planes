@@ -7,7 +7,6 @@ using System.Linq;
 public class MediShip : Ship {
 
 	#region Variables
-	public EnemyType enemyType = EnemyType.Medic;
 
 	public float buffRange = 5.0f;			// Range that buff works
 	public float healRange = 15.0f;
@@ -25,6 +24,7 @@ public class MediShip : Ship {
 
 		// Call our overridden initalization method
 		Initialize ();
+		enemyType = EnemyType.Medic;
 		StartCoroutine (SeekHealTarget ());
 
 		// Check that we're calling the right Start() method

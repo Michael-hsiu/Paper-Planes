@@ -142,7 +142,7 @@ public class MissileBoss : Ship, IEnemy {
 							tempRotFactor += 5.0f;		// Could maybe use lerp for incrementing exponentially
 
 							// Emit growing EMP wave circle logic
-							if (spinAtkRadius > 18.0f) {
+							if (spinAtkRadius > 16.0f) {
 								spinAtkRadius = oldSpinAtkRadius;	// Reset; we will emit multiple waves
 								waveCount += 1;
 							} else {
@@ -181,13 +181,7 @@ public class MissileBoss : Ship, IEnemy {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.CompareTag(Constants.GameBorderTop) || other.gameObject.CompareTag(Constants.GameBorderSide)) {
-			Vector3 vel = GetComponent<Rigidbody> ().velocity;
-			transform.position = Vector3.zero;
-			//GetComponent<Rigidbody> ().AddForce (-vel * 10);
-			//GetComponent<Rigidbody> ().velocity *= -1;
-			Debug.Log ("COLLIDED WITH GAME BORDER");
-		} else if (other.gameObject.CompareTag(Constants.PlayerTag)) {
+		if (other.gameObject.CompareTag(Constants.PlayerTag)) {
 			moveState.Direction = Direction.PlayerDetected;
 			target = other.gameObject;
 		}

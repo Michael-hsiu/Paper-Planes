@@ -7,7 +7,6 @@ using System.Linq;
 public class BomberShip : Ship {
 
 	#region Variables
-	public EnemyType enemyType = EnemyType.Bomber;
 
 	// States
 	public IMoveState moveState;
@@ -28,6 +27,7 @@ public class BomberShip : Ship {
 
 		// Call our overridden initalization method
 		Initialize ();
+		enemyType = EnemyType.Bomber;
 
 		// Component state initialization
 		moveState = GetComponent<IMoveState>();

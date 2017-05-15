@@ -7,7 +7,6 @@ using System;
 public class RangedShip : FiringShip, IEnemy {
 
 	#region Variables
-	public EnemyType enemyType = EnemyType.Ranged;
 
 	// States
 	public IMoveState moveState;
@@ -61,7 +60,7 @@ public class RangedShip : FiringShip, IEnemy {
 	protected override void Initialize() {
 		// Do normal initalization
 		base.Initialize ();
-
+		enemyType = EnemyType.Ranged;
 		// Get the state needed
 
 	}

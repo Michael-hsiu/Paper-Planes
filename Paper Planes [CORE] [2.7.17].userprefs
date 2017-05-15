@@ -1,20 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/Ship.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Missile Boss/HitColliderHelper.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="48" Column="31" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" Line="113" Column="85" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="20" Column="26" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedMS.cs" Line="50" Column="5" />
-      <File FileName="Assets/Scripts/General/Utils.cs" Line="77" Column="2" />
-      <File FileName="Assets/Scripts/Enemy/SafeDistanceCollider.cs" Line="16" Column="75" />
-      <File FileName="Assets/Scripts/General/Ship.cs" Line="34" Column="24" />
-      <File FileName="Assets/Scripts/Enemy/PawnShip/PawnMS.cs" Line="60" Column="4" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="124" Column="33" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" Line="228" Column="10" />
+      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="82" Column="34" />
+      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedMS.cs" Line="11" Column="16" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/HitColliderHelper.cs" Line="7" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" line="171" column="1" />
+      <Breakpoint file="/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" line="192" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

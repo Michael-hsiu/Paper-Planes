@@ -5,8 +5,6 @@ using UnityEngine.Assertions;
 
 [SelectionBase]
 public class PawnShip : Ship {
-
-	public EnemyType enemyType = EnemyType.Pawn;
 	// States
 	public IMoveState moveState;
 	//public IFireState firingState;
@@ -15,6 +13,7 @@ public class PawnShip : Ship {
 	protected override void Start () {
 		// Call our overridden initalization method
 		Initialize ();
+		enemyType = EnemyType.Pawn;
 		//Debug.Log("PAWN SHIP START");
 
 		// Component state initialization

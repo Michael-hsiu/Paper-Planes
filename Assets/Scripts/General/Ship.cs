@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Ship : PoolObject, IMovement, IDamageable<int>, IKillable {
+public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillable {
 
 
 	/** INSTANCE VARS */

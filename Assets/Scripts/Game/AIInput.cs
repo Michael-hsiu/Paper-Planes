@@ -94,7 +94,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 
 	IEnumerator DisableControlsRoutine() {
 		controlsEnabled = false;
-		yield return new WaitForSeconds (4.0f);
+		yield return new WaitForSeconds (1.5f);
 		controlsEnabled = true;
 	}
 

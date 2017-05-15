@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\MediShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Missile Boss\HitColliderHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBoss.cs" />
      <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBossMS.cs" />
      <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnFS.cs" />
@@ -86,6 +87,7 @@
      <Compile Include="Assets\Scripts\Game\SerializableDictionary.cs" />
      <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
      <Compile Include="Assets\Scripts\Game\UIManager.cs" />
+     <Compile Include="Assets\Scripts\General\AbstractShip.cs" />
      <Compile Include="Assets\Scripts\General\DictRow.cs" />
      <Compile Include="Assets\Scripts\General\Drawing.cs" />
      <Compile Include="Assets\Scripts\General\DropShipShotSpawn.cs" />

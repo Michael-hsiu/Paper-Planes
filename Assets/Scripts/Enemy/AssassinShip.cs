@@ -7,7 +7,6 @@ using System.Linq;
 public class AssassinShip : Ship {
 
 	#region Variables
-	public EnemyType enemyType = EnemyType.Assassin;
 
 	public float detectionDist;		// How far away to detect Player
 	public float rushDelay = 1.0f;
@@ -29,6 +28,7 @@ public class AssassinShip : Ship {
 	#region Unity Lifecycle
 	protected override void Start () {
 		Initialize ();
+		enemyType = EnemyType.Assassin;
 		Debug.Log("ASSASSIN SHIP START");
 	}
 
