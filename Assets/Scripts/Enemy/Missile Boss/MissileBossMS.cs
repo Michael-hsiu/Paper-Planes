@@ -15,11 +15,13 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	public float angleChange;
 	public bool rotSetOnce = false;
 	public bool startedWander = false;
-	public bool shouldWander = false;
+	public bool shouldWander = true;
+	public bool behaviorChangedOnce = false;
 	public Quaternion wanderAngle;		// Stores the rotation of each displacement vector
 	public Vector3 vel;
 	public Vector3 circleCenter;
 	public Vector3 displacement;
+	public Vector3 oldVel;				// For when we change behaviors
 
 	public Direction Direction {
 		get
@@ -43,7 +45,9 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
 	public void UpdateState(Ship s) {
 		if (direction == Direction.PlayerUndetected) {
-			
+
+
+			// For after the first time we switch behavior states
 			shouldWander = true;
 
 			if (!startedWander) {
@@ -52,18 +56,24 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			}
 
 		} else if (direction == Direction.PlayerDetected) {
-			
+
+			// Store the velocity from detecton phase
+			if (!behaviorChangedOnce) {
+				oldVel = mb.GetComponent<Rigidbody> ().velocity;
+			}
+			behaviorChangedOnce = true;
+
 			shouldWander = false;
 			mb.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 
 			float sqDist = Utils.SquaredEuclideanDistance (mb.gameObject, mb.target);
-
+			//Debug.Log ("SQDIST: " + sqDist);
 			// Update behavior based on dist. from target if currently pursuing target
-			/*if (sqDist > mb.sqMoveDist) {
+			if (sqDist > mb.sqMoveDist) {
 				direction = Direction.PlayerUndetected;
 			} else {
 				direction = Direction.PlayerDetected;
-			}*/
+			}
 
 			if (mb.target != null) {
 				Vector3 dist = mb.target.transform.position - mb.transform.position;	// Find vector difference between target and this
@@ -96,8 +106,19 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			mb = (MissileBoss) s;
 		}
 		while (true) {
-			if (shouldWander) {
-	
+			
+			//bool usedOldVel = false;
+
+			while (shouldWander) {
+				if (mb.GetComponent<Rigidbody> ().velocity == Vector3.zero /*|| !usedOldVel*/) {
+					//mb.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+					mb.GetComponent<Rigidbody> ().velocity = mb.transform.up;
+					//mb.GetComponent<Rigidbody> ().velocity = oldVel;
+					//usedOldVel = true;
+					Debug.Log ("ADDED FORCE!");
+					//Debug.Break ();
+				}
+				Debug.Log ("BACK IN LOOP");
 				vel = mb.GetComponent<Rigidbody> ().velocity;				// Cache original velocity vector
 				circleCenter = new Vector3 (vel.x, vel.y, vel.z).normalized;	// Calc center of circle (normalized)
 				displacement = circleCenter;								// Calc displacement
@@ -141,6 +162,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 				//yield return null;
 				yield return new WaitForSeconds (displInterval);
 			}
+			//usedOldVel = true;
 			yield return null;
 		}
 	}
