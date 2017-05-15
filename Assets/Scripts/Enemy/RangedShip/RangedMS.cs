@@ -6,7 +6,9 @@ public enum Direction {
 	Forwards,
 	Idle,
 	Backwards,
-	TooClose
+	TooClose,
+	PlayerUndetected,
+	PlayerDetected
 
 }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class MissileBossMS : MonoBehaviour, IMoveState {
 
 
-	public Direction direction;
+	public Direction direction = Direction.PlayerUndetected;
 
 	// Wander logic
 	public float DIST_TO_CIRCLE = 5.0f;	// Distance from circle to player
@@ -15,6 +15,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	public float angleChange;
 	public bool rotSetOnce = false;
 	public bool startedWander = false;
+	public bool shouldWander = false;
 	public Quaternion wanderAngle;		// Stores the rotation of each displacement vector
 	public Vector3 vel;
 	public Vector3 circleCenter;
@@ -41,9 +42,46 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	}
 
 	public void UpdateState(Ship s) {
-		if (!startedWander) {
-			StartCoroutine(Wander (s));
-			startedWander = true;
+		if (direction == Direction.PlayerUndetected) {
+			
+			shouldWander = true;
+
+			if (!startedWander) {
+				StartCoroutine(Wander (s));
+				startedWander = true;
+			}
+
+		} else if (direction == Direction.PlayerDetected) {
+			
+			shouldWander = false;
+			mb.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+
+			float sqDist = Utils.SquaredEuclideanDistance (mb.gameObject, mb.target);
+
+			// Update behavior based on dist. from target if currently pursuing target
+			/*if (sqDist > mb.sqMoveDist) {
+				direction = Direction.PlayerUndetected;
+			} else {
+				direction = Direction.PlayerDetected;
+			}*/
+
+			if (mb.target != null) {
+				Vector3 dist = mb.target.transform.position - mb.transform.position;	// Find vector difference between target and this
+				dist.Normalize ();		// Get unit vector
+
+				float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+
+				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+
+				mb.transform.rotation = Quaternion.RotateTowards (mb.transform.rotation, desiredRotation, mb.rotationSpeed * Time.deltaTime);	// Rotate the enemy
+
+				/** MOVEMENT UPDATE */
+				if (!mb.isSpeedBuffed) {
+					mb.transform.position = Vector2.MoveTowards (mb.transform.position, mb.target.transform.position, Time.deltaTime * mb.speed);
+				} else {
+					mb.transform.position = Vector2.MoveTowards (mb.transform.position, mb.target.transform.position, Time.deltaTime * mb.speed * mb.buffedSpeedFactor);
+				}
+			}
 		}
 	}
 
@@ -58,48 +96,52 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			mb = (MissileBoss) s;
 		}
 		while (true) {
-			vel = mb.GetComponent<Rigidbody> ().velocity;				// Cache original velocity vector
-			circleCenter = new Vector3 (vel.x, vel.y, vel.z).normalized;	// Calc center of circle (normalized)
-			displacement = circleCenter;								// Calc displacement
-			circleCenter = circleCenter * DIST_TO_CIRCLE;						// Scale dist from circle center
+			if (shouldWander) {
+	
+				vel = mb.GetComponent<Rigidbody> ().velocity;				// Cache original velocity vector
+				circleCenter = new Vector3 (vel.x, vel.y, vel.z).normalized;	// Calc center of circle (normalized)
+				displacement = circleCenter;								// Calc displacement
+				circleCenter = circleCenter * DIST_TO_CIRCLE;						// Scale dist from circle center
 
-			if (!rotSetOnce) {
-				//wanderAngle = Quaternion.LookRotation (vel, Vector3.forward);	// Initial wander angle is just facing in same direction as enemy is heading		
-				wanderAngle = Quaternion.Euler (0, 0, 0);
-				angleChange = 0.0f;
-				rotSetOnce = true;
+				if (!rotSetOnce) {
+					//wanderAngle = Quaternion.LookRotation (vel, Vector3.forward);	// Initial wander angle is just facing in same direction as enemy is heading		
+					wanderAngle = Quaternion.Euler (0, 0, 0);
+					angleChange = 0.0f;
+					rotSetOnce = true;
+				}
+				displacement = SetAngle (displacement, wanderAngle).normalized * CIRCLE_RADIUS;		// Set the angle of displacement every frame
+
+				float oldAngle = angleChange;
+				//angleChange += Random.Range (-360.0f, 360.0f);
+				//angleChange += 90.0f;
+				angleChange += (Random.Range (0.0f, 1.0f) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f);		// Micro-adjustments of angle per frame
+				//angleChange = angleChange % 360.0f;
+				//Debug.Log ("NEW ANGLE: " + angleChange);
+				float angleDiff = Utils.Mod (angleChange - oldAngle, 360.0f);
+
+				//Debug.Log ("ANGLE DIFF: " + angleDiff);
+				wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleDiff);		// Add a micro-rotation to last rotation
+				//mb.transform.rotation = wanderAngle;
+
+				Vector3 wanderForce = (circleCenter + displacement).normalized * 3;			// Create the wander force vector
+				mb.GetComponent<Rigidbody>().velocity = wanderForce;			// Now set the wander force
+				/*float mag = mb.transform.position.magnitude;
+
+				Vector3 dist = (wanderForce.normalized * mag) - mb.transform.position;		// Find vector difference between target and this
+				dist.Normalize ();													// Get unit vector
+				float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg);	// Angle of rotation around z-axis (pointing upwards)
+				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+				mb.transform.rotation = desiredRotation;*/
+
+				//wanderForce.x = 0;
+				//wanderForce.y = 0;
+				//mb.transform.rotation = Quaternion.LookRotation (wanderForce, Vector3.forward);
+
+				//Debug.Break ();
+				//yield return null;
+				yield return new WaitForSeconds (displInterval);
 			}
-			displacement = SetAngle (displacement, wanderAngle).normalized * CIRCLE_RADIUS;		// Set the angle of displacement every frame
-
-			float oldAngle = angleChange;
-			//angleChange += Random.Range (-360.0f, 360.0f);
-			//angleChange += 90.0f;
-			angleChange += (Random.Range (0.0f, 1.0f) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f);		// Micro-adjustments of angle per frame
-			//angleChange = angleChange % 360.0f;
-			//Debug.Log ("NEW ANGLE: " + angleChange);
-			float angleDiff = Utils.Mod (angleChange - oldAngle, 360.0f);
-
-			//Debug.Log ("ANGLE DIFF: " + angleDiff);
-			wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleDiff);		// Add a micro-rotation to last rotation
-			//mb.transform.rotation = wanderAngle;
-
-			Vector3 wanderForce = (circleCenter + displacement).normalized * 3;			// Create the wander force vector
-			mb.GetComponent<Rigidbody>().velocity = wanderForce;			// Now set the wander force
-			/*float mag = mb.transform.position.magnitude;
-
-			Vector3 dist = (wanderForce.normalized * mag) - mb.transform.position;		// Find vector difference between target and this
-			dist.Normalize ();													// Get unit vector
-			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg);	// Angle of rotation around z-axis (pointing upwards)
-			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-			mb.transform.rotation = desiredRotation;*/
-
-			//wanderForce.x = 0;
-			//wanderForce.y = 0;
-			//mb.transform.rotation = Quaternion.LookRotation (wanderForce, Vector3.forward);
-
-			//Debug.Break ();
-			//yield return null;
-			yield return new WaitForSeconds (displInterval);
+			yield return null;
 		}
 	}
 
@@ -123,26 +165,19 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	public void OnDrawGizmos() {
 		// Draw wander circle
 		Gizmos.color = Color.white;
-		if (circleCenter != null) {
-			Gizmos.DrawWireSphere(mb.transform.position + circleCenter, CIRCLE_RADIUS);
-		}
+		Gizmos.DrawWireSphere(mb.transform.position + circleCenter, CIRCLE_RADIUS);
 
 		// Draw displacement
 		Gizmos.color = Color.blue;
-		if (displacement != null) {
-			Gizmos.DrawRay (mb.transform.position + circleCenter, displacement);
-		}
+		Gizmos.DrawRay (mb.transform.position + circleCenter, displacement);
+
 		// Draw circle center
 		Gizmos.color = Color.green;
-		if (circleCenter != null) {
-			Gizmos.DrawRay (mb.transform.position, circleCenter);
-		}
+		Gizmos.DrawRay (mb.transform.position, circleCenter);
 
 		// Draw added force
 		Gizmos.color = Color.red;
-		if (circleCenter != null) {
-			Gizmos.DrawRay (mb.transform.position, circleCenter + displacement);
-		}
+		Gizmos.DrawRay (mb.transform.position, circleCenter + displacement);
 	}
 
 

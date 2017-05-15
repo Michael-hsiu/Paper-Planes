@@ -22,6 +22,7 @@ public class MissileBoss : Ship, IEnemy {
 	public float spinAtkTime = 5.0f;		// Spin atk duration
 	public float rotFactor;		// How fast spin atk rotates
 	public float atkPrefFactor = 1.5f;		// Similar to hashing; if one atk used too often, use other atk instead. Artificial balance.
+	public float sqMoveDist = 36.0f;				// Squared dist. from player (detection dist.)
 	public int numMissileAtks;		// For atk ratio
 	public int numSpinAtks;			// For atk ratio
 
@@ -41,7 +42,7 @@ public class MissileBoss : Ship, IEnemy {
 
 	#region Unity Life Cycle
 	protected override void Start() {
-		
+
 		moveState = GetComponent<IMoveState>();
 
 		GetComponent<Rigidbody> ().AddForce (transform.up * 0.01f);
@@ -152,6 +153,9 @@ public class MissileBoss : Ship, IEnemy {
 			//GetComponent<Rigidbody> ().AddForce (-vel * 10);
 			//GetComponent<Rigidbody> ().velocity *= -1;
 			Debug.Log ("COLLIDED WITH GAME BORDER");
+		} else if (other.gameObject.CompareTag(Constants.PlayerTag)) {
+			moveState.Direction = Direction.PlayerDetected;
+			target = other.gameObject;
 		}
 	}
 
