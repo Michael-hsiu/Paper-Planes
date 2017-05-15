@@ -25,6 +25,7 @@ public class MissileBoss : Ship, IEnemy {
 	public float sqMoveDist = 36.0f;				// Squared dist. from player (detection dist.)
 	public int numMissileAtks;		// For atk ratio
 	public int numSpinAtks;			// For atk ratio
+	public bool attacking;			// Tracks whether or not we're attacking
 
 	public GameObject straightMissile;	// Missile fab
 	public GameObject targetRot;	// The rotation we'll use to determine appropriate missile start rotation
@@ -56,88 +57,94 @@ public class MissileBoss : Ship, IEnemy {
 	// Logic for firing missiles, with delay btwn each, for a certain pd of time
 	IEnumerator UseAttack() {
 		while (true) {
-			int lastMissileId = -1;
-			GameObject randomSpawn = null;
 
-			// Wait until we can start atking again
-			if (Time.time >= nextAtkTime) {
+			// Only attack if the player is detected
+			if (moveState.Direction == Direction.PlayerDetected) {
+				
+				int lastMissileId = -1;
+				GameObject randomSpawn = null;
 
-				// Choose an atk randomly (may choose to weight later to prevent repeats)
-				// 0=missiles, 1=spin
-				int atkID = Random.Range (0, 2);
+				// Wait until we can start atking again
+				if (Time.time >= nextAtkTime) {
 
-				// If we fire too many missiles, flip it. Vice versa for spin atks.
-				if  (numSpinAtks != 0 && numMissileAtks != 0) {
-					if ((double) numMissileAtks / numSpinAtks > atkPrefFactor) {
+					// Choose an atk randomly (may choose to weight later to prevent repeats)
+					// 0=missiles, 1=spin
+					int atkID = Random.Range (0, 2);
+					attacking = true;		// We're now attacking
+					// If we fire too many missiles, flip it. Vice versa for spin atks.
+					if  (numSpinAtks != 0 && numMissileAtks != 0) {
+						if ((double) numMissileAtks / numSpinAtks > atkPrefFactor) {
+							atkID = 1;
+						} else if ((double) numSpinAtks / numMissileAtks > atkPrefFactor) {
+							atkID = 0;
+						}
+						double max = (double) numSpinAtks / numMissileAtks;
+						if ((double) numMissileAtks / numSpinAtks > max) {
+							max = ((double) numMissileAtks / numSpinAtks);
+						}
+						Debug.Log ("ATK PREF FACTOR: " + max);
+					} else if (numMissileAtks - numSpinAtks > 2) {
 						atkID = 1;
-					} else if ((double) numSpinAtks / numMissileAtks > atkPrefFactor) {
+					} else if (numSpinAtks - numMissileAtks > 2) {
 						atkID = 0;
 					}
-					double max = (double) numSpinAtks / numMissileAtks;
-					if ((double) numMissileAtks / numSpinAtks > max) {
-						max = ((double) numMissileAtks / numSpinAtks);
-					}
-					Debug.Log ("ATK PREF FACTOR: " + max);
-				} else if (numMissileAtks - numSpinAtks > 2) {
-					atkID = 1;
-				} else if (numSpinAtks - numMissileAtks > 2) {
-					atkID = 0;
-				}
 
-				if (atkID == 0) {
-					numMissileAtks += 1;	// We chose missiles; record it.
-					Debug.Log ("FIRING MISSILES");
-					// Firing atk logic
-					float endTime = Time.time + missileAtkTime;
-					while (Time.time < endTime) {
+					if (atkID == 0) {
+						numMissileAtks += 1;	// We chose missiles; record it.
+						Debug.Log ("FIRING MISSILES");
+						// Firing atk logic
+						float endTime = Time.time + missileAtkTime;
+						while (Time.time < endTime) {
 
-						int randomId = -1;
-						// Fire 1 missile from each side (L/R)
-						foreach (Row l in missileSpawns) {
+							int randomId = -1;
+							// Fire 1 missile from each side (L/R)
+							foreach (Row l in missileSpawns) {
 
-							// IDs are for each
-							randomId = Random.Range (0, l.row.Count);
-							randomSpawn = l.row[randomId];
-
-							// Fire a different missile from last time
-							while (randomId == lastMissileId) {
+								// IDs are for each
 								randomId = Random.Range (0, l.row.Count);
 								randomSpawn = l.row[randomId];
+
+								// Fire a different missile from last time
+								while (randomId == lastMissileId) {
+									randomId = Random.Range (0, l.row.Count);
+									randomSpawn = l.row[randomId];
+								}
+								lastMissileId = randomId;	// So we don't fire from same location twice in a row
+
+								// Spawn the missile
+								//Instantiate (missile, randomSpawn.transform.position, Quaternion.identity);
+								PoolObject m = (PoolObject) PoolManager.Instance.ReuseObjectRef(straightMissile, 
+									randomSpawn.transform.position, Quaternion.Inverse (targetRot.transform.rotation));
 							}
-							lastMissileId = randomId;	// So we don't fire from same location twice in a row
-
-							// Spawn the missile
-							//Instantiate (missile, randomSpawn.transform.position, Quaternion.identity);
-							PoolObject m = (PoolObject) PoolManager.Instance.ReuseObjectRef(straightMissile, 
-								randomSpawn.transform.position, Quaternion.Inverse (targetRot.transform.rotation));
+							yield return new WaitForSeconds (missileDelay);		// Wait for delay btwn missile firings	
 						}
-						yield return new WaitForSeconds (missileDelay);		// Wait for delay btwn missile firings	
-					}
-				} else if (atkID == 1) {
-					numSpinAtks += 1;		// We chose spin atks; record it.
-					Debug.Log ("SPIN ATTACK");
+					} else if (atkID == 1) {
+						numSpinAtks += 1;		// We chose spin atks; record it.
+						Debug.Log ("SPIN ATTACK");
 
-					// Spin atk logic
-					float tempRotFactor = rotFactor;
-					float endTime = Time.time + spinAtkTime;
+						// Spin atk logic
+						float tempRotFactor = rotFactor;
+						float endTime = Time.time + spinAtkTime;
 
-					Quaternion oldRot = transform.rotation;
-					while (Time.time < endTime) {
-						transform.Rotate(Vector3.forward * tempRotFactor * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment
-						tempRotFactor += 5.0f;		// Could maybe use lerp for incrementing exponentially
-						yield return null;
+						Quaternion oldRot = transform.rotation;
+						while (Time.time < endTime) {
+							transform.Rotate(Vector3.forward * tempRotFactor * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment
+							tempRotFactor += 5.0f;		// Could maybe use lerp for incrementing exponentially
+							yield return null;
+						}
+						transform.rotation = oldRot;		// Reset rotation
+						Debug.Log ("SPIN ATTACK END");
 					}
-					transform.rotation = oldRot;		// Reset rotation
-					Debug.Log ("SPIN ATTACK END");
+
+					// After either attack
+					nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	
+					attacking = false;		// No longer attacking
+					moveState.Direction = Direction.PlayerDetected;
+					yield return null;
 				}
 
-				// After either attack
-				nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	
-				yield return null;
-			} else {
-				// Do nothing
-				yield return null;
 			}
+			yield return null;
 		}
 	}
 

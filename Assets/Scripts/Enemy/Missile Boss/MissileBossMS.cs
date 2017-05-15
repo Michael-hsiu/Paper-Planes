@@ -44,7 +44,19 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	}
 
 	public void UpdateState(Ship s) {
-		if (direction == Direction.PlayerUndetected) {
+		if (mb == null) {
+			mb = (MissileBoss) s;
+		}
+		// If we're attacking right now, we should be idle
+		if (mb.attacking) {
+			direction = Direction.Idle;
+		} 
+
+		if (direction == Direction.Idle) {
+			// Do nothing if we're supposed to be idle; MissileBoss.cs will still take care of attacking
+
+
+		} else if (direction == Direction.PlayerUndetected) {
 
 
 			// For after the first time we switch behavior states
@@ -98,6 +110,15 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	// Adjusts direction as needed
 	private void CheckEnv(Ship s) {
 		GameObject player = s.gameObject;
+	}
+
+	IEnumerator Idle(Ship s) {
+		if (mb == null) {
+			mb = (MissileBoss) s;
+		}
+		yield return new WaitForSeconds (4.0f);		// Wait while we execute behavior
+		direction = Direction.PlayerDetected;		// Resume pursuing player
+
 	}
 
 	// Based on logic from: https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-wander--gamedev-1624
