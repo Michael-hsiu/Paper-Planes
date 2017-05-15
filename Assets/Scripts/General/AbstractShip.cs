@@ -4,5 +4,6 @@
 public abstract class AbstractShip : PoolObject {
 
 	public EnemyType enemyType;
+	public IMoveState moveState;
 
 }

@@ -205,7 +205,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	}
 
 
-	public void OnDrawGizmos() {
+	public void OnDrawGizmosSelected() {
 
 		/* VECTOR VISUALIZATION */
 		// Draw wander circle
@@ -224,13 +224,15 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 		Gizmos.color = Color.red;
 		Gizmos.DrawRay (mb.transform.position, circleCenter + displacement);
 
+	}
+
+	public void OnDrawGizmos() {
 		/* ATTACK VISUALIZATION */
 		if (mb.usingSpinAtk) {
 			Gizmos.color = Color.red;
 			Gizmos.DrawWireSphere (mb.transform.position, mb.spinAtkRadius);
 		}
 	}
-
 
 
 
