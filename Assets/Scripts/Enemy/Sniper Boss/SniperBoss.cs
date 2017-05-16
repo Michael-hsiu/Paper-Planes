@@ -5,16 +5,36 @@ using UnityEngine;
 [SelectionBase]
 public class SniperBoss : Ship, IEnemy {
 
-	// Spec:
+	/** 
+	Spec:
 
-	// Turn to player
-	// Teleports to random pt far from player
-	// Charges + fires laser in arc
-	// Scatters small explosives
+	- Turn to player
+	- Teleports to random pt far from player
+	- Charges + fires laser in arc
+		1) Charge. 
+		2) Then fire laser for X sec, rotating at Y angles / sec. 
+		3) Then brief cooldown in which boss can't do anything except rotate.
+		4) Then teleport, start charging + repeat process again.
+	 - Scatters small explosives 
+	 */
 
 	#region Variables
 	public float sqDist = 100.0f;		// Distance at which it starts backing away from player
+	public float spawnDelay = 5.0f;
+	public float teleDelay = 0.5f;		// The time btwn when visual marker for teleport marker appears, and when we actually teleport
+	public float teleCooldown = 8.0f;	// Cooldown time for teleport
+	public float safetyDist = 100.0f;	// If player is too close, will use explosives attack
+	public float xBound;
+	public float yBound;
+	public int numAtks = 0;				// Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
 	public bool isAtking = false;		// Desc. if boss is attacking
+	public bool spawnEnabled = false;
+	public bool teleportActive = false;
+	public bool laserActive = false;
+	public bool explAtkActive = false;
+
+	[SerializeField] private float nextAtkTime;	// Time at which we can launch next valid atk
+	public IEnumerator cr1;
 
 	#endregion
 
@@ -26,11 +46,131 @@ public class SniperBoss : Ship, IEnemy {
 
 		moveState = GetComponent<IMoveState>();
 
+		Vector3 boxSize = GetComponent<BoxCollider> ().size;
+		xBound = boxSize.x / 2;
+		yBound = boxSize.y / 2;
+
+		cr1 = Teleport ();
+		StartCoroutine (cr1);
+
 	}
+		
 	#endregion
 
 	#region Game Logic
-	// Logic for firing missiles, with delay btwn each, for a certain pd of time
+	IEnumerator Teleport() {
+		
+		// Keep true while in current round
+		while (true) {			
+			if (teleportActive) {
+				
+				Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
+
+				yield return new WaitForSeconds (teleDelay);		// Activate visual marker, waiting to teleport
+
+				// Teleport to a random location within bounds of collider
+				transform.position = spawnLoc;			
+
+				Debug.Log ("SNIPER BOSS TELEPORTED!");
+				yield return new WaitForSeconds (teleCooldown);
+				teleportActive = false;		// Can no longer teleport for awhile
+
+			}
+			yield return null;
+		}
+	}
+
+	IEnumerator UseLaser() {
+		
+		while (true) {			
+			if (laserActive) {
+
+				// Charge time
+				// Fire laser for X sec, rotating at Y angles / sec.
+				// Brief cooldown in which boss can't do anything except rotate. (tell MS)
+
+			}
+			yield return null;
+		}
+	}
+
+	IEnumerator UseExplosives() {
+
+		while (true) {			
+			if (explAtkActive) {
+
+
+			}
+			yield return null;
+		}
+	}
+
+
+	IEnumerator UseAttack() {
+		while (true) {
+
+			// Wait until we can start atking again
+			if (Time.time >= nextAtkTime) {
+
+				// Choose an atk randomly (may choose to weight later to prevent repeats)
+				// 0=laser, 1=explosives (must use if player is close)
+
+				//int atkID = 0; /* = Random.Range (0, 2); */
+				isAtking = true;		// We're now attacking
+
+				if (numAtks >= 3) {		// If we've atked 3 times in a row
+
+					teleportActive = true;
+					StartCoroutine (Teleport ());
+
+					// We let Teleport routine do its job
+					while (teleportActive) {
+						yield return null;
+					}
+
+				} else if (moveState.Direction == Direction.PlayerUndetected) {	
+					// Only use our laser if player is far enough away to be undetected (MS performs this check).
+
+					laserActive = true;
+					StartCoroutine (UseLaser ());
+
+					while (laserActive) {
+						yield return null;
+					}
+
+				} else if (moveState.Direction == Direction.PlayerDetected) {
+					// Use our explosives if player is too close, to make them go away!	
+
+					explAtkActive = true;
+					StartCoroutine (UseExplosives());
+
+					while (explAtkActive) {
+						yield return null;
+					}
+				}
+
+
+				/*// Fix to explosives atk
+				if (target != null && Utils.SquaredEuclideanDistance(gameObject, target.gameObject) < safetyDist) {
+					
+				}*/
+
+
+
+
+				// After either attack
+				nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	
+				isAtking = false;		// No longer attacking
+				moveState.Direction = Direction.PlayerDetected;
+				yield return null;
+			} 
+			}
+			yield return null;
+		}
+	}
+
+
+
 
 	public override void Move() {
 		moveState.UpdateState (this);
