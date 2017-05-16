@@ -177,7 +177,7 @@ public class MissileBoss : Ship, IEnemy {
 
 	public override void Move() {
 		moveState.UpdateState (this);
-		Debug.Log ("UPDATING");
+		//Debug.Log ("UPDATING");
 	}
 
 	void OnTriggerEnter(Collider other) {
@@ -206,10 +206,10 @@ public class MissileBoss : Ship, IEnemy {
 			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
 		} else if (other.gameObject.CompareTag(Constants.GameBorderTop) || other.gameObject.CompareTag(Constants.GameBorderSide)) {
 			Vector3 vel = GetComponent<Rigidbody> ().velocity;
-			transform.position = Vector3.zero;
-			//GetComponent<Rigidbody> ().AddForce (-vel * 10);
+			//transform.position = Vector3.zero;
+			GetComponent<Rigidbody> ().AddForce (-vel * 10);
 			//GetComponent<Rigidbody> ().velocity *= -1;
-			Debug.Log ("COLLIDED WITH GAME BORDER");
+			//Debug.Log ("COLLIDED WITH GAME BORDER");
 		}
 	}
 	

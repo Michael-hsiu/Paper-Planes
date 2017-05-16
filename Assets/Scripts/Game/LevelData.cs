@@ -35,7 +35,8 @@ public enum EnemyType {
 	Turret,
 	DropShip,
 	Assassin,
-	Bomber
+	Bomber,
+	Boss
 }
 
 /*

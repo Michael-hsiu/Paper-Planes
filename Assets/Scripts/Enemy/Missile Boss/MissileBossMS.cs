@@ -136,10 +136,10 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 					mb.GetComponent<Rigidbody> ().velocity = mb.transform.up;
 					//mb.GetComponent<Rigidbody> ().velocity = oldVel;
 					//usedOldVel = true;
-					Debug.Log ("ADDED FORCE!");
+					//Debug.Log ("ADDED FORCE!");
 					//Debug.Break ();
 				}
-				Debug.Log ("BACK IN LOOP");
+				//Debug.Log ("BACK IN LOOP");
 				vel = mb.GetComponent<Rigidbody> ().velocity;				// Cache original velocity vector
 				circleCenter = new Vector3 (vel.x, vel.y, vel.z).normalized;	// Calc center of circle (normalized)
 				displacement = circleCenter;								// Calc displacement

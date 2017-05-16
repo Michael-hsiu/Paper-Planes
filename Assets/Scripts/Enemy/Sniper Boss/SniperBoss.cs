@@ -26,6 +26,7 @@ public class SniperBoss : Ship, IEnemy {
 	public float safetyDist = 100.0f;	// If player is too close, will use explosives attack
 	public float laserChargeTime = 3.0f;
 	public float laserEmitTime = 4.0f;		// How long we fire the laser for
+	public float endTime;
 	public float xBound;
 	public float yBound;
 	public int numAtks = 0;				// Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
@@ -48,12 +49,14 @@ public class SniperBoss : Ship, IEnemy {
 
 		moveState = GetComponent<IMoveState>();
 
-		Vector3 boxSize = GetComponent<BoxCollider> ().size;
-		xBound = boxSize.x / 2;
-		yBound = boxSize.y / 2;
+		//Vector3 boxSize = GetComponent<BoxCollider> ().size;
+		//xBound = boxSize.x / 2;
+		//yBound = boxSize.y / 2;
 
-		cr1 = Teleport ();
-		StartCoroutine (cr1);
+		//cr1 = Teleport ();
+		//StartCoroutine (cr1);
+		laserActive = true;
+		StartCoroutine (UseLaser ());
 
 	}
 
@@ -61,6 +64,7 @@ public class SniperBoss : Ship, IEnemy {
 		// Preliminary logic for laser
 		Vector3 rayDir = new Vector3 (-transform.position.x * 2, transform.position.y, 0);
 		Debug.DrawRay (transform.position, transform.up * 15);
+
 	}
 		
 	#endregion
@@ -70,7 +74,7 @@ public class SniperBoss : Ship, IEnemy {
 		
 		// Keep true while in current round
 		while (true) {			
-			if (teleportActive) {
+			while (teleportActive) {
 				
 				Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
 				yield return new WaitForSeconds (teleDelay);		// Activate visual marker, waiting to teleport
@@ -89,19 +93,32 @@ public class SniperBoss : Ship, IEnemy {
 
 	IEnumerator UseLaser() {
 		
-		while (true) {			
+		while (true) {		
+			Debug.Log ("REC TIME OUT");
+
 			if (laserActive) {
 
 				// Charge time
-				yield return new WaitForSeconds(laserChargeTime);
+				//yield return new WaitForSeconds(laserChargeTime);
 
 				// Fire laser for X sec, rotating at Y angles / sec.
-				float endTime = Time.time + laserEmitTime;
+				endTime = Time.time + laserEmitTime;
+				Debug.Log (string.Format ("CURR TIME: {0}, ENDTIME: {1}", Time.time, endTime));
+
+				Quaternion destRot = transform.rotation * Quaternion.AngleAxis (30.0f, Vector3.forward);		// Destination rot. is start rot + 45degrees
 				while (Time.time < endTime) {
 					// Laser / rotation logic
-					Vector3 rayDir = new Vector3 (-transform.position.x * 10, transform.position.y, 0);
-					Debug.DrawRay (transform.position, rayDir);
+					//Vector3 rayDir = new Vector3 (-transform.position.x * 10, transform.position.y, 0);
+					//Debug.DrawRay (transform.position, rayDir);
+
+					transform.RotateAround (transform.position, Vector3.forward, Time.deltaTime * 5.0f);
+					//Debug.Log (string.Format ("CURR TIME: {0}, ENDTIME: {1}", Time.time, endTime));
+					//transform.rotation = Quaternion.Slerp (transform.rotation, destRot, Time.deltaTime * 0.5f);
+					yield return null;
 				}
+				Debug.Log ("FINISHED FIRST LOOP");
+				laserActive = false;
+
 				// Brief cooldown in which boss can't do anything except rotate. (tell MS)
 
 			}
@@ -146,7 +163,7 @@ public class SniperBoss : Ship, IEnemy {
 				} else if (moveState.Direction == Direction.PlayerUndetected) {	
 					// Only use our laser if player is far enough away to be undetected (MS performs this check).
 
-					laserActive = true;
+					//laserActive = true;
 					StartCoroutine (UseLaser ());
 
 					while (laserActive) {
