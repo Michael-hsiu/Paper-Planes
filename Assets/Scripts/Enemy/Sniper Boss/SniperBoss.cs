@@ -12,7 +12,7 @@ public class SniperBoss : Ship, IEnemy {
 	- Teleports to random pt far from player
 	- Charges + fires laser in arc
 		1) Charge. 
-		2) Then fire laser for X sec, rotating at Y angles / sec. 
+		2) Then fire laser for X sec, rotating at Y angles / sec. (can fire 3 lasers consecutively!!!!)
 		3) Then brief cooldown in which boss can't do anything except rotate.
 		4) Then teleport, start charging + repeat process again.
 	 - Scatters small explosives 
@@ -24,6 +24,8 @@ public class SniperBoss : Ship, IEnemy {
 	public float teleDelay = 0.5f;		// The time btwn when visual marker for teleport marker appears, and when we actually teleport
 	public float teleCooldown = 8.0f;	// Cooldown time for teleport
 	public float safetyDist = 100.0f;	// If player is too close, will use explosives attack
+	public float laserChargeTime = 3.0f;
+	public float laserEmitTime = 4.0f;		// How long we fire the laser for
 	public float xBound;
 	public float yBound;
 	public int numAtks = 0;				// Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
@@ -54,6 +56,12 @@ public class SniperBoss : Ship, IEnemy {
 		StartCoroutine (cr1);
 
 	}
+
+	protected override void Update() {
+		// Preliminary logic for laser
+		Vector3 rayDir = new Vector3 (-transform.position.x * 2, transform.position.y, 0);
+		Debug.DrawRay (transform.position, transform.up * 15);
+	}
 		
 	#endregion
 
@@ -65,7 +73,6 @@ public class SniperBoss : Ship, IEnemy {
 			if (teleportActive) {
 				
 				Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
-
 				yield return new WaitForSeconds (teleDelay);		// Activate visual marker, waiting to teleport
 
 				// Teleport to a random location within bounds of collider
@@ -86,7 +93,15 @@ public class SniperBoss : Ship, IEnemy {
 			if (laserActive) {
 
 				// Charge time
+				yield return new WaitForSeconds(laserChargeTime);
+
 				// Fire laser for X sec, rotating at Y angles / sec.
+				float endTime = Time.time + laserEmitTime;
+				while (Time.time < endTime) {
+					// Laser / rotation logic
+					Vector3 rayDir = new Vector3 (-transform.position.x * 10, transform.position.y, 0);
+					Debug.DrawRay (transform.position, rayDir);
+				}
 				// Brief cooldown in which boss can't do anything except rotate. (tell MS)
 
 			}
@@ -159,12 +174,11 @@ public class SniperBoss : Ship, IEnemy {
 
 
 				// After either attack
-				nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	
+				//nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	
 				isAtking = false;		// No longer attacking
 				moveState.Direction = Direction.PlayerDetected;
 				yield return null;
 			} 
-			}
 			yield return null;
 		}
 	}
@@ -188,3 +202,4 @@ public class SniperBoss : Ship, IEnemy {
 	#endregion
 
 }
+

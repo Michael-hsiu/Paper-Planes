@@ -42,7 +42,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	public void ExitState(Ship s) {
 
 	}
-
+		
 	public void UpdateState(Ship s) {
 		if (mb == null) {
 			mb = (MissileBoss) s;
