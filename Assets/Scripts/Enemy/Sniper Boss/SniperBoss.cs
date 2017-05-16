@@ -36,6 +36,8 @@ public class SniperBoss : Ship, IEnemy {
 	public bool laserActive = false;
 	public bool explAtkActive = false;
 
+	public GameObject mapCollider;
+
 	[SerializeField] private float nextAtkTime;	// Time at which we can launch next valid atk
 	public IEnumerator cr1;
 
@@ -49,14 +51,16 @@ public class SniperBoss : Ship, IEnemy {
 
 		moveState = GetComponent<IMoveState>();
 
-		//Vector3 boxSize = GetComponent<BoxCollider> ().size;
-		//xBound = boxSize.x / 2;
-		//yBound = boxSize.y / 2;
+		Vector3 boxSize = mapCollider.GetComponent<BoxCollider> ().size;
+		xBound = boxSize.x / 2;
+		yBound = boxSize.y / 2;
 
-		//cr1 = Teleport ();
-		//StartCoroutine (cr1);
-		laserActive = true;
-		StartCoroutine (UseLaser ());
+		teleportActive = true;
+		cr1 = Teleport ();
+		StartCoroutine (cr1);
+		//laserActive = true;
+		//StartCoroutine (UseLaser ());
+
 
 	}
 
@@ -84,7 +88,7 @@ public class SniperBoss : Ship, IEnemy {
 
 				Debug.Log ("SNIPER BOSS TELEPORTED!");
 				yield return new WaitForSeconds (teleCooldown);
-				teleportActive = false;		// Can no longer teleport for awhile
+				//teleportActive = false;		// Can no longer teleport for awhile
 
 			}
 			yield return null;
@@ -106,20 +110,54 @@ public class SniperBoss : Ship, IEnemy {
 				Debug.Log (string.Format ("CURR TIME: {0}, ENDTIME: {1}", Time.time, endTime));
 
 				Quaternion destRot = transform.rotation * Quaternion.AngleAxis (30.0f, Vector3.forward);		// Destination rot. is start rot + 45degrees
-				while (Time.time < endTime) {
+
+				Vector3 targetStartPos = target.transform.position;	// Take measurements to determine which way target is moving
+				Vector3 newPos = Vector3.zero;
+				bool tookPosMeas = false;
+
+				if (Time.time < endTime) {
+					
+					if (!tookPosMeas) {			// In case we need to take more meas.
+						yield return new WaitForSeconds (0.05f);
+						newPos = target.transform.position;
+						tookPosMeas = true;
+						Debug.Log ("TOOK MEAS");
+					}
+
+					// Need to fix cases - can't change after we start rotating
+					if (newPos.y < targetStartPos.y /*&& newPos.x > transform.position.x*/) {
+						while (Time.time < endTime) {
+							transform.RotateAround (transform.position, Vector3.forward, Time.deltaTime * -5.0f);		// Rotate CW
+							yield return null;
+						}
+					} else if (newPos.y > targetStartPos.y /*&& newPos.x > transform.position.x*/) {
+						while (Time.time < endTime) {
+							transform.RotateAround (transform.position, Vector3.forward, Time.deltaTime * 5.0f);		// Rotate CCW
+							yield return null;
+						}
+					} else {
+						while (Time.time < endTime) {
+							transform.RotateAround (transform.position, Vector3.forward, Time.deltaTime * 5.0f);		// Rotate CCW
+							yield return null;
+						}
+					}
+
+					Debug.Log ("LOOPEDEP");
+					numAtks += 1;
 					// Laser / rotation logic
 					//Vector3 rayDir = new Vector3 (-transform.position.x * 10, transform.position.y, 0);
 					//Debug.DrawRay (transform.position, rayDir);
 
-					transform.RotateAround (transform.position, Vector3.forward, Time.deltaTime * 5.0f);
-					//Debug.Log (string.Format ("CURR TIME: {0}, ENDTIME: {1}", Time.time, endTime));
 					//transform.rotation = Quaternion.Slerp (transform.rotation, destRot, Time.deltaTime * 0.5f);
-					yield return null;
 				}
 				Debug.Log ("FINISHED FIRST LOOP");
-				laserActive = false;
+				if (numAtks >= 3) {
+					laserActive = false;
+					numAtks = 0;
+				}
 
 				// Brief cooldown in which boss can't do anything except rotate. (tell MS)
+				Debug.Log ("COOLDOWN");
 
 			}
 			yield return null;
