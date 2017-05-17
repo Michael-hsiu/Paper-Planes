@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour {
 	public PowerupSpawner powerupSpawner;
 	public MovingSpawnManager movingSpawnManager;
 
+	public Collider mapCollider;
+
 	// Level logic
 	public LevelData[] levels;		// Stores each LevelData SO as an asset
 	public LevelData activeLevel;
@@ -55,8 +57,10 @@ public class GameManager : MonoBehaviour {
 			DestroyImmediate(this);
 		}
 		playerShip = GameObject.FindGameObjectWithTag (Constants.PlayerTag).GetComponent<PlayerShip>();
+
 		powerupSpawner = GetComponent<PowerupSpawner> ();
 		movingSpawnManager = GetComponent<MovingSpawnManager> ();
+		mapCollider = GetComponent <BoxCollider> ();
 	}
 
 	public void StartGame() {
@@ -201,7 +205,7 @@ public class GameManager : MonoBehaviour {
 	/************************ [UNITY FUNCTIONS] ************************/
 
 	void Start() {
-		InvokeRepeating ("HealthTest", 1, 1);	// Starts 1 second after start, then calls in 1 sec intervals
+		//InvokeRepeating ("HealthTest", 1, 1);	// Starts 1 second after start, then calls in 1 sec intervals
 	}
 		
 

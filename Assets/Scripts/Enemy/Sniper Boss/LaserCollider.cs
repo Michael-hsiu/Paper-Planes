@@ -14,11 +14,6 @@ public class LaserCollider : MonoBehaviour {
 		laserCollider = GetComponent <BoxCollider> ();
 	}
 
-	void Update() {
-		
-	}
-
-
 	void OnTriggerStay(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {

@@ -33,6 +33,7 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject scoreMultPowerup;
 	public GameObject shurikenPowerup;
 	public GameObject tripMinePowerup;
+	public GameObject healthPack;
 
 	[Header("Powerup Helper Objects")]
 	public GameObject tripMines;
@@ -83,6 +84,7 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (scoreMultPowerup, 50);
 		PoolManager.Instance.CreatePool (shurikenPowerup, 50);
 		PoolManager.Instance.CreatePool (tripMinePowerup, 50);
+		PoolManager.Instance.CreatePool (healthPack, 50);
 
 
 		// Powerup helper objs

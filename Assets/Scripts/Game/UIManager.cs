@@ -137,8 +137,8 @@ public class UIManager : MonoBehaviour {
 		} else {
 			DestroyImmediate(this);
 		}
+		UpdateHealth ();
 	}
-
 
 	/************************ [METHODS] ************************/
 

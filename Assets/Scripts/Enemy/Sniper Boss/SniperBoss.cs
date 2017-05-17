@@ -46,7 +46,7 @@ public class SniperBoss : Ship, IEnemy {
 	public bool spawnEnabled = false;
 
 
-	public GameObject mapCollider;
+	public Collider mapCollider;
 	public GameObject laserCollider;
 	public GameObject teleMarker;		// Visual marker for future teleport location
 
@@ -62,6 +62,7 @@ public class SniperBoss : Ship, IEnemy {
 		
 		Initialize ();		// Assigns target
 
+		mapCollider = GameManager.Singleton.mapCollider;
 		moveState = GetComponent<IMoveState>();
 
 		Vector3 boxSize = mapCollider.GetComponent<BoxCollider> ().size;
@@ -130,8 +131,6 @@ public class SniperBoss : Ship, IEnemy {
 	IEnumerator UseLaser() {
 		
 		while (true) {		
-			Debug.Log ("REC TIME OUT");
-
 			while (laserActive) {
 
 				// Turn to player first
@@ -298,13 +297,32 @@ public class SniperBoss : Ship, IEnemy {
 	}
 
 	void OnTriggerEnter(Collider other) {
+		
+		if (other.gameObject.activeSelf && other.gameObject.CompareTag (Constants.PlayerShot)) {
+
+			if (other != null) {
+				other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
+			}
+
+			health -= GameManager.Singleton.playerDamage;			// We lost health
+
+			if (health <= 0) {
+
+				Instantiate (explosion, transform.position, transform.rotation);
+				DestroyForReuse ();
+				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
+
+				GameManager.Singleton.RecordKill (enemyType);
+				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
+				UIManager.Singleton.UpdateScore ();	// Update score in UI
+
+				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");
+			}
+
+			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
+		}
 	}
 
-
-	// This is how far away we can detect the player and take measures to atk player
-	public void OnDrawGizmosSelected() {
-
-	}
 
 	#endregion
 
