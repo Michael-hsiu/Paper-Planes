@@ -6,8 +6,6 @@ public class DropShip : Ship {
 
 
 	#region Variables
-	public EnemyType enemyType = EnemyType.DropShip;
-
 	public GameObject shipToSpawn;
 
 	public float timeUntilNextSpawnMode = 10.0f;		// Time between when a ship leaves spawn mode and can re-enter spawn mode
@@ -26,6 +24,7 @@ public class DropShip : Ship {
 
 		// Call our overridden initalization method
 		Initialize ();
+		enemyType = EnemyType.DropShip;
 		nextSpawn = 5.0f;		// Only enter spawn mode at least 5 sec after we are created
 
 		// Check that we're calling the right Start() method

@@ -43,8 +43,6 @@ public class PlayerShip : FiringShip {
 	public Stack<SSContainer> activeSS = new Stack<SSContainer>();
 	public Dictionary<Weapons, SSContainer> ssDict = new Dictionary<Weapons, SSContainer>();
 	private Rigidbody rb;
-	protected float _speed = 2.0f;	
-	protected int _shotDamage = 20;
 	public float maxForward = 3.0f;
 
 	public float colliderRadius = 1.2f;		// This is set manually based on normal colliders of player
@@ -56,10 +54,14 @@ public class PlayerShip : FiringShip {
 
 	public bool rushStarted = false;
 
+	// Wave shot dependencies
 	public List<GameObject> waveSpawns = new List<GameObject>();
-	public List<GameObject> sideMissileSpawns;
 	public bool waveShotEnabled = false;
 	public float randomVal;
+
+	// Front-facing missile dependencies
+	public List<GameObject> sideMissileSpawns;
+	public bool sideMissileEnabled;
 
 	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
 	#endregion
@@ -105,15 +107,6 @@ public class PlayerShip : FiringShip {
 	#endregion
 
 	#region Game Logic
-	public void CreateWaveShots() {
-		randomVal = UnityEngine.Random.value;		// Set the random value
-		foreach(GameObject go in waveSpawns) {
-			if (go.GetComponent<ShotSpawn>() != null) {
-				go.GetComponent<ShotSpawn>().CreateShot ();	// Fire the shot!
-			}
-		}
-	}
-
 	private void InitializeSS() {
 		GameObject parentShotSpawn = null;		// This contains all shotspawns
 		foreach(Transform s in transform) {
@@ -195,6 +188,9 @@ public class PlayerShip : FiringShip {
 			if (waveShotEnabled) {
 				CreateWaveShots();
 			}
+			if (sideMissileEnabled) {
+				CreateFrontMissiles ();
+			}
 		} catch (InvalidOperationException e) {
 			Debug.Log ("INVALID Peek() call");
 		}
@@ -202,10 +198,7 @@ public class PlayerShip : FiringShip {
 	}
 
 	public override void Damage(int damageTaken) {
-		//base.Damage (damageTaken);
-		//Debug.Log ("OLD PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
 		GameManager.Singleton.playerHealth -= damageTaken;
-		//Debug.Log ("NEW PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
 		UIManager.Singleton.UpdateHealth ();
 	}
 
@@ -216,33 +209,26 @@ public class PlayerShip : FiringShip {
 		}
 	}
 
-	/*private void CheckForInput() {
-
-		if (Input.GetKey(KeyCode.D)) {
-			transform.Rotate(new Vector3(0, 0, 110) * Time.deltaTime);
-		}
-
-		if (Input.GetKey(KeyCode.A)) {
-			transform.Rotate(new Vector3(0, 0, -110) * Time.deltaTime);
-		}
-
-		if (Input.GetKey(KeyCode.W)) {
-			transform.Translate (Vector2.up * Time.deltaTime * speed);
-			//rb.AddForce(transform.up * speed);
-		}
-
-		if (Input.GetKey(KeyCode.S)) {
-			transform.Translate (Vector2.down * Time.deltaTime * speed);
-			//rb.AddForce(-transform.up * speed);
-		}
-	}*/
-
 	private void UpdateInput() {
 		input.UpdateInput (this);
 	}
 
-	public void BurstRush() {
-		
+	public void CreateWaveShots() {
+		randomVal = UnityEngine.Random.value;		// Set the random value
+		foreach(GameObject go in waveSpawns) {
+			if (go.GetComponent<ShotSpawn>() != null) {
+				go.GetComponent<ShotSpawn>().CreateShot ();	// Fire the shot!
+			}
+		}
+	}
+
+	// This is not for the homing missile powerup; it is for front-firing missiles.
+	public void CreateFrontMissiles() {
+		foreach(GameObject go in sideMissileSpawns) {
+			if (go.GetComponent<ShotSpawn>() != null) {
+				go.GetComponent<WaveShotSpawn>().CreateFrontMissiles ();	// Fire the shot!
+			}
+		}
 	}
 
 	#endregion

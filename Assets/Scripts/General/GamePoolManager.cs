@@ -33,7 +33,9 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject scoreMultPowerup;
 	public GameObject shurikenPowerup;
 	public GameObject tripMinePowerup;
+	public GameObject sideMissilePowerup;		// May be removed if we make this a permanent powerup
 	public GameObject healthPack;
+
 
 	[Header("Powerup Helper Objects")]
 	public GameObject tripMines;
@@ -41,6 +43,7 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject waveShot;
 	public GameObject missiles;
 	public GameObject straightMissiles;
+	public GameObject playerStraightMissiles;
 
 
 	[Header("Enemies")] // Enemy prefabs
@@ -84,6 +87,7 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (scoreMultPowerup, 50);
 		PoolManager.Instance.CreatePool (shurikenPowerup, 50);
 		PoolManager.Instance.CreatePool (tripMinePowerup, 50);
+		PoolManager.Instance.CreatePool (sideMissilePowerup, 50);
 		PoolManager.Instance.CreatePool (healthPack, 50);
 
 
@@ -93,6 +97,7 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (waveShot, 20);
 		PoolManager.Instance.CreatePool (missiles, 100);
 		PoolManager.Instance.CreatePool (straightMissiles, 100);
+		PoolManager.Instance.CreatePool (playerStraightMissiles, 50);
 
 		// Enemies
 		PoolManager.Instance.CreatePool (pawnShip, 500);

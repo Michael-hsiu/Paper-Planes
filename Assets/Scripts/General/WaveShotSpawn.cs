@@ -5,6 +5,7 @@ using UnityEngine;
 public class WaveShotSpawn : ShotSpawn {
 
 	public GameObject waveShot;
+	public GameObject straightMissile;
 
 	public float waveChance = 0.15f;
 	public bool waveShotEnabled = false;
@@ -32,7 +33,18 @@ public class WaveShotSpawn : ShotSpawn {
 			}
 		}
 	}
-		
+
+	// This is for front-facing missiles
+	public void CreateFrontMissiles() {
+		// The parent should be the player or enemy sprite
+		targetRotation = transform.parent.parent.gameObject;		
+
+		// Rotate shotSpawn relative to parent Player
+		transform.localRotation = targetRotation.transform.rotation;	
+
+		PoolManager.Instance.ReuseObject (straightMissile, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
+	}
+
 	public void EnableWaveShot() {
 		waveShotEnabled = true;
 	}

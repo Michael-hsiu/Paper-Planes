@@ -98,7 +98,6 @@
      <Compile Include="Assets\Scripts\General\FasterShot.cs" />
      <Compile Include="Assets\Scripts\General\FiringShip.cs" />
      <Compile Include="Assets\Scripts\General\GamePoolManager.cs" />
-     <Compile Include="Assets\Scripts\General\MissileShotSpawn.cs" />
      <Compile Include="Assets\Scripts\General\PlayerShip.cs" />
      <Compile Include="Assets\Scripts\General\PlayerShotSpawn.cs" />
      <Compile Include="Assets\Scripts\General\PoolManager.cs" />
@@ -111,7 +110,6 @@
      <Compile Include="Assets\Scripts\General\TurretShotSpawn.cs" />
      <Compile Include="Assets\Scripts\General\Utils.cs" />
      <Compile Include="Assets\Scripts\General\WaveShot.cs" />
-     <Compile Include="Assets\Scripts\General\WaveShotManager.cs" />
      <Compile Include="Assets\Scripts\General\WaveShotSpawn.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IDamageable.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
@@ -135,6 +133,7 @@
      <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\ShurikenObj.cs" />
      <Compile Include="Assets\Scripts\Powerups\ShurikenPowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\SideMissilePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\StraightMissile.cs" />
      <Compile Include="Assets\Scripts\Powerups\TriFirePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\TripMineWeapon.cs" />
