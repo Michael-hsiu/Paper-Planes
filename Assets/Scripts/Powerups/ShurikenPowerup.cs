@@ -38,7 +38,7 @@ public class ShurikenPowerup : PoolObject {
 
 		ShurikenObj s = (ShurikenObj) PoolManager.Instance.ReuseObjectRef (shuriken, pos, Quaternion.identity);
 
-		s.GetComponent<Rigidbody> ().AddForce(player.transform.up * 400);		// Outwards radiating movement, using position relative to y-axis of player
+		s.GetComponent<Rigidbody> ().AddForce(player.transform.up * 500);		// Outwards radiating movement, using position relative to y-axis of player
 
 		cr = BeginCountdown (lifeTime);
 		StartCoroutine (cr);		// Begin detonation countdown

@@ -186,7 +186,7 @@ public class PlayerShip : FiringShip {
 	}
 
 	public override void Damage(int damageTaken) {
-		base.Damage (damageTaken);
+		//base.Damage (damageTaken);
 		//Debug.Log ("OLD PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
 		GameManager.Singleton.playerHealth -= damageTaken;
 		//Debug.Log ("NEW PLAYER HEALTH: " + GameManager.Singleton.playerHealth);
