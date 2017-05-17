@@ -76,15 +76,20 @@ public class SniperBoss : Ship, IEnemy {
 	}
 
 	protected override void Update() {
-		// Preliminary logic for laser
-		Vector3 rayDir = new Vector3 (-transform.position.x * 2, transform.position.y, 0);
-		Debug.DrawRay (transform.position, transform.up * 30);
+
 
 	}
 		
 	#endregion
 
 	#region Game Logic
+	void ShowLaser() {
+		// Preliminary logic for laser
+		Vector3 rayDir = new Vector3 (-transform.position.x * 2, transform.position.y, 0);
+		Debug.DrawRay (transform.position, transform.up * 30);
+	}
+
+
 	IEnumerator Teleport() {
 		
 		// Keep true while in current round
@@ -102,7 +107,7 @@ public class SniperBoss : Ship, IEnemy {
 				Destroy (go);
 				yield return new WaitForSeconds (postTeleDelay);
 
-				Debug.Log ("SNIPER BOSS TELEPORTED!");
+				//Debug.Log ("SNIPER BOSS TELEPORTED!");
 
 				// Allow UseLaser routine to take over
 				laserActive = true;
@@ -122,55 +127,71 @@ public class SniperBoss : Ship, IEnemy {
 		while (true) {		
 			Debug.Log ("REC TIME OUT");
 
-			if (laserActive) {
+			while (laserActive) {
+
+				// Turn to player first
+				float turnTime = Time.time + 2.0f;
+				while (Time.time < turnTime) {
+					Vector3 playerDist = target.transform.position - transform.position;	// Find vector difference between target and this
+					playerDist.Normalize ();		// Get unit vector
+					float zPlayerAngle = (Mathf.Atan2(playerDist.y, playerDist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+
+					Quaternion rot = Quaternion.Euler (0, 0, zPlayerAngle);		// Store rotation as an Euler, then Quaternion
+					transform.rotation = Quaternion.RotateTowards (transform.rotation, rot, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+					yield return null;
+				}
 
 				// Charge time
-				//yield return new WaitForSeconds(laserChargeTime);
+				float chargeTime = Time.time + laserChargeTime;
+				while (Time.time < chargeTime) {
+					Debug.Log ("CHARGING LASER");
+					yield return null;
+				}
 
-				// Fire laser for X sec, rotating at Y angles / sec.
-				endTime = Time.time + laserEmitTime;
-				Debug.Log (string.Format ("CURR TIME: {0}, ENDTIME: {1}", Time.time, endTime));
+				while (numAtks < 3) {
 
-				Quaternion destRot = transform.rotation * Quaternion.AngleAxis (30.0f, Vector3.forward);		// Destination rot. is start rot + 45degrees
-
-				Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-				dist.Normalize ();		// Get unit vector
-				float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-				transform.rotation = desiredRotation;
-
-				Vector3 targetStartPos = target.transform.position;	// Take measurements to determine which way target is moving
-				Vector3 newPos = Vector3.zero;
-				bool tookPosMeas = false;
-
-				if (Time.time < endTime) {
+					// Fire laser for X sec, rotating at Y angles / sec.
+					endTime = Time.time + laserEmitTime;
+					Debug.Log (string.Format ("CURR TIME: {0}, ENDTIME: {1}", Time.time, endTime));
+					Vector3 targetStartPos = target.transform.position;	// Take measurements to determine which way target is moving
+					Vector3 newPos = Vector3.zero;
+					//bool tookPosMeas = false;
 					
-					if (!tookPosMeas) {			// In case we need to take more meas.
-						yield return new WaitForSeconds (0.05f);
-						newPos = target.transform.position;
-						tookPosMeas = true;
-						Debug.Log ("TOOK MEAS");
-					}
+					//if (!tookPosMeas) {			// In case we need to take more meas.
+					yield return new WaitForSeconds (0.05f);
+					newPos = target.transform.position;
+					//tookPosMeas = true;
+					Debug.Log ("TOOK MEAS");
+					//}
 
 					// Need to fix cases - can't change after we start rotating
 					if (newPos.y < targetStartPos.y /*&& newPos.x > transform.position.x*/) {
 						while (Time.time < endTime) {
 							transform.RotateAround (transform.position, Vector3.forward, Time.deltaTime * -5.0f);		// Rotate CW
+							ShowLaser ();
 							yield return null;
 						}
 					} else if (newPos.y > targetStartPos.y /*&& newPos.x > transform.position.x*/) {
 						while (Time.time < endTime) {
 							transform.RotateAround (transform.position, Vector3.forward, Time.deltaTime * 5.0f);		// Rotate CCW
+							ShowLaser ();
 							yield return null;
 						}
 					} else {
 						while (Time.time < endTime) {
 							transform.RotateAround (transform.position, Vector3.forward, Time.deltaTime * 5.0f);		// Rotate CCW
+							ShowLaser ();
 							yield return null;
 						}
 					}
 				
+					Debug.Log ("NUMATKS = " + numAtks);
 					numAtks += 1;
+					if (numAtks >= 3) {
+						laserActive = false;
+						numAtks = 0;
+						break;
+					}
 					yield return new WaitForSeconds (1.5f);
 					// Laser / rotation logic
 					//Vector3 rayDir = new Vector3 (-transform.position.x * 10, transform.position.y, 0);
@@ -178,14 +199,10 @@ public class SniperBoss : Ship, IEnemy {
 
 					//transform.rotation = Quaternion.Slerp (transform.rotation, destRot, Time.deltaTime * 0.5f);
 				}
-				Debug.Log ("FINISHED FIRST LOOP");
-				if (numAtks >= 3) {
-					laserActive = false;
-					numAtks = 0;
-				}
 
 				// Brief cooldown in which boss can't do anything except rotate. (tell MS)
 				Debug.Log ("COOLDOWN");
+				
 
 			}
 			yield return null;
