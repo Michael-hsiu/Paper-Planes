@@ -47,10 +47,12 @@ public class SniperBoss : Ship, IEnemy {
 
 
 	public GameObject mapCollider;
+	public GameObject laserCollider;
 	public GameObject teleMarker;		// Visual marker for future teleport location
 
 	[SerializeField] private float nextAtkTime;	// Time at which we can launch next valid atk
-	public IEnumerator cr1;
+	public IEnumerator teleRoutine;
+	public IEnumerator laserRoutine;
 
 	#endregion
 
@@ -66,16 +68,13 @@ public class SniperBoss : Ship, IEnemy {
 		xBound = boxSize.x / 2;
 		yBound = boxSize.y / 2;
 
-		teleportActive = true;
-		cr1 = Teleport ();
-		StartCoroutine (cr1);
-		//laserActive = true;
-		StartCoroutine (UseLaser ());
+		//teleportActive = true;
+		teleRoutine = Teleport ();
+		StartCoroutine (teleRoutine);
 
-
-	}
-
-	protected override void Update() {
+		laserActive = true;
+		laserRoutine = UseLaser ();
+		StartCoroutine (laserRoutine);
 
 
 	}
@@ -85,10 +84,16 @@ public class SniperBoss : Ship, IEnemy {
 	#region Game Logic
 	void ShowLaser() {
 		// Preliminary logic for laser
+		if (!laserCollider.gameObject.activeSelf) {
+			laserCollider.SetActive (true);
+		}
 		Vector3 rayDir = new Vector3 (-transform.position.x * 2, transform.position.y, 0);
 		Debug.DrawRay (transform.position, transform.up * 30);
 	}
 
+	void HideLaser() {
+		laserCollider.SetActive (false);
+	}
 
 	IEnumerator Teleport() {
 		
@@ -164,6 +169,7 @@ public class SniperBoss : Ship, IEnemy {
 					Debug.Log ("TOOK MEAS");
 					//}
 
+
 					// Need to fix cases - can't change after we start rotating
 					if (newPos.y < targetStartPos.y /*&& newPos.x > transform.position.x*/) {
 						while (Time.time < endTime) {
@@ -185,10 +191,10 @@ public class SniperBoss : Ship, IEnemy {
 						}
 					}
 				
+					HideLaser ();
 					Debug.Log ("NUMATKS = " + numAtks);
 					numAtks += 1;
 					if (numAtks >= 3) {
-						laserActive = false;
 						numAtks = 0;
 						break;
 					}
@@ -201,8 +207,9 @@ public class SniperBoss : Ship, IEnemy {
 				}
 
 				// Brief cooldown in which boss can't do anything except rotate. (tell MS)
-				Debug.Log ("COOLDOWN");
-				
+				laserActive = false;
+				teleportActive = true;
+				//Debug.Log ("COOLDOWN");
 
 			}
 			yield return null;
