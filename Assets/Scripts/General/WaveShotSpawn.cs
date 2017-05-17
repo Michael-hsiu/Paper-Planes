@@ -18,7 +18,7 @@ public class WaveShotSpawn : ShotSpawn {
 		// Rotate shotSpawn relative to parent Player
 		transform.localRotation = targetRotation.transform.rotation;	
 
-		if (WaveShotManager.Instance.randomVal <= waveChance) {
+		if (GameManager.Singleton.playerShip.randomVal <= waveChance) {
 			try {
 				if (gameObject.CompareTag("RightSideSS")) {
 					PoolManager.Instance.ReuseObject (waveShot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation) * Quaternion.Euler(0, 0, 90));

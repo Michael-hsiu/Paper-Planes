@@ -98,6 +98,7 @@
      <Compile Include="Assets\Scripts\General\FasterShot.cs" />
      <Compile Include="Assets\Scripts\General\FiringShip.cs" />
      <Compile Include="Assets\Scripts\General\GamePoolManager.cs" />
+     <Compile Include="Assets\Scripts\General\MissileShotSpawn.cs" />
      <Compile Include="Assets\Scripts\General\PlayerShip.cs" />
      <Compile Include="Assets\Scripts\General\PlayerShotSpawn.cs" />
      <Compile Include="Assets\Scripts\General\PoolManager.cs" />
@@ -128,6 +129,7 @@
      <Compile Include="Assets\Scripts\Powerups\HomingMissilePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\Mine.cs" />
      <Compile Include="Assets\Scripts\Powerups\Missile.cs" />
+     <Compile Include="Assets\Scripts\Powerups\PlayerStraightMissile.cs" />
      <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />
      <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />

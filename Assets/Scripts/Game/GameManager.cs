@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour {
 		} else {
 			DestroyImmediate(this);
 		}
-		playerShip = GameObject.FindGameObjectWithTag (Constants.PlayerTag).GetComponent<PlayerShip>();
+		playerShip = GameObject.FindGameObjectWithTag (Constants.PlayerTag).GetComponent<PlayerShip>();		// The main reference to player ref. by all other scripts
 
 		powerupSpawner = GetComponent<PowerupSpawner> ();
 		movingSpawnManager = GetComponent<MovingSpawnManager> ();

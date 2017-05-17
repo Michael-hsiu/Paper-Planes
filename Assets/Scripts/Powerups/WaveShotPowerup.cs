@@ -5,19 +5,19 @@ using UnityEngine;
 public class WaveShotPowerup : Powerup {
 
 	public override void ActivatePower() {
-		if (WaveShotManager.Instance.WaveShotEnabled) {
+		if (GameManager.Singleton.playerShip.waveShotEnabled) {
 			endTime = endTime + powerDuration;						// Record extended powerup time
 
 			// This doesn't work, since each powerup obj has its own script, but we may implement shot-related powerups differently to avoid this problem
 			CancelInvoke ("DeactivatePower");						// Enables powerup duration extension
 			Invoke ("DeactivatePower", endTime - Time.time);					// Extend powerup time
 		}
-		WaveShotManager.Instance.WaveShotEnabled = true;
+		GameManager.Singleton.playerShip.waveShotEnabled = true;
 		endTime = Time.time + powerDuration;
 		Invoke ("DeactivatePower", powerDuration);	// Prime the deactivation call
 	}
 
 	public override void DeactivatePower() {
-		WaveShotManager.Instance.WaveShotEnabled = false;
+		GameManager.Singleton.playerShip.waveShotEnabled = false;
 	}
 }

@@ -56,6 +56,11 @@ public class PlayerShip : FiringShip {
 
 	public bool rushStarted = false;
 
+	public List<GameObject> waveSpawns = new List<GameObject>();
+	public List<GameObject> sideMissileSpawns;
+	public bool waveShotEnabled = false;
+	public float randomVal;
+
 	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
 	#endregion
 
@@ -100,6 +105,15 @@ public class PlayerShip : FiringShip {
 	#endregion
 
 	#region Game Logic
+	public void CreateWaveShots() {
+		randomVal = UnityEngine.Random.value;		// Set the random value
+		foreach(GameObject go in waveSpawns) {
+			if (go.GetComponent<ShotSpawn>() != null) {
+				go.GetComponent<ShotSpawn>().CreateShot ();	// Fire the shot!
+			}
+		}
+	}
+
 	private void InitializeSS() {
 		GameObject parentShotSpawn = null;		// This contains all shotspawns
 		foreach(Transform s in transform) {
@@ -178,7 +192,9 @@ public class PlayerShip : FiringShip {
 				}
 			}
 			// Simple wave shot logic
-			WaveShotManager.Instance.CreateWaveShots();
+			if (waveShotEnabled) {
+				CreateWaveShots();
+			}
 		} catch (InvalidOperationException e) {
 			Debug.Log ("INVALID Peek() call");
 		}
