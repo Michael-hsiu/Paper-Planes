@@ -19,24 +19,35 @@ public class SniperBoss : Ship, IEnemy {
 	 */
 
 	#region Variables
+
 	public float sqDist = 100.0f;		// Distance at which it starts backing away from player
 	public float spawnDelay = 5.0f;
+	public float safetyDist = 100.0f;	// If player is too close, will use explosives attack
+
+	[Header("TELE LOGIC")]
 	public float teleDelay = 0.5f;		// The time btwn when visual marker for teleport marker appears, and when we actually teleport
 	public float teleCooldown = 8.0f;	// Cooldown time for teleport
-	public float safetyDist = 100.0f;	// If player is too close, will use explosives attack
+	public float postTeleDelay = 1.0f;
+	public bool teleportActive = false;
+
+	[Header("LASER LOGIC")]
 	public float laserChargeTime = 3.0f;
 	public float laserEmitTime = 4.0f;		// How long we fire the laser for
+	public bool laserActive = false;
+
+	public bool isAtking = false;		// Desc. if boss is attacking
+	public int numAtks = 0;				// Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
+	public bool explAtkActive = false;
+
+
 	public float endTime;
 	public float xBound;
 	public float yBound;
-	public int numAtks = 0;				// Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
-	public bool isAtking = false;		// Desc. if boss is attacking
 	public bool spawnEnabled = false;
-	public bool teleportActive = false;
-	public bool laserActive = false;
-	public bool explAtkActive = false;
+
 
 	public GameObject mapCollider;
+	public GameObject teleMarker;		// Visual marker for future teleport location
 
 	[SerializeField] private float nextAtkTime;	// Time at which we can launch next valid atk
 	public IEnumerator cr1;
@@ -59,7 +70,7 @@ public class SniperBoss : Ship, IEnemy {
 		cr1 = Teleport ();
 		StartCoroutine (cr1);
 		//laserActive = true;
-		//StartCoroutine (UseLaser ());
+		StartCoroutine (UseLaser ());
 
 
 	}
@@ -67,7 +78,7 @@ public class SniperBoss : Ship, IEnemy {
 	protected override void Update() {
 		// Preliminary logic for laser
 		Vector3 rayDir = new Vector3 (-transform.position.x * 2, transform.position.y, 0);
-		Debug.DrawRay (transform.position, transform.up * 15);
+		Debug.DrawRay (transform.position, transform.up * 30);
 
 	}
 		
@@ -81,14 +92,25 @@ public class SniperBoss : Ship, IEnemy {
 			while (teleportActive) {
 				
 				Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
+				GameObject go = Instantiate (teleMarker, spawnLoc, Quaternion.identity);
+
+				teleportActive = false;		// Can no longer teleport for awhile
 				yield return new WaitForSeconds (teleDelay);		// Activate visual marker, waiting to teleport
 
 				// Teleport to a random location within bounds of collider
-				transform.position = spawnLoc;			
+				transform.position = spawnLoc;
+				Destroy (go);
+				yield return new WaitForSeconds (postTeleDelay);
 
 				Debug.Log ("SNIPER BOSS TELEPORTED!");
-				yield return new WaitForSeconds (teleCooldown);
-				//teleportActive = false;		// Can no longer teleport for awhile
+
+				// Allow UseLaser routine to take over
+				laserActive = true;
+				while (laserActive) {
+					yield return null;
+				}
+				teleportActive = true;
+				//yield return new WaitForSeconds (teleCooldown);		 
 
 			}
 			yield return null;
@@ -110,6 +132,12 @@ public class SniperBoss : Ship, IEnemy {
 				Debug.Log (string.Format ("CURR TIME: {0}, ENDTIME: {1}", Time.time, endTime));
 
 				Quaternion destRot = transform.rotation * Quaternion.AngleAxis (30.0f, Vector3.forward);		// Destination rot. is start rot + 45degrees
+
+				Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
+				dist.Normalize ();		// Get unit vector
+				float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+				transform.rotation = desiredRotation;
 
 				Vector3 targetStartPos = target.transform.position;	// Take measurements to determine which way target is moving
 				Vector3 newPos = Vector3.zero;
@@ -141,9 +169,9 @@ public class SniperBoss : Ship, IEnemy {
 							yield return null;
 						}
 					}
-
-					Debug.Log ("LOOPEDEP");
+				
 					numAtks += 1;
+					yield return new WaitForSeconds (1.5f);
 					// Laser / rotation logic
 					//Vector3 rayDir = new Vector3 (-transform.position.x * 10, transform.position.y, 0);
 					//Debug.DrawRay (transform.position, rayDir);
