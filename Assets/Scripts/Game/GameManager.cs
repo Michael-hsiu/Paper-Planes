@@ -138,8 +138,6 @@ public class GameManager : MonoBehaviour {
 		UIManager.Singleton.EndLevel (activeLevelNum);
 
 		activeLevelNum += 1;
-
-
 	}
 
 	// Called every time an enemy is defeated

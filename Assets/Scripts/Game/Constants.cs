@@ -9,6 +9,9 @@ public static class Constants {
 	public static readonly string BossTag = "Boss";
 	public static readonly string PickupTag = "Pickup";
 	public static readonly string GameScene = "GameScene";
+	public static readonly string MainMenu = "MainMenu";
+	public static readonly string CurrLevel = "CurrLevel";
+
 	public static readonly string PlayerShot = "PlayerShot";
 	public static readonly string PlayerColliders = "PlayerColliders";
 	public static readonly string EnemyShot = "EnemyShot";

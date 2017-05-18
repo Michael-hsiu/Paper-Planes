@@ -1,13 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Utility/HealthPickup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/AIInput.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="319" Column="69" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="42" Column="3" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="213" Column="4" />
-      <File FileName="Assets/Scripts/Utility/HealthPickup.cs" Line="21" Column="62" />
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="138" Column="9" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="140" Column="19" />
+      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="233" Column="65" />
+      <File FileName="Assets/Scripts/General/WaveShotSpawn.cs" Line="19" Column="64" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="59" Column="157" />
+      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="12" Column="1" />
+      <File FileName="Assets/Scripts/Powerups/SideMissilePowerup.cs" Line="18" Column="3" />
+      <File FileName="Assets/Scripts/Powerups/PlayerStraightMissile.cs" Line="9" Column="30" />
+      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="160" Column="29" />
+      <File FileName="Assets/Scripts/Game/LevelData.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Spawners/MovingSpawnManager.cs" Line="68" Column="133" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

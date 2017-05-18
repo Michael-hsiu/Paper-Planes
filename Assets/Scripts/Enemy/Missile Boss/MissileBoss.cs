@@ -136,7 +136,7 @@ public class MissileBoss : Ship, IEnemy {
 
 						Quaternion oldRot = transform.rotation;
 						int waveCount = 0;			// Counts how many EMP waves we've emitted
-						while (waveCount < 3 /*&& Time.time < endTime*/) {
+						while (waveCount < 2 /*&& Time.time < endTime*/) {
 							// Spinning logic
 							transform.Rotate(Vector3.forward * tempRotFactor * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment
 							tempRotFactor += 5.0f;		// Could maybe use lerp for incrementing exponentially

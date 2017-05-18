@@ -9,7 +9,6 @@ public class PlayerShotSpawn : ShotSpawn {
 	public GameObject ultimateShot;
 	public GameObject waveShot;
 	public GameObject missile;
-	public GameObject straightMissile;
 
 	public bool ultimateShotEnabled = false;
 	public bool waveShotEnabled = false;
@@ -82,16 +81,7 @@ public class PlayerShotSpawn : ShotSpawn {
 		}
 	}
 
-	// This is for front-facing missiles
-	public void CreateFrontMissiles() {
-		// The parent should be the player or enemy sprite
-		targetRotation = transform.parent.parent.gameObject;		
 
-		// Rotate shotSpawn relative to parent Player
-		transform.localRotation = targetRotation.transform.rotation;	
-
-		PoolManager.Instance.ReuseObject (straightMissile, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
-	}
 
 	public Vector3 RandomRotation() {
 

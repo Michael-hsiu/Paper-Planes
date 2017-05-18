@@ -116,6 +116,8 @@
      <Compile Include="Assets\Scripts\Interfaces\IFires.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IKillable.cs" />
      <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />
+     <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\Menu\PauseMenu.cs" />
      <Compile Include="Assets\Scripts\Powerups\BurstChargeColliders.cs" />
      <Compile Include="Assets\Scripts\Powerups\BurstRushCollider.cs" />
      <Compile Include="Assets\Scripts\Powerups\BurstRushManager.cs" />

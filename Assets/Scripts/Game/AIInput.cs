@@ -136,7 +136,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 		Debug.Log ("STARTED DASH COROUTINE");
 
 
-		savedVelocity =  Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, 1.0f);		// Store velocity pre-dash
+		savedVelocity =  Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, 9.0f);		// Store velocity pre-dash
 
 		Vector3 forceToAdd = player.transform.up;		// Starting force, to be incremented every fixedUpdate
 
@@ -148,7 +148,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 			//if (player.GetComponent<Rigidbody>().velocity < )
 			//player.GetComponent<Rigidbody> ().velocity *= 1.3f;
 
-			player.GetComponent<Rigidbody> ().velocity = 1.4f * Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, 6.0f);
+			player.GetComponent<Rigidbody> ().velocity = 1.8f * Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, 7.0f);
 			lastDashVelocity = player.GetComponent<Rigidbody> ().velocity;
 
 			//forceToAdd += new Vector3 (forceToAdd.x * 1.001f, forceToAdd.y * 1.001f, forceToAdd.z * 1.001f);
