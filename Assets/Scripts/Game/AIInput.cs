@@ -38,13 +38,15 @@ public class AIInput : MonoBehaviour, InputComponent {
 			// Can't turn whilst dashing
 			if (Input.GetKey(KeyCode.D) && !player.dashStarted) {
 				//player.transform.GetComponent <Rigidbody>().angularVelocity = Vector3.zero;
-				player.transform.Rotate(new Vector3(0, 0, 200) * Time.deltaTime);
+				//player.transform.Rotate(new Vector3(0, 0, 200) * Time.deltaTime);
+				player.transform.GetComponent<Rigidbody> ().AddTorque (new Vector3 (0, 0, -200) * Time.deltaTime, ForceMode.VelocityChange);
 			}
 
 			// Can't turn whilst dashing
 			if (Input.GetKey(KeyCode.A) && !player.dashStarted) {
 				//player.transform.GetComponent <Rigidbody>().angularVelocity = Vector3.zero;
-				player.transform.Rotate(new Vector3(0, 0, -200) * Time.deltaTime);
+				//player.transform.Rotate(new Vector3(0, 0, -200) * Time.deltaTime);
+				player.transform.GetComponent<Rigidbody> ().AddTorque (new Vector3 (0, 0, 200) * Time.deltaTime, ForceMode.VelocityChange);
 			}
 
 			if (axisInput) {
@@ -133,7 +135,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 	IEnumerator StartDash(PlayerShip player) {
 
 		GameManager.Singleton.onDashCooldown = true;
-		Debug.Log ("STARTED DASH COROUTINE");
+		//Debug.Log ("STARTED DASH COROUTINE");
 
 
 		savedVelocity =  Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, 9.0f);		// Store velocity pre-dash
@@ -157,7 +159,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 			yield return new WaitForFixedUpdate ();
 		}
 
-		Debug.Log ("DASH ENDED!");
+		//Debug.Log ("DASH ENDED!");
 
 		yield return new WaitForSeconds (0.15f);		// Short delay for player to re-orient after dash
 
