@@ -4,10 +4,7 @@ using UnityEngine;
 using System;
 
 public class PlayerShip : FiringShip {
-
-	//public List<GameObject> waveSpawns = new List<GameObject>();
-	//public bool waveShotEnabled = true;
-
+	
 	public class SSContainer : IComparable<SSContainer> {
 		public static float weaponTime;
 
@@ -46,16 +43,16 @@ public class PlayerShip : FiringShip {
 	public float maxForward = 3.0f;
 
 	public float colliderRadius = 1.2f;		// This is set manually based on normal colliders of player
+
+	[Header("POWERUPS")]
+	public int numShots = 0;
+	public bool dashStarted = false;
 	public float dashEndTime = 0.0f;
 	public float thrust = 300.0f;
 	public float maxDash = 20.0f;
 	public float dashDuration = 5f;
-	public bool dashStarted = false;
-
 	public bool rushStarted = false;
 
-	[Header("POWERUPS")]
-	public int numShots = 0;
 	// Wave shot dependencies
 	public List<GameObject> waveSpawns = new List<GameObject>();
 	public bool waveShotEnabled = false;
