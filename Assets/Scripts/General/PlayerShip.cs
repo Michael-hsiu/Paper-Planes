@@ -54,14 +54,19 @@ public class PlayerShip : FiringShip {
 
 	public bool rushStarted = false;
 
+	[Header("POWERUPS")]
+	public int numShots = 0;
 	// Wave shot dependencies
 	public List<GameObject> waveSpawns = new List<GameObject>();
 	public bool waveShotEnabled = false;
-	public float randomVal;
+	public float waveRandomVal;
+	public float waveChance = 0.15f;
 
 	// Front-facing missile dependencies
 	public List<GameObject> sideMissileSpawns;
 	public bool sideMissileEnabled;
+	public float sideMissileRandomVal;
+	public float sideMissileChance = 0.1f;
 
 	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
 	#endregion
@@ -182,6 +187,7 @@ public class PlayerShip : FiringShip {
 			if (list != null) {
 				foreach(ShotSpawn spawn in list) {
 					spawn.CreateShot (isFiringBuffed);	// Fire the shot!
+					numShots += 1;
 				}
 			}
 			// Simple wave shot logic
@@ -214,20 +220,26 @@ public class PlayerShip : FiringShip {
 	}
 
 	public void CreateWaveShots() {
-		randomVal = UnityEngine.Random.value;		// Set the random value
-		foreach(GameObject go in waveSpawns) {
-			if (go.GetComponent<ShotSpawn>() != null) {
-				go.GetComponent<ShotSpawn>().CreateShot ();	// Fire the shot!
+		waveRandomVal = UnityEngine.Random.value;		// Set the random value
+		if (waveRandomVal <= waveChance) {
+			foreach (GameObject go in waveSpawns) {
+				if (go.GetComponent<ShotSpawn> () != null) {
+					go.GetComponent<ShotSpawn> ().CreateShot ();	// Fire the shot!
+				}
 			}
 		}
 	}
 
 	// This is not for the homing missile powerup; it is for front-firing missiles.
 	public void CreateFrontMissiles() {
-		foreach(GameObject go in sideMissileSpawns) {
-			if (go.GetComponent<ShotSpawn>() != null) {
-				go.GetComponent<WaveShotSpawn>().CreateFrontMissiles ();	// Fire the shot!
-			}
+		sideMissileRandomVal = UnityEngine.Random.value;		// Set the random value
+		if (sideMissileRandomVal <= sideMissileChance && numShots % 5 == 0) {
+			foreach(GameObject go in sideMissileSpawns) {
+				if (go.GetComponent<ShotSpawn>() != null) {
+					go.GetComponent<WaveShotSpawn>().CreateFrontMissiles ();	// Fire the shot!
+				}
+				Debug.Log ("CREATING MISSILES");
+			}			
 		}
 	}
 

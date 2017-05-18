@@ -12,7 +12,7 @@ public class SideMissilePowerup : Powerup {
 			CancelInvoke ("DeactivatePower");						// Enables powerup duration extension
 			Invoke ("DeactivatePower", endTime - Time.time);					// Extend powerup time
 		}
-		GameManager.Singleton.playerShip.waveShotEnabled = true;
+		GameManager.Singleton.playerShip.sideMissileEnabled = true;
 		endTime = Time.time + powerDuration;
 		Invoke ("DeactivatePower", powerDuration);	// Prime the deactivation call
 	}
