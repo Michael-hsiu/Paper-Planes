@@ -230,7 +230,7 @@ public class PlayerShip : FiringShip {
 	// This is not for the homing missile powerup; it is for front-firing missiles.
 	public void CreateFrontMissiles() {
 		sideMissileRandomVal = UnityEngine.Random.value;		// Set the random value
-		if (sideMissileRandomVal <= sideMissileChance && numShots % 5 == 0) {
+		if (sideMissileRandomVal <= sideMissileChance && numShots % 20 == 0) {
 			foreach(GameObject go in sideMissileSpawns) {
 				if (go.GetComponent<ShotSpawn>() != null) {
 					go.GetComponent<WaveShotSpawn>().CreateFrontMissiles ();	// Fire the shot!
