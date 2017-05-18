@@ -5,7 +5,7 @@ using UnityEngine;
 // Dash components modelled after: http://answers.unity3d.com/questions/892955/dashing-mechanic-using-rigidbodyaddforce.html
 public class AIInput : MonoBehaviour, InputComponent {
 
-	public float speed = 5.0f;
+	//public float speed = 5.0f;
 	public bool controlsEnabled = true;
 	public Vector2 savedVelocity;
 	public Vector2 lastDashVelocity;	// For if we get hit by EMP while dashing, we keep velocity without losing full control
@@ -37,23 +37,25 @@ public class AIInput : MonoBehaviour, InputComponent {
 			// Standard inputs
 			// Can't turn whilst dashing
 			if (Input.GetKey(KeyCode.D) && !player.dashStarted) {
-				player.transform.Rotate(new Vector3(0, 0, 110) * Time.deltaTime);
+				//player.transform.GetComponent <Rigidbody>().angularVelocity = Vector3.zero;
+				player.transform.Rotate(new Vector3(0, 0, 200) * Time.deltaTime);
 			}
 
 			// Can't turn whilst dashing
 			if (Input.GetKey(KeyCode.A) && !player.dashStarted) {
-				player.transform.Rotate(new Vector3(0, 0, -110) * Time.deltaTime);
+				//player.transform.GetComponent <Rigidbody>().angularVelocity = Vector3.zero;
+				player.transform.Rotate(new Vector3(0, 0, -200) * Time.deltaTime);
 			}
 
 			if (axisInput) {
 				if (Input.GetKey(KeyCode.W)) {
 					//player.transform.Translate (Vector2.up * Time.deltaTime * speed);
-					player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * speed);
+					player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * player.speed);
 				}
 
 				if (Input.GetKey(KeyCode.S)) {
 					//player.transform.Translate (Vector2.down * Time.deltaTime * speed);
-					player.GetComponent<Rigidbody>().AddRelativeForce(-transform.up * speed);
+					player.GetComponent<Rigidbody>().AddRelativeForce(-transform.up * player.speed);
 				}
 			}
 
@@ -134,7 +136,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 		Debug.Log ("STARTED DASH COROUTINE");
 
 
-		savedVelocity = player.GetComponent<Rigidbody> ().velocity;		// Store velocity pre-dash
+		savedVelocity =  Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, 1.0f);		// Store velocity pre-dash
 
 		Vector3 forceToAdd = player.transform.up;		// Starting force, to be incremented every fixedUpdate
 
@@ -146,7 +148,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 			//if (player.GetComponent<Rigidbody>().velocity < )
 			//player.GetComponent<Rigidbody> ().velocity *= 1.3f;
 
-			player.GetComponent<Rigidbody> ().velocity *= 1.4f;
+			player.GetComponent<Rigidbody> ().velocity = 1.4f * Vector3.ClampMagnitude(player.GetComponent<Rigidbody>().velocity, 6.0f);
 			lastDashVelocity = player.GetComponent<Rigidbody> ().velocity;
 
 			//forceToAdd += new Vector3 (forceToAdd.x * 1.001f, forceToAdd.y * 1.001f, forceToAdd.z * 1.001f);
