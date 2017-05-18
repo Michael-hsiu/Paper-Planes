@@ -8,6 +8,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 	public float speed = 5.0f;
 	public bool controlsEnabled = true;
 	public Vector2 savedVelocity;
+	public Vector2 lastDashVelocity;	// For if we get hit by EMP while dashing, we keep velocity without losing full control
 	//public DashState dashState;		// Stores current dash state
 
 	public IEnumerator cr1;
@@ -89,6 +90,12 @@ public class AIInput : MonoBehaviour, InputComponent {
 	// Disable player control - activated when hit my EMP wave
 	public void DisableControls() {
 		StopAllCoroutines ();
+		if (Time.time < GameManager.Singleton.playerShip.dashEndTime) {
+			GameManager.Singleton.playerShip.GetComponent <Rigidbody>().velocity = lastDashVelocity;
+		} else {
+			GameManager.Singleton.playerShip.GetComponent <Rigidbody>().velocity = savedVelocity;
+		}
+		GameManager.Singleton.playerShip.dashStarted = false;
 		StartCoroutine (DisableControlsRoutine());
 	}
 
@@ -140,7 +147,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 			//player.GetComponent<Rigidbody> ().velocity *= 1.3f;
 
 			player.GetComponent<Rigidbody> ().velocity *= 1.4f;
-		
+			lastDashVelocity = player.GetComponent<Rigidbody> ().velocity;
 
 			//forceToAdd += new Vector3 (forceToAdd.x * 1.001f, forceToAdd.y * 1.001f, forceToAdd.z * 1.001f);
 			//player.GetComponent < Rigidbody> ().AddForce (forceToAdd);	// Push player forward for dash (may make this increase over time)
