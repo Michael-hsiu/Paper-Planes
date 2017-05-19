@@ -66,6 +66,13 @@ public class RangedShip : FiringShip, IEnemy {
 	}
 
 	public override void Kill() {
+		float randomVal = UnityEngine.Random.value;
+		if (randomVal <= 0.3f) {
+			GameObject powerup = GameManager.Singleton.activeLevel.powerups [UnityEngine.Random.Range (0, GameManager.Singleton.activeLevel.powerups.Count)];
+			Instantiate (powerup, transform.position, Quaternion.identity);	
+		}
+		//Debug.Break ();
+
 		base.Kill ();
 		GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
 

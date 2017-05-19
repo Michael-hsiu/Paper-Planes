@@ -32,6 +32,11 @@ public class PawnShip : Ship {
 	#region Game Logic
 
 	public override void Kill() {
+		float randomVal = UnityEngine.Random.value;
+		if (randomVal <= 0.4f) {
+			GameObject powerup = GameManager.Singleton.activeLevel.powerups [UnityEngine.Random.Range (0, GameManager.Singleton.activeLevel.powerups.Count)];
+			Instantiate (powerup, transform.position, Quaternion.identity);	
+		}
 		base.Kill ();
 		GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
 

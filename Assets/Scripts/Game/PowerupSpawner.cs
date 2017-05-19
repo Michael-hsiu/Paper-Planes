@@ -8,6 +8,7 @@ public class PowerupSpawner : MonoBehaviour {
 	public float yBound;
 	public float spawnDelay = 5.0f;
 	public bool spawnEnabled = false;
+	public int numPowerupsSpawned = 0;
 
 	public IEnumerator cr1;
 	public List<GameObject> powerups = new List<GameObject>();
@@ -44,15 +45,19 @@ public class PowerupSpawner : MonoBehaviour {
 	IEnumerator StartSpawning() {
 		// Keep true while in current round
 		while (true) {			
-			while (spawnEnabled) {
-				yield return new WaitForSeconds (spawnDelay);
+			while (numPowerupsSpawned <= 5 && spawnEnabled) {
+				//yield return new WaitForSeconds (spawnDelay);
 
 				// Spawn a random powerup at a random location within bounds of collider
 				Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
 				PoolManager.Instance.ReuseObject (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
+				numPowerupsSpawned += 1;
 				//Instantiate (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
 
 				Debug.Log ("POWERUP SPAWNED!");
+			}
+			if (!spawnEnabled) {
+				numPowerupsSpawned = 0;		// Reset after each lvl
 			}
 			yield return null;
 		}
