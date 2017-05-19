@@ -45,6 +45,8 @@ public class PowerupSpawner : MonoBehaviour {
 	IEnumerator StartSpawning() {
 		// Keep true while in current round
 		while (true) {			
+
+			// Spawn a fixed # of powerups at the beginning of every lvl
 			while (numPowerupsSpawned <= 5 && spawnEnabled) {
 				//yield return new WaitForSeconds (spawnDelay);
 

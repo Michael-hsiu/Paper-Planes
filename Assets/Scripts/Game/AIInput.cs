@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CnControls;	// Mobile joystick package prefab
 
 // Dash components modelled after: http://answers.unity3d.com/questions/892955/dashing-mechanic-using-rigidbodyaddforce.html
 public class AIInput : MonoBehaviour, InputComponent {
@@ -12,6 +13,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 	//public DashState dashState;		// Stores current dash state
 
 	public IEnumerator cr1;
+	public VirtualJoystick virtualJoystick;
 
 	//public enum DashState { Ready, Dashing, Cooldown}
 
@@ -34,7 +36,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 				Debug.Break ();
 			}
 
-			// Standard inputs
+			// COMPUTER INPUTS
 			// Can't turn whilst dashing
 			if (Input.GetKey(KeyCode.D) && !player.dashStarted) {
 				//player.transform.GetComponent <Rigidbody>().angularVelocity = Vector3.zero;
@@ -60,8 +62,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 					player.GetComponent<Rigidbody>().AddRelativeForce(-transform.up * player.speed);
 				}
 			}
-
-
+				
 			// Powerup input keys
 			if (Input.GetKey(KeyCode.G)) {		// Use Dash powerup
 				if (GameManager.Singleton.dashes > 0 && !player.rushStarted) {
@@ -77,6 +78,36 @@ public class AIInput : MonoBehaviour, InputComponent {
 					Debug.Log ("RUSH KEY REGISTERED!");
 				}
 			}
+
+
+			// MOBILE INPUTS
+			//Vector3 movement = new Vector3 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"), 0f);
+			//player.GetComponent<Rigidbody>().AddRelativeForce(movement * player.speed);
+//			Vector3 dir = Vector3.zero;
+//			dir.x = Input.GetAxis ("Horizontal") * Time.deltaTime;
+//			dir.z = Input.GetAxis ("Vertical") * Time.deltaTime;
+			float translation = Input.GetAxis("Vertical") * player.speed;
+			float rotation = Input.GetAxis("Horizontal") * player.speed;
+			translation *= Time.deltaTime;
+			rotation *= Time.deltaTime;
+			transform.Translate(0, 0, translation);
+			transform.Rotate(0, rotation, 0);
+
+			// If there is any movement on joystick
+			if (virtualJoystick.inputDirection != Vector3.zero) {
+
+				// Joystick Rotation logic
+				Vector3 dir = virtualJoystick.inputDirection;
+				float zAngle = (Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg)- 90;	// Angle of rotation around z-axis (pointing upwards)
+				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+				//player.transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime);
+				//dir.z = 0;
+				//player.GetComponent<Rigidbody>().AddRelativeForce(dir * player.speed);
+
+				//Quaternion targetRotation = Quaternion.LookRotation(dir, Vector3.forward);
+				player.transform.rotation = desiredRotation;
+			}
+
 
 			// Check if our speed cap is on (off if we're dashing!!!)
 			if (GameManager.Singleton.speedCapped) {
