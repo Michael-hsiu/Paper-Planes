@@ -7,8 +7,6 @@ Project("{D29C8F48-264A-C34E-7830-6AB0A78B29B8}") = "Paper Planes [CORE] [2.7.17
 EndProject
 Project("{D29C8F48-264A-C34E-7830-6AB0A78B29B8}") = "Paper Planes [CORE] [2.7.17]", "Assembly-CSharp-Editor-firstpass.csproj", "{A7192E66-1ABB-3059-3F90-6A442E7A315C}"
 EndProject
-Project("{D29C8F48-264A-C34E-7830-6AB0A78B29B8}") = "Paper Planes [CORE] [2.7.17]", "Assembly-CSharp-Editor.csproj", "{FEF25E60-B08E-C435-3A18-53834E0B6BF8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,10 +25,6 @@ Global
 		{A7192E66-1ABB-3059-3F90-6A442E7A315C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7192E66-1ABB-3059-3F90-6A442E7A315C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7192E66-1ABB-3059-3F90-6A442E7A315C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FEF25E60-B08E-C435-3A18-53834E0B6BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FEF25E60-B08E-C435-3A18-53834E0B6BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FEF25E60-B08E-C435-3A18-53834E0B6BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FEF25E60-B08E-C435-3A18-53834E0B6BF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+#if UNITY_EDITOR 
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
 using ExtendedCollections;
-
+#if UNITY_EDITOR 
 namespace ExtendedCollectionsDrawers {
 
 
@@ -215,3 +217,4 @@ namespace ExtendedCollectionsDrawers {
 
 
 }
+#endif

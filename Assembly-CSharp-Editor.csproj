@@ -48,7 +48,6 @@
   <ItemGroup>
      <Compile Include="Assets\Editor\Standalone Multi-Touch Input Module\StandaloneMultiTouchInputModuleEditor.cs" />
      <Compile Include="Assets\Editor\Standalone Multi-Touch Input Module\StandaloneMultiTouchInputModuleWindow.cs" />
-     <None Include="Assets\Plugins\Standalone Multi-Touch Input Module\README.txt" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>

@@ -86,13 +86,13 @@ public class AIInput : MonoBehaviour, InputComponent {
 //			Vector3 dir = Vector3.zero;
 //			dir.x = Input.GetAxis ("Horizontal") * Time.deltaTime;
 //			dir.z = Input.GetAxis ("Vertical") * Time.deltaTime;
-			float translation = Input.GetAxis("Vertical") * player.speed;
+/*/			float translation = Input.GetAxis("Vertical") * player.speed;
 			float rotation = Input.GetAxis("Horizontal") * player.speed;
 			translation *= Time.deltaTime;
 			rotation *= Time.deltaTime;
 			transform.Translate(0, 0, translation);
 			transform.Rotate(0, rotation, 0);
-
+*/
 			// If there is any movement on joystick
 			if (virtualJoystick.inputDirection != Vector3.zero) {
 
@@ -100,12 +100,10 @@ public class AIInput : MonoBehaviour, InputComponent {
 				Vector3 dir = virtualJoystick.inputDirection;
 				float zAngle = (Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg)- 90;	// Angle of rotation around z-axis (pointing upwards)
 				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-				//player.transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime);
-				//dir.z = 0;
-				//player.GetComponent<Rigidbody>().AddRelativeForce(dir * player.speed);
-
-				//Quaternion targetRotation = Quaternion.LookRotation(dir, Vector3.forward);
 				player.transform.rotation = desiredRotation;
+
+				// Movement logic
+				player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * player.speed);
 			}
 
 
@@ -140,26 +138,28 @@ public class AIInput : MonoBehaviour, InputComponent {
 		controlsEnabled = true;
 	}
 
+
 	// Dash powerup for player
-	void Dash(PlayerShip player) {
+	public void Dash(PlayerShip player) {
+		if (GameManager.Singleton.dashes > 0 && !player.rushStarted) {
+			//Debug.Log ("DASH KEY REGISTERED!");
+			if (!player.dashStarted) {		// Makes sure we only have 1 dash at a time
 
-		if (!player.dashStarted) {		// Makes sure we only have 1 dash at a time
-			
-			GameManager.Singleton.isDashing = true;
-			GameManager.Singleton.speedCapped = false;
-			GameManager.Singleton.dashes -= 1;
-			UIManager.Singleton.UpdateDashText (GameManager.Singleton.dashes);
+				GameManager.Singleton.isDashing = true;
+				GameManager.Singleton.speedCapped = false;
+				GameManager.Singleton.dashes -= 1;
+				UIManager.Singleton.UpdateDashText (GameManager.Singleton.dashes);
 
-			player.dashStarted = true;		// Only 1 dash at a time
-			player.dashEndTime = Time.time + player.dashDuration;		// Set end time for dash
+				player.dashStarted = true;		// Only 1 dash at a time
+				player.dashEndTime = Time.time + player.dashDuration;		// Set end time for dash
 
-			// Start dash co-routine
-			/*if (cr1 != null) {
+				// Start dash co-routine
+				/*if (cr1 != null) {
 				StopCoroutine (cr1);
 			}*/
-			cr1 = StartDash (player);
-			StartCoroutine (cr1);
-
+				cr1 = StartDash (player);
+				StartCoroutine (cr1);
+			}
 		}
 	}
 

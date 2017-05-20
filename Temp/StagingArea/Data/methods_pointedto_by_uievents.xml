@@ -1,0 +1,19 @@
+<linker>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="PauseMenu">
+			<method name="RestartLevel"/>
+			<method name="Resume"/>
+			<method name="ExitToMainMenu"/>
+		</type>
+		<type fullname="GameManager">
+			<method name="StartGame"/>
+		</type>
+		<type fullname="AIInput">
+			<method name="Dash"/>
+		</type>
+		<type fullname="MainMenu">
+			<method name="StartGame"/>
+			<method name="QuitGame"/>
+		</type>
+	</assembly>
+</linker>

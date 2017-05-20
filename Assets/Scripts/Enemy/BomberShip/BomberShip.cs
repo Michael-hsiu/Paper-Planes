@@ -56,14 +56,27 @@ public class BomberShip : Ship {
 	}
 
 	public override void Kill() {
-		float randomVal = Random.value;
+
+		// Graphics
+		Instantiate (explosion, transform.position, transform.rotation);
+		float randomVal = UnityEngine.Random.value;
 		if (randomVal <= 0.3f) {
 			GameObject powerup = GameManager.Singleton.activeLevel.powerups [UnityEngine.Random.Range (0, GameManager.Singleton.activeLevel.powerups.Count)];
 			Instantiate (powerup, transform.position, Quaternion.identity);	
 		}
-		base.Kill ();
-		GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
 
+		// Kill logic
+		base.Kill ();		// Bare-bones destroyForReuse()
+
+		// Score updates
+		if (GameManager.Singleton.lvlActive) {
+
+			GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+			GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
+			UIManager.Singleton.UpdateScore ();	// Update score in UI
+
+			Debug.Log("BOMBER SHIP KILLED! Obtained: " + enemyPoints + "points!");
+		}
 	}
 
 	public override void Move () {
@@ -83,13 +96,7 @@ public class BomberShip : Ship {
 
 			// If the enemy stays far enough away and kills us...
 			if (health <= 0 && !isExploding) {
-				
 				Kill ();
-
-				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
-				UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-				Debug.Log("BOMBER ENEMY KILLED! Obtained: " + enemyPoints + "points!");
 			}
 
 			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console */

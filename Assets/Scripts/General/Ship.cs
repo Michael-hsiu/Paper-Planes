@@ -53,7 +53,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 		//Destroy (transform.gameObject);		// Destroy our gameobject
 		//transform.gameObject.SetActive(false);	// "Destroy" our gameobject
 		DestroyForReuse ();
-		Instantiate(explosion, transform.position, transform.rotation);
+		//Instantiate(explosion, transform.position, transform.rotation);
 	}
 
 

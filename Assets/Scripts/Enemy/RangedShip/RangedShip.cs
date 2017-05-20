@@ -66,15 +66,28 @@ public class RangedShip : FiringShip, IEnemy {
 	}
 
 	public override void Kill() {
+		// Graphics
+		Instantiate (explosion, transform.position, transform.rotation);
 		float randomVal = UnityEngine.Random.value;
 		if (randomVal <= 0.3f) {
 			GameObject powerup = GameManager.Singleton.activeLevel.powerups [UnityEngine.Random.Range (0, GameManager.Singleton.activeLevel.powerups.Count)];
 			Instantiate (powerup, transform.position, Quaternion.identity);	
 		}
-		//Debug.Break ();
 
-		base.Kill ();
-		GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+		// Kill logic
+		base.Kill ();		// Bare-bones destroyForReuse()
+
+		// Score updates
+		if (GameManager.Singleton.lvlActive) {
+
+			GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+			GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
+			UIManager.Singleton.UpdateScore ();	// Update score in UI
+
+			Debug.Log("RANGED SHIP KILLED! Obtained: " + enemyPoints + "points!");
+		}
+
+
 
 	}
 
@@ -101,16 +114,7 @@ public class RangedShip : FiringShip, IEnemy {
 			health -= GameManager.Singleton.playerDamage;			// We lost health
 
 			if (health <= 0) {
-
-				Instantiate (explosion, transform.position, transform.rotation);
-				DestroyForReuse ();
-				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
-
-				GameManager.Singleton.RecordKill (this.enemyType);
-				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
-				UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");
+				Kill ();
 			}
 
 			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console

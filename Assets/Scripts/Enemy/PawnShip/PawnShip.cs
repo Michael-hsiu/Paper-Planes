@@ -32,13 +32,27 @@ public class PawnShip : Ship {
 	#region Game Logic
 
 	public override void Kill() {
+		// Graphics
+		Instantiate (explosion, transform.position, transform.rotation);
+
+		// Powerup spawn chance
 		float randomVal = UnityEngine.Random.value;
-		if (randomVal <= 0.4f) {
+		if (randomVal <= 0.2f) {
 			GameObject powerup = GameManager.Singleton.activeLevel.powerups [UnityEngine.Random.Range (0, GameManager.Singleton.activeLevel.powerups.Count)];
 			Instantiate (powerup, transform.position, Quaternion.identity);	
 		}
+
+		// Kill logic
 		base.Kill ();
-		GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+
+		if (GameManager.Singleton.lvlActive) {
+
+			GameManager.Singleton.RecordKill (this.enemyType);
+			GameManager.Singleton.UpdateScore (enemyPoints);
+			UIManager.Singleton.UpdateScore ();	// Update score in UI
+
+			Debug.Log("PAWN KILLED! Obtained: " + enemyPoints + "points!");
+		}
 
 	}
 
@@ -57,20 +71,7 @@ public class PawnShip : Ship {
 			health -= GameManager.Singleton.playerDamage;			// We lost health
 
 			if (health <= 0) {
-				
-				Instantiate (explosion, transform.position, transform.rotation);
-				DestroyForReuse ();
-
-				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
-				if (GameManager.Singleton.lvlActive) {
-					
-					GameManager.Singleton.RecordKill (this.enemyType);
-					GameManager.Singleton.UpdateScore (enemyPoints);
-					//GameManager.Singleton.playerScore += enemyPoints;	// Add new score in GameManager
-					UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-					Debug.Log("PAWN KILLED! Obtained: " + enemyPoints + "points!");
-				}
+				Kill ();
 			}
 
 		// Handle collisions with player
