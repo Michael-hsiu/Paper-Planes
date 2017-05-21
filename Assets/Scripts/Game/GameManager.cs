@@ -7,9 +7,11 @@ using ExtendedCollections;
 
 public class GameManager : MonoBehaviour {
 
+	// Logic about player is stored here
 	public PlayerShip playerShip;
 	public int playerHealth = 100;
 	public int playerScore = 0;
+	public int playerBalance = 0;		// How much money the player has
 	public int playerDamage = 20;
 	public int scoreMultiplier = 1;
 	public bool axisInput = true;
@@ -27,7 +29,7 @@ public class GameManager : MonoBehaviour {
 	public LevelData activeLevel;
 	public int activeLevelNum = 1;
 	public delegate void StartALevel ();
-	public event StartALevel startLevelEvent;
+	public event StartALevel startLevelEvent;	// Event to communicate w/ UIManager
 
 	// Store how many enemies we need to defeat per level
 	public int pawnsLeft;
@@ -47,6 +49,10 @@ public class GameManager : MonoBehaviour {
 
 	// Enemy spawners
 	public List<Row> levelSpawners = new List<Row>();		// Populate this manually in inspector; Row is a container class so we can emulate 2D list behavior
+
+	[Header("UI ELEMENTS")]
+	public GameObject shopButton;
+
 
 	// Called before Start()
 	void Awake() {
@@ -76,6 +82,9 @@ public class GameManager : MonoBehaviour {
 
 	// Only occurs on button click atm
 	public void BeginLevel(int level) {
+
+		// Disable shop button
+		shopButton.SetActive (false);
 
 		// Spawn / setup logic for each level
 		lvlActive = true;
@@ -121,7 +130,11 @@ public class GameManager : MonoBehaviour {
 
 
 	public void EndLevel(int level) {
+
 		lvlActive = false;
+
+
+
 		// Kill all enemies in scene
 		Utils.KillAllEnemies ();
 		Utils.DisablePowerups ();
@@ -135,6 +148,7 @@ public class GameManager : MonoBehaviour {
 
 		// Disable all the spawners for this level
 		DisableSpawns ();
+		shopButton.SetActive (true);
 		UIManager.Singleton.EndLevel (activeLevelNum);
 
 		activeLevelNum += 1;

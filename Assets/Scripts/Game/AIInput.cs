@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CnControls;	// Mobile joystick package prefab
 
 // Dash components modelled after: http://answers.unity3d.com/questions/892955/dashing-mechanic-using-rigidbodyaddforce.html
 public class AIInput : MonoBehaviour, InputComponent {

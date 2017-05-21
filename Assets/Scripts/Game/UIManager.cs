@@ -47,13 +47,14 @@ public class UIManager : MonoBehaviour {
 			startGameText.text = "Press to cont.";
 		}
 		startGameText.transform.parent.gameObject.SetActive(false);
-
+		GameManager.Singleton.shopButton.SetActive (false);
 		//StopAllCoroutines ();
 		StartCoroutine (levelGoalCR);
 	}
 
 	public void EndLevel(int level) {
 		startGameText.transform.parent.gameObject.SetActive(true);
+		GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
 		levelEndCR = DisplayLevelEndText (level);
 		//StopAllCoroutines ();
 		StartCoroutine (levelEndCR);
