@@ -15,6 +15,7 @@ public static class Constants {
 	public static readonly string PlayerShot = "PlayerShot";
 	public static readonly string PlayerColliders = "PlayerColliders";
 	public static readonly string EnemyShot = "EnemyShot";
+	public static readonly string NormalSS = "NormalSS";
 	public static readonly string ParentSS = "ParentSS";
 	public static readonly string RushColliders = "RushColliders";
 	public static readonly string RushChargeColliders = "RushChargeColliders";
@@ -26,8 +27,14 @@ public static class Constants {
 	public static readonly string GameBorderTop = "GameBorderTop";
 	public static readonly string GameBorderSide = "GameBorderSide";
 
-
-
+	// Player prefs constants
+	public static readonly string homingMissileLevel = "homingMissileLevel";
+	public static readonly string burstRushLevel = "burstRushLevel";
+	public static readonly string dashLevel = "dashLevel";
+	public static readonly string shurikenLevel = "shurikenLevel";
+	public static readonly string tripMineLevel = "tripMineLevel";
+	public static readonly string dualFireLevel = "dualFireLevel";
+	public static readonly string triFireLevel = "triFireLevel";
 
 	// Other examples
 	/*public static readonly string AnimationStarted = "started";

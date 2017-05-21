@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 
 	// Logic about player is stored here
 	public PlayerShip playerShip;
+	public GameObject normalSS;			// Player's normal shotspawn
 	public int playerHealth = 100;
 	public int playerScore = 0;
 	public int playerBalance = 0;		// How much money the player has
@@ -21,15 +22,27 @@ public class GameManager : MonoBehaviour {
 	public int dashes = 99;
 	public PowerupSpawner powerupSpawner;
 	public MovingSpawnManager movingSpawnManager;
+	// The following logic needs to be populated by PlayerPrefs
+	public int homingMissileLevel = 0;
+	public int burstRushLevel = 0;
+	public int dashLevel = 0;
+	public int shurikenLevel = 0;
+	public int tripMineLevel = 0;
+	public int dualFireLevel = 0;
+	public int triFireLevel = 0;
 
-	public Collider mapCollider;
 
 	// Level logic
 	public LevelData[] levels;		// Stores each LevelData SO as an asset
 	public LevelData activeLevel;
 	public int activeLevelNum = 1;
+	public bool lvlActive = true;
+	public List<GameObject> currLvlSpawners;	// Get from index (currLvl-1)
+	public List<Row> levelSpawners = new List<Row>();		// Enemy spawners; populate this manually in inspector; Row is a container class so we can emulate 2D list behavior
+	public Collider mapCollider;
 	public delegate void StartALevel ();
 	public event StartALevel startLevelEvent;	// Event to communicate w/ UIManager
+
 
 	// Store how many enemies we need to defeat per level
 	public int pawnsLeft;
@@ -40,15 +53,6 @@ public class GameManager : MonoBehaviour {
 	public int assassinsLeft;
 	public int bombersLeft;
 
-	//public int enemyGoal;
-	public bool lvlActive = true;
-
-	// Current level cache
-	//public Level currLvl = null;
-	public List<GameObject> currLvlSpawners;	// Get from index (currLvl-1)
-
-	// Enemy spawners
-	public List<Row> levelSpawners = new List<Row>();		// Populate this manually in inspector; Row is a container class so we can emulate 2D list behavior
 
 	[Header("UI ELEMENTS")]
 	public GameObject shopButton;
@@ -63,10 +67,22 @@ public class GameManager : MonoBehaviour {
 			DestroyImmediate(this);
 		}
 		playerShip = GameObject.FindGameObjectWithTag (Constants.PlayerTag).GetComponent<PlayerShip>();		// The main reference to player ref. by all other scripts
-
+		normalSS = Utils.FindChildWithTag (playerShip.gameObject, Constants.NormalSS);		// This is primarily for homing missile powerup
 		powerupSpawner = GetComponent<PowerupSpawner> ();
 		movingSpawnManager = GetComponent<MovingSpawnManager> ();
 		mapCollider = GetComponent <BoxCollider> ();
+
+		// Now populate powerups / purchasables with PlayerPrefs. 0=default/start level of each powerup.
+		homingMissileLevel = PlayerPrefs.GetInt (Constants.homingMissileLevel, 0);
+		burstRushLevel = PlayerPrefs.GetInt (Constants.burstRushLevel, 0);
+		dashLevel = PlayerPrefs.GetInt (Constants.dashLevel, 0);
+		shurikenLevel = PlayerPrefs.GetInt (Constants.shurikenLevel, 0);
+		tripMineLevel = PlayerPrefs.GetInt (Constants.tripMineLevel, 0);
+		dualFireLevel = PlayerPrefs.GetInt (Constants.dualFireLevel, 0);
+		triFireLevel = PlayerPrefs.GetInt (Constants.triFireLevel, 0);
+
+		// END populating.
+
 	}
 
 	public void StartGame() {
