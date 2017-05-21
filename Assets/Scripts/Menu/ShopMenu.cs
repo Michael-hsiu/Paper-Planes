@@ -68,10 +68,11 @@ public class ShopMenu : MonoBehaviour {
 
 	public void BackButtonPressed() {
 		// Depends on which screen active
-		activeScreen.SetActive (false);		// Screen transition
-		activeScreen = screenStack.Pop ();	// Get last screen
-		activeScreen.SetActive (true);		// Display last screen
-
+		if (activeScreen != welcomeScreen) {
+			activeScreen.SetActive (false);		// Screen transition
+			activeScreen = screenStack.Pop ();	// Get last screen
+			activeScreen.SetActive (true);		// Display last screen
+		}
 	}
 
 	public void BuyItem() {
