@@ -5,6 +5,7 @@ using System.Linq;
 
 public class Missile : PoolObject {
 
+	public HomingMissileScrObj missileData;		// Data about upgrades, etc.
 	public GameObject explosion;
 	public GameObject target;
 	public int damage = 1;
@@ -134,7 +135,7 @@ public class Missile : PoolObject {
 					}
 
 					if (other.gameObject.GetComponent<IDamageable<int>> () != null) {
-						other.gameObject.GetComponent<IDamageable<int>>().Damage(damage);		// Inflict damage
+						other.gameObject.GetComponent<IDamageable<int>>().Damage(missileData.damage);		// Inflict damage
 					}
 
 					Instantiate (explosion, transform.position, Quaternion.identity);
