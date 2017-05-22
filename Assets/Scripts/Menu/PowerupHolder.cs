@@ -10,7 +10,7 @@ public class PowerupHolder : MonoBehaviour {
 
 	public void IndividualPowerupPressed() {
 		
-		SHOP_MENU.powerupHolder = this;				// We will hold the info for shop_menu to load
+		SHOP_MENU.activePowerupHolder = this;				// We will hold the info for shop_menu to load
 		SHOP_MENU.IndividualPowerupPressed ();		// Enable / disable screens, load correct info
 
 	}

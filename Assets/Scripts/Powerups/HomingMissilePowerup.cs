@@ -26,7 +26,7 @@ public class HomingMissilePowerup : Powerup {
 
 	// Perhaps move these methods to the UpgradableScrObj, which will have an abstract Upgrade() method that can be overridden by each of these uniquely.
 	// Updates from shop.
-	public void UpgradeDamage() {
+	/*public void UpgradeDamage() {
 		if (specPowerupData.currDmgLevel < specPowerupData.MAX_LEVEL) {
 			specPowerupData.currDmgLevel += 1;		// Increase level of skill
 			specPowerupData.damage = specPowerupData.damagesList [specPowerupData.currDmgLevel];	// Vars w/ 'level' are the index vars
@@ -45,5 +45,5 @@ public class HomingMissilePowerup : Powerup {
 			specPowerupData.currMissileSpawnChanceLevel += 1;		// Increase level of skill
 			specPowerupData.missileSpawnChance = specPowerupData.missileSpawnChanceList [specPowerupData.currMissileSpawnChanceLevel];
 		}
-	}
+	}*/
 }

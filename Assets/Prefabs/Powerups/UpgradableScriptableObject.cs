@@ -9,5 +9,11 @@ public abstract class UpgradableScriptableObject : ScriptableObject {
 	public string powerupName;
 	public int powerupPrice;
 	public string powerupInfo;
+	public int currLvl;
+	public int MAX_LEVEL;	// Should go in UpgradableScrObj
 
+	public PowerupScriptableObject parentPowerup;		// So each Upgrade knows which powerup it's upgrading
+
+	// Overridden 
+	public abstract void UpgradePowerup();
 }

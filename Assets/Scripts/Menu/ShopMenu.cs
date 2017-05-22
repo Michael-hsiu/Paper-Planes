@@ -29,7 +29,7 @@ public class ShopMenu : MonoBehaviour {
 	public bool isOpen;		// Is the shop open?
 
 	// Individually selected powerup
-	public PowerupHolder powerupHolder;
+	public PowerupHolder activePowerupHolder;
 
 	public void OpenShop() {
 
@@ -70,7 +70,7 @@ public class ShopMenu : MonoBehaviour {
 		activeScreen.SetActive (true);
 
 		// Add Shop Slots to our canvas grid for each Upgrade possible for the Powerup.
-		List<UpgradableScriptableObject> upgradesList = powerupHolder.powerup.GetComponent <Powerup>().powerupData.upgradeList;
+		List<UpgradableScriptableObject> upgradesList = activePowerupHolder.powerup.GetComponent <Powerup>().powerupData.upgradeList;
 		int numSlots = upgradesList.Count;
 
 		foreach (UpgradableScriptableObject upgrade in upgradesList) {
