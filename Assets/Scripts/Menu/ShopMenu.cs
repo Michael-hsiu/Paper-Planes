@@ -12,6 +12,8 @@ public class ShopMenu : MonoBehaviour {
 	public GameObject powerupUpgrades;		// List of all powerups you can upgrade
 	public GameObject specificPowerupUpgrades;	// This will be populated programatically for each powerup
 	public GameObject exitButton;			// Also the back button
+	public GameObject upgradesListPanel;	// The parent panel for each Upgrade
+	public GameObject shopSlot;				// An empty slot fab populated with UpgrScrObj data
 
 	// Shop Panel
 	public GameObject shopInfoPanel;		// Populate price of upgrade, player balance
@@ -67,15 +69,23 @@ public class ShopMenu : MonoBehaviour {
 		activeScreen = specificPowerupUpgrades;
 		activeScreen.SetActive (true);
 
-		// POPULATE text fields for specific powerup
-		// The following also needs to be generalized to all powerup types.
-		HomingMissilePowerup currPowerup = powerupHolder.powerup.GetComponent <HomingMissilePowerup>();
-		Debug.Log (currPowerup.name);
-		Debug.Log (currPowerup.powerupData.powerupName.ToString());
-		upgradeName.text = currPowerup.powerupData.powerupName.ToString();				
-		upgradePrice.text = currPowerup.powerupData.powerupPrice.ToString();		
-		upgradeInfo.text = currPowerup.powerupData.powerupInfo.ToString();		
-		//upgradeSprite = powerupHolder.powerup.GetComponent <Image>().sprite;
+		// Add Shop Slots to our canvas grid for each Upgrade possible for the Powerup.
+		List<UpgradableScriptableObject> upgradesList = powerupHolder.powerup.GetComponent <Powerup>().powerupData.upgradeList;
+		int numSlots = upgradesList.Count;
+
+		foreach (UpgradableScriptableObject upgrade in upgradesList) {
+
+			// Create a new slot
+			GameObject currSlot = Instantiate (shopSlot);	
+
+			// Populate slot info in list view
+			currSlot.GetComponentInChildren <Text>().text = upgrade.powerupName.ToString();		// Set name of upgrade in the list view on left (panel will be set when clicked)
+			//currSlot.upgradePrice.text = upgrade.powerupPrice.ToString();		
+			//currSlot.upgradeInfo.text = upgrade.powerupInfo.ToString();	
+			//upgradeSprite = powerupHolder.powerup.GetComponent <Image>().sprite;
+
+			currSlot.transform.SetParent (upgradesListPanel.transform);
+		}
 	}
 
 

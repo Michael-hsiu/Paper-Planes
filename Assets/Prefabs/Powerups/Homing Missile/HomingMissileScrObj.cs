@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class HomingMissileScrObj : ScriptableObject {
+public class HomingMissileScrObj : PowerupScriptableObject {
 
 	// Homing Missile Powerup holds a reference to this SO; changes this SO if a powerup is upgraded.
+
 	// Status vars
 	public int damage = 50;		// [SATISFIES damage increase]
 	public int numMissiles = 5;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpgradableScriptableObject : ScriptableObject {
+public abstract class UpgradableScriptableObject : ScriptableObject {
 
 	// Holds the info of each upgrade for a powerup.
 	// Extendable 

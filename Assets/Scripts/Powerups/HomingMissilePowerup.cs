@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class HomingMissilePowerup : Powerup {
 
-	//public int numMissiles = 5;
 	public HomingMissileScrObj specPowerupData;
 	public PlayerShotSpawn missileSpawn;		// Assigned to normal player shotspawn in inspector
 	public GameObject missile;			// Assigned in inspector
 
 	void Start() {
 		missileSpawn = GameManager.Singleton.normalSS.GetComponent <PlayerShotSpawn>();
-		specPowerupData = (HomingMissileScrObj) powerupData;
+		//specPowerupData = (HomingMissileScrObj) powerupData;
 	}
 
 	public override void ActivatePower() {
@@ -19,6 +18,10 @@ public class HomingMissilePowerup : Powerup {
 			missileSpawn.CreateMissiles (specPowerupData.numMissiles);	// Fire the missiles! [SATISFIES numMissiles]
 		}
 	}
+
+
+
+
 
 
 	// Perhaps move these methods to the UpgradableScrObj, which will have an abstract Upgrade() method that can be overridden by each of these uniquely.

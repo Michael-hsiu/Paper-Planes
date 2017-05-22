@@ -3,8 +3,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -33,156 +34,157 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.XML" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\Managed\UnityEngine.dll</HintPath>
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\Managed\UnityEditor.dll</HintPath>
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Inputs\VirtualJoystick.cs" />
-    <Compile Include="Assets\Prefabs\Powerups\Homing Missile\HomingMissileScrObj.cs" />
-    <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
-    <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
-    <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberFS.cs" />
-    <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberMS.cs" />
-    <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberShip.cs" />
-    <Compile Include="Assets\Scripts\Enemy\DoT.cs" />
-    <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
-    <Compile Include="Assets\Scripts\Enemy\EnemyShip.cs" />
-    <Compile Include="Assets\Scripts\Enemy\MediShip.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Missile Boss\HitColliderHelper.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBoss.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBossMS.cs" />
-    <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnFS.cs" />
-    <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnMS.cs" />
-    <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnShip.cs" />
-    <Compile Include="Assets\Scripts\Enemy\RangedShip\BomberCollisionHelper.cs" />
-    <Compile Include="Assets\Scripts\Enemy\RangedShip\FiringRangeCollider.cs" />
-    <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedFS.cs" />
-    <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedMS.cs" />
-    <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedShip.cs" />
-    <Compile Include="Assets\Scripts\Enemy\SafeDistanceCollider.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\LaserCollider.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBoss.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossMS.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Turret.cs" />
-    <Compile Include="Assets\Scripts\FSM\FSMManager.cs" />
-    <Compile Include="Assets\Scripts\FSM\IEntityState.cs" />
-    <Compile Include="Assets\Scripts\FSM\IFireState.cs" />
-    <Compile Include="Assets\Scripts\FSM\IMoveState.cs" />
-    <Compile Include="Assets\Scripts\Game\AIInput.cs" />
-    <Compile Include="Assets\Scripts\Game\Constants.cs" />
-    <Compile Include="Assets\Scripts\Game\DictionaryDrawer.cs" />
-    <Compile Include="Assets\Scripts\Game\EnemySquad.cs" />
-    <Compile Include="Assets\Scripts\Game\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Game\GameState.cs" />
-    <Compile Include="Assets\Scripts\Game\InputComponent.cs" />
-    <Compile Include="Assets\Scripts\Game\InputManager.cs" />
-    <Compile Include="Assets\Scripts\Game\LevelData.cs" />
-    <Compile Include="Assets\Scripts\Game\PlayerInput.cs" />
-    <Compile Include="Assets\Scripts\Game\PowerupSpawner.cs" />
-    <Compile Include="Assets\Scripts\Game\SerializableDictionary.cs" />
-    <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
-    <Compile Include="Assets\Scripts\Game\UIManager.cs" />
-    <Compile Include="Assets\Scripts\General\AbstractShip.cs" />
-    <Compile Include="Assets\Scripts\General\DictRow.cs" />
-    <Compile Include="Assets\Scripts\General\Drawing.cs" />
-    <Compile Include="Assets\Scripts\General\DropShipShotSpawn.cs" />
-    <Compile Include="Assets\Scripts\General\FOV2D.cs" />
-    <Compile Include="Assets\Scripts\General\FasterShot.cs" />
-    <Compile Include="Assets\Scripts\General\FiringShip.cs" />
-    <Compile Include="Assets\Scripts\General\GamePoolManager.cs" />
-    <Compile Include="Assets\Scripts\General\PlayerShip.cs" />
-    <Compile Include="Assets\Scripts\General\PlayerShotSpawn.cs" />
-    <Compile Include="Assets\Scripts\General\PoolManager.cs" />
-    <Compile Include="Assets\Scripts\General\PoolObject.cs" />
-    <Compile Include="Assets\Scripts\General\Row.cs" />
-    <Compile Include="Assets\Scripts\General\Shields.cs" />
-    <Compile Include="Assets\Scripts\General\Ship.cs" />
-    <Compile Include="Assets\Scripts\General\Shot.cs" />
-    <Compile Include="Assets\Scripts\General\ShotSpawn.cs" />
-    <Compile Include="Assets\Scripts\General\TurretShotSpawn.cs" />
-    <Compile Include="Assets\Scripts\General\Utils.cs" />
-    <Compile Include="Assets\Scripts\General\WaveShot.cs" />
-    <Compile Include="Assets\Scripts\General\WaveShotSpawn.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IDamageable.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IFires.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IKillable.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />
-    <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
-    <Compile Include="Assets\Scripts\Menu\PauseMenu.cs" />
-    <Compile Include="Assets\Scripts\Menu\PowerupHolder.cs" />
-    <Compile Include="Assets\Scripts\Menu\ShopMenu.cs" />
-    <Compile Include="Assets\Scripts\Powerups\BurstChargeColliders.cs" />
-    <Compile Include="Assets\Scripts\Powerups\BurstRushCollider.cs" />
-    <Compile Include="Assets\Scripts\Powerups\BurstRushManager.cs" />
-    <Compile Include="Assets\Scripts\Powerups\BurstRushPowerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\DashAbility.cs" />
-    <Compile Include="Assets\Scripts\Powerups\DashPowerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\DualFirePowerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\HomingMissilePowerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\Mine.cs" />
-    <Compile Include="Assets\Scripts\Powerups\Missile.cs" />
-    <Compile Include="Assets\Scripts\Powerups\PlayerStraightMissile.cs" />
-    <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />
-    <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\ShurikenObj.cs" />
-    <Compile Include="Assets\Scripts\Powerups\ShurikenPowerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\SideMissilePowerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\StraightMissile.cs" />
-    <Compile Include="Assets\Scripts\Powerups\TriFirePowerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\TripMineWeapon.cs" />
-    <Compile Include="Assets\Scripts\Powerups\WaveShotPowerup.cs" />
-    <Compile Include="Assets\Scripts\Powerups\WeaponsManager.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\CollisionHelperBomberType.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\EnemyManagerBomberType.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\EnemyMovementBomberType.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Collision Type\EnemyManagerCollisionType.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Collision Type\EnemyMovementCollisionType.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyManagerRangedType.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyMovementDistanceType.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyShootingDistanceType.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerMovement.cs" />
-    <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerShooting.cs" />
-    <Compile Include="Assets\Scripts\Spawners\DropShipSpawn.cs" />
-    <Compile Include="Assets\Scripts\Spawners\EnemySpawnCappedTemplate.cs" />
-    <Compile Include="Assets\Scripts\Spawners\EnemySpawnTemplate.cs" />
-    <Compile Include="Assets\Scripts\Spawners\MovingSpawn.cs" />
-    <Compile Include="Assets\Scripts\Spawners\MovingSpawnManager.cs" />
-    <Compile Include="Assets\Scripts\Spawners\PromotionArea.cs" />
-    <Compile Include="Assets\Scripts\Utility\ColliderHelper.cs" />
-    <Compile Include="Assets\Scripts\Utility\EngineUpdate.cs" />
-    <Compile Include="Assets\Scripts\Utility\HealthPickup.cs" />
-    <Compile Include="Assets\Scripts\Utility\ParticleSystemAutoDestroy.cs" />
-    <Compile Include="Assets\Scripts\Utility\RotationUpdate.cs" />
-    <Compile Include="Assets\Scripts\Utility\ShotMover.cs" />
-    <Reference Include="UnityEngine.Analytics">
-      <HintPath>..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\UnityAnalytics\UnityEngine.Analytics.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PlaymodeTestsRunner">
-      <HintPath>..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\PlaymodeTestsRunner\UnityEngine.PlaymodeTestsRunner.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.HoloLens">
-      <HintPath>..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\UnityHoloLens\RuntimeEditor\UnityEngine.HoloLens.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.VR">
-      <HintPath>..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\UnityVR\RuntimeEditor\UnityEngine.VR.dll</HintPath>
-    </Reference>
-    <Compile Include="Assets\Prefabs\Powerups\UpgradableScriptableObject.cs" />
+     <Compile Include="Assets\Inputs\VirtualJoystick.cs" />
+     <Compile Include="Assets\Prefabs\Powerups\Homing Missile\HomingMissileScrObj.cs" />
+     <Compile Include="Assets\Prefabs\Powerups\UpgradableScriptableObject.cs" />
+     <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
+     <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberFS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberMS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\DoT.cs" />
+     <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\MediShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Missile Boss\HitColliderHelper.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBoss.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBossMS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnFS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnMS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\BomberCollisionHelper.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\FiringRangeCollider.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedFS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedMS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\SafeDistanceCollider.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\LaserCollider.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBoss.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossMS.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Turret.cs" />
+     <Compile Include="Assets\Scripts\FSM\FSMManager.cs" />
+     <Compile Include="Assets\Scripts\FSM\IEntityState.cs" />
+     <Compile Include="Assets\Scripts\FSM\IFireState.cs" />
+     <Compile Include="Assets\Scripts\FSM\IMoveState.cs" />
+     <Compile Include="Assets\Scripts\Game\AIInput.cs" />
+     <Compile Include="Assets\Scripts\Game\Constants.cs" />
+     <Compile Include="Assets\Scripts\Game\DictionaryDrawer.cs" />
+     <Compile Include="Assets\Scripts\Game\EnemySquad.cs" />
+     <Compile Include="Assets\Scripts\Game\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Game\GameState.cs" />
+     <Compile Include="Assets\Scripts\Game\InputComponent.cs" />
+     <Compile Include="Assets\Scripts\Game\InputManager.cs" />
+     <Compile Include="Assets\Scripts\Game\LevelData.cs" />
+     <Compile Include="Assets\Scripts\Game\PlayerInput.cs" />
+     <Compile Include="Assets\Scripts\Game\PowerupSpawner.cs" />
+     <Compile Include="Assets\Scripts\Game\SerializableDictionary.cs" />
+     <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
+     <Compile Include="Assets\Scripts\Game\UIManager.cs" />
+     <Compile Include="Assets\Scripts\General\AbstractShip.cs" />
+     <Compile Include="Assets\Scripts\General\DictRow.cs" />
+     <Compile Include="Assets\Scripts\General\Drawing.cs" />
+     <Compile Include="Assets\Scripts\General\DropShipShotSpawn.cs" />
+     <Compile Include="Assets\Scripts\General\FOV2D.cs" />
+     <Compile Include="Assets\Scripts\General\FasterShot.cs" />
+     <Compile Include="Assets\Scripts\General\FiringShip.cs" />
+     <Compile Include="Assets\Scripts\General\GamePoolManager.cs" />
+     <Compile Include="Assets\Scripts\General\PlayerShip.cs" />
+     <Compile Include="Assets\Scripts\General\PlayerShotSpawn.cs" />
+     <Compile Include="Assets\Scripts\General\PoolManager.cs" />
+     <Compile Include="Assets\Scripts\General\PoolObject.cs" />
+     <Compile Include="Assets\Scripts\General\Row.cs" />
+     <Compile Include="Assets\Scripts\General\Shields.cs" />
+     <Compile Include="Assets\Scripts\General\Ship.cs" />
+     <Compile Include="Assets\Scripts\General\Shot.cs" />
+     <Compile Include="Assets\Scripts\General\ShotSpawn.cs" />
+     <Compile Include="Assets\Scripts\General\TurretShotSpawn.cs" />
+     <Compile Include="Assets\Scripts\General\Utils.cs" />
+     <Compile Include="Assets\Scripts\General\WaveShot.cs" />
+     <Compile Include="Assets\Scripts\General\WaveShotSpawn.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\IDamageable.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\IFires.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\IKillable.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />
+     <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\Menu\PauseMenu.cs" />
+     <Compile Include="Assets\Scripts\Menu\PowerupHolder.cs" />
+     <Compile Include="Assets\Scripts\Menu\ShopMenu.cs" />
+     <Compile Include="Assets\Scripts\Powerups\BurstChargeColliders.cs" />
+     <Compile Include="Assets\Scripts\Powerups\BurstRushCollider.cs" />
+     <Compile Include="Assets\Scripts\Powerups\BurstRushManager.cs" />
+     <Compile Include="Assets\Scripts\Powerups\BurstRushPowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\DashAbility.cs" />
+     <Compile Include="Assets\Scripts\Powerups\DashPowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\DualFirePowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\HomingMissilePowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\Mine.cs" />
+     <Compile Include="Assets\Scripts\Powerups\Missile.cs" />
+     <Compile Include="Assets\Scripts\Powerups\PlayerStraightMissile.cs" />
+     <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />
+     <Compile Include="Assets\Scripts\Powerups\PowerupScriptableObject.cs" />
+     <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\ShurikenObj.cs" />
+     <Compile Include="Assets\Scripts\Powerups\ShurikenPowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\SideMissilePowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\StraightMissile.cs" />
+     <Compile Include="Assets\Scripts\Powerups\TriFirePowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\TripMineWeapon.cs" />
+     <Compile Include="Assets\Scripts\Powerups\WaveShotPowerup.cs" />
+     <Compile Include="Assets\Scripts\Powerups\WeaponsManager.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\CollisionHelperBomberType.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\EnemyManagerBomberType.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\EnemyMovementBomberType.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Collision Type\EnemyManagerCollisionType.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Collision Type\EnemyMovementCollisionType.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyManagerRangedType.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyMovementDistanceType.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyShootingDistanceType.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerMovement.cs" />
+     <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerShooting.cs" />
+     <Compile Include="Assets\Scripts\Spawners\DropShipSpawn.cs" />
+     <Compile Include="Assets\Scripts\Spawners\EnemySpawnCappedTemplate.cs" />
+     <Compile Include="Assets\Scripts\Spawners\EnemySpawnTemplate.cs" />
+     <Compile Include="Assets\Scripts\Spawners\MovingSpawn.cs" />
+     <Compile Include="Assets\Scripts\Spawners\MovingSpawnManager.cs" />
+     <Compile Include="Assets\Scripts\Spawners\PromotionArea.cs" />
+     <Compile Include="Assets\Scripts\Utility\ColliderHelper.cs" />
+     <Compile Include="Assets\Scripts\Utility\EngineUpdate.cs" />
+     <Compile Include="Assets\Scripts\Utility\HealthPickup.cs" />
+     <Compile Include="Assets\Scripts\Utility\ParticleSystemAutoDestroy.cs" />
+     <Compile Include="Assets\Scripts\Utility\RotationUpdate.cs" />
+     <Compile Include="Assets\Scripts\Utility\ShotMover.cs" />
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.PlaymodeTestsRunner">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.UI">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.HoloLens">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.VR">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -192,4 +194,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  
 </Project>
