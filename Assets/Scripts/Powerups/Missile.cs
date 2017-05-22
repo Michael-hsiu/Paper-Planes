@@ -98,7 +98,7 @@ public class Missile : PoolObject {
 			} else {
 				// Start search for new target
 				StartCoroutine(SeekAndMove());
-				Debug.Log ("LOOKING FOR TARGET");
+				//Debug.Log ("LOOKING FOR TARGET");
 			}
 
 		} else if (!seekingTarget) {	// Already found target

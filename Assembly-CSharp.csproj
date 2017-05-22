@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Inputs\VirtualJoystick.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\HomingMissileScrObj.cs" />
+     <Compile Include="Assets\Prefabs\Powerups\PowerupScriptableObject.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberFS.cs" />
@@ -119,6 +120,7 @@
      <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />
      <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
      <Compile Include="Assets\Scripts\Menu\PauseMenu.cs" />
+     <Compile Include="Assets\Scripts\Menu\PowerupHolder.cs" />
      <Compile Include="Assets\Scripts\Menu\ShopMenu.cs" />
      <Compile Include="Assets\Scripts\Powerups\BurstChargeColliders.cs" />
      <Compile Include="Assets\Scripts\Powerups\BurstRushCollider.cs" />

@@ -11,12 +11,23 @@ public class ShopMenu : MonoBehaviour {
 	public GameObject shipUpgrades;
 	public GameObject powerupUpgrades;		// List of all powerups you can upgrade
 	public GameObject specificPowerupUpgrades;	// This will be populated programatically for each powerup
-	public GameObject shopInfoPanel;		// Populate price of upgrade, player balance
 	public GameObject exitButton;			// Also the back button
 
+	// Shop Panel
+	public GameObject shopInfoPanel;		// Populate price of upgrade, player balance
+	// Following is populated based on active 'powerupHolder', set on button press.
+	public Text upgradeName;				
+	public Text upgradePrice;
+	public Text upgradeInfo;
+	public Sprite upgradeSprite;
+
+	
 	public GameObject activeScreen;			// Track currently activated overlay UI
 	public Stack<GameObject> screenStack = new Stack<GameObject>();	// Visited screens
 	public bool isOpen;		// Is the shop open?
+
+	// Individually selected powerup
+	public PowerupHolder powerupHolder;
 
 	public void OpenShop() {
 
@@ -55,6 +66,16 @@ public class ShopMenu : MonoBehaviour {
 
 		activeScreen = specificPowerupUpgrades;
 		activeScreen.SetActive (true);
+
+		// Populate text fields for specific powerup
+		// The following also needs to be generalized to all powerup types.
+		HomingMissilePowerup currPowerup = powerupHolder.powerup.GetComponent <HomingMissilePowerup>();
+		Debug.Log (currPowerup.name);
+		Debug.Log (currPowerup.powerupData.powerupName.ToString());
+		upgradeName.text = currPowerup.powerupData.powerupName.ToString();				
+		upgradePrice.text = currPowerup.powerupData.powerupPrice.ToString();		
+		upgradeInfo.text = currPowerup.powerupData.powerupInfo.ToString();		
+		//upgradeSprite = powerupHolder.powerup.GetComponent <Image>().sprite;
 	}
 
 

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class HomingMissileScrObj : ScriptableObject {
+public class HomingMissileScrObj : PowerupScriptableObject {
 
 	// Homing Missile Powerup holds a reference to this SO; changes this SO if a powerup is upgraded.
 	// Status vars
 	public int damage = 50;		// [SATISFIES damage increase]
 	public int numMissiles = 5;
 	public float missileSpawnChance = 0f;
-	public GameObject missile;		// May change to reproducing missile?
+	public GameObject missile;		// Missile fab
 
 	// 3 categories of upgrades...
 	// Index vars
@@ -19,6 +19,21 @@ public class HomingMissileScrObj : ScriptableObject {
 	public int currMissileSpawnChanceLevel = 0;		// and 3) Chance of a missile spawning more missiles
 
 	public int MAX_LEVEL = 2;
+
+	// Info for Shop
+	void OnEnable() {
+		powerupName = "Homing Missiles";		// May need to be generalized to be "HM Damage", "HM Spawn Chance", etc.
+		powerupPrice = 2000;
+		powerupInfo = "Upgrade the damage of homing missiles.";		// Also needs to be generalized.
+	}
+
+	public List<int> pricesList = new List<int> {
+		// Indexed by level - 1
+		2000,		// Lvl 0
+		4000,		// Lvl 1
+		8000		// Lvl 2
+
+	};
 
 	public List<int> damagesList = new List<int> {
 		// Indexed by level - 1
