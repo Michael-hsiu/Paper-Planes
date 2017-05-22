@@ -1,10 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Menu/ShopMenu.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefabs/Powerups/Homing Missile/HomingMissileScrObj.cs">
     <Files>
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Menu/ShopMenu.cs" Line="6" Column="39" />
+      <File FileName="Assets/Prefabs/Powerups/Homing Missile/HomingMissileScrObj.cs" Line="13" Column="44" />
+      <File FileName="Assets/Prefabs/Powerups/PowerupScriptableObject.cs" Line="3" Column="19" />
+      <File FileName="Assets/Scripts/Menu/ShopMenu.cs" Line="30" Column="34" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

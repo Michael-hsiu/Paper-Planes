@@ -6,7 +6,8 @@ using System;
 // API inspired by: https://github.com/antfarmar/Unity-3D-Asteroids/blob/master/Assets/Asteroids/Scripts/Powerups/Powerup.cs
 public class Powerup : PoolObject {
 
-	//public PowerupScriptableObject powerupData;			// Ref to data container
+	public PowerupScriptableObject powerupData;			// Ref to data container; data about upgrades, etc.
+
 	public PlayerShip player;
 	//public List<ShotSpawn> prevSS = new List<ShotSpawn> ();
 	public Stack<ShotSpawn> prevSS = new Stack<ShotSpawn> ();

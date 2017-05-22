@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class HomingMissileScrObj : PowerupScriptableObject {
+public class HomingMissileScrObj : ScriptableObject {
 
 	// Homing Missile Powerup holds a reference to this SO; changes this SO if a powerup is upgraded.
 	// Status vars
@@ -18,15 +18,19 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 	public int currNumMissilesLevel = 0;	// 2) Num missiles spawned...
 	public int currMissileSpawnChanceLevel = 0;		// and 3) Chance of a missile spawning more missiles
 
-	public int MAX_LEVEL = 2;
+	public int MAX_LEVEL = 2;	// Should go in UpgradableScrObj
 
 	// Info for Shop
+	// This needs to be changed, since this scrObj doesn't need to hold this info, each ENHANCEMENT needs to hold this info.
+	// So we need to store a list of PowerupScrObj that hold the info of each enhancement.
+	// We instantiate a new Shop Slot for each entry in our list.
 	void OnEnable() {
-		powerupName = "Homing Missiles";		// May need to be generalized to be "HM Damage", "HM Spawn Chance", etc.
+		/*powerupName = "Homing Missiles";		// May need to be generalized to be "HM Damage", "HM Spawn Chance", etc.
 		powerupPrice = 2000;
-		powerupInfo = "Upgrade the damage of homing missiles.";		// Also needs to be generalized.
+		powerupInfo = "Upgrade the damage of homing missiles.";		// Also needs to be generalized.*/
 	}
 
+	// Prices for each diff. upgrade?
 	public List<int> pricesList = new List<int> {
 		// Indexed by level - 1
 		2000,		// Lvl 0

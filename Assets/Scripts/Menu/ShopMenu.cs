@@ -67,7 +67,7 @@ public class ShopMenu : MonoBehaviour {
 		activeScreen = specificPowerupUpgrades;
 		activeScreen.SetActive (true);
 
-		// Populate text fields for specific powerup
+		// POPULATE text fields for specific powerup
 		// The following also needs to be generalized to all powerup types.
 		HomingMissilePowerup currPowerup = powerupHolder.powerup.GetComponent <HomingMissilePowerup>();
 		Debug.Log (currPowerup.name);
