@@ -8,7 +8,7 @@ public class Missile : PoolObject {
 	public HomingMissileScrObj missileData;		// Data about upgrades, etc.
 	public GameObject explosion;
 	public GameObject target;
-	public int damage = 1;
+	//public int damage = 1;					// Damage vals now stored in ScrObj data container
 	public float damageRange = 10.0f;
 	public float rotationSpeed = 90.0f;
 	public float speed = 5.0f;
@@ -16,6 +16,7 @@ public class Missile : PoolObject {
 	public bool seekingTarget = false;
 	public bool noEnemies = false;
 	public float seekDelay = 0.1f;
+	public float randomVal;
 
 	[SerializeField]
 	private bool canDmg = true;		// Helps us register hit delays
@@ -136,6 +137,15 @@ public class Missile : PoolObject {
 
 					if (other.gameObject.GetComponent<IDamageable<int>> () != null) {
 						other.gameObject.GetComponent<IDamageable<int>>().Damage(missileData.damage);		// Inflict damage
+
+						// [SATISFIES spawn new missile chance]
+						randomVal = Random.value;
+						Debug.Log ("RANDOMVAL" + randomVal);
+						if (randomVal < missileData.missileSpawnChance) {
+							for (int i = 0; i < 2; i++) {
+								PoolManager.Instance.ReuseObject (missileData.missile, transform.position, Quaternion.identity);		// Chance of spawning another missile on missile hit
+							}
+						}
 					}
 
 					Instantiate (explosion, transform.position, Quaternion.identity);

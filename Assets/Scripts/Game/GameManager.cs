@@ -23,13 +23,25 @@ public class GameManager : MonoBehaviour {
 	public PowerupSpawner powerupSpawner;
 	public MovingSpawnManager movingSpawnManager;
 	// The following logic needs to be populated by PlayerPrefs
+
 	public int homingMissileLevel = 0;
 	public int burstRushLevel = 0;
 	public int dashLevel = 0;
 	public int shurikenLevel = 0;
 	public int tripMineLevel = 0;
+	public int waveShotLevel = 0;
 	public int dualFireLevel = 0;
 	public int triFireLevel = 0;
+
+	// Powerup References
+	public GameObject homingMissilePowerup;
+	public GameObject burstRushPowerup;
+	public GameObject dashPowerup;
+	public GameObject shurikenPowerup;
+	public GameObject tripMinePowerup;
+	public GameObject waveShotPowerup;
+	public GameObject dualFirePowerup;
+	public GameObject triFirePowerup;
 
 
 	// Level logic
@@ -78,6 +90,7 @@ public class GameManager : MonoBehaviour {
 		dashLevel = PlayerPrefs.GetInt (Constants.dashLevel, 0);
 		shurikenLevel = PlayerPrefs.GetInt (Constants.shurikenLevel, 0);
 		tripMineLevel = PlayerPrefs.GetInt (Constants.tripMineLevel, 0);
+		waveShotLevel = PlayerPrefs.GetInt (Constants.waveShotLevel, 0);
 		dualFireLevel = PlayerPrefs.GetInt (Constants.dualFireLevel, 0);
 		triFireLevel = PlayerPrefs.GetInt (Constants.triFireLevel, 0);
 

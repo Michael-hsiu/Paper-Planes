@@ -33,6 +33,7 @@ public static class Constants {
 	public static readonly string dashLevel = "dashLevel";
 	public static readonly string shurikenLevel = "shurikenLevel";
 	public static readonly string tripMineLevel = "tripMineLevel";
+	public static readonly string waveShotLevel = "waveShotLevel";
 	public static readonly string dualFireLevel = "dualFireLevel";
 	public static readonly string triFireLevel = "triFireLevel";
 
