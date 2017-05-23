@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class HomingMissilePowerup : Powerup {
 
-	public HomingMissileScrObj specPowerupData;
 	public PlayerShotSpawn missileSpawn;		// Assigned to normal player shotspawn in inspector
 	public GameObject missile;			// Assigned in inspector
 
+	private HomingMissileScrObj specPowerupData;
+
 	void Start() {
 		missileSpawn = GameManager.Singleton.normalSS.GetComponent <PlayerShotSpawn>();
-		//specPowerupData = (HomingMissileScrObj) powerupData;
+		specPowerupData = (HomingMissileScrObj) powerupData;
 	}
 
 	public override void ActivatePower() {
-		if (missileSpawn != null) {
-			missileSpawn.CreateMissiles (specPowerupData.numMissiles);	// Fire the missiles! [SATISFIES numMissiles]
-		}
+//		if (missileSpawn != null) {
+		Debug.Log ("ACTUAL POW");
+		Debug.Log (((HomingMissileScrObj) powerupData).numMissiles + "MISSILES TO CREATE");
+		Debug.Log ("MS" + missileSpawn == null);
+		Debug.Log ("PD" + powerupData == null);
+		missileSpawn.CreateMissiles (((HomingMissileScrObj) powerupData).numMissiles);	// Fire the missiles! [SATISFIES numMissiles]
+//		}
 	}
 
 

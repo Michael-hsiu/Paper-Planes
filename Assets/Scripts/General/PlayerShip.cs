@@ -66,6 +66,15 @@ public class PlayerShip : FiringShip {
 	public float sideMissileChance = 0.1f;
 
 	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
+
+	private static PlayerShip Instance;
+	void Awake(){
+		if (Instance == null) {
+			Instance = this;
+		} else {
+			DestroyObject(gameObject);
+		}
+	}
 	#endregion
 
 	#region Unity Life Cycle
@@ -235,7 +244,6 @@ public class PlayerShip : FiringShip {
 				if (go.GetComponent<ShotSpawn>() != null) {
 					go.GetComponent<WaveShotSpawn>().CreateFrontMissiles ();	// Fire the shot!
 				}
-				Debug.Log ("CREATING MISSILES");
 			}			
 		}
 	}

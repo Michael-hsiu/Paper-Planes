@@ -17,6 +17,16 @@ public class Powerup : PoolObject {
 	protected bool isVisible;
 	//protected string id = "";
 
+	void Start() {
+		player = GameManager.Singleton.playerShip.GetComponent<PlayerShip> ();
+	}
+
+	void Update() {
+		if (player == null) {
+			player = GameManager.Singleton.playerShip.GetComponent<PlayerShip> ();
+		}
+	}
+
 	void Spawn() {
 		transform.position = Vector3.zero;	// Temp fixed location
 		SetVisibility (true);
@@ -27,7 +37,7 @@ public class Powerup : PoolObject {
 	}
 
 	public virtual void ActivatePower() {
-		
+
 		endTime = Time.time + powerDuration;
 		timeObtained = Time.time;
 		Debug.Log ("POWERUP ACTIVATED!");
@@ -80,21 +90,19 @@ public class Powerup : PoolObject {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			//prevSS.Push(other.GetComponent<PlayerShip>().activeSS);		// Add the previous state
-			if (player == null) {
+			/*if (player == null) {
 				player = other.GetComponent<PlayerShip> ();
-			}
+			}*/
+			Debug.Log (other.name);
 			ActivatePower ();
 			HideInScene ();
 			//Debug.Log ("PICKED UP POWERUP: " + this.id);	// Print message to console
 		}
 	}
 
-	void Start () {
-		//HideInScene ();		// Powerups start out hidden
-	}
 
-	public void CancelInvoke() {
+	/*public void CancelInvoke() {
 		CancelInvoke ("DeactivatePower");				// Enables powerup duration extension
-	}
+	}*/
 }
 

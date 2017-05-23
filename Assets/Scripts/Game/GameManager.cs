@@ -82,7 +82,9 @@ public class GameManager : MonoBehaviour {
 		}
 		playerShip = GameObject.FindGameObjectWithTag (Constants.PlayerTag).GetComponent<PlayerShip>();		// The main reference to player ref. by all other scripts
 		normalSS = Utils.FindChildWithTag (playerShip.gameObject, Constants.NormalSS);		// This is primarily for homing missile powerup
-		powerupSpawner = GetComponent<PowerupSpawner> ();
+		if (powerupSpawner == null) {
+			powerupSpawner = GetComponent<PowerupSpawner> ();
+		}
 		movingSpawnManager = GetComponent<MovingSpawnManager> ();
 		mapCollider = GetComponent <BoxCollider> ();
 
