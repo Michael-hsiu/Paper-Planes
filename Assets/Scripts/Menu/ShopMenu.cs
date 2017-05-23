@@ -54,6 +54,7 @@ public class ShopMenu : MonoBehaviour {
 			screenStack.Clear ();
 			isOpen = false;
 		}
+		ClearSlots ();
 	}
 
 	public void PowerupUpgradesPressed() {
@@ -76,20 +77,39 @@ public class ShopMenu : MonoBehaviour {
 			
 		//activeSlots.Add (activePowerupHolder);		// So we know whether or not to re-instantiate the shop slots
 		List<UpgradableScriptableObject> upgradesList = activePowerupHolder.powerup.GetComponent <Powerup>().powerupData.upgradeList;
-		//int numSlots = upgradesList.Count;
+		int numSlots = upgradesList.Count;
 
-		foreach (UpgradableScriptableObject upgrade in upgradesList) {
-
+		for (int i = 0; i < numSlots; i++) {
 			// Create a new slot
 			GameObject currSlot = Instantiate (shopSlot);	
-			activeSlots.Add (currSlot);		// So we know which slots to destroy upon leaving screen
-
+			activeSlots.Add (currSlot);						// So we know which slots to destroy upon leaving screen
+			currSlot.GetComponent <ShopSlot> ().id = i;		// Set the slot's position
 			// Populate slot info in list view
-			currSlot.GetComponentInChildren <Text>().text = upgrade.powerupName.ToString();		// Set name of upgrade in the list view on left (panel will be set when clicked)
+			currSlot.GetComponentInChildren <Text>().text = upgradesList[i].powerupName.ToString();		// Set name of upgrade in the list view on left (panel will be set when clicked)
 
 			// Assign its parent
 			currSlot.transform.SetParent (upgradesListPanel.transform);
+
+			// Set event listener that will update Shop Info panel
+			Button currButton = currSlot.GetComponent<Button>();
+			currButton.onClick.AddListener(() => UpgradePressed(currSlot));
+
 		}
+	}
+
+	// This is called when player taps on a single upgrade, bringing up its info in the Shop Info panel.
+	// Populate fields programatically.
+	public void UpgradePressed(GameObject buttonPressed) {
+		// Populate name, price, info, sprite. Use 'activePowerupHolder', and the list of UpgradableScrObj. 
+		// Since each Upgrade will be ID'ed by its index in the list, can identify appropriate upgrade using equivalent indices.
+		int id = buttonPressed.GetComponent <ShopSlot> ().id;
+		UpgradableScriptableObject activeUpgrade = activePowerupHolder.powerup.GetComponent<Powerup>().powerupData.upgradeList[id];
+
+		// Now populate fields
+		upgradeName.text = activeUpgrade.powerupName.ToString ();
+		upgradePrice.text = activeUpgrade.powerupPrice.ToString ();
+		upgradeInfo.text = activeUpgrade.powerupInfo.ToString ();
+
 	}
 
 
@@ -108,6 +128,10 @@ public class ShopMenu : MonoBehaviour {
 			activeScreen = screenStack.Pop ();	// Get last screen
 			activeScreen.SetActive (true);		// Display last screen
 		}
+		ClearSlots ();
+	}
+
+	public void ClearSlots() {
 		// Clear slots when leaving specific powerup upgrades screen
 		if (activeSlots.Count > 0) {
 			foreach (GameObject go in activeSlots) {

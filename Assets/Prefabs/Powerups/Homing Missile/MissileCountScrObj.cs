@@ -24,7 +24,7 @@ public class MissileCountScrObj : UpgradableScriptableObject {
 	void OnEnable() {
 		// Set all the data about this powerup
 		powerupName = "Missile Count";
-		powerupPrice = 2000;
+		powerupPrice = pricesList[0];
 		powerupInfo = "DESCRIPTION FOR MISSILE COUNT";
 		currLvl = 0;
 		MAX_LEVEL = pricesList.Count;

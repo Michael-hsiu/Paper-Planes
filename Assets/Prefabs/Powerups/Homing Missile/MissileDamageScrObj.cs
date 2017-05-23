@@ -25,7 +25,7 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 	void OnEnable() {
 		// Set all the data about this powerup
 		powerupName = "Missile Damage";
-		powerupPrice = 2000;
+		powerupPrice = pricesList[0];		// Default price is lvl 1 price
 		powerupInfo = "DESCRIPTION FOR MISSILE DAMAGE";
 		currLvl = 0;
 		MAX_LEVEL = pricesList.Count;

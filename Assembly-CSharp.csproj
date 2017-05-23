@@ -51,6 +51,7 @@
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileCountScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileDamageScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\UpgradableScriptableObject.cs" />
+     <Compile Include="Assets\Prefabs\Shop UI\ShopSlot.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberFS.cs" />
