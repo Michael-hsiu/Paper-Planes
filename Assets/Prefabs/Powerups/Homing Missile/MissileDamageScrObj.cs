@@ -31,13 +31,24 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 		MAX_LEVEL = pricesList.Count;
 	}
 
-	public override void UpgradePowerup() {
+	public override int UpgradePowerup() {
 		HomingMissileScrObj parentPow = (HomingMissileScrObj) parentPowerup;
-		if (currLvl < MAX_LEVEL) {
-			currLvl += 1;		// Increase level of skill
+		if (currLvl <= MAX_LEVEL) {
 			parentPow.damage = damagesList [currLvl];	// Vars w/ 'level' are the index vars
+			currLvl += 1;		// Increase level of skill
+			return 1;			// Note if purchase is successful
 		} else {
 			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + currLvl);
+			return -1;			// Note that powerup upgrades are already maxed out
+		}
+	}
+
+	public override int GetPrice() {
+		if (currLvl < MAX_LEVEL) {
+			return pricesList [currLvl];
+		} else {
+			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + (currLvl - 1));
+			return -1;
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ShopMenu : MonoBehaviour {
 
@@ -14,9 +15,13 @@ public class ShopMenu : MonoBehaviour {
 	public GameObject exitButton;			// Also the back button
 	public GameObject upgradesListPanel;	// The parent panel for each Upgrade
 	public GameObject shopSlot;				// An empty slot fab populated with UpgrScrObj data
+	public GameObject playerBalance;		// Container for player balance and icons
 
 	// Shop Panel
 	public GameObject shopInfoPanel;		// Populate price of upgrade, player balance
+	public GameObject buyButton;
+	public UpgradableScriptableObject currActiveUpgrade;
+	public Button currButton;
 	// Following is populated based on active 'powerupHolder', set on button press.
 	public Text upgradeName;				
 	public Text upgradePrice;
@@ -33,6 +38,10 @@ public class ShopMenu : MonoBehaviour {
 	// Individually selected powerup
 	public PowerupHolder activePowerupHolder;
 
+	void Awake() {
+		DontDestroyOnLoad (this);		
+	}
+		
 	public void OpenShop() {
 
 		if (!isOpen) {
@@ -42,6 +51,8 @@ public class ShopMenu : MonoBehaviour {
 			screenStack.Push (welcomeScreen);	// Store in-order progression of screens accessed
 			activeScreen = welcomeScreen;		// Track the currently active screen
 			isOpen = true;
+
+			playerBalance.GetComponent<Text>().text = GameManager.Singleton.playerBalance.ToString ();		// Update player balance UI
 		}
 	}         
 
@@ -54,7 +65,8 @@ public class ShopMenu : MonoBehaviour {
 			screenStack.Clear ();
 			isOpen = false;
 		}
-		ClearSlots ();
+		ClearSlots ();		// Clear any specific upgrade slots
+		SceneManager.LoadSceneAsync ("GameScene");		// Reload the game scene
 	}
 
 	public void PowerupUpgradesPressed() {
@@ -104,6 +116,8 @@ public class ShopMenu : MonoBehaviour {
 		// Since each Upgrade will be ID'ed by its index in the list, can identify appropriate upgrade using equivalent indices.
 		int id = buttonPressed.GetComponent <ShopSlot> ().id;
 		UpgradableScriptableObject activeUpgrade = activePowerupHolder.powerup.GetComponent<Powerup>().powerupData.upgradeList[id];
+		currActiveUpgrade = activeUpgrade;	// Track slot we just pressed
+		currButton = buttonPressed.GetComponent<Button> ();
 
 		// Now populate fields
 		upgradeName.text = activeUpgrade.powerupName.ToString ();
@@ -111,6 +125,7 @@ public class ShopMenu : MonoBehaviour {
 		upgradeInfo.text = activeUpgrade.powerupInfo.ToString ();
 
 	}
+
 
 
 	public void ShipUpgradesPressed() {
@@ -145,14 +160,34 @@ public class ShopMenu : MonoBehaviour {
 	public void BuyItem() {
 		// Deduct from balance if enough money
 		// Create notification of purchase success/failure
+		int balance = GameManager.Singleton.playerBalance;
+		int upgradePrice = currActiveUpgrade.GetPrice ();
+
+		Debug.Log ("OLD BALANCE" + balance);
+		if (balance >= upgradePrice && upgradePrice > 0) {
+			// Deduce $ from player balance
+			GameManager.Singleton.playerBalance -= upgradePrice;	// Price specific to that upgrade
+			currActiveUpgrade.UpgradePowerup ();					// Logic specific to that upgrade
+
+			if (currActiveUpgrade.GetPrice () < 0) {
+				// Disable button
+				currButton.interactable = false;
+				currButton.GetComponent<Image>().color = Color.red;
+			}
+
+			Debug.Log ("NEW BALANCE" + GameManager.Singleton.playerBalance);
+			AlertPurchaseSuccess ();
+		} else {
+			AlertPurchaseFailed ();
+		}
 	}
 
 	public void AlertPurchaseSuccess() {
-		
+		Debug.Log ("PURCHASE SUCCESSFUL!");
 	}
 
 	public void AlertPurchaseFailed() {
-		
+		Debug.Log ("PURCHASE FAILED");
 	}
 
 }

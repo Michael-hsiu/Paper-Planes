@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using ExtendedCollections;
 
 public class GameManager : MonoBehaviour {
@@ -65,10 +66,11 @@ public class GameManager : MonoBehaviour {
 	public int assassinsLeft;
 	public int bombersLeft;
 
+	// Powerup logic
+	public Queue<BurstRushPowerup> rushes = new Queue<BurstRushPowerup>();
 
-	[Header("UI ELEMENTS")]
+	// Shop logic
 	public GameObject shopButton;
-
 
 	// Called before Start()
 	void Awake() {
@@ -223,9 +225,11 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	// Powerup logic
-	public Queue<BurstRushPowerup> rushes = new Queue<BurstRushPowerup>();
-	//public int rushes = 0;
+	// Start Shop scene, while preventing Managers and Player from being destroyed
+	public void OpenShop() {
+		SceneManager.LoadSceneAsync ("Shop");
+	}
+
 
 	private static GameManager singleton;
 	public static GameManager Singleton {

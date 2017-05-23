@@ -15,5 +15,6 @@ public abstract class UpgradableScriptableObject : ScriptableObject {
 	public PowerupScriptableObject parentPowerup;		// So each Upgrade knows which powerup it's upgrading
 
 	// Overridden 
-	public abstract void UpgradePowerup();
+	public abstract int UpgradePowerup();
+	public abstract int GetPrice();
 }

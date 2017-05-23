@@ -84,6 +84,7 @@
      <Compile Include="Assets\Scripts\Game\AIInput.cs" />
      <Compile Include="Assets\Scripts\Game\Constants.cs" />
      <Compile Include="Assets\Scripts\Game\DictionaryDrawer.cs" />
+     <Compile Include="Assets\Scripts\Game\DontDestroy.cs" />
      <Compile Include="Assets\Scripts\Game\EnemySquad.cs" />
      <Compile Include="Assets\Scripts\Game\GameManager.cs" />
      <Compile Include="Assets\Scripts\Game\GameState.cs" />

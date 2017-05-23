@@ -28,15 +28,28 @@ public class MissileCountScrObj : UpgradableScriptableObject {
 		powerupInfo = "DESCRIPTION FOR MISSILE COUNT";
 		currLvl = 0;
 		MAX_LEVEL = pricesList.Count;
+
+		// Maybe write in with JSON here for changeable values?
 	}
 
-	public override void UpgradePowerup() {
+	public override int UpgradePowerup() {
 		HomingMissileScrObj parentPow = (HomingMissileScrObj) parentPowerup;
-		if (currLvl < MAX_LEVEL) {
-			currLvl += 1;		// Increase level of skill
+		if (currLvl <= MAX_LEVEL) {
 			parentPow.numMissiles = numMissilesList [currLvl];	// Set the new numMissiles value
+			currLvl += 1;		// Increase level of skill
+			return 1;			// Note if purchase is successful
 		} else {
-			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + currLvl);
+			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + (currLvl - 1));
+			return -1;			// Note that powerup upgrades are already maxed out
+		}
+	}
+
+	public override int GetPrice() {
+		if (currLvl < MAX_LEVEL) {
+			return pricesList [currLvl];
+		} else {
+			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + (currLvl - 1));
+			return -1;
 		}
 	}
 }

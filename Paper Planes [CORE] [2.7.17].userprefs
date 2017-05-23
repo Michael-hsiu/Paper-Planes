@@ -1,10 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefabs/Powerups/Homing Missile/HomingMissileScrObj.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Menu/ShopMenu.cs">
     <Files>
-      <File FileName="Assets/Prefabs/Powerups/Homing Missile/HomingMissileScrObj.cs" Line="13" Column="44" />
-      <File FileName="Assets/Prefabs/Powerups/PowerupScriptableObject.cs" Line="3" Column="19" />
-      <File FileName="Assets/Scripts/Menu/ShopMenu.cs" Line="30" Column="34" />
+      <File FileName="Assets/Prefabs/Powerups/Homing Missile/HomingMissileScrObj.cs" Line="25" Column="24" />
+      <File FileName="Assets/Scripts/Powerups/HomingMissilePowerup.cs" Line="14" Column="3" />
+      <File FileName="Assets/Prefabs/Powerups/UpgradableScriptableObject.cs" Line="8" Column="16" />
+      <File FileName="Assets/Scripts/Menu/PowerupHolder.cs" Line="9" Column="28" />
+      <File FileName="Assets/Scripts/Menu/ShopMenu.cs" Line="106" Column="117" />
+      <File FileName="Assets/Scripts/Powerups/PowerupScriptableObject.cs" Line="8" Column="54" />
+      <File FileName="Assets/Prefabs/Powerups/Homing Missile/MissileCountScrObj.cs" Line="35" Column="29" />
+      <File FileName="Assets/Prefabs/Shop UI/ShopSlot.cs" Line="7" Column="91" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="15" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
