@@ -34,16 +34,6 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 	}
 
 
-
-
-
-	public List<int> numMissilesList = new List<int> {
-		// Indexed by level - 1
-		5,		// Lvl 0
-		6,		// Lvl 1
-		7		// Lvl 2
-	};
-
 	public List<float> missileSpawnChanceList = new List<float> {
 		// Indexed by level - 1
 		0f,		// Lvl 0

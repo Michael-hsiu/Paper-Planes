@@ -27,6 +27,8 @@ public class ShopMenu : MonoBehaviour {
 	public GameObject activeScreen;			// Track currently activated overlay UI
 	public Stack<GameObject> screenStack = new Stack<GameObject>();	// Visited screens
 	public bool isOpen;		// Is the shop open?
+	public List<GameObject> activeSlots;		// Naive impl where we destroy slots instead of caching them upon visit
+	//public HashSet<PowerupHolder> visitedPowerupsSet = new HashSet<PowerupHolder>();
 
 	// Individually selected powerup
 	public PowerupHolder activePowerupHolder;
@@ -70,20 +72,22 @@ public class ShopMenu : MonoBehaviour {
 		activeScreen.SetActive (true);
 
 		// Add Shop Slots to our canvas grid for each Upgrade possible for the Powerup.
+		// Do we ever clear the slots?
+			
+		//activeSlots.Add (activePowerupHolder);		// So we know whether or not to re-instantiate the shop slots
 		List<UpgradableScriptableObject> upgradesList = activePowerupHolder.powerup.GetComponent <Powerup>().powerupData.upgradeList;
-		int numSlots = upgradesList.Count;
+		//int numSlots = upgradesList.Count;
 
 		foreach (UpgradableScriptableObject upgrade in upgradesList) {
 
 			// Create a new slot
 			GameObject currSlot = Instantiate (shopSlot);	
+			activeSlots.Add (currSlot);		// So we know which slots to destroy upon leaving screen
 
 			// Populate slot info in list view
 			currSlot.GetComponentInChildren <Text>().text = upgrade.powerupName.ToString();		// Set name of upgrade in the list view on left (panel will be set when clicked)
-			//currSlot.upgradePrice.text = upgrade.powerupPrice.ToString();		
-			//currSlot.upgradeInfo.text = upgrade.powerupInfo.ToString();	
-			//upgradeSprite = powerupHolder.powerup.GetComponent <Image>().sprite;
 
+			// Assign its parent
 			currSlot.transform.SetParent (upgradesListPanel.transform);
 		}
 	}
@@ -103,6 +107,14 @@ public class ShopMenu : MonoBehaviour {
 			activeScreen.SetActive (false);		// Screen transition
 			activeScreen = screenStack.Pop ();	// Get last screen
 			activeScreen.SetActive (true);		// Display last screen
+		}
+		// Clear slots when leaving specific powerup upgrades screen
+		if (activeSlots.Count > 0) {
+			foreach (GameObject go in activeSlots) {
+				Destroy (go);
+			}
+			Debug.Log (activeSlots.Count + " SLOTS CLEARED!");
+			activeSlots.Clear ();
 		}
 	}
 
