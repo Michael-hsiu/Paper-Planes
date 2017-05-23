@@ -140,7 +140,7 @@ public class Missile : PoolObject {
 
 						// [SATISFIES spawn new missile chance]
 						randomVal = Random.value;
-						Debug.Log ("RANDOMVAL" + randomVal);
+						//Debug.Log ("RANDOMVAL" + randomVal);
 						if (randomVal < missileData.missileSpawnChance) {
 							for (int i = 0; i < 2; i++) {
 								PoolManager.Instance.ReuseObject (missileData.missile, transform.position, Quaternion.identity);		// Chance of spawning another missile on missile hit
@@ -149,7 +149,7 @@ public class Missile : PoolObject {
 					}
 
 					Instantiate (explosion, transform.position, Quaternion.identity);
-					Debug.Log ("MISSILE EXPLODED!");
+					//Debug.Log ("MISSILE EXPLODED!");
 
 					DestroyForReuse ();		// We explode after one hit
 				}
