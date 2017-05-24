@@ -33,7 +33,7 @@ public class ShopMenu : MonoBehaviour {
 	public Stack<GameObject> screenStack = new Stack<GameObject>();	// Visited screens
 	public bool isOpen;		// Is the shop open?
 	public List<GameObject> activeSlots;		// Naive impl where we destroy slots instead of caching them upon visit
-	public Dictionary<string, GameObject> visitedPowerupSlots = new Dictionary<string, GameObject>();
+	//public Dictionary<string, GameObject> visitedPowerupSlots = new Dictionary<string, GameObject>();
 	//public HashSet<PowerupHolder> visitedPowerupsSet = new HashSet<PowerupHolder>();
 
 	// Individually selected powerup
@@ -114,15 +114,27 @@ public class ShopMenu : MonoBehaviour {
 			GameObject currSlot = Instantiate (shopSlot);	
 			activeSlots.Add (currSlot);						// So we know which slots to destroy upon leaving screen
 			currSlot.GetComponent <ShopSlot> ().id = i;		// Set the slot's position
+
+			// Set event listener that will update Shop Info panel
+			Button currButton = currSlot.GetComponent<Button>();
+			currButton.onClick.AddListener(() => UpgradePressed(currSlot));
+
+			// Disable upgrade slot if max lvl achieved
+			UpgradableScriptableObject currUpgrade = currSlot.GetComponent <ShopSlot> ().upgrade;
+			currUpgrade = upgradesList [i];
+			if (currUpgrade.currLvl >= currUpgrade.MAX_LEVEL) {
+				DisableSlot (currButton);
+			}
+
 			// Populate slot info in list view
 			currSlot.GetComponentInChildren <Text>().text = upgradesList[i].powerupName.ToString();		// Set name of upgrade in the list view on left (panel will be set when clicked)
 
 			// Assign its parent
 			currSlot.transform.SetParent (upgradesListPanel.transform);
 
-			// Set event listener that will update Shop Info panel
-			Button currButton = currSlot.GetComponent<Button>();
-			currButton.onClick.AddListener(() => UpgradePressed(currSlot));
+
+
+			//if (currButton.GetCom)
 
 		}
 	}
@@ -190,8 +202,7 @@ public class ShopMenu : MonoBehaviour {
 
 			if (currActiveUpgrade.GetPrice () < 0) {
 				// Disable button
-				currButton.interactable = false;
-				currButton.GetComponent<Image>().color = Color.red;
+				DisableSlot (currButton);
 			}
 
 			Debug.Log ("NEW BALANCE" + GameManager.Singleton.playerBalance);
@@ -209,4 +220,8 @@ public class ShopMenu : MonoBehaviour {
 		Debug.Log ("PURCHASE FAILED");
 	}
 
+	public void DisableSlot(Button button) {
+		button.interactable = false;
+		button.GetComponent<Image>().color = Color.red;
+	}
 }
