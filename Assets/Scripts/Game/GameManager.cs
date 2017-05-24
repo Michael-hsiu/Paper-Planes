@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour {
 
 	// Shop logic
 	public GameObject shopButton;
+	public GameObject uiElements;
 
 	// Called before Start()
 	void Awake() {
@@ -227,6 +228,8 @@ public class GameManager : MonoBehaviour {
 
 	// Start Shop scene, while preventing Managers and Player from being destroyed
 	public void OpenShop() {
+		playerShip.gameObject.SetActive (false);
+		uiElements.SetActive (false);		// Effectively "hides" the screen UI
 		SceneManager.LoadSceneAsync ("Shop");
 	}
 

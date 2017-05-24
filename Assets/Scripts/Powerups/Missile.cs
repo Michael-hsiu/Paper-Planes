@@ -74,15 +74,18 @@ public class Missile : PoolObject {
 
 		// Continue process while target is null or if it's inactive (pooled)
 		while (target == null || !target.activeSelf) {
-			// Seek a new target
-			FindTarget ();
+			if (GameManager.Singleton.lvlActive) {
+				// Seek a new target
+				FindTarget ();
 
-			// Determine if we found a target, then either delay or leave loop and reset bool flag
-			if (target == null) {
-				yield return new WaitForSeconds(seekDelay);
-			} else {
-				break;
+				// Determine if we found a target, then either delay or leave loop and reset bool flag
+				if (target == null) {
+					yield return new WaitForSeconds(seekDelay);
+				} else {
+					break;
+				}
 			}
+			yield return null;
 		}
 		seekingTarget = false;		// Bool flag
 	}

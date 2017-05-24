@@ -33,6 +33,7 @@ public class ShopMenu : MonoBehaviour {
 	public Stack<GameObject> screenStack = new Stack<GameObject>();	// Visited screens
 	public bool isOpen;		// Is the shop open?
 	public List<GameObject> activeSlots;		// Naive impl where we destroy slots instead of caching them upon visit
+	public Dictionary<string, GameObject> visitedPowerupSlots = new Dictionary<string, GameObject>();
 	//public HashSet<PowerupHolder> visitedPowerupsSet = new HashSet<PowerupHolder>();
 
 	// Individually selected powerup
@@ -73,6 +74,8 @@ public class ShopMenu : MonoBehaviour {
 			isOpen = false;
 		}
 		ClearSlots ();		// Clear any specific upgrade slots
+		GameManager.Singleton.playerShip.gameObject.SetActive (true);
+		GameManager.Singleton.uiElements.SetActive (true);
 		SceneManager.LoadSceneAsync ("GameScene");		// Reload the game scene
 	}
 
