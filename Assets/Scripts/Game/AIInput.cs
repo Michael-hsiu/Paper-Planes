@@ -12,7 +12,8 @@ public class AIInput : MonoBehaviour, InputComponent {
 	//public DashState dashState;		// Stores current dash state
 
 	public IEnumerator cr1;
-	public VirtualJoystick virtualJoystick;
+	public VirtualJoystick virtualJoystickMove;
+	public VirtualJoystick virtualJoystickRotate;
 
 	//public enum DashState { Ready, Dashing, Cooldown}
 
@@ -92,17 +93,22 @@ public class AIInput : MonoBehaviour, InputComponent {
 			transform.Translate(0, 0, translation);
 			transform.Rotate(0, rotation, 0);
 */
-			// If there is any movement on joystick
-			if (virtualJoystick.inputDirection != Vector3.zero) {
+			// Rotation logic
+			if (virtualJoystickRotate.inputDirection != Vector3.zero) {
 
 				// Joystick Rotation logic
-				Vector3 dir = virtualJoystick.inputDirection;
-				float zAngle = (Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg)- 90;	// Angle of rotation around z-axis (pointing upwards)
+				Vector3 dir = virtualJoystickRotate.inputDirection;
+				float zAngle = (Mathf.Atan2 (dir.z, dir.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
 				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 				player.transform.rotation = desiredRotation;
 
-				// Movement logic
+			}
+
+			// Movement logic
+			if (virtualJoystickMove.inputDirection != Vector3.zero) {
+				
 				player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * player.speed);
+
 			}
 
 
