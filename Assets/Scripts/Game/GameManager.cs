@@ -230,6 +230,10 @@ public class GameManager : MonoBehaviour {
 	public void OpenShop() {
 		playerShip.gameObject.SetActive (false);
 		uiElements.SetActive (false);		// Effectively "hides" the screen UI
+		if (ShopMenu.instance != null) {
+			ShopMenu.instance.gameObject.SetActive (true);
+			ShopMenu.instance.SetupShop ();		// Loads all basic UI for shop
+		}
 		SceneManager.LoadSceneAsync ("Shop");
 	}
 

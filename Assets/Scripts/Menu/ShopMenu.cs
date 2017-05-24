@@ -45,15 +45,20 @@ public class ShopMenu : MonoBehaviour {
 		DontDestroyOnLoad (this);
 		if (instance == null) {
 			instance = this;
+			SetupShop ();
 		} else {
 			DestroyImmediate(gameObject);
 		}
+	}
+
+	// Loads the basic UI of shop (Open / close, back buttons)
+	public void SetupShop() {
+		shopBaseUI.SetActive (true);		// THIS UI IS ALWAYS PRESENT
 	}
 		
 	public void OpenShop() {
 
 		if (!isOpen) {
-			shopBaseUI.SetActive (true);		// THIS UI IS ALWAYS PRESENT
 			welcomeScreen.SetActive (true);		// All other screens are disabled until button press
 
 			screenStack.Push (welcomeScreen);	// Store in-order progression of screens accessed
@@ -74,8 +79,11 @@ public class ShopMenu : MonoBehaviour {
 			isOpen = false;
 		}
 		ClearSlots ();		// Clear any specific upgrade slots
+
 		GameManager.Singleton.playerShip.gameObject.SetActive (true);
 		GameManager.Singleton.uiElements.SetActive (true);
+		gameObject.SetActive (false);					// Close the Shop
+
 		SceneManager.LoadSceneAsync ("GameScene");		// Reload the game scene
 	}
 
@@ -178,6 +186,7 @@ public class ShopMenu : MonoBehaviour {
 			// Deduce $ from player balance
 			GameManager.Singleton.playerBalance -= upgradePrice;	// Price specific to that upgrade
 			currActiveUpgrade.UpgradePowerup ();					// Logic specific to that upgrade
+			playerBalance.GetComponent <Text> ().text = GameManager.Singleton.playerBalance.ToString ();		// Update player balance text
 
 			if (currActiveUpgrade.GetPrice () < 0) {
 				// Disable button
