@@ -46,7 +46,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CanvasDontDestroy.cs" />
      <Compile Include="Assets\Inputs\VirtualJoystick.cs" />
+     <Compile Include="Assets\ManagerDontDestroy.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\HomingMissileScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileCountScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileDamageScrObj.cs" />
@@ -171,6 +173,7 @@
      <Compile Include="Assets\Scripts\Utility\ParticleSystemAutoDestroy.cs" />
      <Compile Include="Assets\Scripts\Utility\RotationUpdate.cs" />
      <Compile Include="Assets\Scripts\Utility\ShotMover.cs" />
+     <Compile Include="Assets\SpawnersDontDestroy.cs" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>

@@ -67,14 +67,17 @@ public class PlayerShip : FiringShip {
 
 	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
 
-	private static PlayerShip Instance;
+	public static PlayerShip instance;
 	void Awake(){
-		if (Instance == null) {
-			Instance = this;
+		
+		DontDestroyOnLoad (this);
+		if (instance == null) {
+			instance = this;
 		} else {
-			DestroyObject(gameObject);
+			DestroyImmediate(gameObject);
 		}
 	}
+
 	#endregion
 
 	#region Unity Life Cycle

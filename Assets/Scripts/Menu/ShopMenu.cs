@@ -38,8 +38,15 @@ public class ShopMenu : MonoBehaviour {
 	// Individually selected powerup
 	public PowerupHolder activePowerupHolder;
 
-	void Awake() {
-		DontDestroyOnLoad (this);		
+	public static ShopMenu instance;
+	void Awake(){
+
+		DontDestroyOnLoad (this);
+		if (instance == null) {
+			instance = this;
+		} else {
+			DestroyImmediate(gameObject);
+		}
 	}
 		
 	public void OpenShop() {
