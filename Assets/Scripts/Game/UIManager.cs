@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour {
 	public Text healthText;
 	public Text dashStoreText;
 	public Text burshRushText;
+	public Image healthBar;		// The Health Bar that changes in size as health inc/dec
 
 	// Level update text
 	public Text levelGoalText;
@@ -115,6 +116,7 @@ public class UIManager : MonoBehaviour {
 
 	}
 
+
 	//Singleton implementation
 	private static UIManager singleton;
 	public static UIManager Singleton {
@@ -126,10 +128,6 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	/************************ [CONSTRUCTORS] *************************/
-
-	protected UIManager() {}
-
 
 	/************************ [UNITY FUNCTIONS] ************************/
 	void Awake() {
@@ -138,6 +136,10 @@ public class UIManager : MonoBehaviour {
 		} else {
 			DestroyImmediate(this);
 		}
+	}
+
+	void Start() {
+		// Since inspector values are not processed yet
 		UpdateHealth ();
 	}
 
@@ -148,7 +150,14 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void UpdateHealth() {
-		healthText.text = "Health: " + GameManager.Singleton.playerHealth.ToString () + " / 100";
+		// Text
+		Debug.Log ("HEALTH UPDATED");
+		healthText.text = "Health: " + GameManager.Singleton.playerHealth.ToString () + " / " + GameManager.Singleton.playerMaxHealth.ToString ();
+
+		// Health bar
+		float ratio = (float) GameManager.Singleton.playerHealth / GameManager.Singleton.playerMaxHealth;
+		Debug.Log ("RATIO: " + ratio);
+		healthBar.rectTransform.localScale = new Vector3 (ratio, 1, 1);		// Resize health bar proportionally
 	}
 
 	public void UpdateDashText(int dashes) {

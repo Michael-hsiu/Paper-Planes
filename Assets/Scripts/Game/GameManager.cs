@@ -11,7 +11,10 @@ public class GameManager : MonoBehaviour {
 	// Logic about player is stored here
 	public PlayerShip playerShip;
 	public GameObject normalSS;			// Player's normal shotspawn
-	public int playerHealth = 100;
+
+	public int playerHealth;
+	public int playerMaxHealth;	// Must be changed w/ health bar and upgrades
+
 	public int playerScore = 0;
 	public int playerBalance = 0;		// How much money the player has
 	public int playerDamage = 20;
