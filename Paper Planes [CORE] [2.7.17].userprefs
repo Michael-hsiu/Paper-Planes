@@ -1,13 +1,20 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Menu/ShopMenu.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/ContinueScreen.cs">
     <Files>
-      <File FileName="Assets/Prefabs/Powerups/Homing Missile/HomingMissileScrObj.cs" Line="1" Column="1" />
-      <File FileName="Assets/Prefabs/Powerups/UpgradableScriptableObject.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Menu/ShopMenu.cs" Line="227" Column="2" />
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="234" Column="50" />
-      <File FileName="Assets/Prefabs/Shop UI/ShopSlot.cs" Line="8" Column="52" />
-      <File FileName="Assets/Prefabs/Powerups/Homing Missile/MissileCountScrObj.cs" Line="6" Column="1" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="129" Column="90" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="139" Column="46" />
+      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="108" Column="1" />
+      <File FileName="Assets/Scripts/Powerups/PlayerStraightMissile.cs" Line="14" Column="5" />
+      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="96" Column="6" />
+      <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="59" Column="7" />
+      <File FileName="Assets/Scripts/Powerups/HomingMissilePowerup.cs" Line="22" Column="1" />
+      <File FileName="Assets/ContinueScreen.cs" Line="10" Column="2" />
+      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="29" Column="96" />
+      <File FileName="Assets/Scripts/Game/InputManager.cs" Line="34" Column="33" />
+      <File FileName="Assets/Scripts/Game/InputComponent.cs" Line="7" Column="2" />
+      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="218" Column="75" />
+      <File FileName="Assets/Scripts/Menu/ShopMenu.cs" Line="87" Column="71" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

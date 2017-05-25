@@ -28,14 +28,6 @@ public class AIInput : MonoBehaviour, InputComponent {
 
 			bool axisInput = GameManager.Singleton.axisInput;	// Check if we register hori/vert movement
 
-			// Temp logic for player destruction
-			if (GameManager.Singleton.playerHealth <= 0) {
-				Instantiate (player.explosion, transform.position, transform.rotation);
-				player.gameObject.SetActive (false);
-				Debug.LogError ("PLAYER DIED!");
-				Debug.Break ();
-			}
-
 			// COMPUTER INPUTS
 			// Can't turn whilst dashing
 			if (Input.GetKey(KeyCode.D) && !player.dashStarted) {

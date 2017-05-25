@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour {
 	// Level update text
 	public Text levelGoalText;
 	public Text levelEndText;
-	public Text startGameText;
+	//public Text startGameText;
 	public IEnumerator levelGoalCR;
 	public IEnumerator levelEndCR;
 
@@ -46,10 +46,10 @@ public class UIManager : MonoBehaviour {
 			assassinsLeft, 
 			bombersLeft
 		);
-		if (level == 1) {
+/*		if (level == 1) {
 			startGameText.text = "Press to cont.";
-		}
-		startGameText.transform.parent.gameObject.SetActive(false);
+		}*/
+		//startGameText.transform.parent.gameObject.SetActive(false);
 		GameManager.Singleton.shopButton.SetActive (false);
 		startGameButton.gameObject.SetActive (false);
 		//StopAllCoroutines ();
@@ -57,11 +57,8 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void EndLevel(int level) {
-		startGameText.transform.parent.gameObject.SetActive(true);
-		GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
-		levelEndCR = DisplayLevelEndText (level);
-		//StopAllCoroutines ();
-		StartCoroutine (levelEndCR);
+		DisplayVictoryScreen ();
+		//GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
 	}
 
 	IEnumerator DisplayLevelGoalText(int level, 
@@ -107,35 +104,34 @@ public class UIManager : MonoBehaviour {
 		yield return new WaitForSeconds (displayLength);	// Show the level goal text on screen
 		levelGoalText.gameObject.SetActive (false);		// Hide the text
 	
-	}
-
-	IEnumerator DisplayLevelEndText(int level) {
-
-		/*levelEndText.gameObject.SetActive (true);
-		levelEndText.text = String.Format("Level {0}: Complete!", level);
-
-		yield return new WaitForSeconds (displayLength);	// Show the victory text on screen
-		levelEndText.gameObject.SetActive (false);		// Hide the text
-		*/
-
-		continueScreen.gameObject.SetActive (true);
-		continueScreen.GetComponent<ContinueScreen> ().OpenVictoryContinueScreen ();
-		yield return null;
-	}
+  	}
 
 	public void DisableContinueScreen() {
 		continueScreen.gameObject.SetActive (false);	
 	}
 
+	public void DisplayVictoryScreen() {
+		continueScreen.gameObject.SetActive (true);
+		continueScreen.GetComponent<ContinueScreen> ().OpenVictoryContinueScreen ();
+		Debug.Log ("VICTORY SCREEN");
+		/*EnableVictoryScreen ();
+		DisableFailureScreen ();*/
+	}
+
+	public void DisplayFailureScreen() {
+		continueScreen.gameObject.SetActive (true);
+		continueScreen.GetComponent<ContinueScreen> ().OpenFailureContinueScreen ();
+		/*DisableVictoryScreen ();
+		EnableFailureScreen ();*/
+	}
 
 
-
-	/*public void EnableVictoryScreen() {
-		continueScreen.victoryScreen.SetActive (false);
+	public void EnableVictoryScreen() {
+		continueScreen.victoryScreen.SetActive (true);
 	}
 
 	public void DisableVictoryScreen() {
-		continueScreen.victoryScreen.SetActive (true);
+		continueScreen.victoryScreen.SetActive (false);
 	}
 
 	public void EnableFailureScreen() {
@@ -144,7 +140,7 @@ public class UIManager : MonoBehaviour {
 
 	public void DisableFailureScreen() {
 		continueScreen.failureScreen.SetActive (false);
-	}*/
+	}
 
 
 	//Singleton implementation

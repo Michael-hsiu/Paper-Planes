@@ -214,6 +214,9 @@ public class PlayerShip : FiringShip {
 
 	public override void Damage(int damageTaken) {
 		GameManager.Singleton.playerHealth -= damageTaken;
+		if (GameManager.Singleton.playerHealth <= 0) {
+			GameManager.Singleton.LevelFailed ();			// Initiate level failure logic
+		}
 		UIManager.Singleton.UpdateHealth ();
 	}
 

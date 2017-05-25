@@ -124,6 +124,17 @@ public class GameManager : MonoBehaviour {
 		BeginLevel (activeLevelNum);
 	}
 
+	// Replay level after defeat
+	public void RetryLevel() {
+		//SceneManager.LoadSceneAsync ("GameScene");		// Reload the game scene (reset everything)
+
+		Utils.KillAllEnemies ();
+		Utils.DisablePowerups ();
+
+		playerShip.gameObject.SetActive (true);
+		BeginLevel (activeLevelNum);
+	}
+
 	// Only occurs on button click atm
 	public void BeginLevel(int level) {
 
@@ -133,6 +144,9 @@ public class GameManager : MonoBehaviour {
 		((AIInput)(InputManager.Instance.GetActiveInput ())).controlsEnabled = true;
 
 		// Spawn / setup logic for each level
+		playerHealth = playerMaxHealth;		// Restore health to max
+		UIManager.Singleton.UpdateHealth ();
+
 		lvlActive = true;
 		activeLevelNum = level;		// The numerical repr of current lvl
 		activeLevel = levels [activeLevelNum - 1];		// Cache the current lvl object
@@ -178,7 +192,7 @@ public class GameManager : MonoBehaviour {
 	public void EndLevel(int level) {
 
 		lvlActive = false;
-		((AIInput)(InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
+		((AIInput) (InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
 
 		// Kill all enemies in scene
 		Utils.KillAllEnemies ();
@@ -250,6 +264,17 @@ public class GameManager : MonoBehaviour {
 		SceneManager.LoadSceneAsync ("Shop");
 	}
 
+	// Called by player input if player dies
+	public void LevelFailed() {
+		
+		Instantiate (playerShip.explosion, transform.position, transform.rotation);
+		playerShip.gameObject.SetActive (false);
+
+		UIManager.Singleton.DisplayFailureScreen ();
+		Debug.LogError ("PLAYER DIED!");
+		//Debug.Break ();
+	}
+
 
 	private static GameManager singleton;
 	public static GameManager Singleton {
@@ -263,7 +288,7 @@ public class GameManager : MonoBehaviour {
 
 	/************************ [CONSTRUCTORS] *************************/
 	protected GameManager() {
-		GameState = GameState.Start;	// Set current gamestate
+		//GameState = GameState.Start;	// Set current gamestate
 	}
 
 
@@ -279,7 +304,7 @@ public class GameManager : MonoBehaviour {
 		GameManager.Singleton.playerScore += ptIncrease * scoreMultiplier;	// Add new score in GameManager
 	}
 
-	public void Die() {
+	/*public void Die() {
 		//UIManager.Instance.SetStatus(Constants.StatusDeadTapToStart);
 		this.GameState = GameState.Dead;
 	}
@@ -293,10 +318,10 @@ public class GameManager : MonoBehaviour {
 	public void HealthTest() {
 		DeductHealth ();
 		UIManager.Singleton.UpdateHealth ();
-	}
+	}*/
 		
 	/************************ [GETTERS & SETTERS] ************************/
-	public GameState GameState { get; set; }
+	//public GameState GameState { get; set; }
 
 	//public bool CanSwipe { get; set; }
 

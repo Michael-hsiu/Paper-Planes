@@ -22,12 +22,33 @@ public class ContinueScreen : MonoBehaviour {
 
 
 	public void OpenFailureContinueScreen() {
+		DisableVictoryContinueScreen ();
+
 		failureScreen.SetActive (true);
+		failureShopButton.SetActive (true);
+		failureRetryButton.SetActive (true);
 
 	}
 
 	public void OpenVictoryContinueScreen() {
+		DisableFailureContinueScreen ();
+
 		victoryScreen.SetActive (true);
+		victoryShopButton.SetActive (true);
+		victoryContButton.SetActive (true);
+	}
+
+	public void DisableFailureContinueScreen() {
+		failureScreen.SetActive (false);
+		failureShopButton.SetActive (false);
+		failureRetryButton.SetActive (false);
+
+	}
+
+	public void DisableVictoryContinueScreen() {
+		victoryScreen.SetActive (false);
+		victoryShopButton.SetActive (false);
+		victoryContButton.SetActive (false);
 	}
 		
 }
