@@ -110,6 +110,11 @@ public class GameManager : MonoBehaviour {
 		if (activeLevelNum < 1) {
 			activeLevelNum = 1;
 		}
+
+		// Enable player controls
+		((AIInput)(InputManager.Instance.GetActiveInput ())).controlsEnabled = true;
+
+		// Start level 1
 		BeginLevel (activeLevelNum);
 				
 	}
@@ -125,6 +130,7 @@ public class GameManager : MonoBehaviour {
 		// Disable shop button and other screen
 		shopButton.SetActive (false);
 		UIManager.Singleton.DisableContinueScreen ();
+		((AIInput)(InputManager.Instance.GetActiveInput ())).controlsEnabled = true;
 
 		// Spawn / setup logic for each level
 		lvlActive = true;
@@ -172,8 +178,7 @@ public class GameManager : MonoBehaviour {
 	public void EndLevel(int level) {
 
 		lvlActive = false;
-
-
+		((AIInput)(InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
 
 		// Kill all enemies in scene
 		Utils.KillAllEnemies ();

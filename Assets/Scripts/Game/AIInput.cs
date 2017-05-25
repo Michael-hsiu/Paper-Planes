@@ -5,8 +5,8 @@ using UnityEngine;
 // Dash components modelled after: http://answers.unity3d.com/questions/892955/dashing-mechanic-using-rigidbodyaddforce.html
 public class AIInput : MonoBehaviour, InputComponent {
 
+	public bool controlsEnabled = false;
 	//public float speed = 5.0f;
-	public bool controlsEnabled = true;
 	public Vector2 savedVelocity;
 	public Vector2 lastDashVelocity;	// For if we get hit by EMP while dashing, we keep velocity without losing full control
 	//public DashState dashState;		// Stores current dash state

@@ -90,7 +90,7 @@ public class PlayerShip : FiringShip {
 	protected override void Update () {
 
 		// Firing logic
-		if (Input.GetButton ("Fire1") && Time.time > nextFire) {
+		if (Input.GetButton ("Fire1") && Time.time > nextFire && ((AIInput) input).controlsEnabled) {
 			Fire ();
 		}
 
