@@ -114,12 +114,17 @@ public class GameManager : MonoBehaviour {
 				
 	}
 
+	// Called from Victory Screen
+	public void ContinueGame() {
+		BeginLevel (activeLevelNum);
+	}
 
 	// Only occurs on button click atm
 	public void BeginLevel(int level) {
 
-		// Disable shop button
+		// Disable shop button and other screen
 		shopButton.SetActive (false);
+		UIManager.Singleton.DisableContinueScreen ();
 
 		// Spawn / setup logic for each level
 		lvlActive = true;
@@ -184,7 +189,7 @@ public class GameManager : MonoBehaviour {
 		// Disable all the spawners for this level
 		DisableSpawns ();
 		shopButton.SetActive (true);
-		UIManager.Singleton.EndLevel (activeLevelNum);
+		UIManager.Singleton.EndLevel (activeLevelNum);		// Remember to activate continue screen!
 
 		activeLevelNum += 1;
 	}

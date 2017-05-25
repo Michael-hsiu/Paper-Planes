@@ -16,10 +16,10 @@ public class HomingMissilePowerup : Powerup {
 
 	public override void ActivatePower() {
 //		if (missileSpawn != null) {
-		Debug.Log ("ACTUAL POW");
+		//Debug.Log ("ACTUAL POW");
 		Debug.Log (((HomingMissileScrObj) powerupData).numMissiles + "MISSILES TO CREATE");
-		Debug.Log ("MS" + missileSpawn == null);
-		Debug.Log ("PD" + powerupData == null);
+		//Debug.Log ("MS" + missileSpawn == null);
+		//Debug.Log ("PD" + powerupData == null);
 		missileSpawn.CreateMissiles (((HomingMissileScrObj) powerupData).numMissiles);	// Fire the missiles! [SATISFIES numMissiles]
 //		}
 	}

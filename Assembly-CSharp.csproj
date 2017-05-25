@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\CanvasDontDestroy.cs" />
+     <Compile Include="Assets\ContinueScreen.cs" />
      <Compile Include="Assets\Inputs\VirtualJoystick.cs" />
      <Compile Include="Assets\ManagerDontDestroy.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\HomingMissileScrObj.cs" />

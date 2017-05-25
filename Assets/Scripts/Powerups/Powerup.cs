@@ -93,7 +93,7 @@ public class Powerup : PoolObject {
 			/*if (player == null) {
 				player = other.GetComponent<PlayerShip> ();
 			}*/
-			Debug.Log (other.name);
+			//Debug.Log (other.name);
 			ActivatePower ();
 			HideInScene ();
 			//Debug.Log ("PICKED UP POWERUP: " + this.id);	// Print message to console

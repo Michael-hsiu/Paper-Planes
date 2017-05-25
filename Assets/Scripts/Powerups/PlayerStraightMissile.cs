@@ -11,7 +11,7 @@ public class PlayerStraightMissile : PoolObject {
 	public override void OnObjectReuse() {
 		// Anything to reset? Transform, velocity, etc.
 		GetComponent<Rigidbody> ().velocity = Vector3.zero;
-		Debug.Log ("PLAYER STRAIGHT MISSILE RESET");
+		//Debug.Log ("PLAYER STRAIGHT MISSILE RESET");
 		GetComponent<Rigidbody> ().AddForce (transform.up * thrust);
 	}
 

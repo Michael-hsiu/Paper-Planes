@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour {
 	public Text dashStoreText;
 	public Text burshRushText;
 	public Image healthBar;		// The Health Bar that changes in size as health inc/dec
+	public ContinueScreen continueScreen;
+	public Button startGameButton;		// Primary button for beginning the game
 
 	// Level update text
 	public Text levelGoalText;
@@ -49,6 +51,7 @@ public class UIManager : MonoBehaviour {
 		}
 		startGameText.transform.parent.gameObject.SetActive(false);
 		GameManager.Singleton.shopButton.SetActive (false);
+		startGameButton.gameObject.SetActive (false);
 		//StopAllCoroutines ();
 		StartCoroutine (levelGoalCR);
 	}
@@ -108,13 +111,40 @@ public class UIManager : MonoBehaviour {
 
 	IEnumerator DisplayLevelEndText(int level) {
 
-		levelEndText.gameObject.SetActive (true);
+		/*levelEndText.gameObject.SetActive (true);
 		levelEndText.text = String.Format("Level {0}: Complete!", level);
 
 		yield return new WaitForSeconds (displayLength);	// Show the victory text on screen
 		levelEndText.gameObject.SetActive (false);		// Hide the text
+		*/
 
+		continueScreen.gameObject.SetActive (true);
+		continueScreen.GetComponent<ContinueScreen> ().OpenVictoryContinueScreen ();
+		yield return null;
 	}
+
+	public void DisableContinueScreen() {
+		continueScreen.gameObject.SetActive (false);	
+	}
+
+
+
+
+	/*public void EnableVictoryScreen() {
+		continueScreen.victoryScreen.SetActive (false);
+	}
+
+	public void DisableVictoryScreen() {
+		continueScreen.victoryScreen.SetActive (true);
+	}
+
+	public void EnableFailureScreen() {
+		continueScreen.failureScreen.SetActive (true);
+	}
+
+	public void DisableFailureScreen() {
+		continueScreen.failureScreen.SetActive (false);
+	}*/
 
 
 	//Singleton implementation
@@ -151,12 +181,12 @@ public class UIManager : MonoBehaviour {
 
 	public void UpdateHealth() {
 		// Text
-		Debug.Log ("HEALTH UPDATED");
+		//Debug.Log ("HEALTH UPDATED");
 		healthText.text = "Health: " + GameManager.Singleton.playerHealth.ToString () + " / " + GameManager.Singleton.playerMaxHealth.ToString ();
 
 		// Health bar
 		float ratio = (float) GameManager.Singleton.playerHealth / GameManager.Singleton.playerMaxHealth;
-		Debug.Log ("RATIO: " + ratio);
+		//Debug.Log ("RATIO: " + ratio);
 		healthBar.rectTransform.localScale = new Vector3 (ratio, 1, 1);		// Resize health bar proportionally
 	}
 

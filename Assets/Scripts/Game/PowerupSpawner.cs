@@ -56,7 +56,7 @@ public class PowerupSpawner : MonoBehaviour {
 				numPowerupsSpawned += 1;
 				//Instantiate (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
 
-				Debug.Log ("POWERUP SPAWNED!");
+				//Debug.Log ("POWERUP SPAWNED!");
 			}
 			if (!spawnEnabled) {
 				numPowerupsSpawned = 0;		// Reset after each lvl
