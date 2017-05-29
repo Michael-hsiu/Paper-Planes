@@ -131,10 +131,7 @@ public class ShopMenu : MonoBehaviour {
 
 			// Assign its parent
 			currSlot.transform.SetParent (upgradesListPanel.transform);
-
-
-
-			//if (currButton.GetCom)
+			currSlot.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);	// So slot doesn't scale up (THIS WORKS!!!)
 
 		}
 	}
@@ -150,13 +147,16 @@ public class ShopMenu : MonoBehaviour {
 		currButton = buttonPressed.GetComponent<Button> ();
 
 		// Now populate fields
-		upgradeName.text = activeUpgrade.powerupName.ToString ();
-		upgradePrice.text = activeUpgrade.powerupPrice.ToString ();
-		upgradeInfo.text = activeUpgrade.powerupInfo.ToString ();
-
+		UpdateShopPanel ();
 	}
 
-
+	public void UpdateShopPanel() {
+		upgradeName.text = currActiveUpgrade.powerupName.ToString ();
+		if (currActiveUpgrade.GetPrice () > 0) {		// Since we set to -1 if it's fully upgraded
+			upgradePrice.text = currActiveUpgrade.GetPrice ().ToString ();		// This also updates the price of the item
+		}
+		upgradeInfo.text = currActiveUpgrade.powerupInfo.ToString ();
+	}
 
 	public void ShipUpgradesPressed() {
 		screenStack.Push (shipUpgrades);
@@ -198,6 +198,8 @@ public class ShopMenu : MonoBehaviour {
 			// Deduce $ from player balance
 			GameManager.Singleton.playerBalance -= upgradePrice;	// Price specific to that upgrade
 			currActiveUpgrade.UpgradePowerup ();					// Logic specific to that upgrade
+			UpdateShopPanel ();
+
 			playerBalance.GetComponent <Text> ().text = GameManager.Singleton.playerBalance.ToString ();		// Update player balance text
 
 			if (currActiveUpgrade.GetPrice () < 0) {

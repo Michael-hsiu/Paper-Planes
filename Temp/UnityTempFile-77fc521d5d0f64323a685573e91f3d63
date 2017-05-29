@@ -99,6 +99,7 @@
 'Assets/Prefabs/Powerups/Homing Missile/MissileDamageScrObj.cs'
 'Assets/Prefabs/Powerups/UpgradableScriptableObject.cs'
 'Assets/Prefabs/Shop UI/ShopSlot.cs'
+'Assets/Prefabs/Shop UI/UpgradesListPanel.cs'
 'Assets/Scripts/Enemy/AssassinCollisionHelper.cs'
 'Assets/Scripts/Enemy/AssassinShip.cs'
 'Assets/Scripts/Enemy/BomberShip/BomberFS.cs'

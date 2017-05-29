@@ -45,7 +45,8 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 
 	public override int GetPrice() {
 		if (currLvl < MAX_LEVEL) {
-			return pricesList [currLvl];
+			powerupPrice = pricesList [currLvl];
+			return powerupPrice;
 		} else {
 			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + (currLvl - 1));
 			return -1;

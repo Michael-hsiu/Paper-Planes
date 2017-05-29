@@ -1,7 +1,3 @@
-/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Assembly-CSharp.dll.mdb
-/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Assembly-CSharp.dll
-/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/obj/Debug/Assembly-CSharp.dll
-/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/obj/Debug/Assembly-CSharp.dll.mdb
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEditor.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.Analytics.dll
@@ -10,8 +6,6 @@
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.UI.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.HoloLens.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.VR.dll
-/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
-/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Mono.Cecil.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Unity.SerializationLogic.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Unity.DataContract.dll
@@ -21,5 +15,3 @@
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Mono.Cecil.Mdb.dll
-/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.Purchasing.dll
-/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.Advertisements.dll
