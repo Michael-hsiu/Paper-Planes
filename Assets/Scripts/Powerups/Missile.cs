@@ -6,6 +6,8 @@ using System.Linq;
 public class Missile : PoolObject {
 
 	public HomingMissileScrObj missileData;		// Data about upgrades, etc.
+	//public PlayerShotSpawn missileSpawn;		// Assigned to normal player shotspawn in inspector
+
 	public GameObject explosion;
 	public GameObject target;
 	//public int damage = 1;					// Damage vals now stored in ScrObj data container
@@ -18,6 +20,8 @@ public class Missile : PoolObject {
 	public float seekDelay = 0.1f;
 	public float randomVal;
 
+	public float spawnChance = 0.0f;			// Chance of spawning new missiles
+
 	[SerializeField]
 	private bool canDmg = true;		// Helps us register hit delays
 
@@ -26,6 +30,10 @@ public class Missile : PoolObject {
 		transform.rotation = Quaternion.identity;
 		StartCoroutine(SeekAndMove());		// Find target as soon we go active
 	}
+
+	/*void Start() {
+		missileSpawn = GameManager.Singleton.normalSS.GetComponent <PlayerShotSpawn>();
+	}*/
 
 	void Update() {
 		Move ();
@@ -145,7 +153,8 @@ public class Missile : PoolObject {
 						randomVal = Random.value;
 						//Debug.Log ("RANDOMVAL" + randomVal);
 						if (randomVal < missileData.missileSpawnChance) {
-							for (int i = 0; i < 2; i++) {
+							int numMissilesToSpawn = Random.Range (1, 4);
+							for (int i = 0; i < numMissilesToSpawn; i++) {
 								PoolManager.Instance.ReuseObject (missileData.missile, transform.position, Quaternion.identity);		// Chance of spawning another missile on missile hit
 							}
 						}

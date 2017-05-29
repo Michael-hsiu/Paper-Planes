@@ -53,6 +53,7 @@
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\HomingMissileScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileCountScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileDamageScrObj.cs" />
+     <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileSpawnChanceScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\UpgradableScriptableObject.cs" />
      <Compile Include="Assets\Prefabs\Shop UI\ShopSlot.cs" />
      <Compile Include="Assets\Prefabs\Shop UI\UpgradesListPanel.cs" />

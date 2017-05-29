@@ -10,7 +10,7 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 	// Status vars
 	public int damage = 50;		// [SATISFIES damage increase]
 	public int numMissiles = 5;
-	public float missileSpawnChance = 0f;
+	public float missileSpawnChance = 0.0f;
 	public GameObject missile;		// Missile fab
 
 	// Info for Shop
