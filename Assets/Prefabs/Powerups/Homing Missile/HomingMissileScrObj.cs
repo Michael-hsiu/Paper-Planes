@@ -7,9 +7,9 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 
 	// Homing Missile Powerup holds a reference to this SO; changes this SO if a powerup is upgraded.
 
-	// Status vars
-	public int damage = 50;		// [SATISFIES damage increase]
-	public int numMissiles = 5;
+	// Status vars w/ default values for ref (un-upgraded)
+	public int damage = 40;		// [SATISFIES damage increase]
+	public int numMissiles = 4;
 	public float missileSpawnChance = 0.0f;
 	public GameObject missile;		// Missile fab
 
@@ -21,17 +21,23 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 		foreach (UpgradableScriptableObject so in upgradeList) {
 			so.parentPowerup = this;
 		}
+
+		// Temporary reset logic before JSON / player progress saving
+		damage = 40;
+		numMissiles = 4;
+		missileSpawnChance = 0.0f;
+
 		/*powerupName = "Homing Missiles";		// May need to be generalized to be "HM Damage", "HM Spawn Chance", etc.
 		powerupPrice = 2000;
 		powerupInfo = "Upgrade the damage of homing missiles.";		// Also needs to be generalized.*/
 	}
 
 
-	public List<float> missileSpawnChanceList = new List<float> {
+	/*public List<float> missileSpawnChanceList = new List<float> {
 		// Indexed by level - 1
 		0f,		// Lvl 0
 		0.1f,		// Lvl 1
 		0.15f		// Lvl 2
 	};
-
+*/
 }

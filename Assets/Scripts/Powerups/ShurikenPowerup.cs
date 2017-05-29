@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShurikenPowerup : PoolObject {
+public class ShurikenPowerup : Powerup {
 
 	public GameObject shuriken;
-	public GameObject player;
-	protected bool isVisible;
+	//public GameObject player;
+	//protected bool isVisible;
 	public float lifeTime = 10.0f;
 
-	private IEnumerator cr;
+	private IEnumerator cr; 
 	private ShurikenObj sken;
 
 	private SpecialWeapons id = SpecialWeapons.SHURIKEN;
 
-
+/*
 	void Start() {
 		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
-	}
+	}*/
 
 	void OnTriggerEnter(Collider other) {
 

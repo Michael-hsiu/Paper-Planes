@@ -1,21 +1,21 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefabs/Shop UI/UpgradesListPanel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Powerups/Missile.cs">
     <Files>
-      <File FileName="Assets/Scripts/Menu/ShopMenu.cs" Line="172" Column="1" />
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Powerups/PlayerStraightMissile.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Powerups/HomingMissilePowerup.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Game/InputManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Game/InputComponent.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="1" Column="1" />
-      <File FileName="Assets/ContinueScreen.cs" Line="1" Column="1" />
-      <File FileName="Assets/Prefabs/Shop UI/UpgradesListPanel.cs" Line="11" Column="3" />
+      <File FileName="Assets/Scripts/Powerups/HomingMissilePowerup.cs" Line="4" Column="1" />
+      <File FileName="Assets/Prefabs/Powerups/Homing Missile/HomingMissileScrObj.cs" Line="34" Column="9" />
+      <File FileName="Assets/Prefabs/Powerups/Homing Missile/MissileDamageScrObj.cs" Line="30" Column="71" />
+      <File FileName="Assets/Prefabs/Powerups/Homing Missile/MissileCountScrObj.cs" Line="42" Column="30" />
+      <File FileName="Assets/Prefabs/Powerups/Homing Missile/MissileSpawnChanceScrObj.cs" Line="43" Column="40" />
+      <File FileName="Assets/Prefabs/Powerups/UpgradableScriptableObject.cs" Line="15" Column="102" />
+      <File FileName="Assets/Scripts/Powerups/Missile.cs" Line="150" Column="1" />
+      <File FileName="Assets/Scripts/Powerups/PowerupScriptableObject.cs" Line="8" Column="54" />
+      <File FileName="Assets/Prefabs/Powerups/Shuriken/ShurikenScrObj.cs" Line="22" Column="28" />
+      <File FileName="Assets/Prefabs/Powerups/Shuriken/ShurikenDamageScrObj.cs" Line="35" Column="61" />
+      <File FileName="Assets/Scripts/Powerups/ShurikenObj.cs" Line="47" Column="70" />
+      <File FileName="Assets/Scripts/Menu/ShopMenu.cs" Line="146" Column="66" />
+      <File FileName="Assets/Scripts/Powerups/ShurikenPowerup.cs" Line="12" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

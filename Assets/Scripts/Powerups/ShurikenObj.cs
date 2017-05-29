@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class ShurikenObj : PoolObject {
 
+	public ShurikenScrObj powerupData;		// Data about upgrades, etc.
+
 	public GameObject explosion;
-	public int dmg = 1;
+	//public int dmg = 1;
 	public float rotationFactor = 300.0f;
 	public float dmgDelay = 0.1f;
+
+	public bool canDmg = true;
+	//public float lifetime = 5.0f;
 	private IEnumerator cr;
 	private IEnumerator dd;
-	public bool canDmg = true;
-	public float lifetime = 5.0f;
 	//public int speed = 3;
 
 	void OnEnable() {
@@ -28,7 +31,7 @@ public class ShurikenObj : PoolObject {
 		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
 			if (other.gameObject != null) {
 				if (canDmg && other.gameObject.GetComponent<IDamageable<int>>() != null) {
-					other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);		// Inflict damage
+					other.gameObject.GetComponent<IDamageable<int>>().Damage(powerupData.damage);		// Inflict damage
 					Instantiate (explosion, transform.position, Quaternion.identity);
 					dd = DamageDelay(dmgDelay);
 					//StartCoroutine (dd);
@@ -62,7 +65,7 @@ public class ShurikenObj : PoolObject {
 	}
 
 	IEnumerator CircularRotate() {
-		float deathTime = Time.time + lifetime;
+		float deathTime = Time.time + powerupData.duration;			// How long the shuriken stays alive
 		while (Time.time < deathTime) {
 			transform.Rotate(Vector3.forward * rotationFactor * Time.deltaTime);	// Enemy normally rotates in circle
 			yield return null;

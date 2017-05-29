@@ -107,6 +107,7 @@ public class ShopMenu : MonoBehaviour {
 		// Do we ever clear the slots?
 			
 		//activeSlots.Add (activePowerupHolder);		// So we know whether or not to re-instantiate the shop slots
+		Debug.Log (activePowerupHolder==null);
 		List<UpgradableScriptableObject> upgradesList = activePowerupHolder.powerup.GetComponent <Powerup>().powerupData.upgradeList;
 		int numSlots = upgradesList.Count;
 

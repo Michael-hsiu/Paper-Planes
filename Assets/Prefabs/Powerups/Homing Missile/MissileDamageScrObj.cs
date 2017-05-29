@@ -27,7 +27,7 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 		currLvl = 0;
 		powerupName = "Missile Damage: Tier " + (currLvl + 1);
 		powerupPrice = pricesList[0];		// Default price is lvl 1 price
-		powerupInfo = "Your missiles do <b>" + damagesList[currLvl] + "</b> more damage.";
+		powerupInfo = "Your missiles do <b>" + damagesList[currLvl] + "</b> damage.";
 		MAX_LEVEL = pricesList.Count;
 	}
 
@@ -40,7 +40,7 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 			if (currLvl < MAX_LEVEL) {
 				powerupName = "Missile Damage: Tier " + (currLvl + 1);
 				powerupPrice = pricesList[currLvl];
-				powerupInfo = "Your missiles do <b>" + damagesList[currLvl] + "</b> more damage.";
+				powerupInfo = "Your missiles do <b>" + damagesList[currLvl] + "</b> damage.";
 			}
 
 			return 1;			// Note if purchase is successful

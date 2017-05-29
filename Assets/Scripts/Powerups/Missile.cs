@@ -5,7 +5,7 @@ using System.Linq;
 
 public class Missile : PoolObject {
 
-	public HomingMissileScrObj missileData;		// Data about upgrades, etc.
+	public HomingMissileScrObj powerupData;		// Data about upgrades, etc.
 	//public PlayerShotSpawn missileSpawn;		// Assigned to normal player shotspawn in inspector
 
 	public GameObject explosion;
@@ -147,16 +147,19 @@ public class Missile : PoolObject {
 					}
 
 					if (other.gameObject.GetComponent<IDamageable<int>> () != null) {
-						other.gameObject.GetComponent<IDamageable<int>>().Damage(missileData.damage);		// Inflict damage
+						Debug.Log (other.gameObject.name);
+						//Debug.Log (other.gameObject.GetComponent<IDamageable<int>>() == null);
+						Debug.Log (powerupData== null);
+						other.gameObject.GetComponent<IDamageable<int>>().Damage(powerupData.damage);		// Inflict damage
 
 						// [SATISFIES spawn new missile chance]
 						randomVal = Random.value;
 						//Debug.Log ("RANDOMVAL" + randomVal);
-						if (randomVal < missileData.missileSpawnChance) {
+						if (randomVal < powerupData.missileSpawnChance) {
 							int numMissilesToSpawn = Random.Range (1, 4);
 							for (int i = 0; i < numMissilesToSpawn; i++) {
 								Debug.Log ("EXTRA MISSILE SPAWNED!");
-								PoolManager.Instance.ReuseObject (missileData.missile, transform.position, Quaternion.identity);		// Chance of spawning another missile on missile hit
+								PoolManager.Instance.ReuseObject (powerupData.missile, transform.position, Quaternion.identity);		// Chance of spawning another missile on missile hit
 							}
 						}
 					}

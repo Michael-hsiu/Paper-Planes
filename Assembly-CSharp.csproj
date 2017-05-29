@@ -54,6 +54,10 @@
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileCountScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileDamageScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileSpawnChanceScrObj.cs" />
+     <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenDamageScrObj.cs" />
+     <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenDurationScrObj.cs" />
+     <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenScrObj.cs" />
+     <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenSpawnChanceScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\UpgradableScriptableObject.cs" />
      <Compile Include="Assets\Prefabs\Shop UI\ShopSlot.cs" />
      <Compile Include="Assets\Prefabs\Shop UI\UpgradesListPanel.cs" />
