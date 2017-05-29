@@ -43,7 +43,6 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 				powerupInfo = "Your missiles do <b>" + damagesList[currLvl] + "</b> more damage.";
 			}
 
-			// Now update all of
 			return 1;			// Note if purchase is successful
 		} else {
 			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + currLvl);

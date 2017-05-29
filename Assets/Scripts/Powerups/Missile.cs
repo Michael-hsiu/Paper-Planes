@@ -155,6 +155,7 @@ public class Missile : PoolObject {
 						if (randomVal < missileData.missileSpawnChance) {
 							int numMissilesToSpawn = Random.Range (1, 4);
 							for (int i = 0; i < numMissilesToSpawn; i++) {
+								Debug.Log ("EXTRA MISSILE SPAWNED!");
 								PoolManager.Instance.ReuseObject (missileData.missile, transform.position, Quaternion.identity);		// Chance of spawning another missile on missile hit
 							}
 						}

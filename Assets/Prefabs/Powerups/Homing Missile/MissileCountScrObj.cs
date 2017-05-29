@@ -22,11 +22,12 @@ public class MissileCountScrObj : UpgradableScriptableObject {
 	};
 
 	void OnEnable() {
+		
 		// Set all the data about this powerup
-		powerupName = "Missile Count";
-		powerupPrice = pricesList[0];
-		powerupInfo = "DESCRIPTION FOR MISSILE COUNT";
 		currLvl = 0;
+		powerupName = "Missile Count: Tier " + (currLvl + 1);
+		powerupPrice = pricesList[0];		// Default price is lvl 1 price
+		powerupInfo = "Spawn a total of <b>" + numMissilesList[currLvl] + "</b> at a time.";
 		MAX_LEVEL = pricesList.Count;
 
 		// Maybe write in with JSON here for changeable values?
@@ -37,6 +38,13 @@ public class MissileCountScrObj : UpgradableScriptableObject {
 		if (currLvl <= MAX_LEVEL) {
 			parentPow.numMissiles = numMissilesList [currLvl];	// Set the new numMissiles value
 			currLvl += 1;		// Increase level of skill
+
+			if (currLvl < MAX_LEVEL) {
+				powerupName = "Missile Count: Tier " + (currLvl + 1);
+				powerupPrice = pricesList[currLvl];
+				powerupInfo = "Spawn a total of <b>" + numMissilesList[currLvl] + "</b> at a time.";
+			}
+
 			return 1;			// Note if purchase is successful
 		} else {
 			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + (currLvl - 1));

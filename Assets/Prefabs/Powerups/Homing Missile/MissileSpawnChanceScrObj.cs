@@ -23,10 +23,10 @@ public class MissileSpawnChanceScrObj : UpgradableScriptableObject {
 
 	void OnEnable() {
 		// Set all the data about this powerup
+		currLvl = 0;
 		powerupName = "Missile Spawn Chance: Tier " + (currLvl + 1);
 		powerupPrice = pricesList[0];
 		powerupInfo = "Exploding missiles have a <b>" + spawnChancesList[currLvl] + "</b> chance of spawning more missiles.";
-		currLvl = 0;
 		MAX_LEVEL = pricesList.Count;
 
 		// Maybe write in with JSON here for changeable values?
@@ -39,9 +39,9 @@ public class MissileSpawnChanceScrObj : UpgradableScriptableObject {
 			currLvl += 1;		// Increase level of skill
 
 			if (currLvl < MAX_LEVEL) {
-				powerupName = "Missile Damage: Tier " + (currLvl + 1);
+				powerupName = "Missile Spawn Chance: Tier " + (currLvl + 1);
 				powerupPrice = pricesList[currLvl];
-				powerupInfo = "Your missiles do <b>" + spawnChancesList[currLvl] + "</b> more damage.";
+				powerupInfo = "Exploding missiles have a <b>" + spawnChancesList[currLvl] + "</b> chance of spawning more missiles.";
 			}
 
 			return 1;			// Note if purchase is successful
