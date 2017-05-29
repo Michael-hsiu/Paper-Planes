@@ -24,10 +24,10 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 
 	void OnEnable() {
 		// Set all the data about this powerup
-		powerupName = "Missile Damage";
-		powerupPrice = pricesList[0];		// Default price is lvl 1 price
-		powerupInfo = "DESCRIPTION FOR MISSILE DAMAGE";
 		currLvl = 0;
+		powerupName = "Missile Damage: Tier " + (currLvl + 1);
+		powerupPrice = pricesList[0];		// Default price is lvl 1 price
+		powerupInfo = "Your missiles do <b>" + damagesList[currLvl] + "</b> more damage.";
 		MAX_LEVEL = pricesList.Count;
 	}
 
@@ -35,7 +35,16 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 		HomingMissileScrObj parentPow = (HomingMissileScrObj) parentPowerup;
 		if (currLvl <= MAX_LEVEL) {
 			parentPow.damage = damagesList [currLvl];	// Vars w/ 'level' are the index vars
+
 			currLvl += 1;		// Increase level of skill
+			if (currLvl < MAX_LEVEL) {
+
+				powerupName = "Missile Damage: Tier " + (currLvl + 1);
+				powerupPrice = pricesList[currLvl];
+				powerupInfo = "Your missiles do <b>" + damagesList[currLvl] + "</b> more damage.";
+			}
+
+			// Now update all of
 			return 1;			// Note if purchase is successful
 		} else {
 			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + currLvl);
@@ -45,7 +54,7 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 
 	public override int GetPrice() {
 		if (currLvl < MAX_LEVEL) {
-			powerupPrice = pricesList [currLvl];
+			//powerupPrice = pricesList [currLvl];
 			return powerupPrice;
 		} else {
 			Debug.Log ("ALREADY MAXED OUT " + powerupName + "AT MAX LVL OF " + (currLvl - 1));

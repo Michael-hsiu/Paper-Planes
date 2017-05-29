@@ -19,6 +19,7 @@ public class ShopMenu : MonoBehaviour {
 
 	// Shop Panel
 	public GameObject shopInfoPanel;		// Populate price of upgrade, player balance
+	public GameObject maxLevelPanel;		// Used to cover up powerup after it's max level
 	public GameObject buyButton;
 	public UpgradableScriptableObject currActiveUpgrade;
 	public Button currButton;
@@ -114,6 +115,7 @@ public class ShopMenu : MonoBehaviour {
 			GameObject currSlot = Instantiate (shopSlot);	
 			activeSlots.Add (currSlot);						// So we know which slots to destroy upon leaving screen
 			currSlot.GetComponent <ShopSlot> ().id = i;		// Set the slot's position
+			//currSlot.GetComponent <ShopSlot> ().assignedSlot = currSlot;	// Link the ShopSlot and the GO slot it's assigned to
 
 			// Set event listener that will update Shop Info panel
 			Button currButton = currSlot.GetComponent<Button>();
@@ -123,11 +125,12 @@ public class ShopMenu : MonoBehaviour {
 			UpgradableScriptableObject currUpgrade = currSlot.GetComponent <ShopSlot> ().upgrade;
 			currUpgrade = upgradesList [i];
 			if (currUpgrade.currLvl >= currUpgrade.MAX_LEVEL) {
+				maxLevelPanel.SetActive (true);			// Block out the upgrade panel on RHS so player KNOWs they can't upgrade anymore
 				DisableSlot (currButton);
 			}
 
 			// Populate slot info in list view
-			currSlot.GetComponentInChildren <Text>().text = upgradesList[i].powerupName.ToString();		// Set name of upgrade in the list view on left (panel will be set when clicked)
+			currSlot.GetComponent<ShopSlot>().nameText.text = upgradesList[i].powerupName.ToString();		// Set name of upgrade in the list view on left (panel will be set when clicked)
 
 			// Assign its parent
 			currSlot.transform.SetParent (upgradesListPanel.transform);
@@ -141,16 +144,26 @@ public class ShopMenu : MonoBehaviour {
 	public void UpgradePressed(GameObject buttonPressed) {
 		// Populate name, price, info, sprite. Use 'activePowerupHolder', and the list of UpgradableScrObj. 
 		// Since each Upgrade will be ID'ed by its index in the list, can identify appropriate upgrade using equivalent indices.
+
 		int id = buttonPressed.GetComponent <ShopSlot> ().id;
 		UpgradableScriptableObject activeUpgrade = activePowerupHolder.powerup.GetComponent<Powerup>().powerupData.upgradeList[id];
 		currActiveUpgrade = activeUpgrade;	// Track slot we just pressed
 		currButton = buttonPressed.GetComponent<Button> ();
+		if (currActiveUpgrade.currLvl >= currActiveUpgrade.MAX_LEVEL) {
+			maxLevelPanel.SetActive (true);			// Block out the upgrade panel on RHS so player KNOWs they can't upgrade anymore
+			DisableSlot (currButton);
+		}  else {
+			maxLevelPanel.SetActive (false);			// Block out the upgrade panel on RHS so player KNOWs they can't upgrade anymore
+		}
 
 		// Now populate fields
 		UpdateShopPanel ();
 	}
 
 	public void UpdateShopPanel() {
+
+		// These fields are updated when UpgradePowerup() is called
+		currButton.GetComponent<ShopSlot>().nameText.text = currActiveUpgrade.powerupName;	// Update the name (remember that ShopSlots are components of a Button, called currButton)
 		upgradeName.text = currActiveUpgrade.powerupName.ToString ();
 		if (currActiveUpgrade.GetPrice () > 0) {		// Since we set to -1 if it's fully upgraded
 			upgradePrice.text = currActiveUpgrade.GetPrice ().ToString ();		// This also updates the price of the item
@@ -203,6 +216,7 @@ public class ShopMenu : MonoBehaviour {
 			playerBalance.GetComponent <Text> ().text = GameManager.Singleton.playerBalance.ToString ();		// Update player balance text
 
 			if (currActiveUpgrade.GetPrice () < 0) {
+				maxLevelPanel.SetActive (true);			// Block out the upgrade panel on RHS so player KNOWs they can't upgrade anymore
 				// Disable button
 				DisableSlot (currButton);
 			}

@@ -13,13 +13,6 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 	public float missileSpawnChance = 0f;
 	public GameObject missile;		// Missile fab
 
-	// 3 categories of upgrades...
-	// Index vars
-	//public int currDmgLevel = 0;		// 1) Damage...
-	//public int currNumMissilesLevel = 0;	// 2) Num missiles spawned...
-	//public int currMissileSpawnChanceLevel = 0;		// and 3) Chance of a missile spawning more missiles
-
-
 	// Info for Shop
 	// This needs to be changed, since this scrObj doesn't need to hold this info, each ENHANCEMENT needs to hold this info.
 	// So we need to store a list of PowerupScrObj that hold the info of each enhancement.
