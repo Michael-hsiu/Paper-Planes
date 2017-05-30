@@ -128,6 +128,7 @@ public class ShopMenu : MonoBehaviour {
 			if (currUpgrade.currLvl >= currUpgrade.MAX_LEVEL) {
 				maxLevelPanel.SetActive (true);			// Block out the upgrade panel on RHS so player KNOWs they can't upgrade anymore
 				DisableSlot (currButton);
+				Debug.Log ("THIS WAS CALLED #1");
 			}
 
 			// Populate slot info in list view
@@ -240,5 +241,7 @@ public class ShopMenu : MonoBehaviour {
 	public void DisableSlot(Button button) {
 		button.interactable = false;
 		button.GetComponent<Image>().color = Color.red;
+		Debug.Log ("THIS WAS CALLED #2");
+
 	}
 }

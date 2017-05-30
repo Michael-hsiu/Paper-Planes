@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System;
 
 [CreateAssetMenu]
 public class HomingMissileScrObj : PowerupScriptableObject {
@@ -8,10 +10,14 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 	// Homing Missile Powerup holds a reference to this SO; changes this SO if a powerup is upgraded.
 
 	// Status vars w/ default values for ref (un-upgraded)
-	public int damage = 40;		// [SATISFIES damage increase]
-	public int numMissiles = 4;
-	public float missileSpawnChance = 0.0f;
+	public int damage = 40;						// Overwrite from JSON
+	public int numMissiles = 4;					// Overwrite from JSON
+	public float missileSpawnChance = 0.0f;		// Overwrite from JSON
 	public GameObject missile;		// Missile fab
+
+	public readonly string damageStr = "damageStr";
+	public readonly string numMissilesStr = "numMissiles";
+	public readonly string missileSpawnChanceStr = "missileSpawnChanceStr";
 
 	// Info for Shop
 	// This needs to be changed, since this scrObj doesn't need to hold this info, each ENHANCEMENT needs to hold this info.
@@ -23,21 +29,52 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 		}
 
 		// Temporary reset logic before JSON / player progress saving
-		damage = 40;
+/*		damage = 40;
 		numMissiles = 4;
-		missileSpawnChance = 0.0f;
+		missileSpawnChance = 0.0f;*/
 
-		/*powerupName = "Homing Missiles";		// May need to be generalized to be "HM Damage", "HM Spawn Chance", etc.
-		powerupPrice = 2000;
-		powerupInfo = "Upgrade the damage of homing missiles.";		// Also needs to be generalized.*/
+		// Load existing prefs if exist
+		//PlayerPrefs.DeleteAll ();
+		damage = PlayerPrefs.HasKey (damageStr) ? PlayerPrefs.GetInt (damageStr) : 40;
+		numMissiles = PlayerPrefs.HasKey (numMissilesStr) ? PlayerPrefs.GetInt (numMissilesStr) : 4;
+		missileSpawnChance = PlayerPrefs.HasKey (missileSpawnChanceStr) ? PlayerPrefs.GetFloat (missileSpawnChanceStr) : 0.0f;
+
+		//LoadJSON ();
+		//SaveJSON ();
 	}
 
+	// ONLY this level needs to be serialized. Every other ScrObj it references is ok as is, are just data containers.
+	/*public void SaveJSON() {
+		string newJSON = JsonUtility.ToJson (this);
+		string fileName = Path.Combine (Application.persistentDataPath, (this.name + ".json"));
 
-	/*public List<float> missileSpawnChanceList = new List<float> {
-		// Indexed by level - 1
-		0f,		// Lvl 0
-		0.1f,		// Lvl 1
-		0.15f		// Lvl 2
-	};
-*/
+		// Check if JSON for this scrObj already exists
+		if (File.Exists (fileName)) {
+			File.Delete (fileName);
+		}
+
+		// Write the new JSON
+		File.WriteAllText (fileName, newJSON);
+		Debug.Log (this.GetType () + " saved to " + fileName);
+	}
+
+	public void LoadJSON() {
+		string fileName = Path.Combine (Application.persistentDataPath, (this.name + ".json"));
+
+
+		try {
+			// Check if JSON for this scrObj already exists
+			if (File.Exists (fileName)) {
+				string jsonText = File.ReadAllText (fileName);
+				Debug.Log (jsonText);
+				JsonUtility.FromJsonOverwrite (fileName, this);
+				Debug.Log ("SUCCESSFULLY OVERRIDING JSON for " + this.name);
+			} else {
+				Debug.Log ("NO JSON EXISTS FOR " + this.name);
+			}
+		} catch (Exception e) {
+			Debug.Log (e);
+		}
+
+	}*/
 }

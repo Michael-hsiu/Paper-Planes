@@ -19,3 +19,5 @@
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Assembly-CSharp.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/obj/Debug/Assembly-CSharp.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
+/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb
