@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour {
 
 		// Activate powerup spawner
 		powerupSpawner.spawnEnabled = true;
-		powerupSpawner.powerups = activeLevel.powerups;		// Feed PowerupSpawner the activeLvl's list of allowed powerups
+		//powerupSpawner.powerups = activeLevel.powerups;		// Feed PowerupSpawner the activeLvl's list of allowed powerups
 
 		// Activate moving spawn manager
 		movingSpawnManager.spawnEnabled = true;

@@ -54,6 +54,8 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject dropShip;
 	public GameObject assassinShip;
 	public GameObject bomberShip;
+	public GameObject missileBoss;
+	public GameObject sniperBoss;
 
 	public GameObject rangedTest;
 
@@ -103,8 +105,12 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (pawnShip, 500);
 		PoolManager.Instance.CreatePool (rangedShip, 100);
 		PoolManager.Instance.CreatePool (bomberShip, 100);
-
-		PoolManager.Instance.CreatePool (rangedTest, 100);
+		PoolManager.Instance.CreatePool (mediShip, 100);
+		PoolManager.Instance.CreatePool (turret, 100);
+		PoolManager.Instance.CreatePool (dropShip, 100);
+		PoolManager.Instance.CreatePool (assassinShip, 100);
+		PoolManager.Instance.CreatePool (missileBoss, 100);
+		PoolManager.Instance.CreatePool (sniperBoss, 100);
 
 		// Spawners
 		//PoolManager.Instance.CreatePool (movingSpawn, 20);

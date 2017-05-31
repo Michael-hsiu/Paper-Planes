@@ -8,6 +8,7 @@ public class TripMineWeapon : PoolObject {
 
 	public float radius = 2.5f;
 	public float mineFuse = 19.0f;
+	public float explosionForce = 30.0f;
 	public List<Mine> mines = new List<Mine> ();
 	protected bool isVisible;
 	private IEnumerator cr;
@@ -47,7 +48,7 @@ public class TripMineWeapon : PoolObject {
 			Vector3 newPos = new Vector3 (newX, newY, newZ);
 			Mine m = (Mine) PoolManager.Instance.ReuseObjectRef (mine, newPos, Quaternion.identity);
 
-			m.GetComponent<Rigidbody> ().AddForce(new Vector3(radius * Mathf.Sin(angle * Mathf.Deg2Rad), radius * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z) * 30);		// Outwards radiating movement, using position relative to world origin
+			m.GetComponent<Rigidbody> ().AddForce(new Vector3(radius * Mathf.Sin(angle * Mathf.Deg2Rad), radius * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z) * explosionForce);		// Outwards radiating movement, using position relative to world origin
 
 			mines.Add(m);		// Add mines to a list
 			angle += 72.0f;		// Spawn in 5 timess
