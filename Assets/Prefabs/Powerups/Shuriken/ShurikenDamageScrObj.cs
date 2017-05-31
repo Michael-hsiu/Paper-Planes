@@ -16,18 +16,29 @@ public class ShurikenDamageScrObj : UpgradableScriptableObject {
 
 	public List<int> damagesList = new List<int> {
 		// Indexed by level - 1
-		45,		// Lvl 0
-		50,		// Lvl 1
-		55		// Lvl 2
+		25,		// Lvl 0
+		30,		// Lvl 1
+		35		// Lvl 2
 
 	};
 
 	void OnEnable() {
 		// Set all the data about this powerup
-		currLvl = 0;
-		powerupName = "Shuriken Damage: Tier " + (currLvl + 1);
-		powerupPrice = pricesList[0];		// Default price is lvl 1 price
-		powerupInfo = "A shuriken does <b>" + damagesList[currLvl] + "</b> damage.";
+		id = this.name + "currLvl";
+		currLvl = PlayerPrefs.HasKey (id) ? PlayerPrefs.GetInt (id) : 0;
+		Debug.Log (this.name + " CURR LVL: " + currLvl);
+
+		// Update fields based on 'currLvl'
+		if (currLvl == MAX_LEVEL) {
+			powerupName = "Shuriken Damage: Tier MAX";		// Currently at max lvl
+			powerupPrice = pricesList[currLvl - 1];		// Currently at max lvl, so use maximum price
+			powerupInfo = "A shuriken does <b>" + damagesList[currLvl - 1] + "</b> damage.";
+
+		} else {
+			powerupName = "Shuriken Damage: Tier " + (currLvl + 1);
+			powerupPrice = pricesList[currLvl];		// Default price is lvl 1 price
+			powerupInfo = "A shuriken does <b>" + damagesList[currLvl] + "</b> damage.";
+		}
 		MAX_LEVEL = pricesList.Count;
 	}
 
@@ -35,7 +46,9 @@ public class ShurikenDamageScrObj : UpgradableScriptableObject {
 		ShurikenScrObj parentPow = (ShurikenScrObj) parentPowerup;
 		if (currLvl <= MAX_LEVEL) {
 			parentPow.damage = damagesList [currLvl];	// Vars w/ 'level' are the index vars
+
 			currLvl += 1;		// Increase level of skill
+			PlayerPrefs.SetInt (id, currLvl);
 
 			if (currLvl < MAX_LEVEL) {
 				powerupName = "Shuriken Damage: Tier " + (currLvl + 1);

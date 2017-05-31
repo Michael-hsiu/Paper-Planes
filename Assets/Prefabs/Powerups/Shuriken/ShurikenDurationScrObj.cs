@@ -24,10 +24,21 @@ public class ShurikenDurationScrObj : UpgradableScriptableObject {
 
 	void OnEnable() {
 		// Set all the data about this powerup
-		currLvl = 0;
-		powerupName = "Shuriken Duration: Tier " + (currLvl + 1);
-		powerupPrice = pricesList[0];		// Default price is lvl 1 price
-		powerupInfo = "A shuriken lasts for <b>" + durationList[currLvl] + "</b> seconds.";
+		id = this.name + "currLvl";
+		currLvl = PlayerPrefs.HasKey (id) ? PlayerPrefs.GetInt (id) : 0;
+		Debug.Log (this.name + " CURR LVL: " + currLvl);
+
+		// Update fields based on 'currLvl'
+		if (currLvl == MAX_LEVEL) {
+			powerupName = "Shuriken Duration: Tier MAX";		// Currently at max lvl
+			powerupPrice = pricesList[currLvl - 1];		// Currently at max lvl, so use maximum price
+			powerupInfo = "A shuriken lasts for <b>" + durationList[currLvl - 1] + "</b> seconds.";
+
+		} else {
+			powerupName = "Shuriken Duration: Tier " + (currLvl + 1);
+			powerupPrice = pricesList[currLvl];		// Default price is lvl 1 price
+			powerupInfo = "A shuriken lasts for <b>" + durationList[currLvl] + "</b> seconds.";
+		}
 		MAX_LEVEL = pricesList.Count;
 	}
 
@@ -35,7 +46,9 @@ public class ShurikenDurationScrObj : UpgradableScriptableObject {
 		ShurikenScrObj parentPow = (ShurikenScrObj) parentPowerup;
 		if (currLvl <= MAX_LEVEL) {
 			parentPow.duration = durationList [currLvl];	// Vars w/ 'level' are the index vars
+
 			currLvl += 1;		// Increase level of skill
+			PlayerPrefs.SetFloat (id, currLvl);
 
 			if (currLvl < MAX_LEVEL) {
 				powerupName = "Shuriken Duration: Tier " + (currLvl + 1);

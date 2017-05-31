@@ -15,9 +15,9 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 	public float missileSpawnChance = 0.0f;		// Overwrite from JSON
 	public GameObject missile;		// Missile fab
 
-	public readonly string damageStr = "damageStr";
-	public readonly string numMissilesStr = "numMissiles";
-	public readonly string missileSpawnChanceStr = "missileSpawnChanceStr";
+	public readonly string damageStr = "HMSOdamageStr";
+	public readonly string numMissilesStr = "HMSOnumMissiles";
+	public readonly string missileSpawnChanceStr = "HMSOmissileSpawnChanceStr";
 
 	// Info for Shop
 	// This needs to be changed, since this scrObj doesn't need to hold this info, each ENHANCEMENT needs to hold this info.
@@ -28,22 +28,22 @@ public class HomingMissileScrObj : PowerupScriptableObject {
 			so.parentPowerup = this;
 		}
 
-		// Temporary reset logic before JSON / player progress saving
-/*		damage = 40;
-		numMissiles = 4;
-		missileSpawnChance = 0.0f;*/
-
 		// Load existing prefs if exist
-		//PlayerPrefs.DeleteAll ();
-		damage = PlayerPrefs.HasKey (damageStr) ? PlayerPrefs.GetInt (damageStr) : 40;
-		numMissiles = PlayerPrefs.HasKey (numMissilesStr) ? PlayerPrefs.GetInt (numMissilesStr) : 4;
-		missileSpawnChance = PlayerPrefs.HasKey (missileSpawnChanceStr) ? PlayerPrefs.GetFloat (missileSpawnChanceStr) : 0.0f;
+		LoadSavedData ();
 
 		//LoadJSON ();
 		//SaveJSON ();
 	}
 
+	public override void LoadSavedData() {
+		PlayerPrefs.DeleteAll ();			// Un-comment to save player progress
+		damage = PlayerPrefs.HasKey (damageStr) ? PlayerPrefs.GetInt (damageStr) : 40;
+		numMissiles = PlayerPrefs.HasKey (numMissilesStr) ? PlayerPrefs.GetInt (numMissilesStr) : 4;
+		missileSpawnChance = PlayerPrefs.HasKey (missileSpawnChanceStr) ? PlayerPrefs.GetFloat (missileSpawnChanceStr) : 0.0f;
+	}
+
 	// ONLY this level needs to be serialized. Every other ScrObj it references is ok as is, are just data containers.
+	// Reference: https://www.youtube.com/watch?v=7AgdALFE758
 	/*public void SaveJSON() {
 		string newJSON = JsonUtility.ToJson (this);
 		string fileName = Path.Combine (Application.persistentDataPath, (this.name + ".json"));

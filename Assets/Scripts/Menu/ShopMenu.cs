@@ -85,6 +85,7 @@ public class ShopMenu : MonoBehaviour {
 		GameManager.Singleton.uiElements.SetActive (true);
 		gameObject.SetActive (false);					// Close the Shop
 
+		PlayerPrefs.Save ();							// Save changes to disk since leaving shop
 		SceneManager.LoadSceneAsync ("GameScene");		// Reload the game scene
 	}
 

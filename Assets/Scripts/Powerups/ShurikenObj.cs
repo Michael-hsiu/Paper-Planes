@@ -7,60 +7,102 @@ public class ShurikenObj : PoolObject {
 	public ShurikenScrObj powerupData;		// Data about upgrades, etc.
 
 	public GameObject explosion;
-	//public int dmg = 1;
 	public float rotationFactor = 300.0f;
-	public float dmgDelay = 0.1f;
 
+	public int damageDealt = -1;
+	public float growTimeMult = 2.5f;
+	public float MAX_SIZE = 3.0f;			// Maximum size as per prefab
+	public bool dmgDone = false;
+	public bool growingBigger = false;
+
+	public float dmgDelay = 0.1f;
 	public bool canDmg = true;
-	//public float lifetime = 5.0f;
+
 	private IEnumerator cr;
 	private IEnumerator dd;
-	//public int speed = 3;
 
 	void OnEnable() {
 		StopAllCoroutines ();
+		// Reset size
+		transform.localScale = Vector3.one * 1.3f;		// This float mult is for this specific prefab
+
 		canDmg = true;
 		GetComponent<Rigidbody> ().velocity = Vector3.zero;
 		cr = CircularRotate ();
 		StartCoroutine (cr);	
 	}
 
-	// For explosions triggered by contact
+	void Update() {
+		if (growingBigger && transform.localScale.x < MAX_SIZE) {
+			Resize ();
+		}
+	}
+
+	// Increase our size gradually after reaching damage quota
+	public void Resize() {
+		transform.localScale += Vector3.one * powerupData.sizeMultiplier / growTimeMult;			// Gradually increase size of object
+		Debug.Log ("RESIZING");
+		if (transform.localScale.x >= powerupData.sizeMultiplier) {
+			growingBigger = false;
+			Debug.Log ("RESIZING ENDED!");
+		}
+	}
+
 	void OnTriggerEnter(Collider other) {
 
-		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
-			if (other.gameObject != null) {
-				if (canDmg && other.gameObject.GetComponent<IDamageable<int>>() != null) {
-					other.gameObject.GetComponent<IDamageable<int>>().Damage(powerupData.damage);		// Inflict damage
-					Instantiate (explosion, transform.position, Quaternion.identity);
-					dd = DamageDelay(dmgDelay);
-					//StartCoroutine (dd);
-				}
-			}
-
 		// Ricochet logic
-		} else if (other.gameObject.CompareTag(Constants.GameBorderTop)) {
+		if (other.gameObject.CompareTag (Constants.GameBorderTop)) {
 			if (other.gameObject != null) {
 				Vector3 oldVel = transform.GetComponent<Rigidbody> ().velocity;
-				transform.GetComponent<Rigidbody>().velocity = Vector3.Reflect (oldVel, Vector3.up);
+				transform.GetComponent<Rigidbody> ().velocity = Vector3.Reflect (oldVel, Vector3.up);
 			}
-		} else if (other.gameObject.CompareTag(Constants.GameBorderSide)) {
+		} else if (other.gameObject.CompareTag (Constants.GameBorderSide)) {
 			if (other.gameObject != null) {
 				Vector3 oldVel = transform.GetComponent<Rigidbody> ().velocity;
-				transform.GetComponent<Rigidbody>().velocity = Vector3.Reflect (oldVel, Vector3.right);
+				transform.GetComponent<Rigidbody> ().velocity = Vector3.Reflect (oldVel, Vector3.right);
 			}
 		}
 	}
 
+	// For explosions triggered by contact
+	void OnTriggerStay(Collider other) {
+		
+		// Damage logic
+		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
+			if (other.gameObject != null) {
+				if (canDmg && other.gameObject.GetComponent<IDamageable<int>> () != null) {
+					other.gameObject.GetComponent<IDamageable<int>> ().Damage (powerupData.damage);		// Inflict damage
 
+					// The initial setting of damage boundary
+					if (!dmgDone) {
+						damageDealt = powerupData.damageBoundary;		// Reset damage we need to deal to resize Shuriken
+						dmgDone = true;
+					}
 
-	void Update() {
-		//Debug.DrawLine(Vector3.zero, transform.GetComponent<Rigidbody> ().velocity, Color.red);	// Displays velocity vectors
+					// Resize ourselves if needed
+					damageDealt -= powerupData.damage;
+					if (damageDealt <= 0) {
+						damageDealt = powerupData.damageBoundary;
+						growingBigger = true;		// Start the resizing process
+					}
+
+					// Visual cue that shuriken has been destroyed
+					Instantiate (explosion, transform.position, Quaternion.identity);
+
+					// Delay btwn hits to prevent super-fast dmg
+					dd = DamageDelay (dmgDelay);
+					StartCoroutine (dd);
+				}
+			}
+		}
+		
 	}
+
 
 	public void FinishExistence() {
 		StopCoroutine (cr);
 		Instantiate (explosion, transform.position, Quaternion.identity);
+
 		DestroyForReuse();		// Recycle this fab
 	}
 

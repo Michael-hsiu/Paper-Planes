@@ -12,6 +12,8 @@ public abstract class UpgradableScriptableObject : ScriptableObject {
 	public int currLvl;
 	public int MAX_LEVEL;	// Should go in UpgradableScrObj
 
+	public string id;		// Identifier for PlayerPrefs
+
 	public PowerupScriptableObject parentPowerup;		// So each Upgrade knows which powerup it's upgrading
 
 	// Overridden 

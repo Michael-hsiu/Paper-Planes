@@ -5,14 +5,18 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ShurikenScrObj : PowerupScriptableObject {
 
-	// Homing Missile Powerup holds a reference to this SO; changes this SO if a powerup is upgraded.
-	// Upgrades: damage, duration, spawn chance
+	// Upgrades: damage, duration, growth chance
 
 	// Status vars w/ default values for ref (un-upgraded)
 	public int damage = 40;		// [SATISFIES damage increase]
 	public float duration = 5.0f;
-	public float shurikenSpawnChance = 0.0f;	// Chance of spawning another shuriken upon shuriken death
+	public int damageBoundary = 100;
+	public float sizeMultiplier = 1.0f;	// Chance of spawning another shuriken upon shuriken death
 	public GameObject shuriken;		// Missile fab
+
+	public readonly string damageStr = "SSOdamageStr";
+	public readonly string durationStr = "SSOnumMissiles";
+	public readonly string shurikenSizeStr = "SSOshurikenSizeStr";
 
 	// Info for Shop
 	// This needs to be changed, since this scrObj doesn't need to hold this info, each ENHANCEMENT needs to hold this info.
@@ -22,10 +26,15 @@ public class ShurikenScrObj : PowerupScriptableObject {
 		foreach (UpgradableScriptableObject so in upgradeList) {
 			so.parentPowerup = this;
 		}
-			
-		// Temporary reset logic before JSON / player progress saving
-		damage = 40;
-		duration = 5.0f;
-		shurikenSpawnChance = 0.0f;
+
+		// Load existing prefs if exist
+		LoadSavedData ();
+	}
+
+	public override void LoadSavedData() {
+		//PlayerPrefs.DeleteAll ();			// Un-comment to save player progress
+		damage = PlayerPrefs.HasKey (damageStr) ? PlayerPrefs.GetInt (damageStr) : 40;
+		duration = PlayerPrefs.HasKey (durationStr) ? PlayerPrefs.GetFloat (durationStr) : 30.0f;
+		sizeMultiplier = PlayerPrefs.HasKey (shurikenSizeStr) ? PlayerPrefs.GetFloat (shurikenSizeStr) : 1.0f;
 	}
 }

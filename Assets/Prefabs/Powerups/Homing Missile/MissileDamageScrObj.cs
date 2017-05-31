@@ -21,9 +21,7 @@ public class MissileDamageScrObj : UpgradableScriptableObject {
 		60		// Lvl 2
 
 	};
-
-	private string id;
-
+		
 	void OnEnable() {
 		// Set all the data about this powerup
 		//PlayerPrefs.DeleteAll ();
