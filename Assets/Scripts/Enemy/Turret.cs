@@ -153,7 +153,7 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 			health -= GameManager.Singleton.playerDamage;			// We lost health
 
 			if (health <= 0) {
-
+				Debug.Log ("TURRET KILLED BY: " + other.name);
 				Instantiate (explosion, transform.position, transform.rotation);
 				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 
