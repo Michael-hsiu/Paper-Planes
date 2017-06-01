@@ -20,6 +20,12 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
 	public Vector2 initialPos;
 
+	[Header("RENDERER/FLICKER")]
+	public IEnumerator hitFlickerRoutine;
+	public Color startColor;
+	public Renderer sprite;
+	public float flickerTime = 0.05f;
+
 
 	/** INTERFACE METHODS */
 
@@ -42,11 +48,29 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
 	public virtual void Damage(int damageTaken) {
 
+		// Restart flicker animation
+		if (hitFlickerRoutine != null) {
+			StopCoroutine (hitFlickerRoutine);
+		}
+		hitFlickerRoutine = FlickerHit ();
+		StartCoroutine (hitFlickerRoutine);
+
 		health -= damageTaken;		// We lose health
 		if (this.health <= 0) {
 			Kill ();
-			Debug.Log ("Killed via projectile weapon");
+			//Debug.Log ("Killed via projectile weapon");
 		}
+	}
+
+	// Flicker when hit
+	IEnumerator FlickerHit() {
+		Debug.Log ("FLICKERING");
+		Color flickerColor = sprite.material.color;
+		flickerColor.a = 0.45f;
+
+		sprite.material.color = flickerColor;
+		yield return new WaitForSeconds (flickerTime);
+		sprite.material.color = startColor;
 	}
 
 	public virtual void Kill() {
@@ -77,7 +101,10 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
 	protected virtual void Start () {
 		Initialize ();
-		Debug.Log ("SHIP START");
+		sprite = Utils.FindChildWithTag(this.gameObject, "Sprite").GetComponent<Renderer>();
+		startColor = sprite.material.color;
+
+		//Debug.Log ("SHIP START");
 	}
 
 	protected virtual void Update () {

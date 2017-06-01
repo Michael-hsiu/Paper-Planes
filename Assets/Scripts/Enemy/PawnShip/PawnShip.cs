@@ -12,6 +12,7 @@ public class PawnShip : Ship {
 	#region Unity Life Cycle
 	protected override void Start () {
 		// Call our overridden initalization method
+		base.Start ();
 		Initialize ();
 		enemyType = EnemyType.Pawn;
 		//Debug.Log("PAWN SHIP START");

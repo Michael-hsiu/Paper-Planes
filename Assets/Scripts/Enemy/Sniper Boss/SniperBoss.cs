@@ -48,6 +48,7 @@ public class SniperBoss : Ship, IEnemy {
 
 	public Collider mapCollider;
 	public GameObject laserCollider;
+	//public GameObject laserSprite;		// Temporary sprite
 	public GameObject teleMarker;		// Visual marker for future teleport location
 
 	[SerializeField] private float nextAtkTime;	// Time at which we can launch next valid atk
@@ -87,6 +88,7 @@ public class SniperBoss : Ship, IEnemy {
 		// Preliminary logic for laser
 		if (!laserCollider.gameObject.activeSelf) {
 			laserCollider.SetActive (true);
+			//laserSprite.SetActive (true);
 		}
 		Vector3 rayDir = new Vector3 (-transform.position.x * 2, transform.position.y, 0);
 		Debug.DrawRay (transform.position, transform.up * 30);
@@ -94,6 +96,7 @@ public class SniperBoss : Ship, IEnemy {
 
 	void HideLaser() {
 		laserCollider.SetActive (false);
+		//laserSprite.SetActive (false);
 	}
 
 	IEnumerator Teleport() {

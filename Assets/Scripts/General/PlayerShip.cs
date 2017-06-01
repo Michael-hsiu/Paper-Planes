@@ -4,7 +4,8 @@ using UnityEngine;
 using System;
 
 public class PlayerShip : FiringShip {
-	
+
+	#region Helper Class
 	public class SSContainer : IComparable<SSContainer> {
 		public static float weaponTime;
 
@@ -34,6 +35,7 @@ public class PlayerShip : FiringShip {
 		public List<ShotSpawn> SS { get { return ss; } }
 
 	}
+	#endregion
 
 	#region Variables
 	public InputComponent input;
@@ -65,6 +67,12 @@ public class PlayerShip : FiringShip {
 	public float sideMissileRandomVal;
 	public float sideMissileChance = 0.1f;
 
+	//[Header("RENDERER/FLICKER")]
+	//public IEnumerator hitFlickerRoutine;
+	//public Color startColor;
+	//public Renderer sprite;
+	//public float flickerTime = 0.05f;
+
 	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
 
 	public static PlayerShip instance;
@@ -76,6 +84,7 @@ public class PlayerShip : FiringShip {
 		} else {
 			DestroyImmediate(gameObject);
 		}
+
 	}
 
 	#endregion
@@ -85,6 +94,7 @@ public class PlayerShip : FiringShip {
 		input = InputManager.Instance.GetActiveInput();		// Get valid input source
 		InitializeSS ();		// Get active shotspawn
 		rb = GetComponent<Rigidbody>();
+		startColor = sprite.material.color;
 	}
 		
 	protected override void Update () {
@@ -213,11 +223,45 @@ public class PlayerShip : FiringShip {
 	}
 
 	public override void Damage(int damageTaken) {
+
+
+		Debug.Log ("PLAYER DAMAGED!");
+		// Restart flicker animation
+		if (hitFlickerRoutine != null) {
+			StopCoroutine (hitFlickerRoutine);
+		}
+		hitFlickerRoutine = FlickerHit ();
+		StartCoroutine (hitFlickerRoutine);
+
 		GameManager.Singleton.playerHealth -= damageTaken;
 		if (GameManager.Singleton.playerHealth <= 0) {
 			GameManager.Singleton.LevelFailed ();			// Initiate level failure logic
 		}
 		UIManager.Singleton.UpdateHealth ();
+	}
+
+	// Flicker when hit
+	IEnumerator FlickerHit() {
+		Debug.Log ("FLICKERING");
+		Color flickerColor = sprite.material.color;
+		flickerColor.a = 0.55f;
+
+		sprite.material.color = flickerColor;
+		yield return new WaitForSeconds (flickerTime);
+
+		sprite.material.color = startColor;
+		yield return new WaitForSeconds (flickerTime);
+
+		sprite.material.color = flickerColor;
+		yield return new WaitForSeconds (flickerTime);
+
+		sprite.material.color = startColor;
+		yield return new WaitForSeconds (flickerTime);
+
+		sprite.material.color = flickerColor;
+		yield return new WaitForSeconds (flickerTime);
+
+		sprite.material.color = startColor;
 	}
 
 	void OnTriggerEnter(Collider other) {

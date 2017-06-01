@@ -24,7 +24,10 @@ public class RangedShip : FiringShip, IEnemy {
 	protected override void Start () {
 
 		// Call our overridden initalization method
-		Initialize ();
+		base.Start ();
+		//Initialize ();
+		enemyType = EnemyType.Ranged;
+
 		firingRangeColliders = Utils.FindChildWithTag (this.gameObject, Constants.FiringRangeColliders);
 		safeDistanceColliders = Utils.FindChildWithTag (this.gameObject, Constants.SafeDistanceColliders);
 
@@ -37,7 +40,7 @@ public class RangedShip : FiringShip, IEnemy {
 		firingState = GetComponent<IFireState>();
 
 		// Check that we're calling the right Start() method
-		//Debug.Log("RANGED SHIP START");
+		Debug.Log("RANGED SHIP START");
 
 	}
 
@@ -57,13 +60,6 @@ public class RangedShip : FiringShip, IEnemy {
 	#endregion
 
 	#region Game Logic
-	protected override void Initialize() {
-		// Do normal initalization
-		base.Initialize ();
-		enemyType = EnemyType.Ranged;
-		// Get the state needed
-
-	}
 
 	public override void Kill() {
 		// Graphics
@@ -111,11 +107,7 @@ public class RangedShip : FiringShip, IEnemy {
 				other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
 			}
 
-			health -= GameManager.Singleton.playerDamage;			// We lost health
-
-			if (health <= 0) {
-				Kill ();
-			}
+			Damage(GameManager.Singleton.playerDamage);			// We lost health
 
 			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
 		}
