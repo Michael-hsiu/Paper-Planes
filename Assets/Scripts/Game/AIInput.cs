@@ -196,6 +196,11 @@ public class AIInput : MonoBehaviour, InputComponent {
 
 		player.dashStarted = false;		// Player is no longer dashing
 
+		// Make sure our z-coord doesn't change!
+		Vector3 pos = player.gameObject.transform.position;
+		pos.z = 0f;
+		player.gameObject.transform.position = pos;	
+
 		GameManager.Singleton.isDashing = false;
 		GameManager.Singleton.onDashCooldown = false;
 
