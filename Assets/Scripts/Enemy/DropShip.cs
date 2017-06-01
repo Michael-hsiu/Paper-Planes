@@ -23,7 +23,8 @@ public class DropShip : Ship {
 	protected override void Start () {
 
 		// Call our overridden initalization method
-		Initialize ();
+		//Initialize ();
+		base.Start ();
 		enemyType = EnemyType.DropShip;
 		nextSpawn = 5.0f;		// Only enter spawn mode at least 5 sec after we are created
 
@@ -50,11 +51,10 @@ public class DropShip : Ship {
 	#endregion
 
 	#region Game Logic
-	protected override void Initialize() {
+/*	protected override void Initialize() {
 		base.Initialize ();		// Normal initialize
-		DeactivateGuns ();		// Guns not normally on
 
-	}
+	}*/
 
 	public override void Kill () {
 		Debug.Log ("KILL CALLED");
@@ -66,6 +66,7 @@ public class DropShip : Ship {
 
 		base.Kill ();
 
+
 	}
 
 	public override void Move () {
@@ -73,17 +74,7 @@ public class DropShip : Ship {
 		if (!isSpawning) {
 			// Move enemy ship up and down
 			this.transform.position = Vector2.Lerp (initialPos - offset, initialPos + offset, (Mathf.Sin(speed * Time.time) + 1.0f) / 2.0f);	// Natural up and down movement
-		}
-			
-		// Enemy ship turns to face player
-		//Vector3 dist = target.transform.position - transform.position;	// Find vector difference between target and this
-		//dist.Normalize ();		// Get unit vector
-
-		//float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-
-		//Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-
-		//transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
+		}			
 	}
 
 	/** GAME LOGIC */
@@ -133,20 +124,7 @@ public class DropShip : Ship {
 
 			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
 
-			health -= GameManager.Singleton.playerDamage;			// We lost health
-
-			if (health <= 0) {
-
-				Kill ();
-				//Instantiate (explosion, transform.position, transform.rotation);
-				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
-
-				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
-				UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");
-			}
-
+			Damage(GameManager.Singleton.playerDamage);			// We lost health
 			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
 		}
 	}

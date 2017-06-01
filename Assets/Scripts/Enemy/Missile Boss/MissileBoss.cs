@@ -45,6 +45,9 @@ public class MissileBoss : Ship, IEnemy {
 
 	#region Unity Life Cycle
 	protected override void Start() {
+
+		base.Start ();
+
 		moveState = GetComponent<IMoveState>();
 
 		GetComponent<Rigidbody> ().AddForce (transform.up * 0.01f);

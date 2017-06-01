@@ -27,7 +27,9 @@ public class AssassinShip : Ship {
 
 	#region Unity Lifecycle
 	protected override void Start () {
-		Initialize ();
+		//Initialize ();
+		base.Start ();
+
 		enemyType = EnemyType.Assassin;
 		Debug.Log("ASSASSIN SHIP START");
 	}
@@ -38,9 +40,9 @@ public class AssassinShip : Ship {
 	#endregion
 
 	#region Game Logic
-	protected override void Initialize() {
+	/*protected override void Initialize() {
 		base.Initialize ();
-	}
+	}*/
 
 	public override void Move () {
 		if (onStandby) {
@@ -83,18 +85,7 @@ public class AssassinShip : Ship {
 
 			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
 
-			health -= GameManager.Singleton.playerDamage;			// We lost health
-
-			if (health <= 0) {
-
-				Kill ();
-
-				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
-				UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");
-			}
-
+			Damage(GameManager.Singleton.playerDamage);			// We lost health
 			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
 
 		}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [SelectionBase]
-public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKillable {
+public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable {
 
 	#region Variables
 	public EnemyType enemyType = EnemyType.Turret;
@@ -30,6 +30,12 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	public float nextFire;
 	public Vector3 initialPos;
 	public Quaternion initialRot;
+
+	[Header("RENDERER/FLICKER")]
+	public IEnumerator hitFlickerRoutine;
+	public Color startColor;
+	public Renderer sprite;
+	public float flickerTime = 0.05f;
 	#endregion
 
 	#region Properties
@@ -65,7 +71,16 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	protected virtual void Start () {
 
 		initialRot = transform.rotation;
-		Initialize ();
+		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
+		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
+
+
+		sprite = Utils.FindChildWithTag(this.gameObject, "Sprite").GetComponent<Renderer>();
+		startColor = sprite.material.color;
+		Debug.Log ("SPRITE: " + sprite == null);
+		Debug.Log ("COLOR: " + startColor == null);
+
+		//Initialize ();
 		IEnumerator co = BurstFire ();
 		StartCoroutine (co);
 
@@ -90,10 +105,9 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 	#endregion
 
 	#region Game Logic
-	protected virtual void Initialize() {
-		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
-		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
-	}
+	/*protected virtual void Initialize() {
+
+	}*/
 
 	public virtual void Move() {
 
@@ -115,17 +129,41 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 
 	public virtual void Damage(int damageTaken) {
 
-		health -= damageTaken;		// We lose health
-
-		if (health <= 0) {			// Check if we died, and if so, destroy us
-			Kill ();
+		// Restart flicker animation
+		if (hitFlickerRoutine != null) {
+			StopCoroutine (hitFlickerRoutine);
 		}
+		hitFlickerRoutine = FlickerHit ();
+		StartCoroutine (hitFlickerRoutine);
+
+		health -= damageTaken;		// We lose health
+		if (this.health <= 0) {
+			Kill ();
+			//Debug.Log ("Killed via projectile weapon");
+		}
+	}
+
+	// Flicker when hit
+	IEnumerator FlickerHit() {
+		Debug.Log ("FLICKERING");
+		Color flickerColor = sprite.material.color;
+		flickerColor.a = 0.45f;
+
+		sprite.material.color = flickerColor;
+		yield return new WaitForSeconds (flickerTime);
+		sprite.material.color = startColor;
 	}
 
 	public virtual void Kill() {
 		//Destroy (transform.gameObject);		// Destroy our gameobject
-		transform.gameObject.SetActive(false);	// "Destroy" our gameobject
+		//transform.gameObject.SetActive(false);	// "Destroy" our gameobject
+		DestroyForReuse ();
 		Instantiate(explosion, transform.position, transform.rotation);
+
+		GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
+		UIManager.Singleton.UpdateScore ();	// Update score in UI
+
+		Debug.Log("TURRET KILLED! Obtained: " + enemyPoints + "points!");
 	}
 
 	public virtual void Fire() {
@@ -150,18 +188,7 @@ public class Turret : MonoBehaviour, IMovement, IFires, IDamageable<int>, IKilla
 
 			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
 
-			health -= GameManager.Singleton.playerDamage;			// We lost health
-
-			if (health <= 0) {
-				Debug.Log ("TURRET KILLED BY: " + other.name);
-				Instantiate (explosion, transform.position, transform.rotation);
-				Destroy (this.gameObject);		// We're dead, so get rid of this object :/
-
-				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
-				UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-				Debug.Log("TURRET KILLED! Obtained: " + enemyPoints + "points!");
-			}
+			Damage (GameManager.Singleton.playerDamage);
 		}
 	}
 

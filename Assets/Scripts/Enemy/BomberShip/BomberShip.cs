@@ -26,7 +26,10 @@ public class BomberShip : Ship {
 	protected override void Start () {
 
 		// Call our overridden initalization method
-		Initialize ();
+		//Initialize ();
+		base.Start ();
+
+		rb = GetComponent<Rigidbody> ();	// For use in adjusting velocity
 		enemyType = EnemyType.Bomber;
 
 		// Component state initialization
@@ -47,14 +50,13 @@ public class BomberShip : Ship {
 	#endregion
 
 	#region Game Logic
-	protected override void Initialize() {
+/*	protected override void Initialize() {
 
 		// Do normal initalization
-		base.Initialize ();
+		//base.Initialize ();
 		//damageRange = GetComponentInChildren<BomberCollisionHelper> ().GetComponent<CapsuleCollider> ().radius;
-		rb = GetComponent<Rigidbody> ();	// For use in adjusting velocity
 	}
-
+*/
 	public override void Kill() {
 
 		// Graphics
@@ -92,12 +94,7 @@ public class BomberShip : Ship {
 
 			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
 
-			health -= GameManager.Singleton.playerDamage;			// We lost health
-
-			// If the enemy stays far enough away and kills us...
-			if (health <= 0 && !isExploding) {
-				Kill ();
-			}
+			Damage(GameManager.Singleton.playerDamage);			// We lost health
 
 			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console */
 		}

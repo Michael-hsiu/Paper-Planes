@@ -73,18 +73,6 @@ public class RangedShip : FiringShip, IEnemy {
 		// Kill logic
 		base.Kill ();		// Bare-bones destroyForReuse()
 
-		// Score updates
-		if (GameManager.Singleton.lvlActive) {
-
-			GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
-			GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
-			UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-			Debug.Log("RANGED SHIP KILLED! Obtained: " + enemyPoints + "points!");
-		}
-
-
-
 	}
 
 	public override void Move () {

@@ -13,7 +13,7 @@ public class PawnShip : Ship {
 	protected override void Start () {
 		// Call our overridden initalization method
 		base.Start ();
-		Initialize ();
+		//Initialize ();
 		enemyType = EnemyType.Pawn;
 		//Debug.Log("PAWN SHIP START");
 
@@ -69,11 +69,7 @@ public class PawnShip : Ship {
 
 			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
 
-			health -= GameManager.Singleton.playerDamage;			// We lost health
-
-			if (health <= 0) {
-				Kill ();
-			}
+			Damage(GameManager.Singleton.playerDamage);			// We lost health
 
 		// Handle collisions with player
 		} else if (other.gameObject.CompareTag(Constants.PlayerTag)) {

@@ -61,7 +61,8 @@ public class SniperBoss : Ship, IEnemy {
 	#region Unity Life Cycle
 	protected override void Start() {
 		
-		Initialize ();		// Assigns target
+		//Initialize ();		// Assigns target
+		base.Start ();
 
 		mapCollider = GameManager.Singleton.mapCollider;
 		moveState = GetComponent<IMoveState>();
@@ -307,7 +308,6 @@ public class SniperBoss : Ship, IEnemy {
 				other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
 			}
 
-			health -= GameManager.Singleton.playerDamage;			// We lost health
 
 			if (health <= 0) {
 

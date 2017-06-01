@@ -77,16 +77,24 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 		//Destroy (transform.gameObject);		// Destroy our gameobject
 		//transform.gameObject.SetActive(false);	// "Destroy" our gameobject
 		DestroyForReuse ();
+		// Score updates
+		if (GameManager.Singleton.lvlActive) {
+
+			GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+			GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
+			UIManager.Singleton.UpdateScore ();	// Update score in UI
+
+			Debug.Log("RANGED SHIP KILLED! Obtained: " + enemyPoints + "points!");
+		}
 		//Instantiate(explosion, transform.position, transform.rotation);
 	}
 
 
 	/** HELPER METHODS */
 
-	protected virtual void Initialize() {
-		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
-		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
-	}
+/*	protected virtual void Initialize() {
+		
+	}*/
 
 	public void BuffSpeed() {
 		this.isSpeedBuffed = true;
@@ -100,7 +108,9 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 	/** UNITY CALLBACKS */
 
 	protected virtual void Start () {
-		Initialize ();
+		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
+		target = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime
+
 		sprite = Utils.FindChildWithTag(this.gameObject, "Sprite").GetComponent<Renderer>();
 		startColor = sprite.material.color;
 
