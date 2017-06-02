@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 // Dash components modelled after: http://answers.unity3d.com/questions/892955/dashing-mechanic-using-rigidbodyaddforce.html
 public class AIInput : MonoBehaviour, InputComponent {
@@ -73,18 +74,29 @@ public class AIInput : MonoBehaviour, InputComponent {
 
 
 			// MOBILE INPUTS
+			float hori = CrossPlatformInputManager.GetAxis ("HorizontalJoystick");
+			float vert = CrossPlatformInputManager.GetAxis ("VerticalJoystick");
+			Debug.Log ("HORI: " + hori);
+			Debug.Log ("VERT: " + vert);
+
+			Vector3 dir = Vector3.zero;
+			dir.x = hori * Time.deltaTime;
+			dir.y = vert * Time.deltaTime;
+			player.GetComponent<Rigidbody>().AddRelativeForce(dir.normalized * player.speed);
+
+
 			//Vector3 movement = new Vector3 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"), 0f);
 			//player.GetComponent<Rigidbody>().AddRelativeForce(movement * player.speed);
-//			Vector3 dir = Vector3.zero;
-//			dir.x = Input.GetAxis ("Horizontal") * Time.deltaTime;
-//			dir.z = Input.GetAxis ("Vertical") * Time.deltaTime;
-/*/			float translation = Input.GetAxis("Vertical") * player.speed;
+			/*Vector3 dir = Vector3.zero;
+			dir.x = Input.GetAxis ("Horizontal") * Time.deltaTime;
+			dir.z = Input.GetAxis ("Vertical") * Time.deltaTime;
+			float translation = Input.GetAxis("Vertical") * player.speed;
 			float rotation = Input.GetAxis("Horizontal") * player.speed;
 			translation *= Time.deltaTime;
 			rotation *= Time.deltaTime;
 			transform.Translate(0, 0, translation);
 			transform.Rotate(0, rotation, 0);
-*/
+			
 			// Rotation logic
 			if (virtualJoystickRotate.inputDirection != Vector3.zero) {
 
@@ -113,7 +125,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 				if (player.GetComponent<Rigidbody>().velocity.sqrMagnitude == Mathf.Pow(player.maxForward, 2)) {
 					Debug.Log ("MAX VELOCITY REACHED: " + player.GetComponent<Rigidbody> ().velocity.sqrMagnitude);		// Should be the square of maxForward
 				}
-			} 
+			} */
 		}
 	}
 
