@@ -67,6 +67,9 @@ public class PlayerShip : FiringShip {
 	public float sideMissileRandomVal;
 	public float sideMissileChance = 0.1f;
 
+	[Header("FIRING RIG")]
+	public GameObject firingRig;
+
 	//[Header("RENDERER/FLICKER")]
 	//public IEnumerator hitFlickerRoutine;
 	//public Color startColor;

@@ -71,6 +71,7 @@ public class BurstRushPowerup : PoolObject {
 	IEnumerator StartCharge() {
 
 		player.rushStarted = true;			// Player cannot use other powerups
+		//Debug.Break ();
 
 		// Activate Burst Rush colliders and disable firing and moving
 		player.GetComponent<Rigidbody> ().velocity = Vector3.zero;		// Naive fix: non-force impl of halting player entirely
@@ -88,6 +89,8 @@ public class BurstRushPowerup : PoolObject {
 
 		cr2 = StartRush ();
 		StartCoroutine (cr2);
+
+		yield return null;
 	}
 
 	IEnumerator StartRush() {
@@ -95,11 +98,11 @@ public class BurstRushPowerup : PoolObject {
 		GameManager.Singleton.speedCapped = false;
 		BurstRushManager.Instance.burstRushColliders.SetActive (true);
 
-		player.GetComponent<Rigidbody> ().AddForce (player.transform.up * thrust);		// Propel player forward
-
+		player.GetComponent<Rigidbody> ().AddForce (player.transform.up * thrust, ForceMode.Impulse);		// Propel player forward
+		Debug.Log ("RUSHED!");
+		//Debug.Break ();
 		yield return new WaitForSeconds (rushTime);		// Also need to disable inputs
 
-		GameManager.Singleton.speedCapped = true;
 		BurstRushManager.Instance.burstRushColliders.SetActive (false);
 
 		Debug.Log ("FORCE APPLIED!");
@@ -107,6 +110,7 @@ public class BurstRushPowerup : PoolObject {
 		cr2 = null;
 
 		player.rushStarted = false;		// Allow player to now use other powerups
+		GameManager.Singleton.axisInput = true;		// Re-enable movement
 
 	}
 

@@ -74,20 +74,48 @@ public class AIInput : MonoBehaviour, InputComponent {
 
 
 			// MOBILE INPUTS
+
+			// Left joystick (move)
 			float hori = CrossPlatformInputManager.GetAxis ("HorizontalJoystick");
 			float vert = CrossPlatformInputManager.GetAxis ("VerticalJoystick");
-			Debug.Log ("HORI: " + hori);
-			Debug.Log ("VERT: " + vert);
 
-			Vector3 dir = Vector3.zero;
-			dir.x = hori * Time.deltaTime;
-			dir.y = vert * Time.deltaTime;
-			player.GetComponent<Rigidbody>().AddRelativeForce(dir.normalized * player.speed);
+			Vector3 shipRotateDir = Vector3.zero;
+			shipRotateDir.x = hori;
+			shipRotateDir.z = vert;
+			if (shipRotateDir != Vector3.zero) {
+
+				//Rotate to face joystick direction
+				float zAngle = (Mathf.Atan2 (shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+				player.transform.rotation = desiredRotation;
+
+				// Move in new direction we're facing
+				player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
+			}
+
+
+
+			// Right joystick (rotate + fire)
+			float xInput = CrossPlatformInputManager.GetAxis ("Mouse X");
+			float yInput = CrossPlatformInputManager.GetAxis ("Mouse Y");
+			/*Debug.Log ("xInput: " + xInput);
+			Debug.Log ("yInput: " + yInput);*/
+
+			Vector3 rigRotateDir = Vector3.zero;
+			rigRotateDir.x = xInput;
+			rigRotateDir.z = yInput;
+			if (rigRotateDir != Vector3.zero) {
+
+				//Rotate to face joystick direction
+				float zAngle = (Mathf.Atan2 (rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+				player.firingRig.transform.rotation = desiredRotation;
+			}
 
 
 			//Vector3 movement = new Vector3 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"), 0f);
-			//player.GetComponent<Rigidbody>().AddRelativeForce(movement * player.speed);
-			/*Vector3 dir = Vector3.zero;
+			/*//player.GetComponent<Rigidbody>().AddRelativeForce(movement * player.speed);
+			Vector3 dir = Vector3.zero;
 			dir.x = Input.GetAxis ("Horizontal") * Time.deltaTime;
 			dir.z = Input.GetAxis ("Vertical") * Time.deltaTime;
 			float translation = Input.GetAxis("Vertical") * player.speed;
@@ -113,7 +141,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 				
 				player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * player.speed);
 
-			}
+			}*/
 
 
 			// Check if our speed cap is on (off if we're dashing!!!)
@@ -125,7 +153,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 				if (player.GetComponent<Rigidbody>().velocity.sqrMagnitude == Mathf.Pow(player.maxForward, 2)) {
 					Debug.Log ("MAX VELOCITY REACHED: " + player.GetComponent<Rigidbody> ().velocity.sqrMagnitude);		// Should be the square of maxForward
 				}
-			} */
+			}
 		}
 	}
 
