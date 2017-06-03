@@ -69,6 +69,7 @@ public class PlayerShip : FiringShip {
 
 	[Header("FIRING RIG")]
 	public GameObject firingRig;
+	public GameObject chargeColliderRig;
 
 	//[Header("RENDERER/FLICKER")]
 	//public IEnumerator hitFlickerRoutine;

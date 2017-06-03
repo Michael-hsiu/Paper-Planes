@@ -28,21 +28,25 @@ public class AIInput : MonoBehaviour, InputComponent {
 			}
 
 			bool axisInput = GameManager.Singleton.axisInput;	// Check if we register hori/vert movement
+			bool turnInput = GameManager.Singleton.turnInput;	// Check if we can rotate/turn
 
 			// COMPUTER INPUTS
 			// Can't turn whilst dashing
-			if (Input.GetKey(KeyCode.D) && !player.dashStarted) {
-				//player.transform.GetComponent <Rigidbody>().angularVelocity = Vector3.zero;
-				//player.transform.Rotate(new Vector3(0, 0, 200) * Time.deltaTime);
-				player.transform.GetComponent<Rigidbody> ().AddTorque (new Vector3 (0, 0, -200) * Time.deltaTime, ForceMode.VelocityChange);
+			if (turnInput) {
+				if (Input.GetKey(KeyCode.D) && !player.dashStarted) {
+					//player.transform.GetComponent <Rigidbody>().angularVelocity = Vector3.zero;
+					//player.transform.Rotate(new Vector3(0, 0, 200) * Time.deltaTime);
+					player.transform.GetComponent<Rigidbody> ().AddTorque (new Vector3 (0, 0, -200) * Time.deltaTime, ForceMode.VelocityChange);
+				}
+
+				// Can't turn whilst dashing
+				if (Input.GetKey(KeyCode.A) && !player.dashStarted) {
+					//player.transform.GetComponent <Rigidbody>().angularVelocity = Vector3.zero;
+					//player.transform.Rotate(new Vector3(0, 0, -200) * Time.deltaTime);
+					player.transform.GetComponent<Rigidbody> ().AddTorque (new Vector3 (0, 0, 200) * Time.deltaTime, ForceMode.VelocityChange);
+				}
 			}
 
-			// Can't turn whilst dashing
-			if (Input.GetKey(KeyCode.A) && !player.dashStarted) {
-				//player.transform.GetComponent <Rigidbody>().angularVelocity = Vector3.zero;
-				//player.transform.Rotate(new Vector3(0, 0, -200) * Time.deltaTime);
-				player.transform.GetComponent<Rigidbody> ().AddTorque (new Vector3 (0, 0, 200) * Time.deltaTime, ForceMode.VelocityChange);
-			}
 
 			if (axisInput) {
 				if (Input.GetKey(KeyCode.W)) {
@@ -76,42 +80,48 @@ public class AIInput : MonoBehaviour, InputComponent {
 			// MOBILE INPUTS
 
 			// Left joystick (move)
-			float hori = CrossPlatformInputManager.GetAxis ("HorizontalJoystick");
-			float vert = CrossPlatformInputManager.GetAxis ("VerticalJoystick");
+			if (axisInput) {
+				float hori = CrossPlatformInputManager.GetAxis ("HorizontalJoystick");
+				float vert = CrossPlatformInputManager.GetAxis ("VerticalJoystick");
 
-			Vector3 shipRotateDir = Vector3.zero;
-			shipRotateDir.x = hori;
-			shipRotateDir.z = vert;
-			if (shipRotateDir != Vector3.zero) {
+				Vector3 shipRotateDir = Vector3.zero;
+				shipRotateDir.x = hori;
+				shipRotateDir.z = vert;
+				if (shipRotateDir != Vector3.zero) {
 
-				//Rotate to face joystick direction
-				float zAngle = (Mathf.Atan2 (shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-				player.transform.rotation = desiredRotation;
+					//Rotate to face joystick direction
+					float zAngle = (Mathf.Atan2 (shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+					Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+					player.transform.rotation = desiredRotation;
 
-				// Move in new direction we're facing
-				player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
+					// Also change rotation of Burst Rush charge rig if it's active
+					if (player.chargeColliderRig.activeSelf) {
+						player.chargeColliderRig.transform.rotation = desiredRotation;
+					}
+
+					// Move in new direction we're facing
+					player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
+				}	
 			}
-
-
 
 			// Right joystick (rotate + fire)
-			float xInput = CrossPlatformInputManager.GetAxis ("Mouse X");
-			float yInput = CrossPlatformInputManager.GetAxis ("Mouse Y");
-			/*Debug.Log ("xInput: " + xInput);
+			if (turnInput) {
+				float xInput = CrossPlatformInputManager.GetAxis ("Mouse X");
+				float yInput = CrossPlatformInputManager.GetAxis ("Mouse Y");
+				/*Debug.Log ("xInput: " + xInput);
 			Debug.Log ("yInput: " + yInput);*/
 
-			Vector3 rigRotateDir = Vector3.zero;
-			rigRotateDir.x = xInput;
-			rigRotateDir.z = yInput;
-			if (rigRotateDir != Vector3.zero) {
+				Vector3 rigRotateDir = Vector3.zero;
+				rigRotateDir.x = xInput;
+				rigRotateDir.z = yInput;
+				if (rigRotateDir != Vector3.zero) {
 
-				//Rotate to face joystick direction
-				float zAngle = (Mathf.Atan2 (rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-				player.firingRig.transform.rotation = desiredRotation;
+					//Rotate to face joystick direction
+					float zAngle = (Mathf.Atan2 (rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+					Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+					player.firingRig.transform.rotation = desiredRotation;
+				}
 			}
-
 
 			//Vector3 movement = new Vector3 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"), 0f);
 			/*//player.GetComponent<Rigidbody>().AddRelativeForce(movement * player.speed);

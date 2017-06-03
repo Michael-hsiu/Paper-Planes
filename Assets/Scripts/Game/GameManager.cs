@@ -20,8 +20,10 @@ public class GameManager : MonoBehaviour {
 	public int playerDamage = 20;
 	public int scoreMultiplier = 1;
 	public bool axisInput = true;
+	public bool turnInput = true;
 	public bool speedCapped = true;
 	public bool isDashing = false;
+	public bool isBurstRushing = false;		// Prevents multiple burst rushes
 	public bool onDashCooldown = false;
 	public int dashes = 99;
 	public PowerupSpawner powerupSpawner;

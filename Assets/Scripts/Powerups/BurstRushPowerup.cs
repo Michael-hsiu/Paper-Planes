@@ -15,9 +15,10 @@ public class BurstRushPowerup : PoolObject {
 	public List<Collider> colliders;
 	protected bool isVisible;
 
-	private IEnumerator cr1;
-	private IEnumerator cr2;
+	private IEnumerator chargeRoutine;
+	private IEnumerator rushRoutine;
 	public PlayerShip player;
+	public Vector3 oldVelocity;
 
 	public SpecialWeapons id = SpecialWeapons.RUSH;
 
@@ -26,7 +27,7 @@ public class BurstRushPowerup : PoolObject {
 		//player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
 		burstChargeColliders = BurstRushManager.Instance.burstChargeColliders;
 		burstRushColliders = BurstRushManager.Instance.burstRushColliders;
-
+		player = GameManager.Singleton.playerShip;
 		//burstChargeColliders.SetActive (false);
 		//burstRushColliders.SetActive (false);
 		//colliders = Utils.GetChildren (burstRushColliders);		// Get all phase II (rush) colliders
@@ -38,12 +39,14 @@ public class BurstRushPowerup : PoolObject {
 
 	void OnTriggerEnter(Collider other) {
 
-		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
+		if (other.gameObject.CompareTag (Constants.PlayerTag) && !GameManager.Singleton.isBurstRushing) {
 			// Do weapons logic; spawn things
 
 			HideInScene ();
 			GameManager.Singleton.rushes.Enqueue(this);		// Add a Rush to our count
 			UIManager.Singleton.UpdateBurstRushText ();
+
+			TriggerCharge (player);			// Immediately activate powerup on pickup
 
 		}
 	}
@@ -60,35 +63,37 @@ public class BurstRushPowerup : PoolObject {
 	// This is called from our Input module
 	public void TriggerCharge(PlayerShip player) {
 		// Begin Phase I, which will initiate Phase II
-		this.player = player;	// Keep track of the player so we can chage its rushStarted bool flag
+		//this.player = player;	// Keep track of the player so we can chage its rushStarted bool flag
 
 		UIManager.Singleton.UpdateBurstRushText ();
-		cr1 = StartCharge ();
-		StartCoroutine (cr1);
+		StopAllCoroutines ();
+		chargeRoutine = StartCharge ();
+		StartCoroutine (chargeRoutine);
 	}
 
 	// Phase I - charge stage.
 	IEnumerator StartCharge() {
 
 		player.rushStarted = true;			// Player cannot use other powerups
+		GameManager.Singleton.isBurstRushing = true;
 		//Debug.Break ();
 
 		// Activate Burst Rush colliders and disable firing and moving
-		player.GetComponent<Rigidbody> ().velocity = Vector3.zero;		// Naive fix: non-force impl of halting player entirely
+		oldVelocity = player.GetComponent<Rigidbody> ().velocity;
+		player.GetComponent<Rigidbody> ().velocity = Vector3.zero;			// Naive fix: non-force impl of halting player entirely
 		isCharging = true;
-		GameManager.Singleton.axisInput = false;	// So we can't move while charging
+		GameManager.Singleton.axisInput = false;							// So we can't move while charging
 		BurstRushManager.Instance.burstChargeColliders.SetActive (true);	// Enable charge collider
 
 		yield return new WaitForSeconds (chargeTime);
 
-		GameManager.Singleton.axisInput = true;		// Re-enable movement
-		BurstRushManager.Instance.burstChargeColliders.SetActive (false);		// Disable charge collider
+		//BurstRushManager.Instance.burstChargeColliders.SetActive (false);		// Disable charge collider
 
 		// Begin Phase II - rush stage.
 		isCharging = false;
 
-		cr2 = StartRush ();
-		StartCoroutine (cr2);
+		rushRoutine = StartRush ();
+		StartCoroutine (rushRoutine);
 
 		yield return null;
 	}
@@ -96,21 +101,29 @@ public class BurstRushPowerup : PoolObject {
 	IEnumerator StartRush() {
 
 		GameManager.Singleton.speedCapped = false;
+		GameManager.Singleton.turnInput = false;		// Can't turn whilst rushing
 		BurstRushManager.Instance.burstRushColliders.SetActive (true);
 
 		player.GetComponent<Rigidbody> ().AddForce (player.transform.up * thrust, ForceMode.Impulse);		// Propel player forward
+
 		Debug.Log ("RUSHED!");
 		//Debug.Break ();
 		yield return new WaitForSeconds (rushTime);		// Also need to disable inputs
 
+		//Debug.Break ();
+		BurstRushManager.Instance.burstChargeColliders.SetActive (false);		// Disable charge collider
 		BurstRushManager.Instance.burstRushColliders.SetActive (false);
+		//player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 
-		Debug.Log ("FORCE APPLIED!");
 
-		cr2 = null;
-
+		rushRoutine = null;
 		player.rushStarted = false;		// Allow player to now use other powerups
+		GameManager.Singleton.speedCapped = true;
 		GameManager.Singleton.axisInput = true;		// Re-enable movement
+		GameManager.Singleton.turnInput = true;
+
+		GameManager.Singleton.isBurstRushing = false;
+
 
 	}
 

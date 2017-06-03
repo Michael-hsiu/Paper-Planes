@@ -7,7 +7,7 @@ public class BurstRushCollider : MonoBehaviour {
 	public GameObject explosion;
 	public int dmg = 20;
 
-	void OnTriggerEnter(Collider other) {
+	void OnTriggerStay(Collider other) {
 
 		if (other.gameObject.CompareTag (Constants.EnemyTag)) {
 			if (other.gameObject != null) {
