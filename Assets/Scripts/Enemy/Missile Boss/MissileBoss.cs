@@ -199,7 +199,7 @@ public class MissileBoss : Ship, IEnemy {
 				DestroyForReuse ();
 				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
 
-				GameManager.Singleton.RecordKill (enemyType);
+				GameManager.Singleton.OnEnemyKilled (enemyType);
 				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
 				UIManager.Singleton.UpdateScore ();	// Update score in UI
 

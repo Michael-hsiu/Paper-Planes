@@ -52,7 +52,7 @@ public class MovingSpawnManager : MonoBehaviour {
 		while (true) {			
 			while (spawnEnabled) {
 
-				if (GameManager.Singleton.activeLevel.movingEnemySpawn != null && GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
+				/*if (GameManager.Singleton.activeLevel.movingEnemySpawn != null && GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
 
 					Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
 					Instantiate (movingSpawn, spawnLoc, Quaternion.identity);
@@ -75,7 +75,7 @@ public class MovingSpawnManager : MonoBehaviour {
 					promoAreaSpawnDelay = Random.Range (20.0f, 35.0f);		// Spawns can occur anywhere from every 15 s to every 30 s
 					toPromoAreaSpawnTime = Time.time + promoAreaSpawnDelay;
 					yield return new WaitForSeconds (promoAreaSpawnDelay);	// Currently,promo areas spawn at random intervals
-				}
+				}*/
 
 				yield return null;
 
@@ -85,7 +85,7 @@ public class MovingSpawnManager : MonoBehaviour {
 	}
 
 	void UpdateSpawnTimer() {
-		if (GameManager.Singleton.lvlActive && GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
+		if (GameManager.Singleton.levelActive && GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
 			spawnTimerText.text = "Spawn Timer: " + (toMovingSpawnTime - Time.time);
 		} else {
 			spawnTimerText.text = "Spawn Timer: N/A";
@@ -93,7 +93,7 @@ public class MovingSpawnManager : MonoBehaviour {
 	}
 
 	void Update() {
-		UpdateSpawnTimer ();
+		//UpdateSpawnTimer ();
 	}
 
 }

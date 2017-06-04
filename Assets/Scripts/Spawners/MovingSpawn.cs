@@ -26,7 +26,7 @@ public class MovingSpawn : PoolObject {
 
 	void OnEnable() {
 		//GameManager.Singleton.startLevelEvent += Initialize;	// Subscribe to start lvl event
-		if (/*wasReused &&*/ GameManager.Singleton.lvlActive) {
+		if (/*wasReused &&*/ GameManager.Singleton.levelActive) {
 			Initialize ();		// Initialize if we spawned it after the lvl started
 		}
 	}
@@ -43,7 +43,7 @@ public class MovingSpawn : PoolObject {
 
 	void Initialize() {
 		if (GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
-			GameManager.Singleton.startLevelEvent -= Initialize;	// Unsubscribe from lvl event
+			GameManager.Singleton.StartLevelEvent -= Initialize;	// Unsubscribe from lvl event
 
 			if (player == null) {
 
@@ -66,7 +66,7 @@ public class MovingSpawn : PoolObject {
 	}
 		
 	void Awake() {
-		GameManager.Singleton.startLevelEvent += Initialize;	// Subscribe to start lvl event
+		GameManager.Singleton.StartLevelEvent += Initialize;	// Subscribe to start lvl event
 
 		spawnContainer = new GameObject ("SpawnContainer");		// Create container to hold all spawned enemies
 
@@ -74,7 +74,7 @@ public class MovingSpawn : PoolObject {
 		
 	private IEnumerator WaitAndFire(float spawnDelay) {
 
-		while (squadTotal > 0 && GameManager.Singleton.lvlActive) {
+		while (squadTotal > 0 && GameManager.Singleton.levelActive) {
 
 			Vector3 target = player.transform.position;
 
@@ -125,7 +125,7 @@ public class MovingSpawn : PoolObject {
 				yield return new WaitForSeconds (spawnDelay);	// Delay between spawning new enemies
 			} 
 		}
-		if (squadTotal == 0 || !GameManager.Singleton.lvlActive) {
+		if (squadTotal == 0 || !GameManager.Singleton.levelActive) {
 			Debug.Log ("DESTROYING MOVING SPAWN");
 			Destroy (this.gameObject);
 		}

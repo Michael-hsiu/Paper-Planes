@@ -71,9 +71,9 @@ public class BomberShip : Ship {
 		base.Kill ();		// Bare-bones destroyForReuse()
 
 		// Score updates
-		if (GameManager.Singleton.lvlActive) {
+		if (GameManager.Singleton.levelActive) {
 
-			GameManager.Singleton.RecordKill (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+			GameManager.Singleton.OnEnemyKilled (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
 			GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
 			UIManager.Singleton.UpdateScore ();	// Update score in UI
 

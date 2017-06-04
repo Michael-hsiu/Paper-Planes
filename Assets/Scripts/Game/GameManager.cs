@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using ExtendedCollections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -16,9 +17,12 @@ public class GameManager : MonoBehaviour {
 	public int playerMaxHealth;	// Must be changed w/ health bar and upgrades
 
 	public int playerScore = 0;			// How many points the player has (resets to 0 per game)
+	public int targetScore = 0;
 	public int playerBalance = 0;		// How much money the player has
 	public int playerDamage = 20;
 	public int scoreMultiplier = 1;
+
+
 	public bool axisInput = true;
 	public bool turnInput = true;
 	public bool speedCapped = true;
@@ -26,6 +30,7 @@ public class GameManager : MonoBehaviour {
 	public bool isBurstRushing = false;		// Prevents multiple burst rushes
 	public bool onDashCooldown = false;
 	public int dashes = 99;
+
 	public PowerupSpawner powerupSpawner;
 	public MovingSpawnManager movingSpawnManager;
 	// The following logic needs to be populated by PlayerPrefs
@@ -54,47 +59,43 @@ public class GameManager : MonoBehaviour {
 	public LevelData[] levels;		// Stores each LevelData SO as an asset
 	public LevelData activeLevel;
 	public int activeLevelNum = 1;
-	public bool lvlActive = true;
+	public bool levelActive = true;
 	public List<GameObject> currLvlSpawners;	// Get from index (currLvl-1)
 	public List<Row> levelSpawners = new List<Row>();		// Enemy spawners; populate this manually in inspector; Row is a container class so we can emulate 2D list behavior
 	public Collider mapCollider;
-	public delegate void StartALevel ();
-	public event StartALevel startLevelEvent;	// Event to communicate w/ UIManager
-
-
-	// Store how many enemies we need to defeat per level
-	public int pawnsLeft;
-	public int rangedLeft;
-	public int medicsLeft;
-	public int turretsLeft;
-	public int dropshipsLeft;
-	public int assassinsLeft;
-	public int bombersLeft;
 
 	// Powerup logic
 	public Queue<BurstRushPowerup> rushes = new Queue<BurstRushPowerup>();
 
 	// Shop logic
-	public GameObject shopButton;
 	public GameObject uiElements;
+
+	// Events for Level Setup
+	public delegate void StartingNewLevel ();
+	public event StartingNewLevel StartLevelEvent;	// Event to communicate w/ UIManager
+
 
 
 	// REVISED logic for endless level progression.
 	// Uses player score and elapsed time to make decisions on what to spawn.
-	public float currLevel = 0;		// This is used from EnemySpawner. Enemies UP TO this index are allowed to be spawned.
+	public int currLevel = 0;		// This is used from EnemySpawner. Enemies UP TO this index are allowed to be spawned.
+	public List<int> scoreBoundaries = new List<int>();		// Stores information about how many points needed to reach next level
 
 
-	// Called before Start()
 	void Awake() {
 		if (singleton == null) {
 			singleton = this;
+		} else {
+			DestroyImmediate(this);
+		}
+	}
 
-		} 
+	void Start() {
+
+		// Setup references
 		playerShip = GameObject.FindGameObjectWithTag (Constants.PlayerTag).GetComponent<PlayerShip>();		// The main reference to player ref. by all other scripts
 		normalSS = Utils.FindChildWithTag (playerShip.gameObject, Constants.NormalSS);		// This is primarily for homing missile powerup
-		if (powerupSpawner == null) {
-			powerupSpawner = GetComponent<PowerupSpawner> ();
-		}
+		powerupSpawner = GetComponent<PowerupSpawner> ();
 		movingSpawnManager = GetComponent<MovingSpawnManager> ();
 		mapCollider = GetComponent <BoxCollider> ();
 
@@ -108,93 +109,45 @@ public class GameManager : MonoBehaviour {
 		dualFireLevel = PlayerPrefs.GetInt (Constants.dualFireLevel, 0);
 		triFireLevel = PlayerPrefs.GetInt (Constants.triFireLevel, 0);
 
-		// END populating.
+		// Subscribe events
+		StartLevelEvent += OnLevelStartEnablePowerupSpawners;
+		StartLevelEvent += OnLevelStartEnableMovingSpawners;
 
 	}
 
 	public void StartGame() {
-
-		// Start + Display lvl 1 logic
-		if (activeLevelNum < 1) {
-			activeLevelNum = 1;
-		}
-
-		// Enable player controls
-		((AIInput)(InputManager.Instance.GetActiveInput ())).controlsEnabled = true;
-
-		// Start level 1
-		BeginLevel (activeLevelNum);
-				
-	}
-
-	// Called from Victory Screen
-	public void ContinueGame() {
-		BeginLevel (activeLevelNum);
-	}
-
-	// Replay level after defeat
-	public void RetryLevel() {
-		//SceneManager.LoadSceneAsync ("GameScene");		// Reload the game scene (reset everything)
-
-		Utils.KillAllEnemies ();
-		Utils.DisablePowerups ();
-
-		playerShip.gameObject.SetActive (true);
-		BeginLevel (activeLevelNum);
+		BeginLevel (0);
 	}
 
 	// Only occurs on button click atm
-	public void BeginLevel(int level) {
+	public void BeginLevel(int currLevel) {
 
-		// Disable shop button and other screen
-		shopButton.SetActive (false);
-		UIManager.Singleton.DisableContinueScreen ();
-		((AIInput)(InputManager.Instance.GetActiveInput ())).controlsEnabled = true;
+		this.currLevel = currLevel;
+		this.targetScore = scoreBoundaries [currLevel];
+		this.levelActive = true;
 
-		// Spawn / setup logic for each level
-		playerHealth = playerMaxHealth;		// Restore health to max
-		UIManager.Singleton.UpdateHealth ();
-
-		lvlActive = true;
-		activeLevelNum = level;		// The numerical repr of current lvl
-		activeLevel = levels [activeLevelNum - 1];		// Cache the current lvl object
-		currLvlSpawners = levelSpawners[activeLevelNum - 1].row;	// B/c zero-indexed
-
-		// Populate enemy bodycounts
-		// This counts # of enemies defeated per round; decremented on each kill
-		pawnsLeft = activeLevel.enemyCounts[EnemyType.Pawn];
-		rangedLeft = activeLevel.enemyCounts[EnemyType.Ranged];
-		medicsLeft = activeLevel.enemyCounts[EnemyType.Medic];
-		turretsLeft = activeLevel.enemyCounts[EnemyType.Turret];
-		dropshipsLeft = activeLevel.enemyCounts[EnemyType.DropShip];
-		assassinsLeft = activeLevel.enemyCounts[EnemyType.Assassin];
-		bombersLeft = activeLevel.enemyCounts[EnemyType.Bomber];
-
-		// Activate all the enemy spawners for this lvl
-		foreach (GameObject go in currLvlSpawners) {
-			go.SetActive (true);
-			go.GetComponent<EnemySpawnTemplate> ().startSpawning = true;
+		// Announce to subscribers
+		if (StartLevelEvent != null) {
+			StartLevelEvent ();		// Tell all of our listeners to fire
 		}
-
-		// Activate powerup spawner
-		powerupSpawner.spawnEnabled = true;
-		//powerupSpawner.powerups = activeLevel.powerups;		// Feed PowerupSpawner the activeLvl's list of allowed powerups
-
-		// Activate moving spawn manager
-		movingSpawnManager.spawnEnabled = true;
-
-		// Announce to dependencies (Moving Spawners, etc.)
-		if (startLevelEvent != null) {
-			startLevelEvent ();		// Tell all of our listeners to fire
-		}
-
-		// UI logic
-		UIManager.Singleton.StartLevel (
-			level, 
-			pawnsLeft, rangedLeft, medicsLeft, turretsLeft, dropshipsLeft, assassinsLeft, bombersLeft
-			);		// Start a dialog box alerting player of mission goal: enemies to kill, etc.
 
 	}
+
+	// START StartLevelEvent subscribers.
+	// Most of these can be moved to their dependency classes later.
+	public void OnLevelStartEnablePowerupSpawners() {
+		// TODO: add new powerups every lvl
+		powerupSpawner.spawnEnabled = true;
+
+	}
+	public void OnLevelStartEnableMovingSpawners() {
+		// TODO: Disable old spawners
+		// TODO: Enable new spaners
+		movingSpawnManager.spawnEnabled = true;
+	}
+	// END StartLevelEvent subscribers.
+
+
 
 	// THIS is the new way of increasing level difficulty over time.
 	public void IncreaseLevel() {
@@ -205,14 +158,20 @@ public class GameManager : MonoBehaviour {
 		// Increase the number of total enemies that can be spawned, as well as other logic.
 		GetComponent<EnemySpawner>().IncreaseLevel();	
 
-
+		BeginLevel (currLevel);
 
 	}
+
+
+
+
+
+
 
 	// THIS is from old level progression logic.
 	public void EndLevel(int level) {
 
-		lvlActive = false;
+		levelActive = false;
 		((AIInput) (InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
 
 		// Kill all enemies in scene
@@ -228,43 +187,25 @@ public class GameManager : MonoBehaviour {
 
 		// Disable all the spawners for this level
 		DisableSpawns ();
-		shopButton.SetActive (true);
 		UIManager.Singleton.EndLevel (activeLevelNum);		// Remember to activate continue screen!
 
 		activeLevelNum += 1;
 	}
 
 	// Called every time an enemy is defeated
-	public void RecordKill(EnemyType et) {
-
-		if (et == EnemyType.Assassin) {
-			this.assassinsLeft -= 1;
-		} else if (et == EnemyType.Bomber) {
-			this.bombersLeft -= 1;
-		} else if (et == EnemyType.DropShip) {
-			this.dropshipsLeft -= 1;
-		} else if (et == EnemyType.Medic) {
-			this.medicsLeft -= 1;
-		} else if (et == EnemyType.Pawn) {
-			this.pawnsLeft -= 1;
-		} else if (et == EnemyType.Ranged) {
-			this.rangedLeft -= 1;
-		} else if (et == EnemyType.Turret) {
-			this.turretsLeft -= 1;
-		}
-
-		if (assassinsLeft <= 0 &&
-			bombersLeft <= 0 &&
-			dropshipsLeft <= 0 && 
-			medicsLeft <= 0 &&
-			pawnsLeft <= 0 &&
-			rangedLeft <= 0 &&
-			turretsLeft <= 0) {
-
-			// Call a method to run level shutdown procedures, disable spawners, etc.
-			EndLevel (activeLevelNum);
+	public void OnEnemyKilled(EnemyType et) {
+		
+		if (playerScore > scoreBoundaries[currLevel]) {
+			IncreaseLevel ();
 		}
 	}
+
+
+
+
+
+
+
 
 	// Turn off the spawners for current level
 	public void DisableSpawns() {

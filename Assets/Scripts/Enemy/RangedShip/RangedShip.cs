@@ -65,10 +65,10 @@ public class RangedShip : FiringShip, IEnemy {
 		// Graphics
 		Instantiate (explosion, transform.position, transform.rotation);
 		float randomVal = UnityEngine.Random.value;
-		if (randomVal <= 0.3f) {
+		/*if (randomVal <= 0.3f) {
 			GameObject powerup = GameManager.Singleton.activeLevel.powerups [UnityEngine.Random.Range (0, GameManager.Singleton.activeLevel.powerups.Count)];
 			Instantiate (powerup, transform.position, Quaternion.identity);	
-		}
+		}*/
 
 		// Kill logic
 		base.Kill ();		// Bare-bones destroyForReuse()

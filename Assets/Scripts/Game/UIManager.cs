@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour {
 	/************************ [VARIABLES & PROPERTIES] ************************/
 
 	public Text scoreText;
+	public Text scoreGoalText;
 	public Text levelText;
 	public Text healthText;
 	public Text dashStoreText;
@@ -16,6 +17,7 @@ public class UIManager : MonoBehaviour {
 	public Image healthBar;		// The Health Bar that changes in size as health inc/dec
 	public ContinueScreen continueScreen;
 	public Button startGameButton;		// Primary button for beginning the game
+	public GameObject shopButton;
 
 	// Level update text
 	public Text levelGoalText;
@@ -27,84 +29,78 @@ public class UIManager : MonoBehaviour {
 	public float displayLength = 3.0f;	// How long dialog appears on-screen
 
 
-	// goal=enemiesToKill
-	public void StartLevel(int level, 
-		int pawnsLeft, 
-		int rangedLeft, 
-		int medicsLeft, 
-		int turretsLeft, 
-		int dropshipsLeft, 
-		int assassinsLeft, 
-		int bombersLeft) {
+	void Awake() {
+		if (singleton == null) {
+			singleton = this;
+		} else {
+			DestroyImmediate(this);
+		}
+	}
 
-		levelGoalRoutine = DisplayLevelGoalText (level, 
-			pawnsLeft, 
-			rangedLeft, 
-			medicsLeft, 
-			turretsLeft, 
-			dropshipsLeft, 
-			assassinsLeft, 
-			bombersLeft
-		);
-/*		if (level == 1) {
-			startGameText.text = "Press to cont.";
-		}*/
-		//startGameText.transform.parent.gameObject.SetActive(false);
-		GameManager.Singleton.shopButton.SetActive (false);
+	void Start() {
+		// Since inspector values are not processed yet
+		UpdateHealth ();
+
+		// SUBSCRIBE to GameManager StartLevelEvent
+		GameManager.Singleton.StartLevelEvent += OnLevelStartUpdateUI;
+	}
+
+	// goal=enemiesToKill
+	public void OnLevelStartUpdateUI() {
+
+		// Can we dynamically pass in params to event subscribers?
+		levelGoalRoutine = IncreaseLevelRoutine (GameManager.Singleton.currLevel);
+
+		shopButton.SetActive (false);
 		startGameButton.gameObject.SetActive (false);
+		scoreGoalText.text = "GOAL: " + GameManager.Singleton.scoreBoundaries [GameManager.Singleton.currLevel];
+
 		//StopAllCoroutines ();
 		StartCoroutine (levelGoalRoutine);
 	}
 
+	// Visual cue to players that difficulty is changing
+	IEnumerator IncreaseLevelRoutine(int currLevel) {
+
+		if (currLevel == 0) {
+			
+			String goalText = "Ready...begin!!!";
+			levelGoalText.gameObject.SetActive (true);
+			levelGoalText.text = goalText;
+			yield return new WaitForSeconds (1.5f);	// Show the level goal text on screen
+			levelGoalText.gameObject.SetActive (false);		// Hide the text
+
+		} else {
+
+			String goalText = "WARNING: Difficulty increased!!!";
+			levelGoalText.gameObject.SetActive (true);
+			levelGoalText.text = goalText;
+			yield return new WaitForSeconds (0.7f);	// Show the level goal text on screen
+
+			// Blink on and off
+			levelGoalText.gameObject.SetActive (false);		// Hide the text
+			yield return new WaitForSeconds (0.3f);	// Show the level goal text on screen
+
+			levelGoalText.gameObject.SetActive (true);
+			yield return new WaitForSeconds (0.7f);	// Show the level goal text on screen
+
+			levelGoalText.gameObject.SetActive (false);		// Hide the text
+			yield return new WaitForSeconds (0.3f);	// Show the level goal text on screen
+
+			levelGoalText.gameObject.SetActive (true);
+			yield return new WaitForSeconds (0.7f);	// Show the level goal text on screen
+
+			levelGoalText.gameObject.SetActive (false);		// Hide the text
+		}
+	}
+		
+
+
+
 	public void EndLevel(int level) {
-		//DisplayVictoryScreen ();									// Opens the Victory Screen and the only current way of progressing to next level.
+		DisplayVictoryScreen ();									// Opens the Victory Screen and the only current way of progressing to next level.
 		//GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
 	}
-
-	IEnumerator DisplayLevelGoalText(int level, 
-		int pawnsLeft,
-		int rangedLeft,
-		int medicsLeft,
-		int turretsLeft,
-		int dropshipsLeft,
-		int assassinsLeft,
-		int bombersLeft
-		) {
-		
-		levelGoalText.gameObject.SetActive (true);
-
-		String goalText = "Level " + level + ": Defeat ";
-
-		if (pawnsLeft > 0) {
-			goalText += (pawnsLeft + " Pawns, ");
-		}
-		if (rangedLeft > 0) {
-			goalText += (rangedLeft + " Ranged, ");
-		}
-		if (medicsLeft > 0) {
-			goalText += (medicsLeft + " Medics, ");
-		}
-		if (turretsLeft > 0) {
-			goalText += (turretsLeft + " Turrets, ");
-		}
-		if (dropshipsLeft > 0) {
-			goalText += (dropshipsLeft + " DropShips, ");
-		}
-		if (assassinsLeft > 0) {
-			goalText += (assassinsLeft + " Assassins, ");
-		}
-		if (bombersLeft > 0) {
-			goalText += (bombersLeft + " Bombers, ");
-		}
-
-		goalText += ".";
-
-		levelGoalText.text = goalText;
-
-		yield return new WaitForSeconds (displayLength);	// Show the level goal text on screen
-		levelGoalText.gameObject.SetActive (false);		// Hide the text
-	
-  	}
 
 	public void DisableContinueScreen() {
 		continueScreen.gameObject.SetActive (false);	
@@ -153,23 +149,6 @@ public class UIManager : MonoBehaviour {
 			return singleton;
 		}
 	}
-
-
-	/************************ [UNITY FUNCTIONS] ************************/
-	void Awake() {
-		if (singleton == null) {
-			singleton = this;
-		} else {
-			DestroyImmediate(this);
-		}
-	}
-
-	void Start() {
-		// Since inspector values are not processed yet
-		UpdateHealth ();
-	}
-
-	/************************ [METHODS] ************************/
 
 	public void UpdateScore() {
 		scoreText.text = "Score: " + GameManager.Singleton.playerScore.ToString ();
