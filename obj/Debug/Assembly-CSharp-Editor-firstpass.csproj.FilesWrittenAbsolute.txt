@@ -38,3 +38,5 @@
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.xml
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEditor.iOS.Extensions.Common.dll
 /Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEditor.iOS.Extensions.Common.dll.mdb
+/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.Purchasing.dll
+/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/bin/Debug/UnityEngine.Advertisements.dll

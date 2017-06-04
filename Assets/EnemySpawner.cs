@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour {
 	public bool bossSpawnEnabled = false;
 
 	// The maximum of each enemy we can have alive at a time. MAY be subject to change as level increases.
-	public int MAX_PAWNS = 50;
+	public int MAX_PAWNS = 5;
 	public int MAX_RANGED = 15;
 	public int MAX_BOMBERS = 20;
 	public int MAX_DROPSHIPS = 5;
@@ -51,6 +51,37 @@ public class EnemySpawner : MonoBehaviour {
 		currLevel += 1;
 	}
 
+	public void RecordKill(EnemyType enemyType) 
+	{
+		switch (enemyType)
+		{
+			case EnemyType.Pawn: 
+				NUM_PAWNS_ALIVE -= 1;
+				break;
+			case EnemyType.Ranged: 
+				NUM_RANGED_ALIVE -= 1;
+				break;
+			case EnemyType.Bomber: 
+				NUM_BOMBERS_ALIVE -= 1;
+				break;
+			case EnemyType.DropShip: 
+				NUM_DROPSHIPS_ALIVE -= 1;
+				break;
+			case EnemyType.Medic: 
+				NUM_MEDICS_ALIVE -= 1;
+				break;
+			case EnemyType.Turret: 
+				NUM_TURRETS_ALIVE -= 1;
+				break;
+			case EnemyType.Assassin: 
+				NUM_ASSASSINS_ALIVE -= 1;
+				break;
+			case EnemyType.Boss: 
+				NUM_BOSSES_ALIVE -= 1;
+				break;	
+		}
+	}
+
 	IEnumerator StartSpawningEnemies() {
 
 		while (true) {
@@ -61,12 +92,77 @@ public class EnemySpawner : MonoBehaviour {
 
 				// Spawn UP TO current level progression.
 				// Use / remove from DICT when MAX_CAP reached. Then remove / reset upon level reset or when enough of the enemy eliminated.
-				PoolManager.Instance.ReuseObject (enemyShips [Random.Range (0, currLevel + 1)], spawnLoc, Quaternion.identity);
-				Debug.Log ("ENEMY SPAWNED!");
+				GameObject enemyShip = enemyShips [Random.Range (0, currLevel + 1)];
+				EnemyType enemyType = (enemyShip.GetComponent<Ship> () != null) ? enemyShip.GetComponent<Ship>().enemyType : enemyShip.GetComponent<Turret>().enemyType;
+
+				// First select a valid enemy
+				bool alreadySpawnedMax = true;
+				while (alreadySpawnedMax) {
+
+					switch (enemyType)
+					{
+						case EnemyType.Pawn: 
+							if (NUM_PAWNS_ALIVE < MAX_PAWNS) {
+								NUM_PAWNS_ALIVE += 1;
+								alreadySpawnedMax = false;
+							}
+							break;
+						case EnemyType.Ranged: 
+							if (NUM_RANGED_ALIVE < MAX_RANGED) {
+								NUM_RANGED_ALIVE += 1;
+								alreadySpawnedMax = false;								
+							}
+							break;
+						case EnemyType.Bomber: 
+							if (NUM_BOMBERS_ALIVE < MAX_BOMBERS) {
+								NUM_BOMBERS_ALIVE += 1;
+								alreadySpawnedMax = false;
+							}
+							break;
+						case EnemyType.DropShip: 
+							if (NUM_DROPSHIPS_ALIVE < MAX_DROPSHIPS) {
+								NUM_DROPSHIPS_ALIVE += 1;
+								alreadySpawnedMax = false;
+							}
+							break;
+						case EnemyType.Medic: 
+							if (NUM_MEDICS_ALIVE < NUM_MEDICS_ALIVE) {
+								NUM_MEDICS_ALIVE += 1;
+								alreadySpawnedMax = false;
+							}
+							break;
+						case EnemyType.Turret: 
+							if (NUM_TURRETS_ALIVE < MAX_TURRETS) {
+								NUM_TURRETS_ALIVE += 1;
+								alreadySpawnedMax = false;
+							}
+							break;
+						case EnemyType.Assassin: 
+							if (NUM_ASSASSINS_ALIVE < MAX_ASSASSINS) {
+								NUM_ASSASSINS_ALIVE += 1;
+								alreadySpawnedMax = false;
+							}
+							break;
+						case EnemyType.Boss: 
+							if (NUM_BOSSES_ALIVE < MAX_BOSSES) {
+								NUM_BOSSES_ALIVE += 1;
+								alreadySpawnedMax = false;
+							}
+							break;					
+					}
+					enemyShip = enemyShips [Random.Range (0, currLevel + 1)];
+					enemyType = enemyShip.GetComponent<Ship> ().enemyType;
+
+					yield return null;
+				}
+
+
+				// Now spawn the enemy
+				PoolManager.Instance.ReuseObject (enemyShip, spawnLoc, Quaternion.identity);
 
 				// Wait a bit before spawning next enemy.
 				// We COULD spawn multiple at a time / formations!
-				yield return new WaitForSeconds (Random.Range (0, 1.0f));
+				yield return new WaitForSeconds (4.0f);
 			}
 			yield return null;
 		}

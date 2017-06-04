@@ -80,7 +80,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 		// Score updates
 		//if (GameManager.Singleton.levelActive) {
 
-			GameManager.Singleton.OnEnemyKilled (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
+			GameManager.Singleton.RecordEnemyKilled (enemyType);	// REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
 			GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
 			UIManager.Singleton.UpdateScore ();	// Update score in UI
 

@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class PowerupSpawner : MonoBehaviour {
 
-	public float xBound;
-	public float yBound;
+	public float xBoundLeft;
+	public float xBoundRight;
+	public float yBoundLeft;
+	public float yBoundRight;
+
 	public float spawnDelay = 5.0f;
 	public bool spawnEnabled = false;
 	public int numPowerupsSpawned = 0;
 
-	public IEnumerator cr1;
+	public IEnumerator powerupSpawnRoutine;
 	public IEnumerator cr2;
 
 	public List<GameObject> powerups = new List<GameObject>();
@@ -33,18 +36,32 @@ public class PowerupSpawner : MonoBehaviour {
 		} else {
 			DestroyImmediate(this);
 		}
+		// Set variables
+		Vector3 boxSize = GetComponent<BoxCollider> ().size;
+
+		xBoundLeft = gameObject.transform.position.x - (boxSize.x / 2);
+		xBoundRight = gameObject.transform.position.x + (boxSize.x / 2);
+
+		yBoundLeft = gameObject.transform.position.y - (boxSize.y / 2);
+		yBoundRight = gameObject.transform.position.y + (boxSize.y / 2);
 	}
 
 
 	void Start() {
-		Vector3 boxSize = GetComponent<BoxCollider> ().size;
-		xBound = boxSize.x / 2;
-		yBound = boxSize.y / 2;
 
-		cr1 = StartSpawningPowerups ();
-		//cr2 = StartSpawningEnemies ();
-		StartCoroutine (cr1);
-		//StartCoroutine (cr2);
+		// Subscribe to events
+		GameManager.Singleton.StartLevelEvent += OnLevelStartEnablePowerupSpawners;
+
+		// Start routines
+		powerupSpawnRoutine = StartSpawningPowerups ();
+		StartCoroutine (powerupSpawnRoutine);
+
+	}
+
+	public void OnLevelStartEnablePowerupSpawners() {
+		// TODO: add new powerups every lvl
+		spawnEnabled = true;
+
 	}
 
 	// Called from ENEMY KILL
@@ -61,17 +78,17 @@ public class PowerupSpawner : MonoBehaviour {
 				//yield return new WaitForSeconds (spawnDelay);
 
 				// Spawn a random powerup at a random location within bounds of collider
-				Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
+				Vector3 spawnLoc = new Vector3 (Random.Range (xBoundLeft, xBoundRight), Random.Range (yBoundLeft, yBoundRight), 0);
 				PoolManager.Instance.ReuseObject (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
-				Debug.Log ("POWERUP SPAWNED!");
-				yield return new WaitForSeconds (1.0f);
+				//Debug.Log ("POWERUP SPAWNED!");
+				yield return new WaitForSeconds (Random.Range (0, 3.0f));
 				//numPowerupsSpawned += 1;
 				//Instantiate (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
 			}
 /*			if (!spawnEnabled) {
 				numPowerupsSpawned = 0;		// Reset after each lvl
-			}
-*/			yield return null;
+			}*/
+			yield return null;
 		}
 	}
 

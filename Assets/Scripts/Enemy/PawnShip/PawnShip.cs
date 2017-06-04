@@ -5,9 +5,8 @@ using UnityEngine.Assertions;
 
 [SelectionBase]
 public class PawnShip : Ship {
-	// States
+
 	public IMoveState moveState;
-	//public IFireState firingState;
 
 	#region Unity Life Cycle
 	protected override void Start () {
@@ -15,8 +14,6 @@ public class PawnShip : Ship {
 		base.Start ();
 		//Initialize ();
 		enemyType = EnemyType.Pawn;
-		//Debug.Log("PAWN SHIP START");
-
 		// Component state initialization
 		moveState = GetComponent<IMoveState>();
 		//firingState = new PawnFS ();
@@ -64,13 +61,8 @@ public class PawnShip : Ship {
 		// Handle collisions with player
 		} else if (other.gameObject.CompareTag(Constants.PlayerTag)) {
 
-			Debug.Log ("INNER REACHED!");
-
-			other.gameObject.GetComponent<PlayerShip> ().Damage(10);
-			Instantiate (explosion, transform.position, transform.rotation);
-			DestroyForReuse ();
-			//Destroy (transform.gameObject);
-
+			other.gameObject.GetComponent<PlayerShip> ().Damage (10);
+			Kill ();		// Don't spawn powerup; also shouldn't record pts; should record # still alive!
 		}
 	}
 

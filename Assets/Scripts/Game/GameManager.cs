@@ -48,8 +48,8 @@ public class GameManager : MonoBehaviour {
 	public int activeLevelNum = 1;
 	public bool levelActive = true;
 	public List<GameObject> currLvlSpawners;	// Get from index (currLvl-1)
-	public List<Row> levelSpawners = new List<Row>();		// Enemy spawners; populate this manually in inspector; Row is a container class so we can emulate 2D list behavior
-*/	public Collider mapCollider;
+	public List<Row> levelSpawners = new List<Row>();		// Enemy spawners; populate this manually in inspector; Row is a container class so we can emulate 2D list behavior*/
+	public Collider mapCollider;
 
 	// Powerup logic
 	public Queue<BurstRushPowerup> rushes = new Queue<BurstRushPowerup>();
@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour {
 	public event StartingNewLevel StartLevelEvent;	// Event to communicate w/ UIManager
 	public delegate void EndingLevel ();
 	public event EndingLevel EndLevelEvent;			// Event to communicate w/ UIManager
+	public delegate void RecordingEnemyKill ();
+	public event RecordingEnemyKill RecordingEnemyKillEvent;			// Event to communicate w/ UIManager
 
 
 
@@ -96,17 +98,16 @@ public class GameManager : MonoBehaviour {
 		triFireLevel = PlayerPrefs.GetInt (Constants.triFireLevel, 0);
 
 		// Subscribe events
-		StartLevelEvent += OnLevelStartEnablePowerupSpawners;
 		StartLevelEvent += OnLevelStartEnableMovingSpawners;
 	}
 
 	// This is just for the start game button.
 	public void StartGame() {
-		BeginLevel (0);
+		StartLevel (0);
 	}
 
 	// This is the PUBLISHER for events that fire on level starts.
-	public void BeginLevel(int currLevel) {
+	public void StartLevel(int currLevel) {
 
 		this.currLevel = currLevel;
 		this.targetScore = scoreBoundaries [currLevel];
@@ -119,19 +120,15 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	// START StartLevelEvent subscribers.
+	/* START StartLevelEvent subscribers. */
 	// Most of these can be moved to their dependency classes later.
-	public void OnLevelStartEnablePowerupSpawners() {
-		// TODO: add new powerups every lvl
-		powerupSpawner.spawnEnabled = true;
 
-	}
 	public void OnLevelStartEnableMovingSpawners() {
 		// TODO: Disable old spawners
 		// TODO: Enable new spaners
 		movingSpawnManager.spawnEnabled = true;
 	}
-	// END StartLevelEvent subscriber list.
+	/* END StartLevelEvent subscriber list. */
 
 
 
@@ -144,8 +141,17 @@ public class GameManager : MonoBehaviour {
 		// Increase the number of total enemies that can be spawned, as well as other logic.
 		GetComponent<EnemySpawner>().IncreaseLevel();	
 
-		BeginLevel (currLevel);
+		StartLevel (currLevel);
 
+	}
+
+	// Called every time an enemy is defeated
+	public void RecordEnemyKilled(EnemyType enemyType) {
+
+		GetComponent<EnemySpawner>().RecordKill(enemyType);
+		if (playerScore > scoreBoundaries[currLevel]) {
+			IncreaseLevel ();
+		}
 	}
 
 
@@ -153,9 +159,8 @@ public class GameManager : MonoBehaviour {
 
 
 
-
 	// THIS is from old level progression logic.
-	public void EndLevel(int level) {
+	public void EndGame(int level) {
 
 		//levelActive = false;
 		//((AIInput) (InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
@@ -179,21 +184,6 @@ public class GameManager : MonoBehaviour {
 
 		//activeLevelNum += 1;
 	}
-
-	// Called every time an enemy is defeated
-	public void OnEnemyKilled(EnemyType et) {
-		
-		if (playerScore > scoreBoundaries[currLevel]) {
-			IncreaseLevel ();
-		}
-	}
-
-
-
-
-
-
-
 
 	// Turn off the spawners for current level
 	/*public void DisableSpawns() {
