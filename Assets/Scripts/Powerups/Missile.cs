@@ -82,7 +82,7 @@ public class Missile : PoolObject {
 
 		// Continue process while target is null or if it's inactive (pooled)
 		while (target == null || !target.activeSelf) {
-			if (GameManager.Singleton.levelActive) {
+			//if (GameManager.Singleton.levelActive) {
 				// Seek a new target
 				FindTarget ();
 
@@ -92,7 +92,7 @@ public class Missile : PoolObject {
 				} else {
 					break;
 				}
-			}
+			//}
 			yield return null;
 		}
 		seekingTarget = false;		// Bool flag

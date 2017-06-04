@@ -61,7 +61,7 @@ public class EnemySpawner : MonoBehaviour {
 
 				// Spawn UP TO current level progression.
 				// Use / remove from DICT when MAX_CAP reached. Then remove / reset upon level reset or when enough of the enemy eliminated.
-				PoolManager.Instance.ReuseObject (enemyShips [Random.Range (0, currLevel)], spawnLoc, Quaternion.identity);
+				PoolManager.Instance.ReuseObject (enemyShips [Random.Range (0, currLevel + 1)], spawnLoc, Quaternion.identity);
 				Debug.Log ("ENEMY SPAWNED!");
 
 				// Wait a bit before spawning next enemy.

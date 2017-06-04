@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour {
 
 		shopButton.SetActive (false);
 		startGameButton.gameObject.SetActive (false);
-		scoreGoalText.text = "GOAL: " + GameManager.Singleton.scoreBoundaries [GameManager.Singleton.currLevel];
+		scoreGoalText.text = GameManager.Singleton.scoreBoundaries [GameManager.Singleton.currLevel].ToString ();
 
 		//StopAllCoroutines ();
 		StartCoroutine (levelGoalRoutine);
@@ -151,7 +151,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void UpdateScore() {
-		scoreText.text = "Score: " + GameManager.Singleton.playerScore.ToString ();
+		scoreText.text = GameManager.Singleton.playerScore.ToString ();
 	}
 
 	public void UpdateHealth() {

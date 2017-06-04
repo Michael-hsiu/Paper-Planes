@@ -26,9 +26,9 @@ public class MovingSpawn : PoolObject {
 
 	void OnEnable() {
 		//GameManager.Singleton.startLevelEvent += Initialize;	// Subscribe to start lvl event
-		if (/*wasReused &&*/ GameManager.Singleton.levelActive) {
+		//if (/*wasReused &&*/ GameManager.Singleton.levelActive) {
 			Initialize ();		// Initialize if we spawned it after the lvl started
-		}
+		//}
 	}
 
 	public override void OnObjectReuse() {
@@ -42,7 +42,7 @@ public class MovingSpawn : PoolObject {
 	}
 
 	void Initialize() {
-		if (GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
+		//if (GameManager.Singleton.activeLevel.movingEnemySpawn.Count != 0) {
 			GameManager.Singleton.StartLevelEvent -= Initialize;	// Unsubscribe from lvl event
 
 			if (player == null) {
@@ -51,7 +51,7 @@ public class MovingSpawn : PoolObject {
 				player = GameManager.Singleton.playerShip.gameObject;
 			}
 			// Assign 1 unique squad to this Moving Spawn (may change this so we have 1 moving spawn for ea. spawn per level; they'll be pooled and just be enabled wherever when needed)
-			List<EnemySquad> listSquads = GameManager.Singleton.activeLevel.movingEnemySpawn;
+		/*List<EnemySquad> listSquads = GameManager.Singleton.activeLevel.movingEnemySpawn;
 			EnemySquad chosenSquad = listSquads [Random.Range (0, listSquads.Count)];
 
 			// Add mapping of each EnemyType to # of each enemy in squad
@@ -61,8 +61,8 @@ public class MovingSpawn : PoolObject {
 				squadTotal += kv.Value;			// This just stores total # of enemies in that enemySquad
 			}
 			cr = WaitAndFire(spawnDelay);	// Assign co-routine
-			StartCoroutine(cr);				// Begin eternal enemy spawn
-		}
+			StartCoroutine(cr);				// Begin eternal enemy spawn*/
+		//}
 	}
 		
 	void Awake() {

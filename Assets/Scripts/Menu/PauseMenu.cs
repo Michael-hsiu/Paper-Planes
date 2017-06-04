@@ -27,24 +27,24 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	// Saves current wave / level we're on
-	private void SaveLevel() {
+	/*private void SaveLevel() {
 		if (PlayerPrefs.HasKey (Constants.CurrLevel)) {
 			//PlayerPrefs.SetInt (Constants.CurrLevel, SceneManager.GetActiveScene ().buildIndex);	// Gets index of currently loaded scene
 			PlayerPrefs.SetInt (Constants.CurrLevel, GameManager.Singleton.activeLevelNum);	// Gets id# of current level
 			PlayerPrefs.Save ();	// Write updated pref. to disk
 		}
-	}
+	}*/
 
 	// Save current level, then exit to Main Menu
 	public void ExitToMainMenu() {
-		SaveLevel ();
+		//SaveLevel ();
 		SceneManager.LoadScene (Constants.MainMenu);
 	}
 
 	// Reload the current level
-	public void RestartLevel() {
+	/*public void RestartLevel() {
 		GameManager.Singleton.EndLevel (GameManager.Singleton.activeLevelNum);
 		GameManager.Singleton.activeLevelNum -= 1;
 		GameManager.Singleton.BeginLevel (GameManager.Singleton.activeLevelNum);
-	}
+	}*/
 }

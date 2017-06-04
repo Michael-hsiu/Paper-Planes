@@ -63,22 +63,12 @@ public class BomberShip : Ship {
 		Instantiate (explosion, transform.position, transform.rotation);
 		float randomVal = UnityEngine.Random.value;
 		if (randomVal <= 0.3f) {
-			GameObject powerup = GameManager.Singleton.activeLevel.powerups [UnityEngine.Random.Range (0, GameManager.Singleton.activeLevel.powerups.Count)];
-			Instantiate (powerup, transform.position, Quaternion.identity);	
+			GameManager.Singleton.powerupSpawner.SpawnPowerupDrop (this.transform.position);
 		}
 
 		// Kill logic
 		base.Kill ();		// Bare-bones destroyForReuse()
 
-		// Score updates
-		if (GameManager.Singleton.levelActive) {
-
-			GameManager.Singleton.OnEnemyKilled (enemyType);	// This should cover Missiles and Shurikens registering damage / kills
-			GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
-			UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-			Debug.Log("BOMBER SHIP KILLED! Obtained: " + enemyPoints + "points!");
-		}
 	}
 
 	public override void Move () {

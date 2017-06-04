@@ -152,7 +152,7 @@ public class MissileBoss : Ship, IEnemy {
 								// If player got caught within EMP wave
 								if (Utils.SquaredEuclideanDistance(target.gameObject, this.gameObject) < spinAtkRadius * spinAtkRadius) {
 									// Stun the player - disable their control
-									InputManager.Instance.GetActiveInput().DisableControls ();
+									InputManager.Instance.GetInputComponent().DisableControls ();
 									//Debug.Break ();
 								}
 

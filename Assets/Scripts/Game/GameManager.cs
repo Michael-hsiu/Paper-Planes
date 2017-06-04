@@ -9,12 +9,14 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
-	// Logic about player is stored here
 	public PlayerShip playerShip;
 	public GameObject normalSS;			// Player's normal shotspawn
+	public PowerupSpawner powerupSpawner;
+	public MovingSpawnManager movingSpawnManager;
+	public bool levelActive = false;
 
 	public int playerHealth;
-	public int playerMaxHealth;	// Must be changed w/ health bar and upgrades
+	public int playerMaxHealth;			// Must be changed w/ health bar and upgrades
 
 	public int playerScore = 0;			// How many points the player has (resets to 0 per game)
 	public int targetScore = 0;
@@ -22,19 +24,15 @@ public class GameManager : MonoBehaviour {
 	public int playerDamage = 20;
 	public int scoreMultiplier = 1;
 
-
 	public bool axisInput = true;
 	public bool turnInput = true;
 	public bool speedCapped = true;
 	public bool isDashing = false;
 	public bool isBurstRushing = false;		// Prevents multiple burst rushes
 	public bool onDashCooldown = false;
-	public int dashes = 99;
+	public int numDashes = 99;
 
-	public PowerupSpawner powerupSpawner;
-	public MovingSpawnManager movingSpawnManager;
 	// The following logic needs to be populated by PlayerPrefs
-
 	public int homingMissileLevel = 0;
 	public int burstRushLevel = 0;
 	public int dashLevel = 0;
@@ -44,25 +42,14 @@ public class GameManager : MonoBehaviour {
 	public int dualFireLevel = 0;
 	public int triFireLevel = 0;
 
-	// Powerup References
-	public GameObject homingMissilePowerup;
-	public GameObject burstRushPowerup;
-	public GameObject dashPowerup;
-	public GameObject shurikenPowerup;
-	public GameObject tripMinePowerup;
-	public GameObject waveShotPowerup;
-	public GameObject dualFirePowerup;
-	public GameObject triFirePowerup;
-
-
 	// Level logic
-	public LevelData[] levels;		// Stores each LevelData SO as an asset
+	/*public LevelData[] levels;		// Stores each LevelData SO as an asset
 	public LevelData activeLevel;
 	public int activeLevelNum = 1;
 	public bool levelActive = true;
 	public List<GameObject> currLvlSpawners;	// Get from index (currLvl-1)
 	public List<Row> levelSpawners = new List<Row>();		// Enemy spawners; populate this manually in inspector; Row is a container class so we can emulate 2D list behavior
-	public Collider mapCollider;
+*/	public Collider mapCollider;
 
 	// Powerup logic
 	public Queue<BurstRushPowerup> rushes = new Queue<BurstRushPowerup>();
@@ -70,9 +57,11 @@ public class GameManager : MonoBehaviour {
 	// Shop logic
 	public GameObject uiElements;
 
-	// Events for Level Setup
+	// EVENTS for Level Setup, Progression
 	public delegate void StartingNewLevel ();
 	public event StartingNewLevel StartLevelEvent;	// Event to communicate w/ UIManager
+	public delegate void EndingLevel ();
+	public event EndingLevel EndLevelEvent;			// Event to communicate w/ UIManager
 
 
 
@@ -88,9 +77,6 @@ public class GameManager : MonoBehaviour {
 		} else {
 			DestroyImmediate(this);
 		}
-	}
-
-	void Start() {
 
 		// Setup references
 		playerShip = GameObject.FindGameObjectWithTag (Constants.PlayerTag).GetComponent<PlayerShip>();		// The main reference to player ref. by all other scripts
@@ -112,14 +98,14 @@ public class GameManager : MonoBehaviour {
 		// Subscribe events
 		StartLevelEvent += OnLevelStartEnablePowerupSpawners;
 		StartLevelEvent += OnLevelStartEnableMovingSpawners;
-
 	}
 
+	// This is just for the start game button.
 	public void StartGame() {
 		BeginLevel (0);
 	}
 
-	// Only occurs on button click atm
+	// This is the PUBLISHER for events that fire on level starts.
 	public void BeginLevel(int currLevel) {
 
 		this.currLevel = currLevel;
@@ -145,7 +131,7 @@ public class GameManager : MonoBehaviour {
 		// TODO: Enable new spaners
 		movingSpawnManager.spawnEnabled = true;
 	}
-	// END StartLevelEvent subscribers.
+	// END StartLevelEvent subscriber list.
 
 
 
@@ -171,8 +157,10 @@ public class GameManager : MonoBehaviour {
 	// THIS is from old level progression logic.
 	public void EndLevel(int level) {
 
-		levelActive = false;
-		((AIInput) (InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
+		//levelActive = false;
+		//((AIInput) (InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
+		//InputManager.Instance.GetActiveInput
+
 
 		// Kill all enemies in scene
 		Utils.KillAllEnemies ();
@@ -186,10 +174,10 @@ public class GameManager : MonoBehaviour {
 		movingSpawnManager.spawnEnabled = false;	
 
 		// Disable all the spawners for this level
-		DisableSpawns ();
-		UIManager.Singleton.EndLevel (activeLevelNum);		// Remember to activate continue screen!
+		//DisableSpawns ();
+		//UIManager.Singleton.EndLevel (activeLevelNum);		// Remember to activate continue screen!
 
-		activeLevelNum += 1;
+		//activeLevelNum += 1;
 	}
 
 	// Called every time an enemy is defeated
@@ -208,12 +196,12 @@ public class GameManager : MonoBehaviour {
 
 
 	// Turn off the spawners for current level
-	public void DisableSpawns() {
+	/*public void DisableSpawns() {
 
 		foreach (GameObject go in currLvlSpawners) {
 			go.GetComponent<EnemySpawnTemplate> ().startSpawning = false;
 		}
-	}
+	}*/
 
 	// Start Shop scene, while preventing Managers and Player from being destroyed
 	public void OpenShop() {

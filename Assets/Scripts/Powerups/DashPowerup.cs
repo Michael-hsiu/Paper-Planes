@@ -24,10 +24,10 @@ public class DashPowerup : PoolObject {
 			HideInScene ();
 
 			// Player can hold at most 3 dashes at a time
-			if (GameManager.Singleton.dashes < 999) {	// @DEBUG for debug purposes
+			if (GameManager.Singleton.numDashes < 999) {	// @DEBUG for debug purposes
 			//if (GameManager.Singleton.dashes < 3) {
-				GameManager.Singleton.dashes += 1;		// Increase # of dashes stored
-				UIManager.Singleton.UpdateDashText (GameManager.Singleton.dashes);		// Update dash displayed text
+				GameManager.Singleton.numDashes += 1;		// Increase # of dashes stored
+				UIManager.Singleton.UpdateDashText (GameManager.Singleton.numDashes);		// Update dash displayed text
 			}
 
 			//Dash ();

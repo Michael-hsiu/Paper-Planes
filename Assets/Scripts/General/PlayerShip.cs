@@ -95,7 +95,7 @@ public class PlayerShip : FiringShip {
 
 	#region Unity Life Cycle
 	protected override void Start () {
-		input = InputManager.Instance.GetActiveInput();		// Get valid input source
+		input = InputManager.Instance.GetInputComponent();		// Get valid input source
 		InitializeSS ();		// Get active shotspawn
 		rb = GetComponent<Rigidbody>();
 		startColor = sprite.material.color;

@@ -37,23 +37,13 @@ public class PawnShip : Ship {
 		Instantiate (explosion, transform.position, transform.rotation);
 
 		// Powerup spawn chance
-		/*float randomVal = UnityEngine.Random.value;
+		float randomVal = UnityEngine.Random.value;
 		if (randomVal <= 0.2f) {
-			GameObject powerup = GameManager.Singleton.activeLevel.powerups [UnityEngine.Random.Range (0, GameManager.Singleton.activeLevel.powerups.Count)];
-			Instantiate (powerup, transform.position, Quaternion.identity);	
-		}*/
+			GameManager.Singleton.powerupSpawner.SpawnPowerupDrop (this.transform.position);
+		}
 
 		// Kill logic
 		base.Kill ();
-
-		if (GameManager.Singleton.levelActive) {
-
-			GameManager.Singleton.OnEnemyKilled (this.enemyType);
-			GameManager.Singleton.UpdateScore (enemyPoints);
-			UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-			Debug.Log("PAWN KILLED! Obtained: " + enemyPoints + "points!");
-		}
 
 	}
 

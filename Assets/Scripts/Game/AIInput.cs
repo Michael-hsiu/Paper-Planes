@@ -62,7 +62,7 @@ public class AIInput : MonoBehaviour, InputComponent {
 				
 			// Powerup input keys
 			if (Input.GetKey(KeyCode.G)) {		// Use Dash powerup
-				if (GameManager.Singleton.dashes > 0 && !player.rushStarted) {
+				if (GameManager.Singleton.numDashes > 0 && !player.rushStarted) {
 					Dash (player);
 					Debug.Log ("DASH KEY REGISTERED!");
 				}
@@ -191,14 +191,14 @@ public class AIInput : MonoBehaviour, InputComponent {
 
 	// Dash powerup for player
 	public void Dash(PlayerShip player) {
-		if (GameManager.Singleton.dashes > 0 && !player.rushStarted) {
+		if (GameManager.Singleton.numDashes > 0 && !player.rushStarted) {
 			//Debug.Log ("DASH KEY REGISTERED!");
 			if (!player.dashStarted) {		// Makes sure we only have 1 dash at a time
 
 				GameManager.Singleton.isDashing = true;
 				GameManager.Singleton.speedCapped = false;
-				GameManager.Singleton.dashes -= 1;
-				UIManager.Singleton.UpdateDashText (GameManager.Singleton.dashes);
+				GameManager.Singleton.numDashes -= 1;
+				UIManager.Singleton.UpdateDashText (GameManager.Singleton.numDashes);
 
 				player.dashStarted = true;		// Only 1 dash at a time
 				player.dashEndTime = Time.time + player.dashDuration;		// Set end time for dash

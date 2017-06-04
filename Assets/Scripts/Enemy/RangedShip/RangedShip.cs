@@ -65,10 +65,9 @@ public class RangedShip : FiringShip, IEnemy {
 		// Graphics
 		Instantiate (explosion, transform.position, transform.rotation);
 		float randomVal = UnityEngine.Random.value;
-		/*if (randomVal <= 0.3f) {
-			GameObject powerup = GameManager.Singleton.activeLevel.powerups [UnityEngine.Random.Range (0, GameManager.Singleton.activeLevel.powerups.Count)];
-			Instantiate (powerup, transform.position, Quaternion.identity);	
-		}*/
+		if (randomVal <= 0.3f) {
+			GameManager.Singleton.powerupSpawner.SpawnPowerupDrop (this.transform.position);
+		}
 
 		// Kill logic
 		base.Kill ();		// Bare-bones destroyForReuse()
@@ -96,8 +95,6 @@ public class RangedShip : FiringShip, IEnemy {
 			}
 
 			Damage(GameManager.Singleton.playerDamage);			// We lost health
-
-			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
 		}
 	}
 	#endregion

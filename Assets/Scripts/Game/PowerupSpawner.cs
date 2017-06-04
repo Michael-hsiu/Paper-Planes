@@ -47,6 +47,11 @@ public class PowerupSpawner : MonoBehaviour {
 		//StartCoroutine (cr2);
 	}
 
+	// Called from ENEMY KILL
+	public void SpawnPowerupDrop(Vector3 pos) {
+		PoolManager.Instance.ReuseObject (powerups [Random.Range (0, powerups.Count)], pos, Quaternion.identity);
+	}
+
 	IEnumerator StartSpawningPowerups() {
 		// Keep true while in current round
 		while (true) {			
