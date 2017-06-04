@@ -21,8 +21,8 @@ public class UIManager : MonoBehaviour {
 	public Text levelGoalText;
 	public Text levelEndText;
 	//public Text startGameText;
-	public IEnumerator levelGoalCR;
-	public IEnumerator levelEndCR;
+	public IEnumerator levelGoalRoutine;
+	public IEnumerator levelEndRoutine;
 
 	public float displayLength = 3.0f;	// How long dialog appears on-screen
 
@@ -37,7 +37,7 @@ public class UIManager : MonoBehaviour {
 		int assassinsLeft, 
 		int bombersLeft) {
 
-		levelGoalCR = DisplayLevelGoalText (level, 
+		levelGoalRoutine = DisplayLevelGoalText (level, 
 			pawnsLeft, 
 			rangedLeft, 
 			medicsLeft, 
@@ -53,11 +53,11 @@ public class UIManager : MonoBehaviour {
 		GameManager.Singleton.shopButton.SetActive (false);
 		startGameButton.gameObject.SetActive (false);
 		//StopAllCoroutines ();
-		StartCoroutine (levelGoalCR);
+		StartCoroutine (levelGoalRoutine);
 	}
 
 	public void EndLevel(int level) {
-		DisplayVictoryScreen ();
+		//DisplayVictoryScreen ();									// Opens the Victory Screen and the only current way of progressing to next level.
 		//GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
 	}
 

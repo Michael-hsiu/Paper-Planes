@@ -42,9 +42,9 @@ public class PowerupSpawner : MonoBehaviour {
 		yBound = boxSize.y / 2;
 
 		cr1 = StartSpawningPowerups ();
-		cr2 = StartSpawningEnemies ();
+		//cr2 = StartSpawningEnemies ();
 		StartCoroutine (cr1);
-		StartCoroutine (cr2);
+		//StartCoroutine (cr2);
 	}
 
 	IEnumerator StartSpawningPowerups() {
@@ -70,17 +70,5 @@ public class PowerupSpawner : MonoBehaviour {
 		}
 	}
 
-	IEnumerator StartSpawningEnemies() {
-		
-		while (true) {
-			while (spawnEnabled) {
-				// [TEST] spawn ships.
-				Vector3 spawnLoc = new Vector3 (Random.Range (-xBound, xBound), Random.Range (-yBound, yBound), 0);
-				PoolManager.Instance.ReuseObject (enemyShips [Random.Range (0, enemyShips.Count)], spawnLoc, Quaternion.identity);
-				Debug.Log ("ENEMY SPAWNED!");
-				yield return new WaitForSeconds (Random.Range (0, 3.0f));
-			}
-			yield return null;
-		}
-	}
+
 }

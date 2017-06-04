@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
 	public int playerHealth;
 	public int playerMaxHealth;	// Must be changed w/ health bar and upgrades
 
-	public int playerScore = 0;
+	public int playerScore = 0;			// How many points the player has (resets to 0 per game)
 	public int playerBalance = 0;		// How much money the player has
 	public int playerDamage = 20;
 	public int scoreMultiplier = 1;
@@ -77,6 +77,12 @@ public class GameManager : MonoBehaviour {
 	// Shop logic
 	public GameObject shopButton;
 	public GameObject uiElements;
+
+
+	// REVISED logic for endless level progression.
+	// Uses player score and elapsed time to make decisions on what to spawn.
+	public float currLevel = 0;		// This is used from EnemySpawner. Enemies UP TO this index are allowed to be spawned.
+
 
 	// Called before Start()
 	void Awake() {
@@ -190,7 +196,20 @@ public class GameManager : MonoBehaviour {
 
 	}
 
+	// THIS is the new way of increasing level difficulty over time.
+	public void IncreaseLevel() {
 
+		// Increase the types of enemies we can now spawn.
+		currLevel += 1;
+
+		// Increase the number of total enemies that can be spawned, as well as other logic.
+		GetComponent<EnemySpawner>().IncreaseLevel();	
+
+
+
+	}
+
+	// THIS is from old level progression logic.
 	public void EndLevel(int level) {
 
 		lvlActive = false;
@@ -288,44 +307,9 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	/************************ [CONSTRUCTORS] *************************/
-	protected GameManager() {
-		//GameState = GameState.Start;	// Set current gamestate
-	}
-
-
-	/************************ [UNITY FUNCTIONS] ************************/
-
-	void Start() {
-		//InvokeRepeating ("HealthTest", 1, 1);	// Starts 1 second after start, then calls in 1 sec intervals
-	}
-		
-
-	/************************ [METHODS] ************************/
 	public void UpdateScore(int ptIncrease) {
 		GameManager.Singleton.playerScore += ptIncrease * scoreMultiplier;	// Add new score in GameManager
 	}
-
-	/*public void Die() {
-		//UIManager.Instance.SetStatus(Constants.StatusDeadTapToStart);
-		this.GameState = GameState.Dead;
-	}
-
-	// Test function to deduct health
-	public void DeductHealth() {
-		playerHealth -= 1;
-		//Debug.Log ("PLAYER HEALTH: " + playerHealth);
-	}
-
-	public void HealthTest() {
-		DeductHealth ();
-		UIManager.Singleton.UpdateHealth ();
-	}*/
-		
-	/************************ [GETTERS & SETTERS] ************************/
-	//public GameState GameState { get; set; }
-
-	//public bool CanSwipe { get; set; }
 
 }
 

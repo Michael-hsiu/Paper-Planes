@@ -94,11 +94,6 @@ public class AIInput : MonoBehaviour, InputComponent {
 					Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 					player.transform.rotation = desiredRotation;
 
-					// Also change rotation of Burst Rush charge rig if it's active
-					if (player.chargeColliderRig.activeSelf) {
-						player.chargeColliderRig.transform.rotation = desiredRotation;
-					}
-
 					// Move in new direction we're facing
 					player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
 				}	
@@ -119,7 +114,15 @@ public class AIInput : MonoBehaviour, InputComponent {
 					//Rotate to face joystick direction
 					float zAngle = (Mathf.Atan2 (rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
 					Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-					player.firingRig.transform.rotation = desiredRotation;
+					if (GameManager.Singleton.isBurstRushing) {
+						
+						// Also change rotation of overall player if it's active
+						player.transform.rotation = desiredRotation;
+
+					} else {
+						player.firingRig.transform.rotation = desiredRotation;
+
+					}
 				}
 			}
 
