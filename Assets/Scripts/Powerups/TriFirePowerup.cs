@@ -34,7 +34,7 @@ public class TriFirePowerup : Powerup {
 			} else if (comp == 1) {
 				// [NEW POWERUP BETTER] Deque and add more duration to new (hardcoded to 1/2)
 				player.RemovePowerup();							// Remove last powerup
-				player.SetWeapons (PlayerShip.Weapons.TRI);		// Set weapons
+				player.SetWeapons (PlayerShip.Weapons.TRI, this);		// Set weapons
 
 				float remainingTime = PlayerShip.ShotSpawnsContainer.powerupExpirationTime - Time.time;
 				Debug.Log("REMAINING TIME: " + remainingTime);
@@ -58,7 +58,7 @@ public class TriFirePowerup : Powerup {
 			}
 		} else {
 			// [NO POWERUPS ACTIVE] so just add new powerup!
-			player.SetWeapons (PlayerShip.Weapons.TRI);	// Set weapons
+			player.SetWeapons (PlayerShip.Weapons.TRI, this);	// Set weapons
 
 			endTime = Time.time + powerDuration;
 			PlayerShip.ShotSpawnsContainer.powerupExpirationTime = endTime;		// Set end time

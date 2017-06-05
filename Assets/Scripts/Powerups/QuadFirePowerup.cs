@@ -33,7 +33,7 @@ public class QuadFirePowerup : Powerup {
 			} else if (comp == 1) {
 				// [NEW POWERUP BETTER] Deque and add more duration to new (hardcoded to 1/2)
 				player.RemovePowerup();							// Remove last powerup
-				player.SetWeapons (PlayerShip.Weapons.QUAD);	// Set weapons
+				player.SetWeapons (PlayerShip.Weapons.QUAD, this);	// Set weapons
 
 				Debug.Log("REMAINING TIME: " + (PlayerShip.ShotSpawnsContainer.powerupExpirationTime - Time.time));
 				Debug.Log(String.Format("ID: {0}, ENDTIME: {1}", id, PlayerShip.ShotSpawnsContainer.powerupExpirationTime));		// Test to see if we're starting this new powerup at correct time
@@ -54,7 +54,7 @@ public class QuadFirePowerup : Powerup {
 			}
 		} else {
 			// [NO POWERUPS ACTIVE] so just add new powerup!
-			player.SetWeapons (PlayerShip.Weapons.QUAD);	// Set weapons
+			player.SetWeapons (PlayerShip.Weapons.QUAD, this);	// Set weapons
 
 			endTime = Time.time + powerDuration;
 			PlayerShip.ShotSpawnsContainer.powerupExpirationTime = endTime;		// Set end time

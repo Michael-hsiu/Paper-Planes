@@ -14,13 +14,13 @@ public class FiringPowerup : Powerup
 	
 		PlayerShip.ShotSpawnsContainer activePowerup = (PlayerShip.ShotSpawnsContainer) (player.activeShotSpawn.Peek ());	// Get the active powerup's shotspawns
 		PlayerShip.Weapons weaponType = activePowerup.WeaponID;
-
+		Debug.Log(weaponType);
 		// Choose the new list of shotspawns and set the end time for powerup.
 
 		// Case 1 - No firing powerups active.
 		if (weaponType.Equals (PlayerShip.Weapons.NORMAL)) {
 
-			player.SetWeapons ((PlayerShip.Weapons) (PlayerShip.Weapons.NORMAL + 1));		// Set weapons
+			player.SetWeapons ((PlayerShip.Weapons) (PlayerShip.Weapons.NORMAL + 1), this);		// Set weapons
 
 			endTime = timeObtained + powerDuration;									// Record end time of powerup
 			PlayerShip.ShotSpawnsContainer.powerupExpirationTime = endTime;					// Record new end time
@@ -30,9 +30,9 @@ public class FiringPowerup : Powerup
 		// Case 2 - A firing powerup that is not the best powerup is active.
 		else if (weaponType < PlayerShip.Weapons.QUAD) {
 
-			activePowerup.activePowerup.CancelInvoke ("DeactivatePower");		// We're going to set a new deactivation call!
+			//activePowerup.activePowerup.CancelInvoke ("DeactivatePower");		// We're going to set a new deactivation call!
 			player.RemovePowerup ();														// Remove last powerup so we can push a better one (stack under-the-hood)
-			player.SetWeapons ((PlayerShip.Weapons) (activePowerup.WeaponID + 1));		// Improve weapons
+			player.SetWeapons ((PlayerShip.Weapons) (activePowerup.WeaponID + 1), this);		// Improve weapons
 
 			float remainingTime = PlayerShip.ShotSpawnsContainer.powerupExpirationTime - timeObtained;		// May nerf the saved duration
 			endTime = timeObtained + remainingTime + powerDuration * 0.5f;		// Set new end time
@@ -43,10 +43,10 @@ public class FiringPowerup : Powerup
 		// Case 3 - The best powerup is active.
 		else {
 
-			activePowerup.activePowerup.CancelInvoke ("DeactivatePower");		// We're going to set a new deactivation call!
+			//activePowerup.activePowerup.CancelInvoke ("DeactivatePower");		// We're going to set a new deactivation call!
 
 			float remainingTime = PlayerShip.ShotSpawnsContainer.powerupExpirationTime - timeObtained;		// May nerf the saved duration
-			endTime = timeObtained + remainingTime + powerDuration * 0.5f;		// Set new end time
+			endTime = timeObtained + remainingTime + powerDuration;						// Set new end time
 			PlayerShip.ShotSpawnsContainer.powerupExpirationTime = endTime;				// Record new end time	
 		}
 

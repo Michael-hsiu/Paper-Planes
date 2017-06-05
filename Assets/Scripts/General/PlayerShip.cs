@@ -96,6 +96,13 @@ public class PlayerShip : FiringShip
 	public GameObject firingRig;
 	public GameObject chargeColliderRig;
 
+	[Header("SHOTSPAWN LISTS")]
+	// Collections of shotspawns
+	List<ShotSpawn> normalShotSpawnList = new List<ShotSpawn>();
+	//List<ShotSpawn> dualShotSpawnList = new List<ShotSpawn>();
+	List<ShotSpawn> triShotSpawnList = new List<ShotSpawn>();
+	List<ShotSpawn> quadShotSpawnList = new List<ShotSpawn>();
+	List<ShotSpawn> sideSS = new List<ShotSpawn>();
 	//[Header("RENDERER/FLICKER")]
 	//public IEnumerator hitFlickerRoutine;
 	//public Color startColor;
@@ -195,11 +202,7 @@ public class PlayerShip : FiringShip
 			return;
 		}
 
-		// Collections of shotspawns
-		List<ShotSpawn> normalShotSpawnList = new List<ShotSpawn>();
-		List<ShotSpawn> dualShotSpawnList = new List<ShotSpawn>();
-		List<ShotSpawn> triShotSpawnList = new List<ShotSpawn>();
-		List<ShotSpawn> sideSS = new List<ShotSpawn>();
+
 
 		foreach (GameObject go in ss)
 		{		// Get ref to all player shotspawns
@@ -213,11 +216,14 @@ public class PlayerShip : FiringShip
 						//triSS.Add (spawn);
 						sideSS.Add(spawn);
 						break;
-					case "DualSS":
+				/*case "DualSS":
 						dualShotSpawnList.Add(spawn);
-						break;
+						break;*/
 					case "TriSS":
 						triShotSpawnList.Add(spawn);
+						break;
+					case "QuadSS":
+						quadShotSpawnList.Add(spawn);
 						break;
 					case "SideSS":
 						sideSS.Add(spawn);
@@ -228,18 +234,21 @@ public class PlayerShip : FiringShip
 
 		// Mapping enum vals to shotspawn lists
 		shotSpawnDictionary.Add(Weapons.NORMAL, new ShotSpawnsContainer(Weapons.NORMAL, (int)Weapons.NORMAL, normalShotSpawnList));
-		shotSpawnDictionary.Add(Weapons.DUAL, new ShotSpawnsContainer(Weapons.DUAL, (int)Weapons.DUAL, dualShotSpawnList));
+		//shotSpawnDictionary.Add(Weapons.DUAL, new ShotSpawnsContainer(Weapons.DUAL, (int)Weapons.DUAL, dualShotSpawnList));
 		shotSpawnDictionary.Add(Weapons.TRI, new ShotSpawnsContainer(Weapons.TRI, (int)Weapons.TRI, triShotSpawnList));
+		shotSpawnDictionary.Add(Weapons.QUAD, new ShotSpawnsContainer(Weapons.QUAD, (int)Weapons.QUAD, quadShotSpawnList));
+
 		//shotSpawnDictionary.Add (Weapons.QUAD, new ShotSpawnsContainer(Weapons.QUAD, (int) Weapons.QUAD, quadSS));
 		//ssDict.Add (Weapons.SIDE, sideSS);
 
 		// Starting properties - add normal SS list to stack
-		this.activeShotSpawn.Push((ShotSpawnsContainer)shotSpawnDictionary[Weapons.NORMAL]);
+		this.activeShotSpawn.Push((ShotSpawnsContainer) shotSpawnDictionary[Weapons.NORMAL]);
 	}
 
-	public void SetWeapons(Weapons id)
+	public void SetWeapons(Weapons id, Powerup powerup)
 	{
 		this.activeShotSpawn.Push(shotSpawnDictionary[id]);
+		this.activeShotSpawn.Peek().activePowerup = powerup;		// Record the powerup so we can deactivate its CancelInvoke call as needed
 	}
 
 	public void RemovePowerup()
