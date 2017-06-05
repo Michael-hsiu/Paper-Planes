@@ -13,11 +13,12 @@ public class PlayerShip : FiringShip
 		NORMAL,
 		TRI,
 		QUAD,
-		SIDE}
+        PENTA,
+		SIDE
 
-	;
+    };
 
-	public class ShotSpawnsContainer : IComparable<ShotSpawnsContainer>
+	public class OldShotSpawnsContainer : IComparable<OldShotSpawnsContainer>
 	{
 
 		public static float powerupExpirationTime;
@@ -27,14 +28,14 @@ public class PlayerShip : FiringShip
 		private List<ShotSpawn> ss;
 		public Powerup activePowerup;
 
-		public ShotSpawnsContainer(Weapons id, int priority, List<ShotSpawn> shotSpawnList)
+		public OldShotSpawnsContainer(Weapons id, int priority, List<ShotSpawn> shotSpawnList)
 		{
 			this.weaponID = id;
 			this.priority = priority;
 			this.ss = shotSpawnList;
 		}
 
-		public int CompareTo(ShotSpawnsContainer other)
+		public int CompareTo(OldShotSpawnsContainer other)
 		{
 			if (this.priority < other.priority)
 			{
@@ -63,8 +64,8 @@ public class PlayerShip : FiringShip
 	#region Variables
 
 	public InputComponent input;
-	public Stack<ShotSpawnsContainer> activeShotSpawn = new Stack<ShotSpawnsContainer>();
-	public Dictionary<Weapons, ShotSpawnsContainer> shotSpawnDictionary = new Dictionary<Weapons, ShotSpawnsContainer>();
+	public Stack<OldShotSpawnsContainer> activeShotSpawn = new Stack<OldShotSpawnsContainer>();
+	public Dictionary<Weapons, OldShotSpawnsContainer> shotSpawnDictionary = new Dictionary<Weapons, OldShotSpawnsContainer>();
 	private Rigidbody rb;
 	public float maxForward = 3.0f;
 
@@ -102,6 +103,8 @@ public class PlayerShip : FiringShip
 	//List<ShotSpawn> dualShotSpawnList = new List<ShotSpawn>();
 	List<ShotSpawn> triShotSpawnList = new List<ShotSpawn>();
 	List<ShotSpawn> quadShotSpawnList = new List<ShotSpawn>();
+    List<ShotSpawn> pentaShotSpawnList = new List<ShotSpawn>();
+
 	List<ShotSpawn> sideSS = new List<ShotSpawn>();
 	//[Header("RENDERER/FLICKER")]
 	//public IEnumerator hitFlickerRoutine;
@@ -183,6 +186,8 @@ public class PlayerShip : FiringShip
 	private void InitializeShotSpawns()
 	{
 		GameObject parentShotSpawn = null;		// This contains all shotspawns
+
+        // Do this in inspector
 		foreach (Transform s in transform)
 		{
 			if (s.gameObject.CompareTag(Constants.ParentSS))
@@ -203,7 +208,8 @@ public class PlayerShip : FiringShip
 		}
 
 
-
+        // Unextensible to more shot types
+        // Need some sort of data container for each ShotSpawn
 		foreach (GameObject go in ss)
 		{		// Get ref to all player shotspawns
 			ShotSpawn spawn = go.GetComponent<ShotSpawn>();
@@ -225,6 +231,9 @@ public class PlayerShip : FiringShip
 					case "QuadSS":
 						quadShotSpawnList.Add(spawn);
 						break;
+                    case "PentaSS":
+                        pentaShotSpawnList.Add(spawn);
+                        break;
 					case "SideSS":
 						sideSS.Add(spawn);
 						break;
@@ -233,16 +242,13 @@ public class PlayerShip : FiringShip
 		}
 
 		// Mapping enum vals to shotspawn lists
-		shotSpawnDictionary.Add(Weapons.NORMAL, new ShotSpawnsContainer(Weapons.NORMAL, (int)Weapons.NORMAL, normalShotSpawnList));
-		//shotSpawnDictionary.Add(Weapons.DUAL, new ShotSpawnsContainer(Weapons.DUAL, (int)Weapons.DUAL, dualShotSpawnList));
-		shotSpawnDictionary.Add(Weapons.TRI, new ShotSpawnsContainer(Weapons.TRI, (int)Weapons.TRI, triShotSpawnList));
-		shotSpawnDictionary.Add(Weapons.QUAD, new ShotSpawnsContainer(Weapons.QUAD, (int)Weapons.QUAD, quadShotSpawnList));
-
-		//shotSpawnDictionary.Add (Weapons.QUAD, new ShotSpawnsContainer(Weapons.QUAD, (int) Weapons.QUAD, quadSS));
-		//ssDict.Add (Weapons.SIDE, sideSS);
+		shotSpawnDictionary.Add(Weapons.NORMAL, new OldShotSpawnsContainer(Weapons.NORMAL, (int) Weapons.NORMAL, normalShotSpawnList));
+		shotSpawnDictionary.Add(Weapons.TRI, new OldShotSpawnsContainer(Weapons.TRI, (int) Weapons.TRI, triShotSpawnList));
+		shotSpawnDictionary.Add(Weapons.QUAD, new OldShotSpawnsContainer(Weapons.QUAD, (int) Weapons.QUAD, quadShotSpawnList));
+        shotSpawnDictionary.Add(Weapons.PENTA, new OldShotSpawnsContainer(Weapons.PENTA, (int) Weapons.PENTA, pentaShotSpawnList));
 
 		// Starting properties - add normal SS list to stack
-		this.activeShotSpawn.Push((ShotSpawnsContainer) shotSpawnDictionary[Weapons.NORMAL]);
+		this.activeShotSpawn.Push((OldShotSpawnsContainer) shotSpawnDictionary[Weapons.NORMAL]);
 	}
 
 	public void SetWeapons(Weapons id, Powerup powerup)
@@ -270,7 +276,7 @@ public class PlayerShip : FiringShip
 		try
 		{
 			// Consult the stack for active shot spawn
-			ShotSpawnsContainer activeShotSpawn = this.activeShotSpawn.Peek();		// Get active ShotSpawn container object
+			OldShotSpawnsContainer activeShotSpawn = this.activeShotSpawn.Peek();		// Get active ShotSpawn container object
 			List<ShotSpawn> list = activeShotSpawn.ShotSpawnList;					// Get list of active shotspawns
 
 			if (list != null && list.Count > 0)

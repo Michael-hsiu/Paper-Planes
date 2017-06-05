@@ -12,42 +12,42 @@ public class FiringPowerup : Powerup
 
 		timeObtained = Time.time;					// Record time powerup was obtained
 	
-		PlayerShip.ShotSpawnsContainer activePowerup = (PlayerShip.ShotSpawnsContainer) (player.activeShotSpawn.Peek ());	// Get the active powerup's shotspawns
-		PlayerShip.Weapons weaponType = activePowerup.WeaponID;
-		Debug.Log(weaponType);
+		PlayerShip.OldShotSpawnsContainer activePowerup = (PlayerShip.OldShotSpawnsContainer) (player.activeShotSpawn.Peek ());	// Get the active powerup's shotspawns
+		PlayerShip.Weapons activeWeaponType = activePowerup.WeaponID;
+		Debug.Log(activeWeaponType);
 		// Choose the new list of shotspawns and set the end time for powerup.
 
 		// Case 1 - No firing powerups active.
-		if (weaponType.Equals (PlayerShip.Weapons.NORMAL)) {
+		if (activeWeaponType.Equals (PlayerShip.Weapons.NORMAL)) {
 
 			player.SetWeapons ((PlayerShip.Weapons) (PlayerShip.Weapons.NORMAL + 1), this);		// Set weapons
 
 			endTime = timeObtained + powerDuration;									// Record end time of powerup
-			PlayerShip.ShotSpawnsContainer.powerupExpirationTime = endTime;					// Record new end time
+			PlayerShip.OldShotSpawnsContainer.powerupExpirationTime = endTime;					// Record new end time
 
 		} 
 
 		// Case 2 - A firing powerup that is not the best powerup is active.
-		else if (weaponType < PlayerShip.Weapons.QUAD) {
+		else if (activeWeaponType < PlayerShip.Weapons.PENTA) {
 
 			//activePowerup.activePowerup.CancelInvoke ("DeactivatePower");		// We're going to set a new deactivation call!
 			player.RemovePowerup ();														// Remove last powerup so we can push a better one (stack under-the-hood)
 			player.SetWeapons ((PlayerShip.Weapons) (activePowerup.WeaponID + 1), this);		// Improve weapons
 
-			float remainingTime = PlayerShip.ShotSpawnsContainer.powerupExpirationTime - timeObtained;		// May nerf the saved duration
+			float remainingTime = PlayerShip.OldShotSpawnsContainer.powerupExpirationTime - timeObtained;		// May nerf the saved duration
 			endTime = timeObtained + remainingTime + powerDuration * 0.5f;		// Set new end time
-			PlayerShip.ShotSpawnsContainer.powerupExpirationTime = endTime;				// Record new end time
+			PlayerShip.OldShotSpawnsContainer.powerupExpirationTime = endTime;				// Record new end time
 		
 		} 
 
-		// Case 3 - The best powerup is active.
+		// Case 3 - The best available powerup is active.
 		else {
 
 			//activePowerup.activePowerup.CancelInvoke ("DeactivatePower");		// We're going to set a new deactivation call!
 
-			float remainingTime = PlayerShip.ShotSpawnsContainer.powerupExpirationTime - timeObtained;		// May nerf the saved duration
+			float remainingTime = PlayerShip.OldShotSpawnsContainer.powerupExpirationTime - timeObtained;		// May nerf the saved duration
 			endTime = timeObtained + remainingTime + powerDuration;						// Set new end time
-			PlayerShip.ShotSpawnsContainer.powerupExpirationTime = endTime;				// Record new end time	
+			PlayerShip.OldShotSpawnsContainer.powerupExpirationTime = endTime;				// Record new end time	
 		}
 
 		Invoke ("DeactivatePower", endTime);		// Reset to state before powerup obtained

@@ -183,6 +183,7 @@
      <Compile Include="Assets\Scripts\Utility\ParticleSystemAutoDestroy.cs" />
      <Compile Include="Assets\Scripts\Utility\RotationUpdate.cs" />
      <Compile Include="Assets\Scripts\Utility\ShotMover.cs" />
+     <Compile Include="Assets\ShotSpawnContainer.cs" />
      <Compile Include="Assets\SpawnersDontDestroy.cs" />
      <None Include="Assets\Standard Assets\Fonts\OpenSans\License!.txt" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
