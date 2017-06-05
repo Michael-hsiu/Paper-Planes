@@ -6,5 +6,6 @@ public class ShotSpawnContainer : MonoBehaviour {
 
     public PlayerShip.Weapons firingPowerupID;      // Enum identifier
     public List<ShotSpawn> shotSpawnList;           // List of PlayerShotSpawns
+    public Powerup activePowerup;                   // For canceling invokations
 
 }

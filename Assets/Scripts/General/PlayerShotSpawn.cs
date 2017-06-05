@@ -70,9 +70,7 @@ public class PlayerShotSpawn : ShotSpawn {
 			numMissiles -= 1;
 		}
 	}
-
-
-
+    
 	public Vector3 RandomRotation() {
 
 		// The parent should be the player or enemy sprite
@@ -92,7 +90,6 @@ public class PlayerShotSpawn : ShotSpawn {
 		ultimateShotEnabled = true;
 	}
 
-
 	public void DisableUltimateShot() {
 		ultimateShotEnabled = false;
 	}
@@ -100,7 +97,6 @@ public class PlayerShotSpawn : ShotSpawn {
 	public void EnableWaveShot() {
 		waveShotEnabled = true;
 	}
-
 
 	public void DisableWaveShot() {
 		waveShotEnabled = false;

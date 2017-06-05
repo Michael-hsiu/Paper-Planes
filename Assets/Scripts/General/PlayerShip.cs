@@ -5,9 +5,7 @@ using System;
 
 public class PlayerShip : FiringShip
 {
-
-	#region Helper Class
-
+   
 	public enum Weapons
 	{
 		LEVEL_ONE,
@@ -17,60 +15,16 @@ public class PlayerShip : FiringShip
 		SIDE
 
     };
-
-	public class OldShotSpawnsContainer : IComparable<OldShotSpawnsContainer>
-	{
-
-		public static float powerupExpirationTime;
-
-		private Weapons weaponID;
-		private int priority;
-		private List<ShotSpawn> ss;
-		public Powerup activePowerup;
-
-		public OldShotSpawnsContainer(Weapons id, int priority, List<ShotSpawn> shotSpawnList)
-		{
-			this.weaponID = id;
-			this.priority = priority;
-			this.ss = shotSpawnList;
-		}
-
-		public int CompareTo(OldShotSpawnsContainer other)
-		{
-			if (this.priority < other.priority)
-			{
-				return -1;
-			}
-			else if (this.priority > other.priority)
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;
-			}
-		}
-
-		public Weapons WeaponID { get { return weaponID; } }
-
-		public int Priority { get { return priority; } }
-
-		public List<ShotSpawn> ShotSpawnList { get { return ss; } }
-
-	}
-
-	#endregion
-
+       
 	#region Variables
+    
+    [Header("SHOTSPAWN_LISTS")]
+    public float firingPowerupExpirationTime;     // Tracks when firing powerup expires
+    public List<ShotSpawnContainer> shotSpawnContainers = new List<ShotSpawnContainer>();       // Main list used to hold container objects, which hold individual shot spawns.
+    public ShotSpawnContainer activeShotSpawnContainer;         // Tracks currently active ShotSpawnContainer object
 
-	public InputComponent input;
-	public Stack<OldShotSpawnsContainer> activeShotSpawn = new Stack<OldShotSpawnsContainer>();
-	public Dictionary<Weapons, OldShotSpawnsContainer> shotSpawnDictionary = new Dictionary<Weapons, OldShotSpawnsContainer>();
-	private Rigidbody rb;
-	public float maxForward = 3.0f;
-
-	public float colliderRadius = 1.2f;
-	// This is set manually based on normal colliders of player
+    public Stack<ShotSpawnContainer> shotSpawnStack = new Stack<ShotSpawnContainer>();
+    public Dictionary<Weapons, ShotSpawnContainer> shotSpawnDictionary = new Dictionary<Weapons, ShotSpawnContainer>();
 
 	[Header("POWERUPS")]
 	public int numShots = 0;
@@ -79,67 +33,57 @@ public class PlayerShip : FiringShip
 	public float thrust = 300.0f;
 	public float maxDash = 20.0f;
 	public float dashDuration = 5f;
-	public bool rushStarted = false;
+	public bool rushStarted = false;   
 
+    [Header("WAVE_SHOT DEPENDENCIES")]
 	// Wave shot dependencies
 	public List<GameObject> waveSpawns = new List<GameObject>();
 	public bool waveShotEnabled = false;
 	public float waveRandomVal;
 	public float waveChance = 0.15f;
 
+    [Header("FRONT_FACING_MISSILE DEPENDENCIES")]
 	// Front-facing missile dependencies
 	public List<GameObject> sideMissileSpawns;
 	public bool sideMissileEnabled;
 	public float sideMissileRandomVal;
 	public float sideMissileChance = 0.1f;
 
-	[Header("FIRING RIG")]
+	[Header("FIRING_RIG")]
 	public GameObject firingRig;
 	public GameObject chargeColliderRig;
 
-	[Header("SHOTSPAWN LISTS")]
-	// Collections of shotspawns
-	List<ShotSpawn> normalShotSpawnList = new List<ShotSpawn>();
-	//List<ShotSpawn> dualShotSpawnList = new List<ShotSpawn>();
-	List<ShotSpawn> triShotSpawnList = new List<ShotSpawn>();
-	List<ShotSpawn> quadShotSpawnList = new List<ShotSpawn>();
-    List<ShotSpawn> pentaShotSpawnList = new List<ShotSpawn>();
-
-	List<ShotSpawn> sideSS = new List<ShotSpawn>();
-	//[Header("RENDERER/FLICKER")]
-	//public IEnumerator hitFlickerRoutine;
-	//public Color startColor;
-	//public Renderer sprite;
-	//public float flickerTime = 0.05f;
-
+    [Header("OTHER")]
+    public InputComponent input;
+    public Rigidbody rb;
+    public float maxForward = 3.0f;
+    public float colliderRadius = 1.2f;
 
 	public static PlayerShip instance;
-
-	void Awake()
-	{
-		
-		DontDestroyOnLoad(this);
-		if (instance == null)
-		{
-			instance = this;
-		}
-		else
-		{
-			DestroyImmediate(gameObject);
-		}
-
-	}
 
 	#endregion
 
 	#region Unity Life Cycle
 
+    void Awake()
+    {
+        DontDestroyOnLoad(this);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            DestroyImmediate(gameObject);
+        }
+        rb = GetComponent<Rigidbody>();
+        startColor = sprite.material.color;
+    }
+
 	protected override void Start()
 	{
 		input = InputManager.Instance.GetInputComponent();		// Get valid input source
 		InitializeShotSpawns();		// Get active shotspawn
-		rb = GetComponent<Rigidbody>();
-		startColor = sprite.material.color;
 	}
 
 	protected override void Update()
@@ -185,82 +129,50 @@ public class PlayerShip : FiringShip
 
 	private void InitializeShotSpawns()
 	{
-		GameObject parentShotSpawn = null;		// This contains all shotspawns
 
-        // Do this in inspector
-		foreach (Transform s in transform)
-		{
-			if (s.gameObject.CompareTag(Constants.ParentSS))
-			{
-				parentShotSpawn = s.gameObject;
-				break;
-			}
-		}
-		List<GameObject> ss;
-		if (parentShotSpawn != null)
-		{
-			ss = Utils.GetChildren(parentShotSpawn);	// Find all shotspawns
-		}
-		else
-		{
-			Debug.Log("Didn't get parentShotSpawn (InitializeShotSpawns)");
-			return;
-		}
+        // Add references to each of the ShotSpawnContainers into a dictionary.
+        foreach (ShotSpawnContainer shotSpawnContainer in shotSpawnContainers) 
+        {
+            shotSpawnDictionary.Add(shotSpawnContainer.firingPowerupID, shotSpawnContainer);
+        }
 
+        // Starting properties - add LEVEL_ONE (Normal) ShotSpawnContainer to stack
+        ShotSpawnContainer normalShotSpawnContainer = shotSpawnDictionary[Weapons.LEVEL_ONE];
+        shotSpawnStack.Push(normalShotSpawnContainer);
+        activeShotSpawnContainer = normalShotSpawnContainer;
+    }
 
-        // Unextensible to more shot types
-        // Need some sort of data container for each ShotSpawn
-		foreach (GameObject go in ss)
-		{		// Get ref to all player shotspawns
-			ShotSpawn spawn = go.GetComponent<ShotSpawn>();
-			if (spawn != null)
-			{
-				switch (go.tag)
-				{
-					case "NormalSS":
-						normalShotSpawnList.Add(spawn);
-						//triSS.Add (spawn);
-						sideSS.Add(spawn);
-						break;
-				/*case "DualSS":
-						dualShotSpawnList.Add(spawn);
-						break;*/
-					case "TriSS":
-						triShotSpawnList.Add(spawn);
-						break;
-					case "QuadSS":
-						quadShotSpawnList.Add(spawn);
-						break;
-                    case "PentaSS":
-                        pentaShotSpawnList.Add(spawn);
-                        break;
-					case "SideSS":
-						sideSS.Add(spawn);
-						break;
-				}
-			}
-		}
+	public void SetWeapons(Weapons id, Powerup invokingPowerup)
+    {
+        // First cancel the current firing powerup's Deactivate call...
+        if (activeShotSpawnContainer != null && activeShotSpawnContainer.activePowerup != null)
+        {
+            Debug.Log("CANCELED INVOKE!");
+            activeShotSpawnContainer.activePowerup.CancelInvoke("DeactivatePower");     // We're going to set a new deactivation call!
+        }
 
-		// Mapping enum vals to shotspawn lists
-		shotSpawnDictionary.Add(Weapons.LEVEL_ONE, new OldShotSpawnsContainer(Weapons.LEVEL_ONE, (int) Weapons.LEVEL_ONE, normalShotSpawnList));
-		shotSpawnDictionary.Add(Weapons.LEVEL_TWO, new OldShotSpawnsContainer(Weapons.LEVEL_TWO, (int) Weapons.LEVEL_TWO, triShotSpawnList));
-		shotSpawnDictionary.Add(Weapons.LEVEL_THREE, new OldShotSpawnsContainer(Weapons.LEVEL_THREE, (int) Weapons.LEVEL_THREE, quadShotSpawnList));
-        shotSpawnDictionary.Add(Weapons.LEVEL_FOUR, new OldShotSpawnsContainer(Weapons.LEVEL_FOUR, (int) Weapons.LEVEL_FOUR, pentaShotSpawnList));
+        // Then remove old powerup (if not LEVEL_ONE)...
+        if (activeShotSpawnContainer.firingPowerupID != PlayerShip.Weapons.LEVEL_ONE)
+        {
+            shotSpawnStack.Pop();
+        }
 
-		// Starting properties - add normal SS list to stack
-		this.activeShotSpawn.Push((OldShotSpawnsContainer) shotSpawnDictionary[Weapons.LEVEL_ONE]);
+        // Now put new reference onto stack and record it as currently active ShotSpawnContainer.
+        ShotSpawnContainer nowActiveshotSpawnContainer = shotSpawnDictionary[id];
+        nowActiveshotSpawnContainer.activePowerup = invokingPowerup;        // In case we want to cancel the Invoke
+        shotSpawnStack.Push(nowActiveshotSpawnContainer);
+		activeShotSpawnContainer = nowActiveshotSpawnContainer;		// Record the powerup so we can deactivate its CancelInvoke call as needed
 	}
 
-	public void SetWeapons(Weapons id, Powerup powerup)
-	{
-		this.activeShotSpawn.Push(shotSpawnDictionary[id]);
-		this.activeShotSpawn.Peek().activePowerup = powerup;		// Record the powerup so we can deactivate its CancelInvoke call as needed
-	}
-
-	public void RemovePowerup()
-	{
-		this.activeShotSpawn.Pop();
-	}
+    public void DeactivateFiringPowerup() 
+    {
+        if (activeShotSpawnContainer.firingPowerupID != PlayerShip.Weapons.LEVEL_ONE) 
+        {
+            ShotSpawnContainer oldContainer = shotSpawnStack.Pop ();
+            activeShotSpawnContainer = shotSpawnDictionary[Weapons.LEVEL_ONE];
+            Debug.Log (String.Format(oldContainer.firingPowerupID + " FIRING POWERUP DEACTIVATED AT ENDTIME: {0}", Time.time));
+        }
+    }
 
 	public override void Fire()
 	{
@@ -272,34 +184,27 @@ public class PlayerShip : FiringShip
 		{
 			nextFire = Time.time + fireRate / buffedFiringRateFactor;
 		}
+        
+        List<ShotSpawn> activeShotSpawnList = activeShotSpawnContainer.shotSpawnList;       // Get list of active shotspawns
 
-		try
+		if (activeShotSpawnList != null && activeShotSpawnList.Count > 0)
 		{
-			// Consult the stack for active shot spawn
-			OldShotSpawnsContainer activeShotSpawn = this.activeShotSpawn.Peek();		// Get active ShotSpawn container object
-			List<ShotSpawn> list = activeShotSpawn.ShotSpawnList;					// Get list of active shotspawns
-
-			if (list != null && list.Count > 0)
+			foreach (ShotSpawn spawn in activeShotSpawnList)
 			{
-				foreach (ShotSpawn spawn in list)
-				{
-					spawn.CreateShot(isFiringBuffed);	// Fire the shot!
-					numShots += 1;
-				}
-			}
-			// Simple wave shot logic
-			if (waveShotEnabled)
-			{
-				CreateWaveShots();
-			}
-			if (sideMissileEnabled)
-			{
-				CreateFrontMissiles();
+				spawn.CreateShot(isFiringBuffed);	// Fire the shot!
+				numShots += 1;
 			}
 		}
-		catch (InvalidOperationException e)
+
+
+		// Simple wave shot logic
+		if (waveShotEnabled)
 		{
-			Debug.Log("INVALID Peek() call");
+			CreateWaveShots();
+		}
+		if (sideMissileEnabled)
+		{
+			CreateFrontMissiles();
 		}
 
 	}
@@ -307,8 +212,6 @@ public class PlayerShip : FiringShip
 	public override void Damage(int damageTaken)
 	{
 
-
-		Debug.Log("PLAYER DAMAGED!");
 		// Restart flicker animation
 		if (hitFlickerRoutine != null)
 		{

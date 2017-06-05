@@ -38,12 +38,12 @@ public class Powerup : PoolObject {
 
 	public virtual void ActivatePower() {
 
-		endTime = Time.time + powerDuration;
+/*		endTime = Time.time + powerDuration;
 		timeObtained = Time.time;
 		Debug.Log ("POWERUP ACTIVATED!");
 
-		PlayerShip.OldShotSpawnsContainer curr = player.shotSpawnDictionary [PlayerShip.Weapons.LEVEL_ONE];
-		PlayerShip.OldShotSpawnsContainer activePowerup = (PlayerShip.OldShotSpawnsContainer) player.activeShotSpawn.Peek ();	// Get the active powerup's shotspawns
+		ShotSpawnContainer curr = player.shotSpawnDictionary [PlayerShip.Weapons.LEVEL_ONE];
+		PlayerShip.OldShotSpawnsContainer activePowerup = (PlayerShip.OldShotSpawnsContainer) player.shotSpawnStack.Peek ();	// Get the active powerup's shotspawns
 		int comp = curr.CompareTo (activePowerup);		// Compare to most recent entry in Stack
 		if (comp == 0) {
 			// Add full duration
@@ -53,7 +53,7 @@ public class Powerup : PoolObject {
 			Debug.Log("EQUAL POWERUP!");
 		} else if (comp == -1) {
 			// Deque and add more duration to new (hardcoded to 1/2)
-			player.activeShotSpawn.Pop();		// Remove last powerup
+			player.shotSpawnStack.Pop();		// Remove last powerup
 			CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
 			endTime = endTime + powerDuration * 0.5f;		// Set new end time
 			Invoke ("DeactivatePower", endTime);	// Reset to state after extended duration
@@ -61,7 +61,7 @@ public class Powerup : PoolObject {
 		} else {
 			// No duration added from worse powerup (no effect)
 			Debug.Log("GOT WORSE POWERUP!");
-		}
+		}*/
 	}
 
 

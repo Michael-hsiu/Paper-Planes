@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -15,7 +15,7 @@ public class QuadFirePowerup : Powerup {
 		//Debug.Log ("POWERUP ACTIVATED!: " + id);	// Identify powerup
 
 		PlayerShip.OldShotSpawnsContainer curr = player.shotSpawnDictionary [PlayerShip.Weapons.LEVEL_THREE];
-		PlayerShip.OldShotSpawnsContainer activePowerup = (PlayerShip.OldShotSpawnsContainer) player.activeShotSpawn.Peek ();	// Get the active powerup's shotspawns
+		PlayerShip.OldShotSpawnsContainer activePowerup = (PlayerShip.OldShotSpawnsContainer) player.shotSpawnStack.Peek ();	// Get the active powerup's shotspawns
 		int comp = curr.CompareTo (activePowerup);		// Compare to most recent entry in Stack
 
 		if (!activePowerup.WeaponID.Equals(PlayerShip.Weapons.LEVEL_ONE)) {
@@ -59,7 +59,7 @@ public class QuadFirePowerup : Powerup {
 			endTime = Time.time + powerDuration;
 			PlayerShip.OldShotSpawnsContainer.powerupExpirationTime = endTime;		// Set end time
 
-			PlayerShip.OldShotSpawnsContainer activePowerup2 = (PlayerShip.OldShotSpawnsContainer) player.activeShotSpawn.Peek ();	// Get the active powerup's shotspawns
+			PlayerShip.OldShotSpawnsContainer activePowerup2 = (PlayerShip.OldShotSpawnsContainer) player.shotSpawnStack.Peek ();	// Get the active powerup's shotspawns
 			activePowerup2.activePowerup = this;
 
 			CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
@@ -75,8 +75,8 @@ public class QuadFirePowerup : Powerup {
 		//player.activeSS = prevSS;
 
 		// Unprotected deque op
-		if (!player.activeShotSpawn.Peek ().WeaponID.Equals (PlayerShip.Weapons.LEVEL_ONE)) {
-			player.activeShotSpawn.Pop ();
+		if (!player.shotSpawnStack.Peek ().WeaponID.Equals (PlayerShip.Weapons.LEVEL_ONE)) {
+			player.shotSpawnStack.Pop ();
 		}
 		base.DeactivatePower ();
 	}
@@ -85,3 +85,4 @@ public class QuadFirePowerup : Powerup {
 		CancelInvoke ("DeactivatePower");				// Enables powerup duration extension
 	}
 }
+*/
