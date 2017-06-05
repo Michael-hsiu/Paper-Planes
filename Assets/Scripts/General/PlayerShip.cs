@@ -3,48 +3,73 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerShip : FiringShip {
+public class PlayerShip : FiringShip
+{
 
 	#region Helper Class
-	public class SSContainer : IComparable<SSContainer> {
-		public static float weaponTime;
 
-		private Weapons id;
+	public enum Weapons
+	{
+		NORMAL,
+		TRI,
+		QUAD,
+		SIDE}
+
+	;
+
+	public class ShotSpawnsContainer : IComparable<ShotSpawnsContainer>
+	{
+
+		public static float powerupExpirationTime;
+
+		private Weapons weaponID;
 		private int priority;
 		private List<ShotSpawn> ss;
 		public Powerup activePowerup;
 
-		public SSContainer(Weapons id, int priority, List<ShotSpawn> ss) {
-			this.id = id;
+		public ShotSpawnsContainer(Weapons id, int priority, List<ShotSpawn> shotSpawnList)
+		{
+			this.weaponID = id;
 			this.priority = priority;
-			this.ss = ss;
+			this.ss = shotSpawnList;
 		}
 
-		public int CompareTo(SSContainer other) {
-			if (this.priority < other.priority) {
+		public int CompareTo(ShotSpawnsContainer other)
+		{
+			if (this.priority < other.priority)
+			{
 				return -1;
-			} else if (this.priority > other.priority) {
+			}
+			else if (this.priority > other.priority)
+			{
 				return 1;
-			} else {
+			}
+			else
+			{
 				return 0;
 			}
 		}
 
-		public Weapons ID { get { return id; } }
+		public Weapons WeaponID { get { return weaponID; } }
+
 		public int Priority { get { return priority; } }
-		public List<ShotSpawn> SS { get { return ss; } }
+
+		public List<ShotSpawn> ShotSpawnList { get { return ss; } }
 
 	}
+
 	#endregion
 
 	#region Variables
+
 	public InputComponent input;
-	public Stack<SSContainer> activeSS = new Stack<SSContainer>();
-	public Dictionary<Weapons, SSContainer> ssDict = new Dictionary<Weapons, SSContainer>();
+	public Stack<ShotSpawnsContainer> activeShotSpawn = new Stack<ShotSpawnsContainer>();
+	public Dictionary<Weapons, ShotSpawnsContainer> shotSpawnDictionary = new Dictionary<Weapons, ShotSpawnsContainer>();
 	private Rigidbody rb;
 	public float maxForward = 3.0f;
 
-	public float colliderRadius = 1.2f;		// This is set manually based on normal colliders of player
+	public float colliderRadius = 1.2f;
+	// This is set manually based on normal colliders of player
 
 	[Header("POWERUPS")]
 	public int numShots = 0;
@@ -77,15 +102,19 @@ public class PlayerShip : FiringShip {
 	//public Renderer sprite;
 	//public float flickerTime = 0.05f;
 
-	public enum Weapons {NORMAL, DUAL, TRI, QUAD, SIDE};
 
 	public static PlayerShip instance;
-	void Awake(){
+
+	void Awake()
+	{
 		
-		DontDestroyOnLoad (this);
-		if (instance == null) {
+		DontDestroyOnLoad(this);
+		if (instance == null)
+		{
 			instance = this;
-		} else {
+		}
+		else
+		{
 			DestroyImmediate(gameObject);
 		}
 
@@ -94,24 +123,29 @@ public class PlayerShip : FiringShip {
 	#endregion
 
 	#region Unity Life Cycle
-	protected override void Start () {
+
+	protected override void Start()
+	{
 		input = InputManager.Instance.GetInputComponent();		// Get valid input source
-		InitializeSS ();		// Get active shotspawn
+		InitializeShotSpawns();		// Get active shotspawn
 		rb = GetComponent<Rigidbody>();
 		startColor = sprite.material.color;
 	}
-		
-	protected override void Update () {
+
+	protected override void Update()
+	{
 
 		// Firing logic
-		if (Input.GetButton ("Fire1") && Time.time > nextFire && ((AIInput) input).controlsEnabled) {
-			Fire ();
+		if (Input.GetButton("Fire1") && Time.time > nextFire && ((AIInput)input).controlsEnabled)
+		{
+			Fire();
 		}
 
 		// Temp logic for player destruction
-		if (GameManager.Singleton.playerHealth <= 0) {
-			Instantiate (explosion, transform.position, transform.rotation);
-			transform.gameObject.SetActive (false);
+		if (GameManager.Singleton.playerHealth <= 0)
+		{
+			Instantiate(explosion, transform.position, transform.rotation);
+			transform.gameObject.SetActive(false);
 		}
 
 		// Check for user input
@@ -120,13 +154,16 @@ public class PlayerShip : FiringShip {
 
 	}
 
-	void FixedUpdate() {
-		UpdateInput ();		// This currently takes care of both input and physics; consider separating them
+	void FixedUpdate()
+	{
+		UpdateInput();		// This currently takes care of both input and physics; consider separating them
 	}
 
-	public void OnDrawGizmos() {
+	public void OnDrawGizmos()
+	{
 		// Only draw when we're dashing
-		if (dashStarted) {
+		if (dashStarted)
+		{
 			Gizmos.color = Color.white;
 			Gizmos.DrawWireSphere(transform.position, colliderRadius);
 		}
@@ -135,168 +172,209 @@ public class PlayerShip : FiringShip {
 	#endregion
 
 	#region Game Logic
-	private void InitializeSS() {
+
+	private void InitializeShotSpawns()
+	{
 		GameObject parentShotSpawn = null;		// This contains all shotspawns
-		foreach(Transform s in transform) {
-			if (s.gameObject.CompareTag(Constants.ParentSS)) {
+		foreach (Transform s in transform)
+		{
+			if (s.gameObject.CompareTag(Constants.ParentSS))
+			{
 				parentShotSpawn = s.gameObject;
 				break;
 			}
 		}
 		List<GameObject> ss;
-		if (parentShotSpawn != null) {
-			ss = Utils.GetChildren (parentShotSpawn);	// Find all shotspawns
-		} else {
-			Debug.Log ("Didn't get parentShotSpawn (InitializeSS)");
+		if (parentShotSpawn != null)
+		{
+			ss = Utils.GetChildren(parentShotSpawn);	// Find all shotspawns
+		}
+		else
+		{
+			Debug.Log("Didn't get parentShotSpawn (InitializeShotSpawns)");
 			return;
 		}
 
 		// Collections of shotspawns
-		List<ShotSpawn> normalSS = new List<ShotSpawn> ();
-		List<ShotSpawn> dualSS = new List<ShotSpawn> ();
-		List<ShotSpawn> triSS = new List<ShotSpawn> ();
-		List<ShotSpawn> sideSS = new List<ShotSpawn> ();
+		List<ShotSpawn> normalShotSpawnList = new List<ShotSpawn>();
+		List<ShotSpawn> dualShotSpawnList = new List<ShotSpawn>();
+		List<ShotSpawn> triShotSpawnList = new List<ShotSpawn>();
+		List<ShotSpawn> sideSS = new List<ShotSpawn>();
 
-		foreach (GameObject go in ss) {		// Get ref to all player shotspawns
+		foreach (GameObject go in ss)
+		{		// Get ref to all player shotspawns
 			ShotSpawn spawn = go.GetComponent<ShotSpawn>();
-			if (spawn != null) {
-				switch (go.tag) {
+			if (spawn != null)
+			{
+				switch (go.tag)
+				{
 					case "NormalSS":
-						normalSS.Add (spawn);
+						normalShotSpawnList.Add(spawn);
 						//triSS.Add (spawn);
-						sideSS.Add (spawn);
+						sideSS.Add(spawn);
 						break;
 					case "DualSS":
-						dualSS.Add (spawn);
+						dualShotSpawnList.Add(spawn);
 						break;
 					case "TriSS":
-						triSS.Add (spawn);
+						triShotSpawnList.Add(spawn);
 						break;
 					case "SideSS":
-						sideSS.Add (spawn);
+						sideSS.Add(spawn);
 						break;
 				}
 			}
 		}
 
 		// Mapping enum vals to shotspawn lists
-		ssDict.Add (Weapons.NORMAL, new SSContainer(Weapons.NORMAL, (int) Weapons.NORMAL, normalSS));
-		ssDict.Add (Weapons.DUAL, new SSContainer(Weapons.DUAL, (int) Weapons.DUAL, dualSS));
-		ssDict.Add (Weapons.TRI, new SSContainer(Weapons.TRI, (int) Weapons.TRI, triSS));
+		shotSpawnDictionary.Add(Weapons.NORMAL, new ShotSpawnsContainer(Weapons.NORMAL, (int)Weapons.NORMAL, normalShotSpawnList));
+		shotSpawnDictionary.Add(Weapons.DUAL, new ShotSpawnsContainer(Weapons.DUAL, (int)Weapons.DUAL, dualShotSpawnList));
+		shotSpawnDictionary.Add(Weapons.TRI, new ShotSpawnsContainer(Weapons.TRI, (int)Weapons.TRI, triShotSpawnList));
+		//shotSpawnDictionary.Add (Weapons.QUAD, new ShotSpawnsContainer(Weapons.QUAD, (int) Weapons.QUAD, quadSS));
 		//ssDict.Add (Weapons.SIDE, sideSS);
 
 		// Starting properties - add normal SS list to stack
-		this.activeSS.Push((SSContainer) ssDict[Weapons.NORMAL]);
+		this.activeShotSpawn.Push((ShotSpawnsContainer)shotSpawnDictionary[Weapons.NORMAL]);
 	}
 
-	public void SetWeapons(Weapons id) {
-		this.activeSS.Push(ssDict[id]);
+	public void SetWeapons(Weapons id)
+	{
+		this.activeShotSpawn.Push(shotSpawnDictionary[id]);
 	}
 
-	public void RemovePowerup() {
-		this.activeSS.Pop ();
+	public void RemovePowerup()
+	{
+		this.activeShotSpawn.Pop();
 	}
 
-	public override void Fire() {
-		if (!isFiringBuffed) {
+	public override void Fire()
+	{
+		if (!isFiringBuffed)
+		{
 			nextFire = Time.time + fireRate;	// Cooldown time for projectile firing
-		} else {
+		}
+		else
+		{
 			nextFire = Time.time + fireRate / buffedFiringRateFactor;
 		}
 
-		try {
-			SSContainer ss = activeSS.Peek ();		// Get active ss container object
-			List<ShotSpawn> list = ss.SS;	// Get list of shotspawns
-			if (list != null) {
-				foreach(ShotSpawn spawn in list) {
-					spawn.CreateShot (isFiringBuffed);	// Fire the shot!
+		try
+		{
+			// Consult the stack for active shot spawn
+			ShotSpawnsContainer activeShotSpawn = this.activeShotSpawn.Peek();		// Get active ShotSpawn container object
+			List<ShotSpawn> list = activeShotSpawn.ShotSpawnList;					// Get list of active shotspawns
+
+			if (list != null && list.Count > 0)
+			{
+				foreach (ShotSpawn spawn in list)
+				{
+					spawn.CreateShot(isFiringBuffed);	// Fire the shot!
 					numShots += 1;
 				}
 			}
 			// Simple wave shot logic
-			if (waveShotEnabled) {
+			if (waveShotEnabled)
+			{
 				CreateWaveShots();
 			}
-			if (sideMissileEnabled) {
-				CreateFrontMissiles ();
+			if (sideMissileEnabled)
+			{
+				CreateFrontMissiles();
 			}
-		} catch (InvalidOperationException e) {
-			Debug.Log ("INVALID Peek() call");
+		}
+		catch (InvalidOperationException e)
+		{
+			Debug.Log("INVALID Peek() call");
 		}
 
 	}
 
-	public override void Damage(int damageTaken) {
+	public override void Damage(int damageTaken)
+	{
 
 
-		Debug.Log ("PLAYER DAMAGED!");
+		Debug.Log("PLAYER DAMAGED!");
 		// Restart flicker animation
-		if (hitFlickerRoutine != null) {
-			StopCoroutine (hitFlickerRoutine);
+		if (hitFlickerRoutine != null)
+		{
+			StopCoroutine(hitFlickerRoutine);
 		}
-		hitFlickerRoutine = FlickerHit ();
-		StartCoroutine (hitFlickerRoutine);
+		hitFlickerRoutine = FlickerHit();
+		StartCoroutine(hitFlickerRoutine);
 
 		GameManager.Singleton.playerHealth -= damageTaken;
-		if (GameManager.Singleton.playerHealth <= 0) {
-			GameManager.Singleton.LevelFailed ();			// Initiate level failure logic
+		if (GameManager.Singleton.playerHealth <= 0)
+		{
+			GameManager.Singleton.LevelFailed();			// Initiate level failure logic
 		}
-		UIManager.Singleton.UpdateHealth ();
+		UIManager.Singleton.UpdateHealth();
 	}
 
 	// Flicker when hit
-	IEnumerator FlickerHit() {
-		Debug.Log ("FLICKERING");
+	IEnumerator FlickerHit()
+	{
+		Debug.Log("FLICKERING");
 		Color flickerColor = sprite.material.color;
 		flickerColor.a = 0.55f;
 
 		sprite.material.color = flickerColor;
-		yield return new WaitForSeconds (flickerTime);
+		yield return new WaitForSeconds(flickerTime);
 
 		sprite.material.color = startColor;
-		yield return new WaitForSeconds (flickerTime);
+		yield return new WaitForSeconds(flickerTime);
 
 		sprite.material.color = flickerColor;
-		yield return new WaitForSeconds (flickerTime);
+		yield return new WaitForSeconds(flickerTime);
 
 		sprite.material.color = startColor;
-		yield return new WaitForSeconds (flickerTime);
+		yield return new WaitForSeconds(flickerTime);
 
 		sprite.material.color = flickerColor;
-		yield return new WaitForSeconds (flickerTime);
+		yield return new WaitForSeconds(flickerTime);
 
 		sprite.material.color = startColor;
 	}
 
-	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.CompareTag(Constants.EnemyShot)) {
-			other.gameObject.GetComponent<PoolObject> ().DestroyForReuse ();
-			Damage (10);
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.CompareTag(Constants.EnemyShot))
+		{
+			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();
+			Damage(10);
 		}
 	}
 
-	private void UpdateInput() {
-		input.UpdateInput (this);
+	private void UpdateInput()
+	{
+		input.UpdateInput(this);
 	}
 
-	public void CreateWaveShots() {
+	public void CreateWaveShots()
+	{
 		waveRandomVal = UnityEngine.Random.value;		// Set the random value
-		if (waveRandomVal <= waveChance) {
-			foreach (GameObject go in waveSpawns) {
-				if (go.GetComponent<ShotSpawn> () != null) {
-					go.GetComponent<ShotSpawn> ().CreateShot ();	// Fire the shot!
+		if (waveRandomVal <= waveChance)
+		{
+			foreach (GameObject go in waveSpawns)
+			{
+				if (go.GetComponent<ShotSpawn>() != null)
+				{
+					go.GetComponent<ShotSpawn>().CreateShot();	// Fire the shot!
 				}
 			}
 		}
 	}
 
 	// This is not for the homing missile powerup; it is for front-firing missiles.
-	public void CreateFrontMissiles() {
+	public void CreateFrontMissiles()
+	{
 		sideMissileRandomVal = UnityEngine.Random.value;		// Set the random value
-		if (sideMissileRandomVal <= sideMissileChance && numShots % 20 == 0) {
-			foreach(GameObject go in sideMissileSpawns) {
-				if (go.GetComponent<ShotSpawn>() != null) {
-					go.GetComponent<WaveShotSpawn>().CreateFrontMissiles ();	// Fire the shot!
+		if (sideMissileRandomVal <= sideMissileChance && numShots % 20 == 0)
+		{
+			foreach (GameObject go in sideMissileSpawns)
+			{
+				if (go.GetComponent<ShotSpawn>() != null)
+				{
+					go.GetComponent<WaveShotSpawn>().CreateFrontMissiles();	// Fire the shot!
 				}
 			}			
 		}
