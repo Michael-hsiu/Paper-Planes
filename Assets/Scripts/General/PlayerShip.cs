@@ -77,7 +77,7 @@ public class PlayerShip : FiringShip {
 	//public Renderer sprite;
 	//public float flickerTime = 0.05f;
 
-	public enum Weapons {NORMAL, DUAL, TRI, SIDE};
+	public enum Weapons {NORMAL, DUAL, TRI, QUAD, SIDE};
 
 	public static PlayerShip instance;
 	void Awake(){

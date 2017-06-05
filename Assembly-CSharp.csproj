@@ -52,6 +52,7 @@
      <Compile Include="Assets\EnemySpawner.cs" />
      <Compile Include="Assets\Inputs\VirtualJoystick.cs" />
      <Compile Include="Assets\ManagerDontDestroy.cs" />
+     <Compile Include="Assets\Prefabs\Powerups\FiringPowerup.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\HomingMissileScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileCountScrObj.cs" />
      <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileDamageScrObj.cs" />
@@ -143,7 +144,6 @@
      <Compile Include="Assets\Scripts\Powerups\BurstRushPowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\DashAbility.cs" />
      <Compile Include="Assets\Scripts\Powerups\DashPowerup.cs" />
-     <Compile Include="Assets\Scripts\Powerups\DualFirePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\HomingMissilePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\Mine.cs" />
      <Compile Include="Assets\Scripts\Powerups\Missile.cs" />
@@ -151,6 +151,7 @@
      <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />
      <Compile Include="Assets\Scripts\Powerups\PowerupScriptableObject.cs" />
+     <Compile Include="Assets\Scripts\Powerups\QuadFirePowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />
      <Compile Include="Assets\Scripts\Powerups\ShurikenObj.cs" />
      <Compile Include="Assets\Scripts\Powerups\ShurikenPowerup.cs" />

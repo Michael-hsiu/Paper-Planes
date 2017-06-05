@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class DualFirePowerup : Powerup {
+public class QuadFirePowerup : Powerup {
 
-	private string id = "DualFirePowerup";
+	private string id = "QuadFirePowerup";
 
 	public override void ActivatePower() {
 
@@ -14,7 +14,7 @@ public class DualFirePowerup : Powerup {
 
 		//Debug.Log ("POWERUP ACTIVATED!: " + id);	// Identify powerup
 
-		PlayerShip.SSContainer curr = player.ssDict [PlayerShip.Weapons.DUAL];
+		PlayerShip.SSContainer curr = player.ssDict [PlayerShip.Weapons.QUAD];
 		PlayerShip.SSContainer activePowerup = (PlayerShip.SSContainer) player.activeSS.Peek ();	// Get the active powerup's shotspawns
 		int comp = curr.CompareTo (activePowerup);		// Compare to most recent entry in Stack
 
@@ -33,7 +33,7 @@ public class DualFirePowerup : Powerup {
 			} else if (comp == 1) {
 				// [NEW POWERUP BETTER] Deque and add more duration to new (hardcoded to 1/2)
 				player.RemovePowerup();							// Remove last powerup
-				player.SetWeapons (PlayerShip.Weapons.DUAL);	// Set weapons
+				player.SetWeapons (PlayerShip.Weapons.QUAD);	// Set weapons
 
 				Debug.Log("REMAINING TIME: " + (PlayerShip.SSContainer.weaponTime - Time.time));
 				Debug.Log(String.Format("ID: {0}, ENDTIME: {1}", id, PlayerShip.SSContainer.weaponTime));		// Test to see if we're starting this new powerup at correct time
@@ -54,7 +54,7 @@ public class DualFirePowerup : Powerup {
 			}
 		} else {
 			// [NO POWERUPS ACTIVE] so just add new powerup!
-			player.SetWeapons (PlayerShip.Weapons.DUAL);	// Set weapons
+			player.SetWeapons (PlayerShip.Weapons.QUAD);	// Set weapons
 
 			endTime = Time.time + powerDuration;
 			PlayerShip.SSContainer.weaponTime = endTime;		// Set end time

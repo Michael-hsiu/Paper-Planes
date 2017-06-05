@@ -12,6 +12,7 @@ public class EnemySpawner : MonoBehaviour {
 	public bool bossSpawnEnabled = false;
 
 	// The maximum of each enemy we can have alive at a time. MAY be subject to change as level increases.
+	[Header("MAX_ENEMY_COUNTS")]
 	public int MAX_PAWNS = 5;
 	public int MAX_RANGED = 15;
 	public int MAX_BOMBERS = 20;
@@ -23,6 +24,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	// The number of each mob alive right now.
 	// Remember to update with bosses later on.
+	[Header("NUM_ENEMIES_ALIVE")]
 	public int NUM_PAWNS_ALIVE = 0;
 	public int NUM_RANGED_ALIVE = 0;
 	public int NUM_BOMBERS_ALIVE = 0;
@@ -92,6 +94,7 @@ public class EnemySpawner : MonoBehaviour {
 
 				// Spawn UP TO current level progression.
 				// Use / remove from DICT when MAX_CAP reached. Then remove / reset upon level reset or when enough of the enemy eliminated.
+				// OR we could use current method, which is just instance vars tracking each type of enemy.
 				GameObject enemyShip = enemyShips [Random.Range (0, currLevel + 1)];
 				EnemyType enemyType = (enemyShip.GetComponent<Ship> () != null) ? enemyShip.GetComponent<Ship>().enemyType : enemyShip.GetComponent<Turret>().enemyType;
 
@@ -151,7 +154,7 @@ public class EnemySpawner : MonoBehaviour {
 							break;					
 					}
 					enemyShip = enemyShips [Random.Range (0, currLevel + 1)];
-					enemyType = enemyShip.GetComponent<Ship> ().enemyType;
+					enemyType = (enemyShip.GetComponent<Ship> () != null) ? enemyShip.GetComponent<Ship>().enemyType : enemyShip.GetComponent<Turret>().enemyType;
 
 					yield return null;
 				}
@@ -162,7 +165,7 @@ public class EnemySpawner : MonoBehaviour {
 
 				// Wait a bit before spawning next enemy.
 				// We COULD spawn multiple at a time / formations!
-				yield return new WaitForSeconds (4.0f);
+				yield return new WaitForSeconds (Random.Range (0, 2.0f));
 			}
 			yield return null;
 		}
