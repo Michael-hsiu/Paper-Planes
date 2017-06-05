@@ -14,11 +14,11 @@ public class QuadFirePowerup : Powerup {
 
 		//Debug.Log ("POWERUP ACTIVATED!: " + id);	// Identify powerup
 
-		PlayerShip.OldShotSpawnsContainer curr = player.shotSpawnDictionary [PlayerShip.Weapons.QUAD];
+		PlayerShip.OldShotSpawnsContainer curr = player.shotSpawnDictionary [PlayerShip.Weapons.LEVEL_THREE];
 		PlayerShip.OldShotSpawnsContainer activePowerup = (PlayerShip.OldShotSpawnsContainer) player.activeShotSpawn.Peek ();	// Get the active powerup's shotspawns
 		int comp = curr.CompareTo (activePowerup);		// Compare to most recent entry in Stack
 
-		if (!activePowerup.WeaponID.Equals(PlayerShip.Weapons.NORMAL)) {
+		if (!activePowerup.WeaponID.Equals(PlayerShip.Weapons.LEVEL_ONE)) {
 			if (comp == 0) {
 				// [POWERUPS EQUAL] Add full duration
 				CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
@@ -33,7 +33,7 @@ public class QuadFirePowerup : Powerup {
 			} else if (comp == 1) {
 				// [NEW POWERUP BETTER] Deque and add more duration to new (hardcoded to 1/2)
 				player.RemovePowerup();							// Remove last powerup
-				player.SetWeapons (PlayerShip.Weapons.QUAD, this);	// Set weapons
+				player.SetWeapons (PlayerShip.Weapons.LEVEL_THREE, this);	// Set weapons
 
 				Debug.Log("REMAINING TIME: " + (PlayerShip.OldShotSpawnsContainer.powerupExpirationTime - Time.time));
 				Debug.Log(String.Format("ID: {0}, ENDTIME: {1}", id, PlayerShip.OldShotSpawnsContainer.powerupExpirationTime));		// Test to see if we're starting this new powerup at correct time
@@ -54,7 +54,7 @@ public class QuadFirePowerup : Powerup {
 			}
 		} else {
 			// [NO POWERUPS ACTIVE] so just add new powerup!
-			player.SetWeapons (PlayerShip.Weapons.QUAD, this);	// Set weapons
+			player.SetWeapons (PlayerShip.Weapons.LEVEL_THREE, this);	// Set weapons
 
 			endTime = Time.time + powerDuration;
 			PlayerShip.OldShotSpawnsContainer.powerupExpirationTime = endTime;		// Set end time
@@ -75,7 +75,7 @@ public class QuadFirePowerup : Powerup {
 		//player.activeSS = prevSS;
 
 		// Unprotected deque op
-		if (!player.activeShotSpawn.Peek ().WeaponID.Equals (PlayerShip.Weapons.NORMAL)) {
+		if (!player.activeShotSpawn.Peek ().WeaponID.Equals (PlayerShip.Weapons.LEVEL_ONE)) {
 			player.activeShotSpawn.Pop ();
 		}
 		base.DeactivatePower ();

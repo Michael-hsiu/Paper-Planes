@@ -14,12 +14,12 @@ public class TriFirePowerup : Powerup {
 
 		Debug.Log ("POWERUP ACTIVATED!: " + id);	// Identify powerup
 
-		PlayerShip.OldShotSpawnsContainer curr = player.shotSpawnDictionary [PlayerShip.Weapons.TRI];
+		PlayerShip.OldShotSpawnsContainer curr = player.shotSpawnDictionary [PlayerShip.Weapons.LEVEL_TWO];
 		PlayerShip.OldShotSpawnsContainer activePowerup = (PlayerShip.OldShotSpawnsContainer) player.activeShotSpawn.Peek ();	// Get the active powerup's shotspawns
 
 		int comp = curr.CompareTo (activePowerup);		// Compare to most recent entry in Stack
 
-		if (!activePowerup.WeaponID.Equals(PlayerShip.Weapons.NORMAL)) {
+		if (!activePowerup.WeaponID.Equals(PlayerShip.Weapons.LEVEL_ONE)) {
 			if (comp == 0) {
 				// [POWERUPS EQUAL] Add full duration
 				CancelInvoke ("DeactivatePower");			// Enables powerup duration extension
@@ -34,7 +34,7 @@ public class TriFirePowerup : Powerup {
 			} else if (comp == 1) {
 				// [NEW POWERUP BETTER] Deque and add more duration to new (hardcoded to 1/2)
 				player.RemovePowerup();							// Remove last powerup
-				player.SetWeapons (PlayerShip.Weapons.TRI, this);		// Set weapons
+				player.SetWeapons (PlayerShip.Weapons.LEVEL_TWO, this);		// Set weapons
 
 				float remainingTime = PlayerShip.OldShotSpawnsContainer.powerupExpirationTime - Time.time;
 				Debug.Log("REMAINING TIME: " + remainingTime);
@@ -58,7 +58,7 @@ public class TriFirePowerup : Powerup {
 			}
 		} else {
 			// [NO POWERUPS ACTIVE] so just add new powerup!
-			player.SetWeapons (PlayerShip.Weapons.TRI, this);	// Set weapons
+			player.SetWeapons (PlayerShip.Weapons.LEVEL_TWO, this);	// Set weapons
 
 			endTime = Time.time + powerDuration;
 			PlayerShip.OldShotSpawnsContainer.powerupExpirationTime = endTime;		// Set end time
@@ -80,7 +80,7 @@ public class TriFirePowerup : Powerup {
 		//player.activeSS = prevSS;
 
 		// Unprotected deque op
-		if (!player.activeShotSpawn.Peek ().WeaponID.Equals (PlayerShip.Weapons.NORMAL)) {
+		if (!player.activeShotSpawn.Peek ().WeaponID.Equals (PlayerShip.Weapons.LEVEL_ONE)) {
 			player.activeShotSpawn.Pop ();
 		}
 		base.DeactivatePower ();

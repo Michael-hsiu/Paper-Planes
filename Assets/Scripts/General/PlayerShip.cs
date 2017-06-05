@@ -10,10 +10,10 @@ public class PlayerShip : FiringShip
 
 	public enum Weapons
 	{
-		NORMAL,
-		TRI,
-		QUAD,
-        PENTA,
+		LEVEL_ONE,
+		LEVEL_TWO,
+		LEVEL_THREE,
+        LEVEL_FOUR,
 		SIDE
 
     };
@@ -242,13 +242,13 @@ public class PlayerShip : FiringShip
 		}
 
 		// Mapping enum vals to shotspawn lists
-		shotSpawnDictionary.Add(Weapons.NORMAL, new OldShotSpawnsContainer(Weapons.NORMAL, (int) Weapons.NORMAL, normalShotSpawnList));
-		shotSpawnDictionary.Add(Weapons.TRI, new OldShotSpawnsContainer(Weapons.TRI, (int) Weapons.TRI, triShotSpawnList));
-		shotSpawnDictionary.Add(Weapons.QUAD, new OldShotSpawnsContainer(Weapons.QUAD, (int) Weapons.QUAD, quadShotSpawnList));
-        shotSpawnDictionary.Add(Weapons.PENTA, new OldShotSpawnsContainer(Weapons.PENTA, (int) Weapons.PENTA, pentaShotSpawnList));
+		shotSpawnDictionary.Add(Weapons.LEVEL_ONE, new OldShotSpawnsContainer(Weapons.LEVEL_ONE, (int) Weapons.LEVEL_ONE, normalShotSpawnList));
+		shotSpawnDictionary.Add(Weapons.LEVEL_TWO, new OldShotSpawnsContainer(Weapons.LEVEL_TWO, (int) Weapons.LEVEL_TWO, triShotSpawnList));
+		shotSpawnDictionary.Add(Weapons.LEVEL_THREE, new OldShotSpawnsContainer(Weapons.LEVEL_THREE, (int) Weapons.LEVEL_THREE, quadShotSpawnList));
+        shotSpawnDictionary.Add(Weapons.LEVEL_FOUR, new OldShotSpawnsContainer(Weapons.LEVEL_FOUR, (int) Weapons.LEVEL_FOUR, pentaShotSpawnList));
 
 		// Starting properties - add normal SS list to stack
-		this.activeShotSpawn.Push((OldShotSpawnsContainer) shotSpawnDictionary[Weapons.NORMAL]);
+		this.activeShotSpawn.Push((OldShotSpawnsContainer) shotSpawnDictionary[Weapons.LEVEL_ONE]);
 	}
 
 	public void SetWeapons(Weapons id, Powerup powerup)

@@ -4,59 +4,49 @@ using UnityEngine;
 
 public class PlayerShotSpawn : ShotSpawn {
 
+    [Range(0.0f, 360.0f)] public float firingAngle = 0.0f;
+    public int ultiShotInterval = 5;
+    public int waveShotInterval = 5;
+    public int shotCounter = 0;
+    public int waveShotCounter = 0;
+    public bool ultimateShotEnabled = false;
+    public bool waveShotEnabled = false;
+    //public bool multShotEnabled = false;
+
+    [Header("PREFABS")]
 	public GameObject shot;
 	public GameObject fasterShot;
 	public GameObject ultimateShot;
 	public GameObject waveShot;
 	public GameObject missile;
 
-	public bool ultimateShotEnabled = false;
-	public bool waveShotEnabled = false;
-	public bool multShotEnabled = false;
-	public int ultiShotInterval = 5;
-	public int waveShotInterval = 5;
-	public int shotCounter = 0;
-	public int waveShotCounter = 0;
-
+   
 	//public GameObject targetRotation;
 	//public bool multiFire = false;
 
-	public override void CreateShot(bool isFiringBuffed=false) {
+	public override void CreateShot(bool isFiringBuffed = false)
+    {
 
-		// The parent should be the player or enemy sprite
-		targetRotation = transform.parent.parent.gameObject;		
+        targetRotation = GameManager.Singleton.playerShip.gameObject;      // The parent should be the player or enemy sprite
+        transform.localRotation = targetRotation.transform.rotation;	         // Rotate shotSpawn relative to parent Player
 
-		// Rotate shotSpawn relative to parent Player
-		transform.localRotation = targetRotation.transform.rotation;	
+        // Case 1 - Fire ultimate shot at the specified interval.
+        if (shotCounter == ultiShotInterval)
+        {
 
-		if (shotCounter == ultiShotInterval) {
-			try {
-				PoolManager.Instance.ReuseObject (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
-				//GameObject shot1 = Instantiate (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
-				shotCounter = 0;
-			} catch (MissingReferenceException e) {
-				GameObject shot1 = Instantiate (ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
-				shotCounter = 0;
-				Debug.Log ("MISSING REFERENCE - ulti shot!");
-			}
-		} else {
-			try {
-				PoolManager.Instance.ReuseObject (shot, transform.position, transform.rotation * Quaternion.Inverse (targetRotation.transform.rotation));
-				if (multShotEnabled) {
-					// Left angled
-					PoolManager.Instance.ReuseObject (shot, transform.position,transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 5))));
-					//GameObject shot2 = Instantiate (firingShip.fasterShot, transform.position,transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z - 10)))) as GameObject;
+            PoolManager.Instance.ReuseObject(ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation));
+            shotCounter = 0;
 
-					// Right angled
-					PoolManager.Instance.ReuseObject (shot, transform.position,transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 5))));
-					//GameObject shot3 = Instantiate (firingShip.fasterShot, transform.position, transform.rotation * Quaternion.Inverse(Quaternion.Euler(new Vector3(targetRotation.transform.localEulerAngles.x, targetRotation.transform.localEulerAngles.y, targetRotation.transform.localEulerAngles.z + 10)))) as GameObject;
+        } 
 
-				}
-			} catch (MissingReferenceException e) {
-				GameObject shot1 = Instantiate (shot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
-				Debug.Log ("MISSING REFERENCE - normal shot!");
-			}
-			//GameObject shot1 = Instantiate (shot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation)) as GameObject;
+        // Case 2 - Fire a normal shot at specified angle.
+        else
+        {
+            PoolManager.Instance.ReuseObject(shot, transform.position, transform.rotation * Quaternion.Inverse(
+                        Quaternion.Euler(new Vector3(
+                                targetRotation.transform.localEulerAngles.x, 
+                                targetRotation.transform.localEulerAngles.y,
+                                targetRotation.transform.localEulerAngles.z + firingAngle))));
 		}
 
 		shotCounter += 1;	// Increment shot count

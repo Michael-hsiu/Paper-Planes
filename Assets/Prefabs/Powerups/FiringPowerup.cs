@@ -18,9 +18,9 @@ public class FiringPowerup : Powerup
 		// Choose the new list of shotspawns and set the end time for powerup.
 
 		// Case 1 - No firing powerups active.
-		if (activeWeaponType.Equals (PlayerShip.Weapons.NORMAL)) {
+		if (activeWeaponType.Equals (PlayerShip.Weapons.LEVEL_ONE)) {
 
-			player.SetWeapons ((PlayerShip.Weapons) (PlayerShip.Weapons.NORMAL + 1), this);		// Set weapons
+			player.SetWeapons ((PlayerShip.Weapons) (PlayerShip.Weapons.LEVEL_ONE + 1), this);		// Set weapons
 
 			endTime = timeObtained + powerDuration;									// Record end time of powerup
 			PlayerShip.OldShotSpawnsContainer.powerupExpirationTime = endTime;					// Record new end time
@@ -28,7 +28,7 @@ public class FiringPowerup : Powerup
 		} 
 
 		// Case 2 - A firing powerup that is not the best powerup is active.
-		else if (activeWeaponType < PlayerShip.Weapons.PENTA) {
+		else if (activeWeaponType < PlayerShip.Weapons.LEVEL_FOUR) {
 
 			//activePowerup.activePowerup.CancelInvoke ("DeactivatePower");		// We're going to set a new deactivation call!
 			player.RemovePowerup ();														// Remove last powerup so we can push a better one (stack under-the-hood)
@@ -57,7 +57,7 @@ public class FiringPowerup : Powerup
 	public override void DeactivatePower() 
 	{
 		// ONLY dequeue if we know that there's a 2nd ShotSpawnContainer object on top of the one for Normal ShotSpawns.
-		if (player.activeShotSpawn.Count > 1 && !player.activeShotSpawn.Peek ().WeaponID.Equals (PlayerShip.Weapons.NORMAL)) 
+		if (player.activeShotSpawn.Count > 1 && !player.activeShotSpawn.Peek ().WeaponID.Equals (PlayerShip.Weapons.LEVEL_ONE)) 
 		{
 			player.activeShotSpawn.Pop ();
 		}

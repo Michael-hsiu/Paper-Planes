@@ -42,7 +42,7 @@ public class Powerup : PoolObject {
 		timeObtained = Time.time;
 		Debug.Log ("POWERUP ACTIVATED!");
 
-		PlayerShip.OldShotSpawnsContainer curr = player.shotSpawnDictionary [PlayerShip.Weapons.NORMAL];
+		PlayerShip.OldShotSpawnsContainer curr = player.shotSpawnDictionary [PlayerShip.Weapons.LEVEL_ONE];
 		PlayerShip.OldShotSpawnsContainer activePowerup = (PlayerShip.OldShotSpawnsContainer) player.activeShotSpawn.Peek ();	// Get the active powerup's shotspawns
 		int comp = curr.CompareTo (activePowerup);		// Compare to most recent entry in Stack
 		if (comp == 0) {
