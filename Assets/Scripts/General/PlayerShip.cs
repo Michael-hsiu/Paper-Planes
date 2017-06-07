@@ -59,7 +59,7 @@ public class PlayerShip : FiringShip
     public float maxForward = 3.0f;
     public float colliderRadius = 1.2f;
 
-	public static PlayerShip instance;
+	public static PlayerShip singleton;
 
 	#endregion
 
@@ -68,9 +68,9 @@ public class PlayerShip : FiringShip
     void Awake()
     {
         DontDestroyOnLoad(this);
-        if (instance == null)
+        if (singleton == null)
         {
-            instance = this;
+            singleton = this;
         }
         else
         {
@@ -82,7 +82,7 @@ public class PlayerShip : FiringShip
 
 	protected override void Start()
 	{
-		input = InputManager.Instance.GetInputComponent();		// Get valid input source
+		input = InputManager.Singleton.GetInputComponent();		// Get valid input source
 		InitializeShotSpawns();		// Get active shotspawn
 	}
 

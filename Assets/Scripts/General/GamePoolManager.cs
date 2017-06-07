@@ -43,7 +43,8 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject waveShot;
 	public GameObject missiles;
 	public GameObject straightMissiles;
-	public GameObject playerStraightMissiles;
+    public GameObject playerStraightMissiles;
+	public GameObject empWaveShot;
 
 
 	[Header("Enemies")] // Enemy prefabs
@@ -100,6 +101,7 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (missiles, 100);
 		PoolManager.Instance.CreatePool (straightMissiles, 100);
 		PoolManager.Instance.CreatePool (playerStraightMissiles, 50);
+        PoolManager.Instance.CreatePool (empWaveShot, 10);
 
 		// Enemies
 		PoolManager.Instance.CreatePool (pawnShip, 500);

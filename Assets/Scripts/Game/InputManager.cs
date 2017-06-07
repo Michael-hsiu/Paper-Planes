@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour {
 	public GameObject inputComponent;
 
 	private static InputManager instance;
-	public static InputManager Instance {
+	public static InputManager Singleton {
 		get {
 			if (instance == null) {
 				instance = new InputManager();

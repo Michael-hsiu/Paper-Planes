@@ -27,6 +27,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
     public Quaternion desiredRotation;
     public bool shouldRotate = true;
     public float maxHeadingChange = 10.0f;
+    public bool reversingDirection = false;
 
 	public Direction Direction {
 		get
@@ -53,9 +54,9 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			mb = (MissileBoss) s;
 		}
 		// If we're attacking right now, we should be idle
-		if (mb.attacking) {
+        /*if (mb.attacking) {
 			direction = Direction.Idle;
-		} 
+		} */
 
 		if (direction == Direction.Idle) {
 			// Do nothing if we're supposed to be idle; MissileBoss.cs will still take care of attacking
@@ -65,12 +66,12 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
 
 			// For after the first time we switch behavior states
-			shouldWander = true;
+            /*shouldWander = true;
 
 			if (!startedWander) {
 				StartCoroutine(Wander (s));
 				startedWander = true;
-			}
+			}*/
 
 		} else if (direction == Direction.PlayerDetected) {
 
@@ -80,17 +81,17 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			}
 			behaviorChangedOnce = true;
 
-			shouldWander = false;
-			mb.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+            /*shouldWander = false;
+			mb.GetComponent<Rigidbody> ().velocity = Vector3.zero;*/
 
-			float sqDist = Utils.SquaredEuclideanDistance (mb.gameObject, mb.target);
+            /*float sqDist = Utils.SquaredEuclideanDistance (mb.gameObject, mb.target);
 			//Debug.Log ("SQDIST: " + sqDist);
 			// Update behavior based on dist. from target if currently pursuing target
 			if (sqDist > mb.sqMoveDist) {
-				direction = Direction.PlayerUndetected;
+                direction = Direction.PlayerDetected;
 			} else {
 				direction = Direction.PlayerDetected;
-			}
+			}*/
 
 			if (mb.target != null) {
 				Vector3 dist = mb.target.transform.position - mb.transform.position;	// Find vector difference between target and this
@@ -127,89 +128,103 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	}
 
 	// Based on logic from: https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-wander--gamedev-1624
-	IEnumerator Wander(Ship s) {
+	/*IEnumerator Wander(Ship s) {
 		if (mb == null) {
 			mb = (MissileBoss) s;
 		}
 		while (true) {
 
             while (shouldWander) {
+                if (!reversingDirection)
+                {
+                    // Calculate circle position (origin=boss_center)
+                    circleCenter = mb.GetComponent<Rigidbody>().velocity.normalized * DIST_TO_CIRCLE;
 
-                // Calculate circle position (origin=boss_center)
-                circleCenter = mb.GetComponent<Rigidbody>().velocity.normalized * DIST_TO_CIRCLE;
+                    // Create displacement vector
+                    displacement = new Vector3(0, 1, 0) * CIRCLE_RADIUS;
 
-                // Create displacement vector
-                displacement = new Vector3(0, 1, 0) * CIRCLE_RADIUS;
+                    // Set angle of displacement vector
+                    float radianAngleRepresentation = wanderAngle * Mathf.Deg2Rad;
+                    displacement.x = displacement.y / Mathf.Tan(radianAngleRepresentation);
+                    displacement.y = displacement.x * Mathf.Tan(radianAngleRepresentation);
 
-                // Set angle of displacement vector
-                float radianAngleRepresentation = wanderAngle * Mathf.Deg2Rad;
-                displacement.x = displacement.y / Mathf.Tan(radianAngleRepresentation);
-                displacement.y = displacement.x * Mathf.Tan(radianAngleRepresentation);
+                    // Slightly change angle of displacement vector
+                    float ceil = wanderAngle + maxHeadingChange;
+                    float floor = wanderAngle - maxHeadingChange;
+                    wanderAngle = Random.Range(ceil, floor);
 
-                // Slightly change angle of displacement vector
-                float ceil = wanderAngle + maxHeadingChange;
-                float floor = wanderAngle - maxHeadingChange;
-                wanderAngle = Random.Range(ceil, floor);
+                    //wanderAngle += (float) ((Random.value * ANGLE_CHANGE) - (ANGLE_CHANGE * .5));
 
-                //wanderAngle += (float) ((Random.value * ANGLE_CHANGE) - (ANGLE_CHANGE * .5));
+                    // Create wander force vector and act on boss
+                    Vector3 wanderForce = circleCenter + displacement;
+                    mb.GetComponent<Rigidbody>().velocity = wanderForce.normalized;
 
-                // Create wander force vector and act on boss
-                Vector3 wanderForce = circleCenter + displacement;
-                mb.GetComponent<Rigidbody>().velocity = wanderForce.normalized;
+                    // Face direction we're going
+                    float zAngle = (Mathf.Atan2(wanderForce.y,wanderForce.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+                    desiredRotation = Quaternion.Euler (0, 0, zAngle);       // Store rotation as an Euler, then Quaternion
 
-                // Face direction we're going
-                float zAngle = (Mathf.Atan2(wanderForce.y,wanderForce.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
-
-                desiredRotation = Quaternion.Euler (0, 0, zAngle);       // Store rotation as an Euler, then Quaternion
-
-                yield return new WaitForSeconds(displInterval);
+                    yield return new WaitForSeconds(displInterval);
 
 
-                /*while (shouldWander) {
-                    if (mb.GetComponent<Rigidbody> ().velocity == Vector3.zero) {
-                        //mb.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-                        mb.GetComponent<Rigidbody> ().velocity = mb.transform.up;
-                        //mb.GetComponent<Rigidbody> ().velocity = oldVel;
-                        //usedOldVel = true;
-                        //Debug.Log ("ADDED FORCE!");
-                        //Debug.Break ();
+                    /*while (shouldWander) {
+                        if (mb.GetComponent<Rigidbody> ().velocity == Vector3.zero) {
+                            //mb.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+                            mb.GetComponent<Rigidbody> ().velocity = mb.transform.up;
+                            //mb.GetComponent<Rigidbody> ().velocity = oldVel;
+                            //usedOldVel = true;
+                            //Debug.Log ("ADDED FORCE!");
+                            //Debug.Break ();
+                        }
+
+                        // Cache original velocity vector
+                        vel = mb.GetComponent<Rigidbody> ().velocity;               
+                        circleCenter = new Vector3 (vel.x, vel.y, vel.z).normalized;    // Calc center of circle (normalized)
+                        displacement = circleCenter;                                // Calc displacement
+                        circleCenter = circleCenter * DIST_TO_CIRCLE;                       // Scale dist from circle center
+
+                        if (!rotSetOnce) {
+                            //wanderAngle = Quaternion.LookRotation (vel, Vector3.forward); // Initial wander angle is just facing in same direction as enemy is heading        
+                            wanderAngle = Quaternion.Euler (0, 0, 0);
+                            angleChange = 0.0f;
+                            rotSetOnce = true;
+                        }
+                        displacement = SetAngle (displacement, wanderAngle).normalized * CIRCLE_RADIUS;     // Set the angle of displacement every frame
+
+                        float oldAngle = angleChange;
+                        angleChange += (Random.Range (0.0f, 1.0f) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f);        // Micro-adjustments of angle per frame
+                        float angleDiff = Utils.Mod (angleChange - oldAngle, 360.0f);
+                        
+                        wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleDiff);     // Add a micro-rotation to last rotation
+
+                        Vector3 wanderForce = (circleCenter + displacement).normalized * 3;         // Create the wander force vector
+                        mb.GetComponent<Rigidbody>().velocity = wanderForce;            // Now set the wander force
+
+                        yield return new WaitForSeconds (displInterval);
                     }
-
-                    // Cache original velocity vector
-                    vel = mb.GetComponent<Rigidbody> ().velocity;               
-                    circleCenter = new Vector3 (vel.x, vel.y, vel.z).normalized;    // Calc center of circle (normalized)
-                    displacement = circleCenter;                                // Calc displacement
-                    circleCenter = circleCenter * DIST_TO_CIRCLE;                       // Scale dist from circle center
-
-                    if (!rotSetOnce) {
-                        //wanderAngle = Quaternion.LookRotation (vel, Vector3.forward); // Initial wander angle is just facing in same direction as enemy is heading        
-                        wanderAngle = Quaternion.Euler (0, 0, 0);
-                        angleChange = 0.0f;
-                        rotSetOnce = true;
-                    }
-                    displacement = SetAngle (displacement, wanderAngle).normalized * CIRCLE_RADIUS;     // Set the angle of displacement every frame
-
-                    float oldAngle = angleChange;
-                    angleChange += (Random.Range (0.0f, 1.0f) * ANGLE_CHANGE - ANGLE_CHANGE * 0.5f);        // Micro-adjustments of angle per frame
-                    float angleDiff = Utils.Mod (angleChange - oldAngle, 360.0f);
-                    
-                    wanderAngle = wanderAngle * Quaternion.Euler (0, 0, angleDiff);     // Add a micro-rotation to last rotation
-
-                    Vector3 wanderForce = (circleCenter + displacement).normalized * 3;         // Create the wander force vector
-                    mb.GetComponent<Rigidbody>().velocity = wanderForce;            // Now set the wander force
-
-                    yield return new WaitForSeconds (displInterval);
-                }
-                //usedOldVel = true;
-                yield return null;*/
+                    //usedOldVel = true;
+                    yield return null;*/
+                    /*}
+                    yield return null;
                 }
 
             yield return null;
 		}
-	}
+    }*/
+
 
     public void ReverseDirection() {
+        //mb.GetComponent<Rigidbody>().velocity = -mb.GetComponent<Rigidbody>().velocity;
+        mb.GetComponent<Rigidbody>().velocity = new Vector2(0, -1);
+        wanderAngle = -180f;
+        desiredRotation = Quaternion.Euler (0, 0, wanderAngle);       // Store rotation as an Euler, then Quaternion
+        mb.transform.rotation = desiredRotation;
+        StartCoroutine(ReversingDirection());
+    }
 
+    IEnumerator ReversingDirection() {
+        reversingDirection = true;
+        yield return new WaitForSeconds(5.0f);
+        reversingDirection = false;
     }
 
     void Update() {
@@ -239,6 +254,10 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
         Gizmos.color = Color.red;
         Gizmos.DrawRay (mb.transform.position, circleCenter + displacement);
 
+        // Draw velocity
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawRay(mb.transform.position, mb.GetComponent<Rigidbody>().velocity);
+
     }
 
     public void OnDrawGizmos() {
@@ -264,12 +283,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
 		return v;
 	}
-
-
-
-
-
-
+ 
 	public void MoveToPlayer (Ship s) {
 		if (mb == null) {
 			mb = (MissileBoss) s;

@@ -49,6 +49,7 @@
      <Compile Include="Assets\Camera\CameraController.cs" />
      <Compile Include="Assets\CanvasDontDestroy.cs" />
      <Compile Include="Assets\ContinueScreen.cs" />
+     <Compile Include="Assets\EMPWaveShot.cs" />
      <Compile Include="Assets\EnemySpawner.cs" />
      <Compile Include="Assets\Inputs\VirtualJoystick.cs" />
      <Compile Include="Assets\ManagerDontDestroy.cs" />
@@ -73,6 +74,7 @@
      <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyShip.cs" />
      <Compile Include="Assets\Scripts\Enemy\MediShip.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Missile Boss\EMPWaveShotSPawn.cs" />
      <Compile Include="Assets\Scripts\Enemy\Missile Boss\HitColliderHelper.cs" />
      <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBoss.cs" />
      <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBossMS.cs" />

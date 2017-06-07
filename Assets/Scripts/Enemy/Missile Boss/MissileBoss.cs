@@ -30,7 +30,9 @@ public class MissileBoss : Ship, IEnemy {
 	public bool usingSpinAtk = false;		// To draw the EMP wave
 
 	public GameObject straightMissile;	// Missile fab
+    public GameObject empWave;          // EMP wave fab
 	public GameObject targetRot;	// The rotation we'll use to determine appropriate missile start rotation
+    public GameObject empWaveShotSpawn; // We shoot out EMP waves from here!
 
 	[SerializeField]
 	private float nextAtkTime;	// Time at which we can launch next valid atk
@@ -98,7 +100,7 @@ public class MissileBoss : Ship, IEnemy {
 						atkID = 0;
 					}
 
-					if (atkID == 0) {
+                    if (atkID == 0) {
 						numMissileAtks += 1;	// We chose missiles; record it.
 						Debug.Log ("FIRING MISSILES");
 						// Firing atk logic
@@ -129,7 +131,9 @@ public class MissileBoss : Ship, IEnemy {
 							}
 							yield return new WaitForSeconds (missileDelay);		// Wait for delay btwn missile firings	
 						}
-					} else if (atkID == 1) {
+                    } else if (atkID == 1) {
+
+                        // EMP wave attack
 						usingSpinAtk = true;	// To inform MS to draw the circle
 						numSpinAtks += 1;		// We chose spin atks; record it.
 						float oldSpinAtkRadius = spinAtkRadius;		// Cache spin atk radius
@@ -138,15 +142,16 @@ public class MissileBoss : Ship, IEnemy {
 						float tempRotFactor = rotFactor;
 						float endTime = Time.time + spinAtkTime;
 
-						Quaternion oldRot = transform.rotation;
+						//Quaternion oldRot = transform.rotation;
 						int waveCount = 0;			// Counts how many EMP waves we've emitted
 						while (waveCount < 2 /*&& Time.time < endTime*/) {
+                            empWaveShotSpawn.GetComponent<ShotSpawn>().CreateShot();
 							// Spinning logic
-							transform.Rotate(Vector3.forward * tempRotFactor * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment
-							tempRotFactor += 5.0f;		// Could maybe use lerp for incrementing exponentially
+							//transform.Rotate(Vector3.forward * tempRotFactor * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment
+							//tempRotFactor += 5.0f;		// Could maybe use lerp for incrementing exponentially
 
 							// Emit growing EMP wave circle logic
-							if (spinAtkRadius > 14.0f) {
+                            /*if (spinAtkRadius > 14.0f) {
 								spinAtkRadius = oldSpinAtkRadius;	// Reset; we will emit multiple waves
 								waveCount += 1;
 							} else {
@@ -158,11 +163,13 @@ public class MissileBoss : Ship, IEnemy {
 								}
 
 								spinAtkRadius += 0.3f;
-							}
-							yield return null;
+							}*/
+                            waveCount += 1;
+                            moveState.Direction = Direction.PlayerDetected;
+							yield return new WaitForSeconds(1.5f);
 						}
-						transform.rotation = oldRot;		// Reset rotation
-						spinAtkRadius = oldSpinAtkRadius;	// Reset EMP wave radius
+						//transform.rotation = oldRot;		// Reset rotation
+						//spinAtkRadius = oldSpinAtkRadius;	// Reset EMP wave radius
 						usingSpinAtk = false;				// Tell MS to stop drawing EMP wave
 						Debug.Log ("SPIN ATTACK END");
 					}
@@ -194,7 +201,7 @@ public class MissileBoss : Ship, IEnemy {
 
 		} else if (other.gameObject.CompareTag(Constants.GameBorderTop) || other.gameObject.CompareTag(Constants.GameBorderSide)) 
         {
-            (MissileBossMS) moveState.ReverseDirection();
+            //((MissileBossMS) moveState).ReverseDirection();
             /*Vector3 vel = GetComponent<Rigidbody> ().velocity;
             GetComponent<Rigidbody>().velocity = -vel;*/
 			//transform.position = Vector3.zero;
