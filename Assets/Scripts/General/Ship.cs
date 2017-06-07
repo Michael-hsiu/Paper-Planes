@@ -73,7 +73,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 	// Flicker when hit
 	IEnumerator FlickerHit()
 	{
-		Debug.Log("FLICKERING");
+		//Debug.Log("FLICKERING");
 		Color flickerColor = sprite.material.color;
 		flickerColor.a = 0.45f;
 

@@ -55,7 +55,6 @@ public class PawnShip : Ship {
 		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
 
 			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
-
 			Damage(GameManager.Singleton.playerDamage);			// We lost health
 
 		// Handle collisions with player

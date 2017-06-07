@@ -30,6 +30,7 @@ public class Shot : PoolObject, IMovement {
 
 	// Activate shot countdown when object is enabled
 	void OnEnable() {
+        StopAllCoroutines();
 		StartCoroutine (DestroyAfterLifeTime (lifeTime));		// Delay, then "destroy" aka hide
 	}
 

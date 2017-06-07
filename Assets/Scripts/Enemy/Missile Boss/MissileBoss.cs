@@ -64,6 +64,7 @@ public class MissileBoss : Ship, IEnemy {
 	#region Game Logic
 	// Logic for firing missiles, with delay btwn each, for a certain pd of time
 	IEnumerator UseAttack() {
+
 		while (true) {
 
 			// Only attack if the player is detected
@@ -185,42 +186,29 @@ public class MissileBoss : Ship, IEnemy {
 
 	void OnTriggerEnter(Collider other) {
 
-		if (other.gameObject.activeSelf && other.gameObject.CompareTag (Constants.PlayerShot)) {
+		if (other.gameObject.CompareTag (Constants.PlayerShot)) 
+        {
+        
+			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
+            Damage(GameManager.Singleton.playerDamage);         // We lost health
 
-			if (other != null) {
-				other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
-			}
-
-			health -= GameManager.Singleton.playerDamage;			// We lost health
-
-			if (health <= 0) {
-
-				Instantiate (explosion, transform.position, transform.rotation);
-				DestroyForReuse ();
-				//Destroy (this.gameObject);		// We're dead, so get rid of this object :/
-
-				GameManager.Singleton.RecordEnemyKilled (enemyType);
-				GameManager.Singleton.UpdateScore (enemyPoints);	// Add new score in GameManager
-				UIManager.Singleton.UpdateScore ();	// Update score in UI
-
-				Debug.Log("ENEMY KILLED! Obtained: " + enemyPoints + "points!");
-			}
-
-			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
-		} else if (other.gameObject.CompareTag(Constants.GameBorderTop) || other.gameObject.CompareTag(Constants.GameBorderSide)) {
-			Vector3 vel = GetComponent<Rigidbody> ().velocity;
+		} else if (other.gameObject.CompareTag(Constants.GameBorderTop) || other.gameObject.CompareTag(Constants.GameBorderSide)) 
+        {
+            (MissileBossMS) moveState.ReverseDirection();
+            /*Vector3 vel = GetComponent<Rigidbody> ().velocity;
+            GetComponent<Rigidbody>().velocity = -vel;*/
 			//transform.position = Vector3.zero;
-			GetComponent<Rigidbody> ().AddForce (-vel * 10);
+			//GetComponent<Rigidbody> ().AddForce (-vel * 10);
 			//GetComponent<Rigidbody> ().velocity *= -1;
 			//Debug.Log ("COLLIDED WITH GAME BORDER");
 		}
 	}
-	
+
 
 	// This is how far away we can detect the player and take measures to atk player
 	public void OnDrawGizmosSelected() {
 		// Draw spin atk radius
-		Gizmos.color = Color.white;
+		Gizmos.color = Color.cyan;
 		Gizmos.DrawWireSphere(transform.position, senseRadius);
 
 	}
