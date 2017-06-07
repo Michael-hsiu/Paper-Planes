@@ -109,14 +109,17 @@ public class GameManager : MonoBehaviour {
 	// This is the PUBLISHER for events that fire on level starts.
 	public void StartLevel(int currLevel) {
 
-		this.currLevel = currLevel;
-		this.targetScore = scoreBoundaries [currLevel];
-		this.levelActive = true;
+        currLevel = Math.Min(currLevel, scoreBoundaries.Count - 1);
+        Debug.Log("SCOREBOUNDARIES COUNT: " + scoreBoundaries.Count);
+		targetScore = scoreBoundaries [currLevel];
+		levelActive = true;
 
 		// Announce to subscribers
-		if (StartLevelEvent != null) {
-			StartLevelEvent ();		// Tell all of our listeners to fire
-		}
+        if (currLevel != scoreBoundaries.Count - 1) {
+            if (StartLevelEvent != null) {
+            StartLevelEvent ();     // Tell all of our listeners to fire
+            }
+        }
 
 	}
 
@@ -149,7 +152,7 @@ public class GameManager : MonoBehaviour {
 	public void RecordEnemyKilled(EnemyType enemyType) {
 
 		GetComponent<EnemySpawner>().RecordKill(enemyType);
-		if (playerScore > scoreBoundaries[currLevel]) {
+        if (playerScore > scoreBoundaries[Math.Min(currLevel, scoreBoundaries.Count - 1)]) {
 			IncreaseLevel ();
 		}
 	}

@@ -24,8 +24,8 @@ public class GamePoolManager : MonoBehaviour {
 	public GameObject enemyFasterShot;
 
 	[Header("Powerups")] // Player powerups / related items
-	public GameObject dualShotPowerup;
-	public GameObject triShotPowerup;
+	//public GameObject dualShotPowerup;
+	public GameObject firingPowerup;
 	public GameObject waveShotPowerup;
 	public GameObject burstRushPowerup;
 	public GameObject dashPowerup;
@@ -81,8 +81,8 @@ public class GamePoolManager : MonoBehaviour {
 		PoolManager.Instance.CreatePool (enemyFasterShot, 200);
 
 		// Powerups
-		PoolManager.Instance.CreatePool (dualShotPowerup, 50);
-		PoolManager.Instance.CreatePool (triShotPowerup, 50);
+		//PoolManager.Instance.CreatePool (dualShotPowerup, 50);
+		PoolManager.Instance.CreatePool (firingPowerup, 50);
 		PoolManager.Instance.CreatePool (waveShotPowerup, 50);
 		PoolManager.Instance.CreatePool (burstRushPowerup, 50);
 		PoolManager.Instance.CreatePool (dashPowerup, 50);

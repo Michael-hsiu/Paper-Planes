@@ -95,7 +95,7 @@ public class EnemySpawner : MonoBehaviour {
 				// Spawn UP TO current level progression.
 				// Use / remove from DICT when MAX_CAP reached. Then remove / reset upon level reset or when enough of the enemy eliminated.
 				// OR we could use current method, which is just instance vars tracking each type of enemy.
-				GameObject enemyShip = enemyShips [Random.Range (0, currLevel + 1)];
+                GameObject enemyShip = enemyShips [Random.Range (0, Mathf.Min(currLevel, enemyShips.Count - 1))];
 				EnemyType enemyType = (enemyShip.GetComponent<Ship> () != null) ? enemyShip.GetComponent<Ship>().enemyType : enemyShip.GetComponent<Turret>().enemyType;
 
 				// First select a valid enemy
@@ -149,17 +149,22 @@ public class EnemySpawner : MonoBehaviour {
 						case EnemyType.Boss: 
 							if (NUM_BOSSES_ALIVE < MAX_BOSSES) {
 								NUM_BOSSES_ALIVE += 1;
+                                Debug.Break();
 								alreadySpawnedMax = false;
 							}
 							break;					
 					}
-					enemyShip = enemyShips [Random.Range (0, currLevel + 1)];
-					enemyType = (enemyShip.GetComponent<Ship> () != null) ? enemyShip.GetComponent<Ship>().enemyType : enemyShip.GetComponent<Turret>().enemyType;
+                    if (!alreadySpawnedMax) {
+                        break;
+                    } else {
+                        enemyShip = enemyShips [Random.Range (0, Mathf.Min(currLevel, enemyShips.Count - 1))];
+                        enemyType = (enemyShip.GetComponent<Ship> () != null) ? enemyShip.GetComponent<Ship>().enemyType : enemyShip.GetComponent<Turret>().enemyType;
 
-					yield return null;
-				}
+                        yield return null;
+                    }									
+                }
 
-
+                Debug.Log("ENEMY TYPE: " + enemyType);
 				// Now spawn the enemy
 				PoolManager.Instance.ReuseObject (enemyShip, spawnLoc, Quaternion.identity);
 
