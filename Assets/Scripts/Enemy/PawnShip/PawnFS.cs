@@ -15,33 +15,28 @@ public class PawnFS : MonoBehaviour, IFireState {
 			mode = value;
 		}
 	}
-	public PawnShip ps;
+	public PawnShip pawnShip;
 
-	public void EnterState (Ship s) {
+    void Start() {
+        pawnShip = GetComponent<PawnShip>();
+    }
+
+	public void EnterState () {
 
 	}
 
-	public void ExitState(Ship s) {
+	public void ExitState() {
 
 	}
 
-	public void UpdateState(Ship s) {
-
-		if (ps == null) {
-			ps = (PawnShip) s;
-		}
+	public void UpdateState() {
+    
 	}
 
-	// Adjusts direction as needed
-	private void CheckEnv(Ship s) {
-		GameObject player = s.gameObject;
-	}
+   
+	public void FireAtPlayer()
+    {
 
-	public void FireAtPlayer (Ship s) {
-
-		if (ps == null) {
-			ps = (PawnShip) s;
-		}
-	}	
+    }
 }
 

@@ -149,12 +149,12 @@ public class EnemySpawner : MonoBehaviour {
 						case EnemyType.Boss: 
 							if (NUM_BOSSES_ALIVE < MAX_BOSSES) {
 								NUM_BOSSES_ALIVE += 1;
-                                Debug.Break();
 								alreadySpawnedMax = false;
 							}
 							break;					
 					}
                     if (!alreadySpawnedMax) {
+                        // We've found a valid enemyType, so spawn that!
                         break;
                     } else {
                         enemyShip = enemyShips [Random.Range (0, Mathf.Min(currLevel, enemyShips.Count - 1))];

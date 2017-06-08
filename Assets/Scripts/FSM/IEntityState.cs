@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface EntityState {
+public interface IEntityState {
 
-	void EnterState (Ship s);
-	void ExitState(Ship s);
-	void UpdateState(Ship s);
+	//void EnterState (Ship s);
+	//void ExitState(Ship s);
+	void UpdateState();
 
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IFireState : EntityState {
+public interface IFireState : IEntityState {
 	FiringMode Mode
 	{
 		get;

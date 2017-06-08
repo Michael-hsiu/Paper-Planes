@@ -20,27 +20,27 @@ public class RangedFS : MonoBehaviour, IFireState {
 			mode = value;
 		}
 	}
-	public RangedShip rs;
+	public RangedShip rangedShip;
 
+    void Start() {
+        rangedShip = GetComponent<RangedShip>();
+    }
 
-	public void EnterState (Ship s) {
+	public void EnterState () {
 
 	}
 
-	public void ExitState(Ship s) {
+	public void ExitState() {
 
 	}
 
-	public void UpdateState(Ship s) {
+	public void UpdateState() {
 
-		if (rs == null) {
-			rs = (RangedShip) s;
-		}
 		bool playerOnDashCooldown = GameManager.Singleton.onDashCooldown;
 
 		// If player is dashing, use math to check if player is too far from us.
 		if (playerOnDashCooldown) {
-			if (Utils.SquaredEuclideanDistance(rs.gameObject, rs.target.gameObject) > rs.sqFireDist) {
+			if (Utils.SquaredEuclideanDistance(rangedShip.gameObject, rangedShip.target.gameObject) > rangedShip.sqFireDist) {
 				Debug.Log ("PLAYER TOO FAR AWAY TO FIRE!");
 				mode = FiringMode.NotFiring;
 			} else {
@@ -51,34 +51,25 @@ public class RangedFS : MonoBehaviour, IFireState {
 
 		// Apply method based on player direction
 		if (mode == FiringMode.Firing) {
-			FireAtPlayer (rs);
+			FireAtPlayer ();
 		}		
 	}
-
-	// Adjusts direction as needed
-	private void CheckEnv(Ship s) {
-		GameObject player = s.gameObject;
-	}
-
-	public void FireAtPlayer (Ship s) {
-
-		if (rs == null) {
-			rs = (RangedShip) s;
-		}
-
-		if (!rs.isFiringBuffed) {
-			rs.nextFire = Time.time + rs.fireRate;	// Cooldown time for projectile firing
+       
+	public void FireAtPlayer () {
+    
+		if (!rangedShip.isFiringBuffed) {
+			rangedShip.nextFire = Time.time + rangedShip.fireRate;	// Cooldown time for projectile firing
 		} else {
-			rs.nextFire = Time.time + rs.fireRate / rs.buffedFiringRateFactor;
+			rangedShip.nextFire = Time.time + rangedShip.fireRate / rangedShip.buffedFiringRateFactor;
 		}
 
 		// Check for all shotspawns in children
-		foreach(Transform t in s.transform) {
+		foreach(Transform t in rangedShip.transform) {
 
 			ShotSpawn shotSpawn = t.GetComponent<ShotSpawn> ();	// Get ShotSpawn in children
 
 			if (shotSpawn != null) {
-				shotSpawn.CreateShot (rs.isFiringBuffed);	// Fire the shot!
+				shotSpawn.CreateShot (rangedShip.isFiringBuffed);	// Fire the shot!
 			}
 		}
 	}	

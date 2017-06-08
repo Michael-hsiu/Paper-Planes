@@ -17,28 +17,26 @@ public class BomberMS : MonoBehaviour, IMoveState {
 	}
 	public BomberShip bs;
 
-	public void EnterState (Ship s) {
+    void Start() {
+        bs = GetComponent<BomberShip>();
+    }
+
+	public void EnterState () {
 
 	}
 
-	public void ExitState(Ship s) {
+	public void ExitState() {
 
 	}
 
-	public void UpdateState(Ship s) {
-		MoveToPlayer (s);
+	public void UpdateState() {
+		MoveToPlayer ();
 	}
 
-	// Adjusts direction as needed
-	private void CheckEnv(Ship s) {
-		GameObject player = s.gameObject;
-	}
 
-	public void MoveToPlayer (Ship s) {
-		if (bs == null) {
-			bs = (BomberShip) s;
-		}
 
+	public void MoveToPlayer () {
+      
 		if (bs.isExploding) {
 
 			transform.Rotate(Vector3.forward * bs.rotationFactor * Time.deltaTime);	// Rotate the enemy MUCH FASTER; needs adjustment

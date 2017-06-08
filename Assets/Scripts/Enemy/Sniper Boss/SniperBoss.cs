@@ -297,7 +297,7 @@ public class SniperBoss : Ship, IEnemy {
 
 
 	public override void Move() {
-		moveState.UpdateState (this);
+		moveState.UpdateState ();
 	}
 
 	void OnTriggerEnter(Collider other) {

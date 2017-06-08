@@ -89,6 +89,7 @@
      <Compile Include="Assets\Scripts\Enemy\SafeDistanceCollider.cs" />
      <Compile Include="Assets\Scripts\Enemy\Sniper Boss\LaserCollider.cs" />
      <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBoss.cs" />
+     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossFS.cs" />
      <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossMS.cs" />
      <Compile Include="Assets\Scripts\Enemy\Turret.cs" />
      <Compile Include="Assets\Scripts\FSM\FSMManager.cs" />

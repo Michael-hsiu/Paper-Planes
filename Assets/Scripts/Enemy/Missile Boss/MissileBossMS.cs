@@ -39,20 +39,21 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			direction = value;
 		}
 	}
-	public MissileBoss mb;
+	public MissileBoss missileBoss;
 
-	public void EnterState (Ship s) {
+    void Start() {
+        missileBoss = GetComponent<MissileBoss>();
+    }
+
+	public void EnterState () {
 
 	}
 
-	public void ExitState(Ship s) {
+	public void ExitState() {
 
 	}
 		
-	public void UpdateState(Ship s) {
-		if (mb == null) {
-			mb = (MissileBoss) s;
-		}
+	public void UpdateState() {
 		// If we're attacking right now, we should be idle
         /*if (mb.attacking) {
 			direction = Direction.Idle;
@@ -77,7 +78,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
 			// Store the velocity from detection phase
 			if (!behaviorChangedOnce) {
-				oldVel = mb.GetComponent<Rigidbody> ().velocity;
+				oldVel = missileBoss.GetComponent<Rigidbody> ().velocity;
 			}
 			behaviorChangedOnce = true;
 
@@ -93,21 +94,21 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 				direction = Direction.PlayerDetected;
 			}*/
 
-			if (mb.target != null) {
-				Vector3 dist = mb.target.transform.position - mb.transform.position;	// Find vector difference between target and this
+			if (missileBoss.target != null) {
+				Vector3 dist = missileBoss.target.transform.position - missileBoss.transform.position;	// Find vector difference between target and this
 				dist.Normalize ();		// Get unit vector
 
 				float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
 
 				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-				mb.transform.rotation = Quaternion.RotateTowards (mb.transform.rotation, desiredRotation, mb.rotationSpeed * Time.deltaTime);	// Rotate the enemy
+				missileBoss.transform.rotation = Quaternion.RotateTowards (missileBoss.transform.rotation, desiredRotation, missileBoss.rotationSpeed * Time.deltaTime);	// Rotate the enemy
 
 				/** MOVEMENT UPDATE */
-				if (!mb.isSpeedBuffed) {
-					mb.transform.position = Vector2.MoveTowards (mb.transform.position, mb.target.transform.position, Time.deltaTime * mb.speed);
+				if (!missileBoss.isSpeedBuffed) {
+					missileBoss.transform.position = Vector2.MoveTowards (missileBoss.transform.position, missileBoss.target.transform.position, Time.deltaTime * missileBoss.speed);
 				} else {
-					mb.transform.position = Vector2.MoveTowards (mb.transform.position, mb.target.transform.position, Time.deltaTime * mb.speed * mb.buffedSpeedFactor);
+					missileBoss.transform.position = Vector2.MoveTowards (missileBoss.transform.position, missileBoss.target.transform.position, Time.deltaTime * missileBoss.speed * missileBoss.buffedSpeedFactor);
 				}
 			}
 		}
@@ -119,8 +120,8 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	}
 
 	IEnumerator Idle(Ship s) {
-		if (mb == null) {
-			mb = (MissileBoss) s;
+		if (missileBoss == null) {
+			missileBoss = (MissileBoss) s;
 		}
 		yield return new WaitForSeconds (4.0f);		// Wait while we execute behavior
 		direction = Direction.PlayerDetected;		// Resume pursuing player
@@ -214,10 +215,10 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
     public void ReverseDirection() {
         //mb.GetComponent<Rigidbody>().velocity = -mb.GetComponent<Rigidbody>().velocity;
-        mb.GetComponent<Rigidbody>().velocity = new Vector2(0, -1);
+        missileBoss.GetComponent<Rigidbody>().velocity = new Vector2(0, -1);
         wanderAngle = -180f;
         desiredRotation = Quaternion.Euler (0, 0, wanderAngle);       // Store rotation as an Euler, then Quaternion
-        mb.transform.rotation = desiredRotation;
+        missileBoss.transform.rotation = desiredRotation;
         StartCoroutine(ReversingDirection());
     }
 
@@ -229,7 +230,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
     void Update() {
         if (shouldRotate) {
-            mb.transform.rotation = Quaternion.RotateTowards (mb.transform.rotation, desiredRotation, mb.rotationSpeed * Time.deltaTime); // Rotate the enemy
+            missileBoss.transform.rotation = Quaternion.RotateTowards (missileBoss.transform.rotation, desiredRotation, missileBoss.rotationSpeed * Time.deltaTime); // Rotate the enemy
         }
 
     }
@@ -240,31 +241,31 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
         /* VECTOR VISUALIZATION */
         // Draw wander circle
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(mb.transform.position + circleCenter, CIRCLE_RADIUS);
+        Gizmos.DrawWireSphere(missileBoss.transform.position + circleCenter, CIRCLE_RADIUS);
 
         // Draw displacement
         Gizmos.color = Color.blue;
-        Gizmos.DrawRay (mb.transform.position + circleCenter, displacement);
+        Gizmos.DrawRay (missileBoss.transform.position + circleCenter, displacement);
 
         // Draw circle center
         Gizmos.color = Color.green;
-        Gizmos.DrawRay (mb.transform.position, circleCenter);
+        Gizmos.DrawRay (missileBoss.transform.position, circleCenter);
 
         // Draw added force
         Gizmos.color = Color.red;
-        Gizmos.DrawRay (mb.transform.position, circleCenter + displacement);
+        Gizmos.DrawRay (missileBoss.transform.position, circleCenter + displacement);
 
         // Draw velocity
         Gizmos.color = Color.magenta;
-        Gizmos.DrawRay(mb.transform.position, mb.GetComponent<Rigidbody>().velocity);
+        Gizmos.DrawRay(missileBoss.transform.position, missileBoss.GetComponent<Rigidbody>().velocity);
 
     }
 
     public void OnDrawGizmos() {
         /* ATTACK VISUALIZATION */
-        if (mb.usingSpinAtk) {
+        if (missileBoss.usingSpinAtk) {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere (mb.transform.position, mb.spinAtkRadius);
+            Gizmos.DrawWireSphere (missileBoss.transform.position, missileBoss.spinAtkRadius);
         }
     }
 
@@ -285,15 +286,15 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 	}
  
 	public void MoveToPlayer (Ship s) {
-		if (mb == null) {
-			mb = (MissileBoss) s;
+		if (missileBoss == null) {
+			missileBoss = (MissileBoss) s;
 		}
 
 	}	
 
 	public void MoveBackwards (Ship s) {
-		if (mb == null) {
-			mb = (MissileBoss) s;
+		if (missileBoss == null) {
+			missileBoss = (MissileBoss) s;
 		}
 	}	
 

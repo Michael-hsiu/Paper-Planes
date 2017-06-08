@@ -76,12 +76,12 @@ public class RangedShip : FiringShip, IEnemy {
 
 	public override void Move () {
 		// Allows movement state to control movement
-		moveState.UpdateState (this);
+		moveState.UpdateState ();
 
 	}	
 
 	public override void Fire() {
-		firingState.UpdateState (this);
+		firingState.UpdateState ();
 	}
 
 	void OnTriggerEnter(Collider other) {

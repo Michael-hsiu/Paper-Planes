@@ -46,7 +46,7 @@ public class PawnShip : Ship {
 
 	public override void Move () {
 		// Allows movement state to control movement
-		moveState.UpdateState (this);
+		moveState.UpdateState ();
 	}	
 		
 	void OnTriggerEnter(Collider other) {

@@ -100,7 +100,15 @@ public class MissileBoss : Ship, IEnemy {
 						atkID = 0;
 					}
 
+
+                    // Weaken rotation speed to make boss fairer
+                    float oldRotationSpeed = rotationSpeed;
+                    rotationSpeed = rotationSpeed / 3;
+
+
                     if (atkID == 0) {
+
+
 						numMissileAtks += 1;	// We chose missiles; record it.
 						Debug.Log ("FIRING MISSILES");
 						// Firing atk logic
@@ -131,6 +139,7 @@ public class MissileBoss : Ship, IEnemy {
 							}
 							yield return new WaitForSeconds (missileDelay);		// Wait for delay btwn missile firings	
 						}
+
                     } else if (atkID == 1) {
 
                         // EMP wave attack
@@ -175,6 +184,8 @@ public class MissileBoss : Ship, IEnemy {
 					}
 
 					// After either attack
+                    rotationSpeed = oldRotationSpeed;       // Restore old rotation speed
+
 					nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	
 					attacking = false;		// No longer attacking
 					moveState.Direction = Direction.PlayerDetected;
@@ -187,7 +198,7 @@ public class MissileBoss : Ship, IEnemy {
 	}
 
 	public override void Move() {
-		moveState.UpdateState (this);
+		moveState.UpdateState ();
 		//Debug.Log ("UPDATING");
 	}
 

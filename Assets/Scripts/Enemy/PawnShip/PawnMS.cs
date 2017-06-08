@@ -15,47 +15,42 @@ public class PawnMS : MonoBehaviour, IMoveState {
 			direction = value;
 		}
 	}
-	public PawnShip ps;
+	public PawnShip pawnShip;
 
-	public void EnterState (Ship s) {
+    void Start() {
+        pawnShip = GetComponent<PawnShip>();
+    }
+
+	public void EnterState () {
 
 	}
 
-	public void ExitState(Ship s) {
+	public void ExitState() {
 
 	}
 
-	public void UpdateState(Ship s) {
-		if (ps == null) {
-			ps = (PawnShip) s;
-		}
-		MoveToPlayer (s);
+	public void UpdateState() {
+		MoveToPlayer ();
 	}
+    
 
-	// Adjusts direction as needed
-	private void CheckEnv(Ship s) {
-		GameObject player = s.gameObject;
-	}
+	public void MoveToPlayer () {
 
-	public void MoveToPlayer (Ship s) {
-		if (ps == null) {
-			ps = (PawnShip) s;
-		}
-		if (ps.target != null) {
-			Vector3 dist = ps.target.transform.position - ps.transform.position;	// Find vector difference between target and this
+		if (pawnShip.target != null) {
+			Vector3 dist = pawnShip.target.transform.position - pawnShip.transform.position;	// Find vector difference between target and this
 			dist.Normalize ();		// Get unit vector
 
 			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
 
 			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
 
-			ps.transform.rotation = Quaternion.RotateTowards (ps.transform.rotation, desiredRotation, ps.rotationSpeed * Time.deltaTime);	// Rotate the enemy
+			pawnShip.transform.rotation = Quaternion.RotateTowards (pawnShip.transform.rotation, desiredRotation, pawnShip.rotationSpeed * Time.deltaTime);	// Rotate the enemy
 
 			/** MOVEMENT UPDATE */
-			if (!ps.isSpeedBuffed) {
-				ps.transform.position = Vector2.MoveTowards (ps.transform.position, ps.target.transform.position, Time.deltaTime * ps.speed);
+			if (!pawnShip.isSpeedBuffed) {
+				pawnShip.transform.position = Vector2.MoveTowards (pawnShip.transform.position, pawnShip.target.transform.position, Time.deltaTime * pawnShip.speed);
 			} else {
-				ps.transform.position = Vector2.MoveTowards (ps.transform.position, ps.target.transform.position, Time.deltaTime * ps.speed * ps.buffedSpeedFactor);
+				pawnShip.transform.position = Vector2.MoveTowards (pawnShip.transform.position, pawnShip.target.transform.position, Time.deltaTime * pawnShip.speed * pawnShip.buffedSpeedFactor);
 			}
 		}
 	}	

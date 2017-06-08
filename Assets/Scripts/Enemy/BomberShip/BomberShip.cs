@@ -72,7 +72,7 @@ public class BomberShip : Ship {
 	}
 
 	public override void Move () {
-		moveState.UpdateState (this);
+		moveState.UpdateState ();
 	}		
 
 

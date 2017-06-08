@@ -18,69 +18,67 @@ public class SniperBossMS : MonoBehaviour, IMoveState {
 			direction = value;
 		}
 	}
-	public SniperBoss sb;
+	public SniperBoss sniperBoss;
 
+    void Start() {
 
-	public void EnterState (Ship s) {
+        sniperBoss = GetComponent<SniperBoss>();
 
-	}
+    }
 
-	public void ExitState(Ship s) {
+	public void UpdateState() {
 
-	}
-
-	public void UpdateState(Ship s) {
-		if (sb == null) {
-			sb = (SniperBoss) s;
-		}
 		if (direction == Direction.PlayerDetected) {
-			MoveToPlayer (s);	// Change to be AWAY from player if too close
+			MoveToPlayer ();	// Change to be AWAY from player if too close
 		} else if (direction == Direction.PlayerUndetected) {
-			
+			MoveBackwards();
 		}
 
 	}
 
-	public void MoveToPlayer (Ship s) {
-		if (sb == null) {
-			sb = (SniperBoss) s;
-		}
-		if (sb.target != null) {
-			Vector3 dist = sb.target.transform.position - sb.transform.position;	// Find vector difference between target and this
-			dist.Normalize ();		// Get unit vector
+
+
+    // Call this during if PLAYER_DETECTED
+	public void MoveToPlayer () {
+
+		if (sniperBoss.target != null) {
+
+            Vector3 dist = (sniperBoss.target.transform.position - sniperBoss.transform.position).normalized;	// Find unit vector difference between target and this
 
 			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-
 			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-
-			sb.transform.rotation = Quaternion.RotateTowards (sb.transform.rotation, desiredRotation, sb.rotationSpeed * Time.deltaTime);	// Rotate the enemy
+			sniperBoss.transform.rotation = Quaternion.RotateTowards (sniperBoss.transform.rotation, desiredRotation, sniperBoss.rotationSpeed * Time.deltaTime);	// Rotate the enemy
 			
 			/** MOVEMENT UPDATE */
-			if (!sb.isSpeedBuffed) {
-				sb.transform.position = Vector2.MoveTowards (sb.transform.position, sb.target.transform.position, Time.deltaTime * sb.speed);
+			if (!sniperBoss.isSpeedBuffed) {
+                sniperBoss.transform.position = Vector2.MoveTowards (sniperBoss.transform.position, sniperBoss.target.transform.position, Time.deltaTime * sniperBoss.speed);
+                //sniperBoss.transform.position = Vector2.MoveTowards (sniperBoss.transform.position, sniperBoss.target.transform.position, Time.deltaTime * sniperBoss.speed);
 			} else {
-				sb.transform.position = Vector2.MoveTowards (sb.transform.position, sb.target.transform.position, Time.deltaTime * sb.speed * sb.buffedSpeedFactor);
+				sniperBoss.transform.position = Vector2.MoveTowards (sniperBoss.transform.position, sniperBoss.target.transform.position, Time.deltaTime * sniperBoss.speed * sniperBoss.buffedSpeedFactor);
 			}
 		}
 	}	
+    
+	public void MoveBackwards () {
 
-	// Adjusts direction as needed
-	private void CheckEnv(Ship s) {
-		GameObject player = s.gameObject;
-	}
-		
-	public void OnDrawGizmosSelected() {
+        if (sniperBoss.target != null) {
 
-	}
+            Vector3 dist = -(sniperBoss.target.transform.position - sniperBoss.transform.position).normalized;  // Find unit vector difference between target and this
+            Vector3 angleDist = -dist;
 
-	public void OnDrawGizmos() {
-		
-	}
+            float zAngle = (Mathf.Atan2(angleDist.y, angleDist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+            Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);       // Store rotation as an Euler, then Quaternion
+            sniperBoss.transform.rotation = Quaternion.RotateTowards (sniperBoss.transform.rotation, desiredRotation, sniperBoss.rotationSpeed * Time.deltaTime);   // Rotate the enemy
+            
+            /** MOVEMENT UPDATE */
+            if (!sniperBoss.isSpeedBuffed) {
+                sniperBoss.transform.position = Vector2.MoveTowards (sniperBoss.transform.position, sniperBoss.transform.position + dist, Time.deltaTime * sniperBoss.speed);
+                //sniperBoss.transform.position = Vector2.MoveTowards (sniperBoss.transform.position, sniperBoss.target.transform.position, Time.deltaTime * sniperBoss.speed);
+            } else {
+                sniperBoss.transform.position = Vector2.MoveTowards (sniperBoss.transform.position, sniperBoss.target.transform.position, Time.deltaTime * sniperBoss.speed * sniperBoss.buffedSpeedFactor);
+            }
+        }
 
-	public void MoveBackwards (Ship s) {
-		if (sb == null) {
-			sb = (SniperBoss) s;
-		}
 	}	
 
 }

@@ -26,7 +26,7 @@ public class BomberFS : MonoBehaviour, IFireState {
 
 	}
 
-	public void UpdateState(Ship s) {
+	public void UpdateState() {
 	}
 
 	// Adjusts direction as needed
