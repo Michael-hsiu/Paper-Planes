@@ -13,7 +13,7 @@ public class SafeDistanceCollider : MonoBehaviour {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			try {
-				GetComponentInParent<RangedShip> ().moveState.Direction = Direction.TooClose;
+				GetComponentInParent<RangedShip> ().moveState.Direction = Direction.PLAYER_TOO_CLOSE;
 			} catch (NullReferenceException e) {
 				Debug.LogError (e);
 				//Debug.Break ();
@@ -27,7 +27,7 @@ public class SafeDistanceCollider : MonoBehaviour {
 
 		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
 			try {
-				GetComponentInParent<RangedShip> ().moveState.Direction = Direction.Forwards;
+				GetComponentInParent<RangedShip> ().moveState.Direction = Direction.FORWARDS;
 			} catch (NullReferenceException e) {
 				Debug.LogError (e);
 				//Debug.Break ();

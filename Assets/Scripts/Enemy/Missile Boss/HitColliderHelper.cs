@@ -9,7 +9,7 @@ public class HitColliderHelper : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 
 		if (other.gameObject.CompareTag(Constants.PlayerTag)) {
-			enemy.GetComponent<AbstractShip>().moveState.Direction = Direction.PlayerDetected;
+			enemy.GetComponent<AbstractShip>().moveState.Direction = Direction.PLAYER_DETECTED;
 			enemy.target = other.gameObject;
 		}
 	}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class MissileBossMS : MonoBehaviour, IMoveState {
 
 
-	public Direction direction = Direction.PlayerUndetected;
+	public Direction direction = Direction.PLAYER_UNDETECTED;
 
 	// Wander logic
 	public float DIST_TO_CIRCLE = 5.0f;	    // Distance from circle to player
@@ -59,11 +59,11 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			direction = Direction.Idle;
 		} */
 
-		if (direction == Direction.Idle) {
+		if (direction == Direction.IDLE) {
 			// Do nothing if we're supposed to be idle; MissileBoss.cs will still take care of attacking
 
 
-		} else if (direction == Direction.PlayerUndetected) {
+		} else if (direction == Direction.PLAYER_UNDETECTED) {
 
 
 			// For after the first time we switch behavior states
@@ -74,7 +74,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 				startedWander = true;
 			}*/
 
-		} else if (direction == Direction.PlayerDetected) {
+		} else if (direction == Direction.PLAYER_DETECTED) {
 
 			// Store the velocity from detection phase
 			if (!behaviorChangedOnce) {
@@ -124,7 +124,7 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 			missileBoss = (MissileBoss) s;
 		}
 		yield return new WaitForSeconds (4.0f);		// Wait while we execute behavior
-		direction = Direction.PlayerDetected;		// Resume pursuing player
+		direction = Direction.PLAYER_DETECTED;		// Resume pursuing player
 
 	}
 

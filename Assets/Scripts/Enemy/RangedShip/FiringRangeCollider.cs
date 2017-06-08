@@ -3,43 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class FiringRangeCollider : MonoBehaviour {
+public class FiringRangeCollider : MonoBehaviour
+{
 
 	public bool targetInRange;
 
-	void OnTriggerEnter(Collider other) {
 
-		//Debug.Log ("Reached firing range from player!");
+	void Update()
+	{
+		targetInRange = false;
+	}
 
+	void OnTriggerEnter(Collider other)
+	{
 		// Either-or: either trigger processes, or Euclidean calc processes
-		if (other.gameObject.CompareTag (Constants.PlayerTag) /* && !GameManager.Singleton.onDashCooldown*/) {
-			try {
+		if (other.gameObject.CompareTag(Constants.PlayerTag) /* && !GameManager.Singleton.onDashCooldown*/)
+		{
+			try
+			{
 				GetComponentInParent<RangedShip>().firingState.Mode = FiringMode.Firing;
-			} catch (NullReferenceException e) {
-				Debug.LogError (e);
-				//Debug.Break ();
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.LogError(e);
 			}	
 		}
 	}
 
-	void Update() {
-		targetInRange = false;
-	}
-
-	void OnTriggerStay(Collider other) {
-		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
+	void OnTriggerStay(Collider other)
+	{
+		if (other.gameObject.CompareTag(Constants.PlayerTag))
+		{
 			targetInRange = true;
 		}
 	}
 
-	void OnTriggerExit(Collider other) {
+	void OnTriggerExit(Collider other)
+	{
 		//Debug.Log ("Leaving firing range from player!");
 
-		if (other.gameObject.CompareTag (Constants.PlayerTag)) {
-			try {
+		if (other.gameObject.CompareTag(Constants.PlayerTag))
+		{
+			try
+			{
 				GetComponentInParent<RangedShip>().firingState.Mode = FiringMode.NotFiring;
-			} catch (NullReferenceException e) {
-				Debug.LogError (e);
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.LogError(e);
 				//Debug.Break ();
 			}	
 		}

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IMoveState : IEntityState {
+public interface IMoveState : IEntityState
+{
 	Direction Direction
 	{
 		get;
@@ -10,13 +11,14 @@ public interface IMoveState : IEntityState {
 	}
 }
 
-public enum Direction {
+public enum Direction
+{
 
-    Forwards,
-    Idle,
-    Backwards,
-    TooClose,
-    PlayerUndetected,
-    PlayerDetected
+	FORWARDS,
+	IDLE,
+	BACKWARDS,
+	PLAYER_TOO_CLOSE,
+	PLAYER_UNDETECTED,
+	PLAYER_DETECTED
 
 }

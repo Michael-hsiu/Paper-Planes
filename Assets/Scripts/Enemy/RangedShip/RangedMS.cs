@@ -36,16 +36,16 @@ public class RangedMS : MonoBehaviour, IMoveState {
 		// If player is dashing, use math to check if player is too far from us.
 		if (playerOnDashCooldown) {
 			if (Utils.SquaredEuclideanDistance(rangedShip.gameObject, rangedShip.target.gameObject) > rangedShip.sqMoveDist) {
-				direction = Direction.Forwards;
+				direction = Direction.FORWARDS;
 			} else {
-				direction = Direction.TooClose;
+				direction = Direction.PLAYER_TOO_CLOSE;
 			}
 		}
 
 		// Apply method based on player direction
-		if (direction == Direction.Forwards) {
+		if (direction == Direction.FORWARDS) {
 			MoveToPlayer ();
-		} else if (direction == Direction.TooClose) {
+		} else if (direction == Direction.PLAYER_TOO_CLOSE) {
 			MoveBackwards ();
 		}
 	}
