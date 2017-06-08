@@ -17,6 +17,7 @@ public class SniperBossSafeDistanceCollider : MonoBehaviour
 	{
 		if (other.gameObject.CompareTag(Constants.PlayerTag))
 		{
+			((SniperBossMS)moveState).safeDistanceColliderActive = true;
 			moveState.Direction = Direction.PLAYER_TOO_CLOSE;
 		}
 	}
@@ -25,6 +26,7 @@ public class SniperBossSafeDistanceCollider : MonoBehaviour
 	{
 		if (other.gameObject.CompareTag(Constants.PlayerTag))
 		{
+			((SniperBossMS)moveState).safeDistanceColliderActive = false;
 			moveState.Direction = Direction.PLAYER_DETECTED;
 		}
 	}

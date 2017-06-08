@@ -9,6 +9,7 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 	// playerDetected == player is too close. We either back up or use our small explosives.
 
 	public Direction direction = Direction.PLAYER_UNDETECTED;
+	public bool safeDistanceColliderActive = false;
 
 	public Direction Direction
 	{

@@ -36,7 +36,10 @@ public class SniperBossFiringDistanceCollider : MonoBehaviour
 		// We don't want to pursue the player if we're within a certain range.
 		if (other.gameObject.CompareTag(Constants.PlayerTag))
 		{
-			moveState.Direction = Direction.IDLE;
+			if (!((SniperBossMS)moveState).safeDistanceColliderActive)
+			{
+				moveState.Direction = Direction.IDLE;
+			}
 		}
 	}
 
@@ -45,7 +48,10 @@ public class SniperBossFiringDistanceCollider : MonoBehaviour
 		// If the player isn't touching this collider, they're too far away. Move closer!
 		if (other.gameObject.CompareTag(Constants.PlayerTag))
 		{
-			moveState.Direction = Direction.PLAYER_DETECTED;
+			if (!((SniperBossMS)moveState).safeDistanceColliderActive)
+			{
+				moveState.Direction = Direction.PLAYER_DETECTED;
+			}
 		}
 	}
 
