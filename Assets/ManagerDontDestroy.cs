@@ -13,5 +13,6 @@ public class ManagerDontDestroy : MonoBehaviour {
 		} else {
 			DestroyImmediate(gameObject);
 		}
-	}
+
+  	}
 }

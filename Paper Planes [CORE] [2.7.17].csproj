@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{92362816-8F33-A331-C782-ACBA51805F82}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityBuildTarget>iOS:9</UnityBuildTarget>
+    <UnityVersion>5.6.1f1</UnityVersion>
+    <RootNamespace></RootNamespace>
+    <LangVersion>4</LangVersion>
+    <NoConfig>true</NoConfig>
+    <NoStdLib>true</NoStdLib>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+    <AutoUnifyAssemblyReferences>false</AutoUnifyAssemblyReferences>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoConfig>true</NoConfig>
+    <NoStdLib>true</NoStdLib>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+    <AutoUnifyAssemblyReferences>false</AutoUnifyAssemblyReferences>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_1;UNITY_5_6;UNITY_5;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;ENABLE_RUNTIME_GI;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_NETWORK;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_IOS_NATIVE_CRASH_REPORTING;PLAYERCONNECTION_LISTENS_FIXED_PORT;DEBUGGER_LISTENS_FIXED_PORT;PLATFORM_SUPPORTS_ADS_ID;SUPPORT_ENVIRONMENT_VARIABLES;PLATFORM_SUPPORTS_PROFILER;PLATFORM_HAS_NO_SUPPORT_FOR_BUCKET_ALLOCATOR;STRICTCPP_NEW_DELETE_SIGNATURES;HAS_NEON_SKINNIG;UNITY_GFX_USE_PLATFORM_VSYNC;UNITY_INPUT_SIMULATE_EVENTS;PLATFORM_ALWAYS_USES_STDOUT_FOR_LOG;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;UNITY_IOS;UNITY_IPHONE;UNITY_IPHONE_API;SUPPORT_MULTIPLE_DISPLAYS;ENABLE_IL2CPP;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;CROSS_PLATFORM_INPUT;MOBILE_INPUT;ENABLE_IOS_ON_DEMAND_RESOURCES;ENABLE_IOS_APP_SLICING;UNITY_HAS_GOOGLEVR</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_1;UNITY_5_6;UNITY_5;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;ENABLE_RUNTIME_GI;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_NETWORK;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_IOS_NATIVE_CRASH_REPORTING;PLAYERCONNECTION_LISTENS_FIXED_PORT;DEBUGGER_LISTENS_FIXED_PORT;PLATFORM_SUPPORTS_ADS_ID;SUPPORT_ENVIRONMENT_VARIABLES;PLATFORM_SUPPORTS_PROFILER;PLATFORM_HAS_NO_SUPPORT_FOR_BUCKET_ALLOCATOR;STRICTCPP_NEW_DELETE_SIGNATURES;HAS_NEON_SKINNIG;UNITY_GFX_USE_PLATFORM_VSYNC;UNITY_INPUT_SIMULATE_EVENTS;PLATFORM_ALWAYS_USES_STDOUT_FOR_LOG;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;UNITY_IOS;UNITY_IPHONE;UNITY_IPHONE_API;SUPPORT_MULTIPLE_DISPLAYS;ENABLE_IL2CPP;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;CROSS_PLATFORM_INPUT;MOBILE_INPUT;ENABLE_IOS_ON_DEMAND_RESOURCES;ENABLE_IOS_APP_SLICING;UNITY_HAS_GOOGLEVR</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.XML.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/Boo.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityScript.Lang">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/UnityScript.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/TestRunner/nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HoloLens">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VR">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Paper Planes [CORE] [2.7.17].Plugins.csproj">
+      <Project>{33E739B1-1D7E-8A64-F66C-AB03E5D9FE10}</Project>
+      <Name>Paper Planes [CORE] [2.7.17].Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Camera\CameraController.cs" />
+    <Compile Include="Assets\CanvasDontDestroy.cs" />
+    <Compile Include="Assets\Inputs\VirtualJoystick.cs" />
+    <Compile Include="Assets\ManagerDontDestroy.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\FiringPowerup.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\Homing Missile\HomingMissileScrObj.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileCountScrObj.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileDamageScrObj.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\Homing Missile\MissileSpawnChanceScrObj.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenDamageScrObj.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenDurationScrObj.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenScrObj.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenSizeScrObj.cs" />
+    <Compile Include="Assets\Prefabs\Powerups\UpgradableScriptableObject.cs" />
+    <Compile Include="Assets\Prefabs\Shop UI\ShopSlot.cs" />
+    <Compile Include="Assets\Prefabs\Shop UI\UpgradesListPanel.cs" />
+    <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
+    <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
+    <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberCollisionHelper.cs" />
+    <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberFS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberMS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberShip.cs" />
+    <Compile Include="Assets\Scripts\Enemy\DoT.cs" />
+    <Compile Include="Assets\Scripts\Enemy\DropShip.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyShip.cs" />
+    <Compile Include="Assets\Scripts\Enemy\MediShip.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Missile Boss\EMPWaveShot.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Missile Boss\EMPWaveShotSPawn.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Missile Boss\HitColliderHelper.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBoss.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Missile Boss\MissileBossMS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnFS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnMS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\PawnShip\PawnShip.cs" />
+    <Compile Include="Assets\Scripts\Enemy\RangedShip\FiringRangeCollider.cs" />
+    <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedFS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedMS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedShip.cs" />
+    <Compile Include="Assets\Scripts\Enemy\RangedShip\SafeDistanceCollider.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\LaserCollider.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBoss.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossFS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossFiringDistanceCollider.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossMS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossSafeDistanceCollider.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Turret.cs" />
+    <Compile Include="Assets\Scripts\FSM\FSMManager.cs" />
+    <Compile Include="Assets\Scripts\FSM\IEntityState.cs" />
+    <Compile Include="Assets\Scripts\FSM\IFireState.cs" />
+    <Compile Include="Assets\Scripts\FSM\IMoveState.cs" />
+    <Compile Include="Assets\Scripts\Game\AIInput.cs" />
+    <Compile Include="Assets\Scripts\Game\Constants.cs" />
+    <Compile Include="Assets\Scripts\Game\DictionaryDrawer.cs" />
+    <Compile Include="Assets\Scripts\Game\DontDestroy.cs" />
+    <Compile Include="Assets\Scripts\Game\EnemySquad.cs" />
+    <Compile Include="Assets\Scripts\Game\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Game\GameState.cs" />
+    <Compile Include="Assets\Scripts\Game\InputComponent.cs" />
+    <Compile Include="Assets\Scripts\Game\InputManager.cs" />
+    <Compile Include="Assets\Scripts\Game\LevelData.cs" />
+    <Compile Include="Assets\Scripts\Game\PlayerInput.cs" />
+    <Compile Include="Assets\Scripts\Game\PowerupSpawner.cs" />
+    <Compile Include="Assets\Scripts\Game\SerializableDictionary.cs" />
+    <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
+    <Compile Include="Assets\Scripts\Game\UIManager.cs" />
+    <Compile Include="Assets\Scripts\General\AbstractShip.cs" />
+    <Compile Include="Assets\Scripts\General\DictRow.cs" />
+    <Compile Include="Assets\Scripts\General\Drawing.cs" />
+    <Compile Include="Assets\Scripts\General\DropShipShotSpawn.cs" />
+    <Compile Include="Assets\Scripts\General\FOV2D.cs" />
+    <Compile Include="Assets\Scripts\General\FasterShot.cs" />
+    <Compile Include="Assets\Scripts\General\FiringShip.cs" />
+    <Compile Include="Assets\Scripts\General\GamePoolManager.cs" />
+    <Compile Include="Assets\Scripts\General\PlayerShip.cs" />
+    <Compile Include="Assets\Scripts\General\PlayerShotSpawn.cs" />
+    <Compile Include="Assets\Scripts\General\PoolManager.cs" />
+    <Compile Include="Assets\Scripts\General\PoolObject.cs" />
+    <Compile Include="Assets\Scripts\General\Row.cs" />
+    <Compile Include="Assets\Scripts\General\Shields.cs" />
+    <Compile Include="Assets\Scripts\General\Ship.cs" />
+    <Compile Include="Assets\Scripts\General\Shot.cs" />
+    <Compile Include="Assets\Scripts\General\ShotSpawn.cs" />
+    <Compile Include="Assets\Scripts\General\ShotSpawnContainer.cs" />
+    <Compile Include="Assets\Scripts\General\TurretShotSpawn.cs" />
+    <Compile Include="Assets\Scripts\General\Utils.cs" />
+    <Compile Include="Assets\Scripts\General\WaveShot.cs" />
+    <Compile Include="Assets\Scripts\General\WaveShotSpawn.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\IDamageable.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\IFires.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\IKillable.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />
+    <Compile Include="Assets\Scripts\Menu\ContinueScreen.cs" />
+    <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\Menu\PauseMenu.cs" />
+    <Compile Include="Assets\Scripts\Menu\PowerupHolder.cs" />
+    <Compile Include="Assets\Scripts\Menu\ShopMenu.cs" />
+    <Compile Include="Assets\Scripts\Powerups\BurstChargeColliders.cs" />
+    <Compile Include="Assets\Scripts\Powerups\BurstRushCollider.cs" />
+    <Compile Include="Assets\Scripts\Powerups\BurstRushManager.cs" />
+    <Compile Include="Assets\Scripts\Powerups\BurstRushPowerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\DashAbility.cs" />
+    <Compile Include="Assets\Scripts\Powerups\DashPowerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\HomingMissilePowerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\Mine.cs" />
+    <Compile Include="Assets\Scripts\Powerups\Missile.cs" />
+    <Compile Include="Assets\Scripts\Powerups\PlayerStraightMissile.cs" />
+    <Compile Include="Assets\Scripts\Powerups\Powerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\PowerupManager.cs" />
+    <Compile Include="Assets\Scripts\Powerups\PowerupScriptableObject.cs" />
+    <Compile Include="Assets\Scripts\Powerups\QuadFirePowerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\ScoreMultiplierPowerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\ShurikenObj.cs" />
+    <Compile Include="Assets\Scripts\Powerups\ShurikenPowerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\SideMissilePowerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\StraightMissile.cs" />
+    <Compile Include="Assets\Scripts\Powerups\TriFirePowerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\TripMineWeapon.cs" />
+    <Compile Include="Assets\Scripts\Powerups\WaveShotPowerup.cs" />
+    <Compile Include="Assets\Scripts\Powerups\WeaponsManager.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\CollisionHelperBomberType.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\EnemyManagerBomberType.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Bomber Type\EnemyMovementBomberType.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Collision Type\EnemyManagerCollisionType.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Collision Type\EnemyMovementCollisionType.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyManagerRangedType.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyMovementDistanceType.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Enemy [old]\Distance Type\EnemyShootingDistanceType.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\Scripts [old]\Player\PlayerShooting.cs" />
+    <Compile Include="Assets\Scripts\Spawners\DropShipSpawn.cs" />
+    <Compile Include="Assets\Scripts\Spawners\EnemySpawnCappedTemplate.cs" />
+    <Compile Include="Assets\Scripts\Spawners\EnemySpawnTemplate.cs" />
+    <Compile Include="Assets\Scripts\Spawners\EnemySpawner.cs" />
+    <Compile Include="Assets\Scripts\Spawners\MovingSpawn.cs" />
+    <Compile Include="Assets\Scripts\Spawners\MovingSpawnManager.cs" />
+    <Compile Include="Assets\Scripts\Spawners\PromotionArea.cs" />
+    <Compile Include="Assets\Scripts\Utility\ColliderHelper.cs" />
+    <Compile Include="Assets\Scripts\Utility\EngineUpdate.cs" />
+    <Compile Include="Assets\Scripts\Utility\HealthPickup.cs" />
+    <Compile Include="Assets\Scripts\Utility\ParticleSystemAutoDestroy.cs" />
+    <Compile Include="Assets\Scripts\Utility\RotationUpdate.cs" />
+    <Compile Include="Assets\Scripts\Utility\ShotMover.cs" />
+    <Compile Include="Assets\SpawnersDontDestroy.cs" />
+    <Compile Include="Assets\TestScript.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Fonts\OpenSans\License!.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
+</Project>

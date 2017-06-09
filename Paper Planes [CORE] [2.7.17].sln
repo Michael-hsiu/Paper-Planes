@@ -1,11 +1,11 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{D29C8F48-264A-C34E-7830-6AB0A78B29B8}") = "Paper Planes [CORE] [2.7.17]", "Assembly-CSharp-firstpass.csproj", "{9941EB8A-D694-18D8-B458-79A4A738CB44}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio for Mac
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paper Planes [CORE] [2.7.17].Plugins", "Paper Planes [CORE] [2.7.17].Plugins.csproj", "{33E739B1-1D7E-8A64-F66C-AB03E5D9FE10}"
 EndProject
-Project("{D29C8F48-264A-C34E-7830-6AB0A78B29B8}") = "Paper Planes [CORE] [2.7.17]", "Assembly-CSharp.csproj", "{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paper Planes [CORE] [2.7.17]", "Paper Planes [CORE] [2.7.17].csproj", "{92362816-8F33-A331-C782-ACBA51805F82}"
 EndProject
-Project("{D29C8F48-264A-C34E-7830-6AB0A78B29B8}") = "Paper Planes [CORE] [2.7.17]", "Assembly-CSharp-Editor-firstpass.csproj", "{A7192E66-1ABB-3059-3F90-6A442E7A315C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paper Planes [CORE] [2.7.17].Editor.Plugins", "Paper Planes [CORE] [2.7.17].Editor.Plugins.csproj", "{4179EBEC-37B0-A11D-AFFD-E351ADD56AEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,23 +13,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9941EB8A-D694-18D8-B458-79A4A738CB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9941EB8A-D694-18D8-B458-79A4A738CB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9941EB8A-D694-18D8-B458-79A4A738CB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9941EB8A-D694-18D8-B458-79A4A738CB44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CDF852F2-24F5-4D6F-32DE-D4B07D0DFB0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7192E66-1ABB-3059-3F90-6A442E7A315C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7192E66-1ABB-3059-3F90-6A442E7A315C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7192E66-1ABB-3059-3F90-6A442E7A315C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7192E66-1ABB-3059-3F90-6A442E7A315C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33E739B1-1D7E-8A64-F66C-AB03E5D9FE10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33E739B1-1D7E-8A64-F66C-AB03E5D9FE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33E739B1-1D7E-8A64-F66C-AB03E5D9FE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33E739B1-1D7E-8A64-F66C-AB03E5D9FE10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92362816-8F33-A331-C782-ACBA51805F82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92362816-8F33-A331-C782-ACBA51805F82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92362816-8F33-A331-C782-ACBA51805F82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92362816-8F33-A331-C782-ACBA51805F82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4179EBEC-37B0-A11D-AFFD-E351ADD56AEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4179EBEC-37B0-A11D-AFFD-E351ADD56AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4179EBEC-37B0-A11D-AFFD-E351ADD56AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4179EBEC-37B0-A11D-AFFD-E351ADD56AEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal

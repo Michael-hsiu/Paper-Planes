@@ -11,6 +11,24 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 	public Direction direction = Direction.PLAYER_UNDETECTED;
 	public bool safeDistanceColliderActive = false;
 
+
+	[Header("TELE LOGIC")]
+	[Tooltip("The time btwn when visual marker for teleport marker appears, and when we actually teleport")]
+	public float teleDelay = 0.5f;  	
+
+    [Tooltip("Cooldown time for teleport")]
+	public float teleCooldown = 8.0f;   
+
+	public float postTeleDelay = 1.0f;
+	public float xBound;
+	public float yBound;
+	public bool teleportActive = false;
+
+	[Tooltip("Prefab for marking where the boss teleports to.")]
+    public GameObject teleMarker;
+	public Collider mapCollider;
+
+
 	public Direction Direction
 	{
 		get
@@ -25,10 +43,22 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 
 	public SniperBoss sniperBoss;
 
-	void Start()
+    void Awake()
+    {
+        // Start movement routines
+        StartCoroutine(Teleport());    
+    }
+
+    void Start()
 	{
 
 		sniperBoss = GetComponent<SniperBoss>();
+
+		mapCollider = GameManager.Singleton.mapCollider;
+
+		Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
+		xBound = boxSize.x / 2;
+		yBound = boxSize.y / 2;
 
 	}
 
@@ -51,6 +81,44 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 
 	}
 
+	// Teleport routine
+	IEnumerator Teleport()
+	{
+		
+		// Keep true while in current round
+		while (true)
+		{			
+			while (teleportActive)
+			{
+				
+                // Choose a location to teleport to within collider bounds, then wait for a moment.
+				Vector3 spawnLoc = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
+                GameObject teleMarkerFab = Instantiate(teleMarker, spawnLoc, Quaternion.identity);
+
+				teleportActive = false;		// Can no longer teleport for awhile
+				yield return new WaitForSeconds(teleDelay);		// Activate visual marker, waiting to teleport
+
+
+				// Teleport to the random location
+				transform.position = spawnLoc;
+				Destroy(teleMarkerFab);
+                yield return new WaitForSeconds(postTeleDelay);
+
+				// Allow UseLaser routine to take over
+
+
+				//laserActive = true;
+				//while (laserActive)
+				//{
+				//	yield return null;
+				//}
+				//teleportActive = true;
+				//yield return new WaitForSeconds (teleCooldown);		 
+
+			}
+			yield return null;
+		}
+	}
 
 
 	// Call this during if PLAYER_DETECTED

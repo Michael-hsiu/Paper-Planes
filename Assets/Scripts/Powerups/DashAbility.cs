@@ -11,7 +11,7 @@ public class DashAbility : MonoBehaviour {
 	public float maxDash = 20f;
 
 	public Vector2 savedVelocity;
-
+    
 	void Start() {
 		player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
 	}
