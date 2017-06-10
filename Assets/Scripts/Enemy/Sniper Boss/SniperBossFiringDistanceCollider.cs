@@ -5,20 +5,22 @@ using UnityEngine;
 public class SniperBossFiringDistanceCollider : MonoBehaviour
 {
 
-	public IMoveState moveState;
+	public SniperBossMS moveState;
 	public CapsuleCollider capsuleCollider;
 
 	void Awake()
 	{
-		moveState = GetComponentInParent<IMoveState>();
+        moveState = GetComponentInParent<SniperBossMS>();
 		capsuleCollider = GetComponent<CapsuleCollider>();
 	}
 
 	void Start()
 	{
 		// Establish our move state when this boss spawns
-		Debug.Log(Mathf.Pow(capsuleCollider.radius, 2));
-		if (Vector3.SqrMagnitude(GameManager.Singleton.playerShip.transform.position - transform.parent.transform.position) > Mathf.Pow(capsuleCollider.radius, 2))
+		//Debug.Log(Mathf.Pow(capsuleCollider.radius, 2));
+		if (Vector3.SqrMagnitude(
+            GameManager.Singleton.playerShip.transform.position - transform.parent.transform.position) > 
+            Mathf.Pow(capsuleCollider.radius, 2))
 		{
 			// Player out of range of collider, move closer!
 			moveState.Direction = Direction.PLAYER_DETECTED;
@@ -34,9 +36,10 @@ public class SniperBossFiringDistanceCollider : MonoBehaviour
 	void OnTriggerStay(Collider other)
 	{
 		// We don't want to pursue the player if we're within a certain range.
+        // Only if not overridden by FiringState.
 		if (other.gameObject.CompareTag(Constants.PlayerTag))
 		{
-			if (!((SniperBossMS)moveState).safeDistanceColliderActive)
+            if (!moveState.safeDistanceColliderActive && !moveState.moveStateOverridden)
 			{
 				moveState.Direction = Direction.IDLE;
 			}
@@ -48,7 +51,7 @@ public class SniperBossFiringDistanceCollider : MonoBehaviour
 		// If the player isn't touching this collider, they're too far away. Move closer!
 		if (other.gameObject.CompareTag(Constants.PlayerTag))
 		{
-			if (!((SniperBossMS)moveState).safeDistanceColliderActive)
+            if (!moveState.safeDistanceColliderActive && !moveState.moveStateOverridden)
 			{
 				moveState.Direction = Direction.PLAYER_DETECTED;
 			}

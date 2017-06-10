@@ -30,10 +30,6 @@ public class SniperBoss : Ship, IEnemy
     public float postTeleDelay = 1.0f;
     public bool teleportActive = false;
 
-    [Header("LASER LOGIC")]
-    public float laserChargeTime = 3.0f;
-    public float laserEmitTime = 4.0f;  // How long we fire the laser for
-    public bool laserActive = false;
 
     public bool isAtking = false;   // Desc. if boss is attacking
     public int numAtks = 0;     // Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
@@ -45,7 +41,6 @@ public class SniperBoss : Ship, IEnemy
     public bool spawnEnabled = false;
 
 
-    public GameObject laserCollider;
     //public GameObject laserSprite;		// Temporary sprite
     //public GameObject teleMarker;
     // Visual marker for future teleport location
@@ -90,23 +85,12 @@ public class SniperBoss : Ship, IEnemy
 
     #region Game Logic
 
-    void ShowLaser()
+    public void OverrideMoveState(Direction direction)
     {
-        // Preliminary logic for laser
-        if (!laserCollider.gameObject.activeSelf)
-        {
-            laserCollider.SetActive(true);
-            //laserSprite.SetActive (true);
-        }
-        Vector3 rayDir = new Vector3(-transform.position.x * 2, transform.position.y, 0);
-        Debug.DrawRay(transform.position, transform.up * 30);
+        moveState.SetDirection(direction);
     }
 
-    void HideLaser()
-    {
-        laserCollider.SetActive(false);
-        //laserSprite.SetActive (false);
-    }
+
 
 
     IEnumerator UseLaser()

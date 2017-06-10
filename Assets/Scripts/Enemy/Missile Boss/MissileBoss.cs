@@ -99,7 +99,7 @@ public class MissileBoss : Ship, IEnemy
             // Only attack if the player is detected
             if (moveState.Direction == Direction.PLAYER_DETECTED)
             {
-				
+
                 int lastMissileId = -1;
                 GameObject randomSpawn = null;
 
@@ -176,7 +176,7 @@ public class MissileBoss : Ship, IEnemy
                                 //Instantiate (missile, randomSpawn.transform.position, Quaternion.identity);
                                 //PoolObject m = (PoolObject) PoolManager.Instance.ReuseObjectRef(straightMissile, 
                                 //	randomSpawn.transform.position, Quaternion.Inverse (targetRot.transform.rotation));
-                                PoolObject m = (PoolObject)PoolManager.Instance.ReuseObjectRef(straightMissile, 
+                                PoolObject m = (PoolObject)PoolManager.Instance.ReuseObjectRef(straightMissile,
                                     randomSpawn.transform.position, targetRot.transform.rotation);
                             }
                             yield return new WaitForSeconds(missileDelay);		// Wait for delay btwn missile firings	
@@ -253,7 +253,7 @@ public class MissileBoss : Ship, IEnemy
 
         if (other.gameObject.CompareTag(Constants.PlayerShot))
         {
-        
+
             other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
             Damage(GameManager.Singleton.playerDamage);         // We lost health
 

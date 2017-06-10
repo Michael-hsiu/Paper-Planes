@@ -9,6 +9,8 @@ public interface IMoveState : IEntityState
 		get;
 		set;
 	}
+
+    void SetDirection(Direction direction);
 }
 
 public enum Direction
