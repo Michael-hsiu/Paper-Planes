@@ -77,25 +77,30 @@ public class SniperBossFS : MonoBehaviour
                 endTime = Time.time + rotationLength;
                 Vector3 playerPos = sniperBoss.target.transform.position;
 
+                // Do X sweeps of the laser
                 for (int i = 0; i < numRotations; i++)
                 {
-                    while (Time.time < endTime)
-                    {
-                        // IDLE means boss doesn't move, but rotates in correct direction
-                        // Direction it rotates to is fixed
-                        sniperBoss.OverrideMoveState(Direction.IDLE);
-                        yield return null;
-                    }
+					// Setup movement and laser
+                    sniperBoss.ActivateLaserMovementState(Direction.SNIPER_BOSS_LASER_MOVEMENT, endTime);
+					ShowLaser();
+
+                    // Resume operation at endTime
+                    yield return new WaitForSeconds(endTime - Time.time);
+
+                    // Reset movement and laser
+                    HideLaser();
+                    yield return new WaitForSeconds(0.3f);
                 }
 
-				// End the attack
-				sniperBoss.OverrideMoveState(Direction.IDLE);
-				attackStatus = AttackStatus.NOT_ATTACKING;
-				laserActive = false;
-				HideLaser();
-			}
+                // End the attack
+                sniperBoss.DectivateLaserMovementState();
+                attackStatus = AttackStatus.NOT_ATTACKING;
+                laserActive = false;
+                HideLaser();
+            }
             yield return null;
-		}
+        }
+    }
 
 				//Vector3 targetStartPos = sniperBoss.target.transform.position;
 				//yield return new WaitForSeconds(0.05f);
@@ -141,49 +146,34 @@ public class SniperBossFS : MonoBehaviour
         //	yield return null;
         //}
 
-
- 
-
-
-    }
-
-
-
+	IEnumerator BulletHellAttack()
+	{
+	    //while (true)
+	    //{
+	    //	while ()
+	    //	{
 
 
 
-    yield return null;
-    }
-}
+	    //	}
+	    //	yield return null;
+	    //}
+	    yield return null;
+	}
 
-IEnumerator BulletHellAttack()
-{
-    //while (true)
-    //{
-    //	while ()
-    //	{
-
-
-
-    //	}
-    //	yield return null;
-    //}
-    yield return null;
-}
-
-IEnumerator SummonMobsAttack()
-{
-    //while (true)
-    //{
-    //	while ()
-    //	{
+	IEnumerator SummonMobsAttack()
+	{
+	    //while (true)
+	    //{
+	    //	while ()
+	    //	{
 
 
 
-    //	}
-    //	yield return null;
-    //}
-    yield return null;
-}
+	    //	}
+	    //	yield return null;
+	    //}
+	    yield return null;
+	}
 
 }

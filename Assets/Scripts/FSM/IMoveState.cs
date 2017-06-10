@@ -10,7 +10,7 @@ public interface IMoveState : IEntityState
 		set;
 	}
 
-    void SetDirection(Direction direction);
+    void ActivateLaserMovement(Direction direction, float endTime);
 }
 
 public enum Direction
@@ -21,6 +21,7 @@ public enum Direction
 	BACKWARDS,
 	PLAYER_TOO_CLOSE,
 	PLAYER_UNDETECTED,
-	PLAYER_DETECTED
+	PLAYER_DETECTED,
+    SNIPER_BOSS_LASER_MOVEMENT
 
 }

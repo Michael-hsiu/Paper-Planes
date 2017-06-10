@@ -85,12 +85,14 @@ public class SniperBoss : Ship, IEnemy
 
     #region Game Logic
 
-    public void OverrideMoveState(Direction direction)
+    public void ActivateLaserMovementState(Direction direction, float endTime)
     {
-        moveState.SetDirection(direction);
+        moveState.ActivateLaserMovement(direction, endTime);
     }
 
-
+    public void DectivateLaserMovementState() {
+        moveState.DeactivateLaserMovement();
+    }
 
 
     IEnumerator UseLaser()
