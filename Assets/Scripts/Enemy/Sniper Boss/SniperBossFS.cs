@@ -9,26 +9,31 @@ public class SniperBossFS : MonoBehaviour, IFireState
     public float laserChargeTime = 3.0f;
     public float laserEmitTime = 4.0f;  // How long we fire the laser for
     public float laserResetDelayTime = 0.2f;    // Time btwn laser fires we rest
-
     public bool laserActive = false;
+
+    public float bulletHellDuration = 6.0f;
     public bool bulletHellActive = false;
+    public List<ShotSpawn> bulletHellShotSpawns = new List<ShotSpawn>();
+
     public float numAttacks = 0;
     public float numRotations = 3;
     public float rotationLength = 1.0f;
     public float endTime;
     public SniperBoss sniperBoss;
     public GameObject laserCollider;
-	public FiringMode Mode
-	{
-		get;
-		set;
-	}
+    public FiringMode Mode
+    {
+        get;
+        set;
+    }
 
     void Awake()
     {
         // Start attack routines
         sniperBoss = GetComponent<SniperBoss>();
+
         StartCoroutine(LaserAttack());
+        StartCoroutine(BulletHellAttack());
         HideLaser();
     }
 
@@ -48,11 +53,17 @@ public class SniperBossFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal < 1.0f)
+        if (randomVal <= 0.1f)
         {
             // Trigger the Laser attack
             laserActive = true;
             attackStatus = AttackStatus.SNIPER_BOSS_LASER_ATTACK;
+        }
+        else
+        {
+            // Trigger the Bullet Hell attack
+            bulletHellActive = true;
+            attackStatus = AttackStatus.SNIPER_BOSS_BULLET_HELL_ATTACK;
         }
     }
 
@@ -127,15 +138,25 @@ public class SniperBossFS : MonoBehaviour, IFireState
     {
         while (true)
         {
-        	while (bulletHellActive)
-        	{
+            if (bulletHellActive)
+            {
+                // Activate the bullet hell routine in our ShotSpawns
+                // Routines will end at same time as this one
 
+                endTime = Time.time + bulletHellDuration;
+				SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
 
+				foreach (BulletHellShotSpawn bulletHellShotSpawn in bulletHellShotSpawns)
+                {
+                    bulletHellShotSpawn.UseBulletHellAttack(endTime);
+                }
 
-        	}
-        	yield return null;
-        }
-        yield return null;
+                // Wait until end time
+                yield return new WaitForSeconds(endTime - Time.time);
+
+            }
+			yield return null;
+		}
     }
 
     IEnumerator SummonMobsAttack()

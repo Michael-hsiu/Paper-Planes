@@ -186,6 +186,7 @@
     <Compile Include="Assets\Scripts\Game\StartMenuManager.cs" />
     <Compile Include="Assets\Scripts\Game\UIManager.cs" />
     <Compile Include="Assets\Scripts\General\AbstractShip.cs" />
+    <Compile Include="Assets\Scripts\General\BulletHellShot.cs" />
     <Compile Include="Assets\Scripts\General\DictRow.cs" />
     <Compile Include="Assets\Scripts\General\Drawing.cs" />
     <Compile Include="Assets\Scripts\General\DropShipShotSpawn.cs" />

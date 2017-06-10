@@ -1,22 +1,12 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/Shot.cs">
     <Files>
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="80" Column="13" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="167" Column="127" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="132" Column="17" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossSafeDistanceCollider.cs" Line="22" Column="48" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFiringDistanceCollider.cs" Line="39" Column="50" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/EMPWaveShot.cs" Line="10" Column="6" />
-      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="190" Column="18" />
-      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="105" Column="57" />
-      <File FileName="Assets/Scripts/General/ShotSpawn.cs" Line="26" Column="151" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="114" Column="34" />
-      <File FileName="Assets/Scripts/FSM/IFireState.cs" Line="6" Column="1" />
-      <File FileName="Assets/Scripts/FSM/IMoveState.cs" Line="13" Column="7" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="56" Column="27" />
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="52" Column="27" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip/FiringRangeCollider.cs" Line="24" Column="52" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs" Line="28" Column="80" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="152" Column="18" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs" Line="76" Column="22" />
+      <File FileName="Assets/Scripts/General/BulletHellShot.cs" Line="15" Column="3" />
+      <File FileName="Assets/Scripts/General/Shot.cs" Line="37" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
