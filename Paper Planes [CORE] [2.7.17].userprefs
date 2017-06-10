@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs">
     <Files>
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="80" Column="13" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="64" Column="51" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="167" Column="127" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="132" Column="17" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossSafeDistanceCollider.cs" Line="22" Column="48" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFiringDistanceCollider.cs" Line="39" Column="50" />
@@ -16,8 +16,7 @@
       <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="56" Column="27" />
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="52" Column="27" />
       <File FileName="Assets/Scripts/Enemy/RangedShip/FiringRangeCollider.cs" Line="24" Column="52" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/EMPWaveShotSPawn.cs" Line="23" Column="2" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs" Line="8" Column="44" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs" Line="28" Column="80" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
