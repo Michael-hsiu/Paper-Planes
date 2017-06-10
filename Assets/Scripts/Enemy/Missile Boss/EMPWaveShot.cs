@@ -8,7 +8,7 @@ public class EMPWaveShot : PoolObject, IMovement {
 
     [Header("References")]
     public GameObject shotSpawn;
-    public int shotDamage = 10;
+    public int waveDamage = 10;
     public float speed = 1.0f;
     public float speedMultiplier = 1.0f;
     public float lifeTime = 3.0f;
@@ -52,7 +52,7 @@ public class EMPWaveShot : PoolObject, IMovement {
         
         if (other.gameObject.CompareTag(Constants.PlayerTag)) {
             other.gameObject.GetComponent<Rigidbody>().AddForce(transform.up * knockbackForce);
-            other.gameObject.GetComponent<PlayerShip> ().Damage (30);
+            other.gameObject.GetComponent<PlayerShip> ().Damage (waveDamage);
             StartCoroutine(EnableEMPEffect());
         }
     }
