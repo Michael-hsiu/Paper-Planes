@@ -158,6 +158,7 @@
     <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedMS.cs" />
     <Compile Include="Assets\Scripts\Enemy\RangedShip\RangedShip.cs" />
     <Compile Include="Assets\Scripts\Enemy\RangedShip\SafeDistanceCollider.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Sniper Boss\BulletHellShotSpawn.cs" />
     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\LaserCollider.cs" />
     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBoss.cs" />
     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossFS.cs" />

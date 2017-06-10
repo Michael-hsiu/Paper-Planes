@@ -51,11 +51,11 @@ public class SniperBossMS : MonoBehaviour, IMoveState
     {
 
         mapCollider = GameManager.Singleton.mapCollider;
-		Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
+        Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
 
-		xBound = boxSize.x / 2;
-		yBound = boxSize.y / 2;
-		StartCoroutine(Teleport());
+        xBound = boxSize.x / 2;
+        yBound = boxSize.y / 2;
+        StartCoroutine(Teleport());
     }
 
     public void UpdateState()
@@ -74,6 +74,7 @@ public class SniperBossMS : MonoBehaviour, IMoveState
         {
             // For when we're not attacking, so we just stay put.
             // Only attack if we're in range!
+            TurnToPlayer();
         }
         else if (direction == Direction.SNIPER_BOSS_LASER_MOVEMENT)
         {
@@ -97,6 +98,7 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 
     public void DeactivateLaserMovement()
     {
+        direction = Direction.PLAYER_DETECTED;
         // Give control back to Colliders to dictate Direction
         moveStateOverridden = false;
         laserMovementActive = false;
@@ -150,6 +152,21 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 
             }
             yield return null;
+        }
+    }
+
+    // Call this if IDLE
+    public void TurnToPlayer()
+    {
+        if (sniperBoss.target != null)
+        {
+
+            Vector3 dist = (sniperBoss.target.transform.position - sniperBoss.transform.position).normalized;   // Find unit vector difference between target and this
+
+            float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+            Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+            sniperBoss.transform.rotation = Quaternion.RotateTowards(sniperBoss.transform.rotation, desiredRotation, sniperBoss.rotationSpeed * Time.deltaTime);    // Rotate the enemy
+
         }
     }
 

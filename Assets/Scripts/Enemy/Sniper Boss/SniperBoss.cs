@@ -29,7 +29,7 @@ public class SniperBoss : Ship, IEnemy
     public float teleCooldown = 8.0f; // Cooldown time for teleport
     public float postTeleDelay = 1.0f;
     public bool teleportActive = false;
-    public float nextAttackTime;
+    public float nextAttackTime = 3.0f;     // When we start attacking after spawning
     //public bool isAtking = false;   // Desc. if boss is attacking
     //public int numAtks = 0;     // Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
     public bool explAtkActive = false;
@@ -44,7 +44,7 @@ public class SniperBoss : Ship, IEnemy
     //public GameObject teleMarker;
     // Visual marker for future teleport location
 
-    public float nextAtkTime;
+    //public float nextAtkTime;
     // Time at which we can launch next valid atk
     public IEnumerator teleRoutine;
     public IEnumerator laserRoutine;
@@ -61,7 +61,7 @@ public class SniperBoss : Ship, IEnemy
         moveState = GetComponent<IMoveState>();
 		fireState = GetComponent<IFireState>();
 
-		nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
+		//nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
     }
 
 

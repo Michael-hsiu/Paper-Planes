@@ -8,7 +8,10 @@ public class SniperBossFS : MonoBehaviour, IFireState
     public AttackStatus attackStatus;       // Indicates what attack we're using
     public float laserChargeTime = 3.0f;
     public float laserEmitTime = 4.0f;  // How long we fire the laser for
+    public float laserResetDelayTime = 0.2f;    // Time btwn laser fires we rest
+
     public bool laserActive = false;
+    public bool bulletHellActive = false;
     public float numAttacks = 0;
     public float numRotations = 3;
     public float rotationLength = 1.0f;
@@ -26,7 +29,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
         // Start attack routines
         sniperBoss = GetComponent<SniperBoss>();
         StartCoroutine(LaserAttack());
-
+        HideLaser();
     }
 
     public void UpdateState()
@@ -56,7 +59,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
     // Set next possible time for attack 
     public void SetAttackEndTime(float attackEndTime)
     {
-        sniperBoss.nextAttackTime += Random.Range(2.0f, 5.0f);
+        sniperBoss.nextAttackTime = attackEndTime + Random.Range(2.0f, 5.0f);
     }
 
     void ShowLaser()
@@ -85,13 +88,13 @@ public class SniperBossFS : MonoBehaviour, IFireState
 
                 // Charge time
                 // Play animations and indicate laser is charging here
-                yield return new WaitForSeconds(laserChargeTime);
+                //yield return new WaitForSeconds(laserChargeTime);
 
                 // Setup laser
                 // Hand over movement logic to MoveState
 
                 // Fire laser for X sec, rotating at Y angles / sec.
-                endTime = Time.time + rotationLength;
+                endTime = Time.time + rotationLength * (numRotations + laserResetDelayTime);
                 SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
 
                 // Do X sweeps of the laser
@@ -105,8 +108,8 @@ public class SniperBossFS : MonoBehaviour, IFireState
                     yield return new WaitForSeconds(rotationLength);
 
                     // Reset movement and laser
-                    //HideLaser();
-                    //yield return new WaitForSeconds(0.3f);
+                    HideLaser();
+                    yield return new WaitForSeconds(laserResetDelayTime);
                 }
 
                 // End the attack
@@ -122,16 +125,16 @@ public class SniperBossFS : MonoBehaviour, IFireState
 
     IEnumerator BulletHellAttack()
     {
-        //while (true)
-        //{
-        //	while ()
-        //	{
+        while (true)
+        {
+        	while (bulletHellActive)
+        	{
 
 
 
-        //	}
-        //	yield return null;
-        //}
+        	}
+        	yield return null;
+        }
         yield return null;
     }
 

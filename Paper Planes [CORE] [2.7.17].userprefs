@@ -1,9 +1,9 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/FSM/IFireState.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="67" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="59" Column="6" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="5" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="80" Column="13" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="64" Column="51" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="132" Column="17" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossSafeDistanceCollider.cs" Line="22" Column="48" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFiringDistanceCollider.cs" Line="39" Column="50" />
       <File FileName="Assets/Scripts/Enemy/Missile Boss/EMPWaveShot.cs" Line="10" Column="6" />
@@ -16,30 +16,9 @@
       <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="56" Column="27" />
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="52" Column="27" />
       <File FileName="Assets/Scripts/Enemy/RangedShip/FiringRangeCollider.cs" Line="24" Column="52" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/EMPWaveShotSPawn.cs" Line="23" Column="2" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs" Line="8" Column="44" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Paper Planes [CORE] [2.7.17]" expanded="True">
-            <Node name="Assets" expanded="True">
-              <Node name="Scripts" expanded="True">
-                <Node name="Enemy" expanded="True">
-                  <Node name="Missile Boss" expanded="True" />
-                  <Node name="RangedShip" expanded="True" />
-                  <Node name="Sniper Boss" expanded="True" />
-                </Node>
-                <Node name="FSM" expanded="True">
-                  <Node name="IFireState.cs" selected="True" />
-                </Node>
-                <Node name="Game" expanded="True" />
-                <Node name="General" expanded="True" />
-                <Node name="Interfaces" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
