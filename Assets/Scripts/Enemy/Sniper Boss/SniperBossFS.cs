@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SniperBossFS : MonoBehaviour
+public class SniperBossFS : MonoBehaviour, IFireState
 {
 
     public AttackStatus attackStatus;       // Indicates what attack we're using
@@ -15,31 +15,48 @@ public class SniperBossFS : MonoBehaviour
     public float endTime;
     public SniperBoss sniperBoss;
     public GameObject laserCollider;
-
+	public FiringMode Mode
+	{
+		get;
+		set;
+	}
 
     void Awake()
     {
         // Start attack routines
         sniperBoss = GetComponent<SniperBoss>();
-		StartCoroutine(LaserAttack());
-
-	}
-
-    void Start()
-    {
-
+        StartCoroutine(LaserAttack());
 
     }
 
     public void UpdateState()
     {
 
-        if (attackStatus == AttackStatus.SNIPER_BOSS_LASER_ATTACK)
-        {
-            //MoveToPlayer(); // Change to be AWAY from player if too close
-            laserActive = true;
-        }
+        //if (attackStatus == AttackStatus.SNIPER_BOSS_LASER_ATTACK)
+        //{
+        //    //MoveToPlayer(); // Change to be AWAY from player if too close
+        //    //laserActive = true;
+        //}
 
+    }
+
+    // MAIN method for choosing and activating attacks.
+    public void UseAttack()
+    {
+        // Choose an attack
+        float randomVal = Random.value;
+        if (randomVal < 1.0f)
+        {
+            // Trigger the Laser attack
+            laserActive = true;
+            attackStatus = AttackStatus.SNIPER_BOSS_LASER_ATTACK;
+        }
+    }
+
+    // Set next possible time for attack 
+    public void SetAttackEndTime(float attackEndTime)
+    {
+        sniperBoss.nextAttackTime += Random.Range(2.0f, 5.0f);
     }
 
     void ShowLaser()
@@ -75,25 +92,25 @@ public class SniperBossFS : MonoBehaviour
 
                 // Fire laser for X sec, rotating at Y angles / sec.
                 endTime = Time.time + rotationLength;
-                Vector3 playerPos = sniperBoss.target.transform.position;
+                SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
 
                 // Do X sweeps of the laser
                 for (int i = 0; i < numRotations; i++)
                 {
-					// Setup movement and laser
-                    sniperBoss.ActivateLaserMovementState(Direction.SNIPER_BOSS_LASER_MOVEMENT, endTime);
-					ShowLaser();
+                    // Setup movement and laser
+                    sniperBoss.ActivateLaserMovementState(Direction.SNIPER_BOSS_LASER_MOVEMENT, Time.time + rotationLength);
+                    ShowLaser();
 
                     // Resume operation at endTime
-                    yield return new WaitForSeconds(endTime - Time.time);
+                    yield return new WaitForSeconds(rotationLength);
 
                     // Reset movement and laser
-                    HideLaser();
-                    yield return new WaitForSeconds(0.3f);
+                    //HideLaser();
+                    //yield return new WaitForSeconds(0.3f);
                 }
 
                 // End the attack
-                sniperBoss.DectivateLaserMovementState();
+                sniperBoss.DeactivateLaserMovementState();
                 attackStatus = AttackStatus.NOT_ATTACKING;
                 laserActive = false;
                 HideLaser();
@@ -102,78 +119,35 @@ public class SniperBossFS : MonoBehaviour
         }
     }
 
-				//Vector3 targetStartPos = sniperBoss.target.transform.position;
-				//yield return new WaitForSeconds(0.05f);
-				//Vector3 targetEndPos = sniperBoss.target.transform.position;
 
-				//// Need to fix cases - can't change after we start rotating
-				//if (targetEndPos.y < targetStartPos.y /*&& newPos.x > transform.position.x*/)
-				//{
-				//    while (Time.time < endTime)
-				//    {
-				//        transform.RotateAround(transform.position, Vector3.forward, Time.deltaTime * -5.0f);        // Rotate CW
-				//        ShowLaser();
-				//        yield return null;
-				//    }
-				//}
-				//else if (targetEndPos.y > targetStartPos.y /*&& newPos.x > transform.position.x*/)
-				//{
-				//    while (Time.time < endTime)
-				//    {
-				//        transform.RotateAround(transform.position, Vector3.forward, Time.deltaTime * 5.0f);     // Rotate CCW
-				//        ShowLaser();
-				//        yield return null;
-				//    }
-				//}
-				//else
-				//{
-				//    while (Time.time < endTime)
-				//    {
-				//        transform.RotateAround(transform.position, Vector3.forward, Time.deltaTime * 5.0f);     // Rotate CCW
-				//        ShowLaser();
-				//        yield return null;
-				//    }
-				//}
-
-
-
-
-        //// Turn to player first
-        //float turnTime = Time.time + 2.0f;
-        //while (Time.time < turnTime)
+    IEnumerator BulletHellAttack()
+    {
+        //while (true)
         //{
-        //                sniperBoss.SetMoveState(Direction.IDLE);
+        //	while ()
+        //	{
+
+
+
+        //	}
         //	yield return null;
         //}
+        yield return null;
+    }
 
-	IEnumerator BulletHellAttack()
-	{
-	    //while (true)
-	    //{
-	    //	while ()
-	    //	{
-
-
-
-	    //	}
-	    //	yield return null;
-	    //}
-	    yield return null;
-	}
-
-	IEnumerator SummonMobsAttack()
-	{
-	    //while (true)
-	    //{
-	    //	while ()
-	    //	{
+    IEnumerator SummonMobsAttack()
+    {
+        //while (true)
+        //{
+        //	while ()
+        //	{
 
 
 
-	    //	}
-	    //	yield return null;
-	    //}
-	    yield return null;
-	}
+        //	}
+        //	yield return null;
+        //}
+        yield return null;
+    }
 
 }

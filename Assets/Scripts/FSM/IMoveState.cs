@@ -10,7 +10,7 @@ public interface IMoveState : IEntityState
 		set;
 	}
 
-    void ActivateLaserMovement(Direction direction, float endTime);
+    //void ActivateLaserMovement(Direction direction, float endTime);
 }
 
 public enum Direction

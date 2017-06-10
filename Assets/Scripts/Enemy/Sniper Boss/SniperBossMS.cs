@@ -43,20 +43,19 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 
     void Awake()
     {
-        // Start movement routines
         sniperBoss = GetComponent<SniperBoss>();
-        Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
 
-        xBound = boxSize.x / 2;
-        yBound = boxSize.y / 2;
-        StartCoroutine(Teleport());
     }
 
     void Start()
     {
 
         mapCollider = GameManager.Singleton.mapCollider;
+		Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
 
+		xBound = boxSize.x / 2;
+		yBound = boxSize.y / 2;
+		StartCoroutine(Teleport());
     }
 
     public void UpdateState()

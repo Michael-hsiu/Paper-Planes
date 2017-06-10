@@ -29,23 +29,22 @@ public class SniperBoss : Ship, IEnemy
     public float teleCooldown = 8.0f; // Cooldown time for teleport
     public float postTeleDelay = 1.0f;
     public bool teleportActive = false;
-
-
-    public bool isAtking = false;   // Desc. if boss is attacking
-    public int numAtks = 0;     // Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
+    public float nextAttackTime;
+    //public bool isAtking = false;   // Desc. if boss is attacking
+    //public int numAtks = 0;     // Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
     public bool explAtkActive = false;
 
 
-    public float endTime;
+    //public float endTime;
 
-    public bool spawnEnabled = false;
+    //public bool spawnEnabled = false;
 
 
     //public GameObject laserSprite;		// Temporary sprite
     //public GameObject teleMarker;
     // Visual marker for future teleport location
 
-    [SerializeField] private float nextAtkTime;
+    public float nextAtkTime;
     // Time at which we can launch next valid atk
     public IEnumerator teleRoutine;
     public IEnumerator laserRoutine;
@@ -58,144 +57,50 @@ public class SniperBoss : Ship, IEnemy
     protected override void Start()
     {
 
-        //Initialize ();		// Assigns target
         base.Start();
-
-        //mapCollider = GameManager.Singleton.mapCollider;
         moveState = GetComponent<IMoveState>();
+		fireState = GetComponent<IFireState>();
 
-        //Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
-        //xBound = boxSize.x / 2;
-        //yBound = boxSize.y / 2;
-
-        //teleportActive = true;
-
-        // Start attack routines
-        //teleRoutine = Teleport();
-        //StartCoroutine(teleRoutine);
-
-        //laserActive = true;
-        //laserRoutine = UseLaser();
-        //StartCoroutine(laserRoutine);
-
-
+		nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
     }
+
+
 
     #endregion
 
     #region Game Logic
 
+    protected override void Update()
+	{
+
+		Move();
+
+        if (Time.time > nextAttackTime)
+		{
+			Attack();
+        }
+	}
+
+	public override void Move()
+	{
+		moveState.UpdateState();
+	}
+
+    public void Attack() {
+        ((SniperBossFS)fireState).UseAttack();
+    }
+
+    // Tells MS to use appropriate movement
     public void ActivateLaserMovementState(Direction direction, float endTime)
     {
-        moveState.ActivateLaserMovement(direction, endTime);
+        ((SniperBossMS)moveState).ActivateLaserMovement(direction, endTime);
+    }
+    public void DeactivateLaserMovementState() {
+        ((SniperBossMS)moveState).DeactivateLaserMovement();
     }
 
-    public void DectivateLaserMovementState() {
-        moveState.DeactivateLaserMovement();
-    }
 
 
-    IEnumerator UseLaser()
-    {
-
-        while (true)
-        {
-            while (laserActive)
-            {
-
-                // Turn to player first
-                float turnTime = Time.time + 2.0f;
-                while (Time.time < turnTime)
-                {
-                    Vector3 playerDist = target.transform.position - transform.position;    // Find vector difference between target and this
-                    playerDist.Normalize();     // Get unit vector
-                    float zPlayerAngle = (Mathf.Atan2(playerDist.y, playerDist.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
-
-                    Quaternion rot = Quaternion.Euler(0, 0, zPlayerAngle);      // Store rotation as an Euler, then Quaternion
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, rotationSpeed * Time.deltaTime); // Rotate the enemy
-                    yield return null;
-                }
-
-                // Charge time
-                float chargeTime = Time.time + laserChargeTime;
-                while (Time.time < chargeTime)
-                {
-                    Debug.Log("CHARGING LASER");
-                    yield return null;
-                }
-
-                while (numAtks < 3)
-                {
-
-                    // Fire laser for X sec, rotating at Y angles / sec.
-                    endTime = Time.time + laserEmitTime;
-                    Debug.Log(string.Format("CURR TIME: {0}, ENDTIME: {1}", Time.time, endTime));
-                    Vector3 targetStartPos = target.transform.position; // Take measurements to determine which way target is moving
-                    Vector3 newPos = Vector3.zero;
-                    //bool tookPosMeas = false;
-
-                    //if (!tookPosMeas) {			// In case we need to take more meas.
-                    yield return new WaitForSeconds(0.05f);
-                    newPos = target.transform.position;
-                    //tookPosMeas = true;
-                    Debug.Log("TOOK MEAS");
-                    //}
-
-
-                    // Need to fix cases - can't change after we start rotating
-                    if (newPos.y < targetStartPos.y /*&& newPos.x > transform.position.x*/)
-                    {
-                        while (Time.time < endTime)
-                        {
-                            transform.RotateAround(transform.position, Vector3.forward, Time.deltaTime * -5.0f);        // Rotate CW
-                            ShowLaser();
-                            yield return null;
-                        }
-                    }
-                    else if (newPos.y > targetStartPos.y /*&& newPos.x > transform.position.x*/)
-                    {
-                        while (Time.time < endTime)
-                        {
-                            transform.RotateAround(transform.position, Vector3.forward, Time.deltaTime * 5.0f);     // Rotate CCW
-                            ShowLaser();
-                            yield return null;
-                        }
-                    }
-                    else
-                    {
-                        while (Time.time < endTime)
-                        {
-                            transform.RotateAround(transform.position, Vector3.forward, Time.deltaTime * 5.0f);     // Rotate CCW
-                            ShowLaser();
-                            yield return null;
-                        }
-                    }
-
-                    HideLaser();
-                    Debug.Log("NUMATKS = " + numAtks);
-                    numAtks += 1;
-                    if (numAtks >= 3)
-                    {
-                        numAtks = 0;
-                        break;
-                    }
-                    yield return new WaitForSeconds(1.5f);
-                    // Laser / rotation logic
-                    //Vector3 rayDir = new Vector3 (-transform.position.x * 10, transform.position.y, 0);
-                    //Debug.DrawRay (transform.position, rayDir);
-
-                    //transform.rotation = Quaternion.Slerp (transform.rotation, destRot, Time.deltaTime * 0.5f);
-                }
-
-                // Brief cooldown in which boss can't do anything except rotate. (tell MS)
-                laserActive = false;
-                teleportActive = true;
-                //Debug.Log ("COOLDOWN");
-
-            }
-            yield return null;
-        }
-    }
 
     IEnumerator UseExplosives()
     {
@@ -211,98 +116,88 @@ public class SniperBoss : Ship, IEnemy
         }
     }
 
+	void OnTriggerEnter(Collider other)
+	{
 
-    IEnumerator UseAttack()
-    {
-        while (true)
-        {
+		if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
+		{
 
-            // Wait until we can start atking again
-            if (Time.time >= nextAtkTime)
-            {
+			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
+			Damage(GameManager.Singleton.playerDamage);         // We lost health
 
-                // Choose an atk randomly (may choose to weight later to prevent repeats)
-                // 0=laser, 1=explosives (must use if player is close)
+			//Debug.Log ("ENEMY HEALTH: " + health);    // Print message to console
+		}
+	}
 
-                //int atkID = 0; /* = Random.Range (0, 2); */
-                isAtking = true;        // We're now attacking
+    //IEnumerator UseAttack()
+    //{
+    //    while (true)
+    //    {
 
-                if (numAtks >= 3)
-                {       // If we've atked 3 times in a row
+    //        // Wait until we can start atking again
+    //        if (Time.time >= nextAtkTime)
+    //        {
 
-                    teleportActive = true;
-                    //StartCoroutine(Teleport());
+    //            // Choose an atk randomly (may choose to weight later to prevent repeats)
+    //            // 0=laser, 1=explosives (must use if player is close)
 
-                    // We let Teleport routine do its job
-                    while (teleportActive)
-                    {
-                        yield return null;
-                    }
+    //            //int atkID = 0; /* = Random.Range (0, 2); */
+    //            isAtking = true;        // We're now attacking
 
-                }
-                else if (moveState.Direction == Direction.PLAYER_UNDETECTED)
-                {
-                    // Only use our laser if player is far enough away to be undetected (MS performs this check).
+    //            if (numAtks >= 3)
+    //            {       // If we've atked 3 times in a row
 
-                    //laserActive = true;
-                    StartCoroutine(UseLaser());
+    //                teleportActive = true;
+    //                //StartCoroutine(Teleport());
 
-                    while (laserActive)
-                    {
-                        yield return null;
-                    }
+    //                // We let Teleport routine do its job
+    //                while (teleportActive)
+    //                {
+    //                    yield return null;
+    //                }
 
-                }
-                else if (moveState.Direction == Direction.PLAYER_DETECTED)
-                {
-                    // Use our explosives if player is too close, to make them go away!	
+    //            }
+    //            else if (moveState.Direction == Direction.PLAYER_UNDETECTED)
+    //            {
+    //                // Only use our laser if player is far enough away to be undetected (MS performs this check).
 
-                    explAtkActive = true;
-                    StartCoroutine(UseExplosives());
+    //                //laserActive = true;
+    //                StartCoroutine(UseLaser());
 
-                    while (explAtkActive)
-                    {
-                        yield return null;
-                    }
-                }
+    //                while (laserActive)
+    //                {
+    //                    yield return null;
+    //                }
+
+    //            }
+    //            else if (moveState.Direction == Direction.PLAYER_DETECTED)
+    //            {
+    //                // Use our explosives if player is too close, to make them go away!	
+
+    //                explAtkActive = true;
+    //                StartCoroutine(UseExplosives());
+
+    //                while (explAtkActive)
+    //                {
+    //                    yield return null;
+    //                }
+    //            }
 
 
-                /*// Fix to explosives atk
-				if (target != null && Utils.SquaredEuclideanDistance(gameObject, target.gameObject) < safetyDist) {
+    //            /*// Fix to explosives atk
+				//if (target != null && Utils.SquaredEuclideanDistance(gameObject, target.gameObject) < safetyDist) {
 					
-				}*/
+				//}*/
 
-                // After either attack
-                //nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	
-                isAtking = false;       // No longer attacking
-                moveState.Direction = Direction.PLAYER_DETECTED;
-                yield return null;
-            }
-            yield return null;
-        }
-    }
-
-
-
-
-    public override void Move()
-    {
-        moveState.UpdateState();
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-
-        if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
-        {
-
-            other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
-            Damage(GameManager.Singleton.playerDamage);         // We lost health
-
-            //Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console
-        }
-    }
-
+    //            // After either attack
+    //            //nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	
+    //            isAtking = false;       // No longer attacking
+    //            moveState.Direction = Direction.PLAYER_DETECTED;
+    //            yield return null;
+    //        }
+    //        yield return null;
+    //    }
+    //}
 
     #endregion
 
