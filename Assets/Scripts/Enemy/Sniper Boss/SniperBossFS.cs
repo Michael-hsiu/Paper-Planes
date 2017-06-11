@@ -53,7 +53,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal <= 0.1f)
+        if (randomVal <= 0.0000001f)
         {
             // Trigger the Laser attack
             laserActive = true;
