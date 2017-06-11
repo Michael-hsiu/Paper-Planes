@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShotSpawn : ShotSpawn {
+public class PlayerShotSpawn : ShotSpawn
+{
 
     [Range(0.0f, 360.0f)] public float firingAngle = 0.0f;
     public int ultiShotInterval = 5;
@@ -14,17 +15,17 @@ public class PlayerShotSpawn : ShotSpawn {
     //public bool multShotEnabled = false;
 
     [Header("PREFABS")]
-	public GameObject shot;
-	public GameObject fasterShot;
-	public GameObject ultimateShot;
-	public GameObject waveShot;
-	public GameObject missile;
+    public GameObject shot;
+    public GameObject fasterShot;
+    public GameObject ultimateShot;
+    public GameObject waveShot;
+    public GameObject missile;
 
-   
-	//public GameObject targetRotation;
-	//public bool multiFire = false;
 
-	public override void CreateShot(bool isFiringBuffed = false)
+    //public GameObject targetRotation;
+    //public bool multiFire = false;
+
+    public override void CreateShot(bool isFiringBuffed = false)
     {
 
         targetRotation = GameManager.Singleton.playerShip.gameObject;      // The parent should be the player or enemy sprite
@@ -34,71 +35,79 @@ public class PlayerShotSpawn : ShotSpawn {
         if (shotCounter == ultiShotInterval)
         {
 
-            PoolManager.Instance.ReuseObject(ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation));
+            PoolManager.Instance.ReuseObject(ultimateShot, transform.position, targetRotation.transform.rotation);
             shotCounter = 0;
 
-        } 
+        }
 
         // Case 2 - Fire a normal shot at specified angle.
         else
         {
-            PoolManager.Instance.ReuseObject(shot, transform.position, transform.rotation * Quaternion.Inverse(
+            PoolManager.Instance.ReuseObject(shot, transform.position,
                         Quaternion.Euler(new Vector3(
-                                targetRotation.transform.localEulerAngles.x, 
-                                targetRotation.transform.localEulerAngles.y,
-                                targetRotation.transform.localEulerAngles.z + firingAngle))));
-		}
+                             targetRotation.transform.eulerAngles.x,
+                             targetRotation.transform.eulerAngles.y,
+                             targetRotation.transform.eulerAngles.z + firingAngle)));
+            //Debug.Log("FIRING FROM PLAYERSHOTSPAWN!");
+        }
 
-		shotCounter += 1;	// Increment shot count
+        shotCounter += 1;   // Increment shot count
 
-	}
+    }
 
-	// This is for homing missiles
-	public void CreateMissiles(int numMissiles) {
+    // This is for homing missiles
+    public void CreateMissiles(int numMissiles)
+    {
 
-		// The parent should be the player or enemy sprite
-		targetRotation = transform.parent.parent.gameObject;		
+        // The parent should be the player or enemy sprite
+        targetRotation = transform.parent.parent.gameObject;
 
-		// Rotate shotSpawn relative to parent Player
-		transform.localRotation = targetRotation.transform.rotation;	
+        // Rotate shotSpawn relative to parent Player
+        transform.localRotation = targetRotation.transform.rotation;
 
-		// Logic for firing multiple missiles in many directions
-		while (numMissiles > 0) {
-			Vector3 randomRot = RandomRotation ();
-			Missile m = (Missile) PoolManager.Instance.ReuseObjectRef(missile, transform.position, Quaternion.Euler(randomRot) * Quaternion.Inverse (targetRotation.transform.rotation));
-			//m.GetComponent<Rigidbody> ().AddForce(randomRot * 20);		// Random propulsion in semicircular range (0-180deg)
-			numMissiles -= 1;
-		}
-	}
-    
-	public Vector3 RandomRotation() {
+        // Logic for firing multiple missiles in many directions
+        while (numMissiles > 0)
+        {
+            Vector3 randomRot = RandomRotation();
+            Missile m = (Missile)PoolManager.Instance.ReuseObjectRef(missile, transform.position, Quaternion.Euler(randomRot) * Quaternion.Inverse(targetRotation.transform.rotation));
+            //m.GetComponent<Rigidbody> ().AddForce(randomRot * 20);		// Random propulsion in semicircular range (0-180deg)
+            numMissiles -= 1;
+        }
+    }
 
-		// The parent should be the player or enemy sprite
-		targetRotation = transform.parent.parent.gameObject;	
+    public Vector3 RandomRotation()
+    {
 
-		// Get Euler repr of parent gameobject
-		Vector3 pos = targetRotation.transform.position;
+        // The parent should be the player or enemy sprite
+        targetRotation = transform.parent.parent.gameObject;
 
-		float angle = Random.Range (0, 180);	// Missiles will only spread in a semicircle in front of player
+        // Get Euler repr of parent gameobject
+        Vector3 pos = targetRotation.transform.position;
 
-		Vector3 result = new Vector3(1 * Mathf.Sin(angle * Mathf.Deg2Rad), 1 * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z).normalized;
-		return result;
+        float angle = Random.Range(0, 180); // Missiles will only spread in a semicircle in front of player
 
-	}
+        Vector3 result = new Vector3(1 * Mathf.Sin(angle * Mathf.Deg2Rad), 1 * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z).normalized;
+        return result;
 
-	public void EnableUltimateShot() {
-		ultimateShotEnabled = true;
-	}
+    }
 
-	public void DisableUltimateShot() {
-		ultimateShotEnabled = false;
-	}
+    public void EnableUltimateShot()
+    {
+        ultimateShotEnabled = true;
+    }
 
-	public void EnableWaveShot() {
-		waveShotEnabled = true;
-	}
+    public void DisableUltimateShot()
+    {
+        ultimateShotEnabled = false;
+    }
 
-	public void DisableWaveShot() {
-		waveShotEnabled = false;
-	}
+    public void EnableWaveShot()
+    {
+        waveShotEnabled = true;
+    }
+
+    public void DisableWaveShot()
+    {
+        waveShotEnabled = false;
+    }
 }

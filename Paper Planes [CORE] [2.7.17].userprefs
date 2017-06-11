@@ -1,12 +1,14 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/AIInput.cs">
     <Files>
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="80" Column="13" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="167" Column="127" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="56" Column="37" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs" Line="54" Column="13" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="16" Column="48" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs" Line="51" Column="53" />
       <File FileName="Assets/Scripts/General/BulletHellShot.cs" Line="15" Column="3" />
       <File FileName="Assets/Scripts/General/Shot.cs" Line="37" Column="27" />
+      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="49" Column="69" />
+      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="64" Column="70" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

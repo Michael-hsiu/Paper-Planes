@@ -144,9 +144,9 @@ public class SniperBossFS : MonoBehaviour, IFireState
                 // Routines will end at same time as this one
 
                 endTime = Time.time + bulletHellDuration;
-				SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
+                SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
 
-				foreach (BulletHellShotSpawn bulletHellShotSpawn in bulletHellShotSpawns)
+                foreach (BulletHellShotSpawn bulletHellShotSpawn in bulletHellShotSpawns)
                 {
                     bulletHellShotSpawn.UseBulletHellAttack(endTime);
                 }
@@ -155,8 +155,8 @@ public class SniperBossFS : MonoBehaviour, IFireState
                 yield return new WaitForSeconds(endTime - Time.time);
 
             }
-			yield return null;
-		}
+            yield return null;
+        }
     }
 
     IEnumerator SummonMobsAttack()
