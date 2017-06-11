@@ -11,7 +11,8 @@ public class BulletHellPatternGenerator : MonoBehaviour
 
     public void GenerateRandomPatterns()
     {
-
+        Debug.Log("LIST LENGTH: " + listOfListOfBulletHellShotSpawns.Count);
+        //Debug.Break();
         // Go through each pair of shot spawns
         foreach (BulletHellShotSpawnListWrapper shotSpawnPairList in listOfListOfBulletHellShotSpawns)
         {
@@ -21,16 +22,23 @@ public class BulletHellPatternGenerator : MonoBehaviour
             //bool isSecondShotSpawn = false;
             foreach (BulletHellShotSpawn bulletHellShotSpawn in shotSpawnPairList.pair)
             {
+                Debug.Log(string.Format("SPAWN_NAME:D {0}, SPAWN_ANGLE:D {1}", bulletHellShotSpawn.name, bulletHellShotSpawn.rotationAngleCopy));
+                //Debug.Break();
                 // Give it a value.
                 if (bulletHellShotSpawn.rotationAngleCopy > 0)
                 {
                     bulletHellShotSpawn.rotationAngleCopy = -generatedRotationAngle;
+                    Debug.Log("SPAWN_NAMEE: " + bulletHellShotSpawn.name);
+                    //Debug.Break();
                 }
                 else
                 {
                     bulletHellShotSpawn.rotationAngleCopy = generatedRotationAngle;
-                }
+                    Debug.Log("GENERATED ROT_ANGLE: " + generatedRotationAngle);
+                    //Debug.Break();
 
+                }
+                //Debug.Break();
                 //if (!isSecondShotSpawn)
                 //{
                 //    isSecondShotSpawn = true;

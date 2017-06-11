@@ -78,7 +78,7 @@ public class BulletHellShotSpawn : ShotSpawn
                 }
                 else
                 {
-                    bulletHellPatternGenerator.GenerateRandomPatterns();
+                    //bulletHellPatternGenerator.GenerateRandomPatterns();
                     Debug.Log("ELSE CASE REACHED!");
                     //Debug.Break();
                 }
