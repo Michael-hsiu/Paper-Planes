@@ -16,6 +16,8 @@ public class SniperBossMS : MonoBehaviour, IMoveState
     public float teleDelay = 0.5f;  // The time btwn when visual marker for teleport marker appears, and when we actually teleport
     public float teleCooldown = 8.0f;   // Cooldown time for teleport
     public bool laserMovementActive = false;
+    public bool bulletHellMovementActive = false;
+
     public float postTeleDelay = 1.0f;
     public float xBound;
     public float yBound;
@@ -81,14 +83,17 @@ public class SniperBossMS : MonoBehaviour, IMoveState
             // This means that we're close enough to the player to attack; no need to move.
             // Still rotates to meet player
 
-
+        }
+        else if (direction == Direction.SNIPER_BOSS_BULLET_HELL_MOVEMENT)
+        {
+            // We don't move; we just FIRE!
         }
 
     }
 
-    public void ActivateLaserMovement(Direction direction, float endTime)
+    public void ActivateLaserMovement(float endTime)
     {
-        this.direction = direction;
+        direction = Direction.SNIPER_BOSS_LASER_MOVEMENT;
         moveStateOverridden = true;
         laserMovementActive = true;
 
@@ -104,6 +109,24 @@ public class SniperBossMS : MonoBehaviour, IMoveState
         laserMovementActive = false;
 
         laserRoutine = null;
+    }
+
+    public void ActivateBulletHellMovement(float endTime)
+    {
+        direction = Direction.SNIPER_BOSS_BULLET_HELL_MOVEMENT;
+        moveStateOverridden = true;
+        bulletHellMovementActive = true;
+
+    }
+
+    public void DeactivateBulletHellMovement()
+    {
+        direction = Direction.PLAYER_DETECTED;
+        // Give control back to Colliders to dictate Direction
+        moveStateOverridden = false;
+        bulletHellMovementActive = false;
+
+
     }
 
     // Call this if SNIPER_BOSS_LASER_MOVEMENT

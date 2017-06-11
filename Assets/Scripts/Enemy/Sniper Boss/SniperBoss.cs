@@ -59,9 +59,9 @@ public class SniperBoss : Ship, IEnemy
 
         base.Start();
         moveState = GetComponent<IMoveState>();
-		fireState = GetComponent<IFireState>();
+        fireState = GetComponent<IFireState>();
 
-		//nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
+        //nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
     }
 
 
@@ -71,32 +71,43 @@ public class SniperBoss : Ship, IEnemy
     #region Game Logic
 
     protected override void Update()
-	{
+    {
 
-		Move();
+        Move();
 
         if (Time.time > nextAttackTime)
-		{
-			Attack();
+        {
+            Attack();
         }
-	}
+    }
 
-	public override void Move()
-	{
-		moveState.UpdateState();
-	}
+    public override void Move()
+    {
+        moveState.UpdateState();
+    }
 
-    public void Attack() {
+    public void Attack()
+    {
         ((SniperBossFS)fireState).UseAttack();
     }
 
     // Tells MS to use appropriate movement
-    public void ActivateLaserMovementState(Direction direction, float endTime)
+    public void ActivateLaserMovementState(float endTime)
     {
-        ((SniperBossMS)moveState).ActivateLaserMovement(direction, endTime);
+        ((SniperBossMS)moveState).ActivateLaserMovement(endTime);
     }
-    public void DeactivateLaserMovementState() {
+    public void DeactivateLaserMovementState()
+    {
         ((SniperBossMS)moveState).DeactivateLaserMovement();
+    }
+    // Tells MS to use appropriate movement
+    public void ActivateBulletHellMovementState(float endTime)
+    {
+        ((SniperBossMS)moveState).ActivateBulletHellMovement(endTime);
+    }
+    public void DeactivateBulletHellMovementState()
+    {
+        ((SniperBossMS)moveState).DeactivateBulletHellMovement();
     }
 
 
@@ -116,18 +127,18 @@ public class SniperBoss : Ship, IEnemy
         }
     }
 
-	void OnTriggerEnter(Collider other)
-	{
+    void OnTriggerEnter(Collider other)
+    {
 
-		if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
-		{
+        if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
+        {
 
-			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
-			Damage(GameManager.Singleton.playerDamage);         // We lost health
+            other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
+            Damage(GameManager.Singleton.playerDamage);         // We lost health
 
-			//Debug.Log ("ENEMY HEALTH: " + health);    // Print message to console
-		}
-	}
+            //Debug.Log ("ENEMY HEALTH: " + health);    // Print message to console
+        }
+    }
 
     //IEnumerator UseAttack()
     //{
@@ -185,9 +196,9 @@ public class SniperBoss : Ship, IEnemy
 
 
     //            /*// Fix to explosives atk
-				//if (target != null && Utils.SquaredEuclideanDistance(gameObject, target.gameObject) < safetyDist) {
-					
-				//}*/
+    //if (target != null && Utils.SquaredEuclideanDistance(gameObject, target.gameObject) < safetyDist) {
+
+    //}*/
 
     //            // After either attack
     //            //nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	

@@ -6,12 +6,15 @@ public class BulletHellShotSpawn : ShotSpawn
 {
 
     public GameObject bulletHellProjectile;
-    public float rotationAngle;
+    public BulletHellPatternGenerator bulletHellPatternGenerator;       // Generates pairwise-matching random values for us!
+    //public float rotationAngle;
     public float rotationSpeed;
-    public float numRotations;
+    public int numRotations;
     public bool isFirstRotation = true;
-    public float rotAngle = 90.0f;
-
+    public float rotationAngle = -89.0f;
+    public float rotationAngleCopy;
+    public Quaternion desiredRotation;
+    public Quaternion currRotation;
 
 
     public float delayBtwnShots;
@@ -36,42 +39,67 @@ public class BulletHellShotSpawn : ShotSpawn
     IEnumerator RotateOverTime(float endTime)
     {
         //rotationAngle = Random.Range(-90.0f, 90.0f);
-        numRotations = 0;
 
-        while (true)
+        // Reset variables
+        numRotations = 0;
+        //rotationAngle = -88.0f;
+        isFirstRotation = true;
+        transform.localRotation = Quaternion.Euler(Vector3.zero);     // Reset rotation
+        rotationAngleCopy = rotationAngle;
+
+        //Debug.Break();  // Not v3.zero b/c program too fast?
+        while (Time.time < endTime)
         {
 
             // Switch direction after first rotation
             if (!isFirstRotation)
             {
-                if (numRotations == 0)
+                if (numRotations % 2 == 0)
                 {
-                    rotAngle = 178.0f;
+                    // Create new set of values
+                    bulletHellPatternGenerator.GenerateRandomPatterns();
+                    //if (rotationAngleCopy < 0)
+                    //{
+                    //    rotationAngleCopy = 176.0f;     // Almost full half-circle rotation
+                    //}
+                    //else
+                    //{
+                    //    rotationAngleCopy = -176.0f;     // Almost full half-circle rotation
+                    //}
+                    //Debug.Break();
+                }
+                else if (numRotations % 2 == 1)
+                {
+                    //rotationAngleCopy = rotationAngleCopy * -1;
+                    // 2nd time around, rotate the other way
+                    rotationAngleCopy *= -1;
+                    //Debug.Break();
+
                 }
                 else
                 {
-                    rotAngle = rotAngle * -1;
-                    Debug.Log("ROT_ANGLE #" + numRotations + ": " + rotAngle);
-                    //rotationSpeed *= -1;
+                    bulletHellPatternGenerator.GenerateRandomPatterns();
+                    Debug.Log("ELSE CASE REACHED!");
                     //Debug.Break();
                 }
                 numRotations += 1;
             }
-
-            if (isFirstRotation)
+            else
             {
                 isFirstRotation = false;
             }
 
 
-            Quaternion desiredRotation = transform.rotation * Quaternion.AngleAxis(rotAngle, Vector3.forward);
-            while (Quaternion.Angle(transform.rotation, desiredRotation) > Mathf.Epsilon)
+            // Rotation logic
+            desiredRotation = transform.rotation * Quaternion.AngleAxis(rotationAngleCopy, Vector3.forward);
+            while (Quaternion.Angle(transform.rotation, desiredRotation) > 2.0f)
             {
+                currRotation = transform.rotation;
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, Time.deltaTime * rotationSpeed);
-                Debug.Log("ROTATING!: #" + numRotations);
+                Debug.Log("ROTATING");
                 yield return null;
             }
-            Debug.Log("FINISHED ROTATION #: " + numRotations);
+            Debug.Log("CYCLE COMPLETED");
             //Debug.Break();
             yield return null;
         }

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public interface IMoveState : IEntityState
 {
-	Direction Direction
-	{
-		get;
-		set;
-	}
+    Direction Direction
+    {
+        get;
+        set;
+    }
 
     //void ActivateLaserMovement(Direction direction, float endTime);
 }
@@ -16,12 +16,13 @@ public interface IMoveState : IEntityState
 public enum Direction
 {
 
-	FORWARDS,
-	IDLE,
-	BACKWARDS,
-	PLAYER_TOO_CLOSE,
-	PLAYER_UNDETECTED,
-	PLAYER_DETECTED,
-    SNIPER_BOSS_LASER_MOVEMENT
+    FORWARDS,
+    IDLE,
+    BACKWARDS,
+    PLAYER_TOO_CLOSE,
+    PLAYER_UNDETECTED,
+    PLAYER_DETECTED,
+    SNIPER_BOSS_LASER_MOVEMENT,
+    SNIPER_BOSS_BULLET_HELL_MOVEMENT
 
 }

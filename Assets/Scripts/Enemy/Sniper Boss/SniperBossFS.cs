@@ -53,7 +53,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal <= 0.0000001f)
+        if (randomVal <= 0.00000000001f)
         {
             // Trigger the Laser attack
             laserActive = true;
@@ -67,10 +67,39 @@ public class SniperBossFS : MonoBehaviour, IFireState
         }
     }
 
+    IEnumerator BulletHellAttack()
+    {
+        while (true)
+        {
+            if (bulletHellActive)
+            {
+                // Activate the bullet hell routine in our ShotSpawns
+                // Routines will end at same time as this one
+
+                endTime = Time.time + bulletHellDuration;
+                SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
+                sniperBoss.ActivateBulletHellMovementState(endTime);
+
+                foreach (BulletHellShotSpawn bulletHellShotSpawn in bulletHellShotSpawns)
+                {
+                    bulletHellShotSpawn.UseBulletHellAttack(endTime);
+                }
+
+                // Wait until end time
+                yield return new WaitForSeconds(endTime - Time.time);
+                bulletHellActive = false;
+                sniperBoss.DeactivateBulletHellMovementState();
+
+            }
+            yield return null;
+        }
+    }
+
+
     // Set next possible time for attack 
     public void SetAttackEndTime(float attackEndTime)
     {
-        sniperBoss.nextAttackTime = attackEndTime + Random.Range(2.0f, 5.0f);
+        sniperBoss.nextAttackTime = attackEndTime + Random.Range(1.0f, 2.0f);
     }
 
     void ShowLaser()
@@ -112,7 +141,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
                 for (int i = 0; i < numRotations; i++)
                 {
                     // Setup movement and laser
-                    sniperBoss.ActivateLaserMovementState(Direction.SNIPER_BOSS_LASER_MOVEMENT, Time.time + rotationLength);
+                    sniperBoss.ActivateLaserMovementState(Time.time + rotationLength);
                     ShowLaser();
 
                     // Resume operation at endTime
@@ -134,31 +163,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
     }
 
 
-    IEnumerator BulletHellAttack()
-    {
-        while (true)
-        {
-            if (bulletHellActive)
-            {
-                // Activate the bullet hell routine in our ShotSpawns
-                // Routines will end at same time as this one
 
-                endTime = Time.time + bulletHellDuration;
-                SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
-
-                foreach (BulletHellShotSpawn bulletHellShotSpawn in bulletHellShotSpawns)
-                {
-                    bulletHellShotSpawn.UseBulletHellAttack(endTime);
-                }
-
-                // Wait until end time
-                yield return new WaitForSeconds(endTime - Time.time);
-                bulletHellActive = false;
-
-            }
-            yield return null;
-        }
-    }
 
     IEnumerator SummonMobsAttack()
     {
