@@ -60,14 +60,15 @@ public class AIInput : MonoBehaviour, InputComponent
             {
                 if (Input.GetKey(KeyCode.W))
                 {
-                    //player.transform.Translate (Vector2.up * Time.deltaTime * speed);
-                    player.GetComponent<Rigidbody>().AddRelativeForce(Vector3.up * player.speed);
+                    player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * player.speed);
+                    //player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * player.speed); // Also works!
+
                 }
 
                 if (Input.GetKey(KeyCode.S))
                 {
-                    //player.transform.Translate (Vector2.down * Time.deltaTime * speed);
                     player.GetComponent<Rigidbody>().AddRelativeForce(-transform.up * player.speed);
+                    //player.GetComponent<Rigidbody>().AddRelativeForce(-transform.up * player.speed); // Also works!
                 }
             }
 
