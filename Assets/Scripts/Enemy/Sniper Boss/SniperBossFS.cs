@@ -153,6 +153,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
 
                 // Wait until end time
                 yield return new WaitForSeconds(endTime - Time.time);
+                bulletHellActive = false;
 
             }
             yield return null;
