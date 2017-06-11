@@ -10,6 +10,7 @@ public class BulletHellShotSpawn : ShotSpawn
     public float rotationSpeed;
 
     public float delayBtwnShots;
+    public Vector3 targetRot;
 
     IEnumerator bulletHellRoutine;
     //public GameObject targetRotation;   // Reference rotation
@@ -50,48 +51,101 @@ public class BulletHellShotSpawn : ShotSpawn
             //    Debug.Log("ROTATING IN PROGRESS");
             //    yield return null;
             //}
-            Vector3 targetRot = transform.rotation.eulerAngles + new Vector3(0, 0, rotationAngle);
-            rotationSpeed = (rotationAngle > 0f) ? 3f : -3f;
+            //targetRot = transform.localRotation.eulerAngles + new Vector3(0, 0, rotationAngle);
+            targetRot = new Vector3(0, 0, rotationAngle);
+            //Debug.Break();
+            rotationSpeed = (rotationAngle >= 0f) ? rotationSpeed : -rotationSpeed;
 
             //Debug.Log("EULERANG: " + transform.InverseTransformPoint(transform.localEulerAngles));
             //Debug.Log("TARGET_EULERANG: " + targetRot);
             //Debug.Log("ANGLE DIFF: " + Vector3.Angle(transform.rotation.eulerAngles, targetRot));
 
-            while (Mathf.Abs(transform.rotation.eulerAngles.z - targetRot.z) > 5.0f)
+            while (Mathf.Abs(transform.localRotation.eulerAngles.z - targetRot.z) > 5.0f)
             {
                 transform.Rotate(new Vector3(0f, 0f, rotationSpeed) * Time.deltaTime);
+                if (transform.localRotation.eulerAngles.z >= 90.0f || transform.localRotation.eulerAngles.z <= -90.0f)
+                {
+                    break;
+                }
                 Debug.Log("RATATED");
                 yield return null;
             }
-			//Debug.Log("END_EULERANG: " + transform.rotation.eulerAngles);
-			//Debug.Break();
+            //Debug.Log("END_EULERANG: " + transform.rotation.eulerAngles);
+            //Debug.Break();
 
-			// Generate 2 possible new target angles. Choose one randomly and clamp btwn -90 and 90 degrees.
-			
+            // Generate 2 possible new target angles. Choose one randomly and clamp btwn -90 and 90 degrees.
+
             // Quick fix if we exceed angle
-   //         if (transform.rotation.eulerAngles.z < -90.0f)
-			//{
-			//	Vector3 newRot = new Vector3(0, 0, -90.0f);
-			//	transform.rotation = Quaternion.Euler(newRot);
-			//}
-			//else if (transform.rotation.eulerAngles.z > 90.0f)
-			//{
-			//	Vector3 newRot = new Vector3(0, 0, 90.0f);
-			//	transform.rotation = Quaternion.Euler(newRot);
-			//}
+            //         if (transform.rotation.eulerAngles.z < -90.0f)
+            //{
+            //	Vector3 newRot = new Vector3(0, 0, -90.0f);
+            //	transform.rotation = Quaternion.Euler(newRot);
+            //}
+            //else if (transform.rotation.eulerAngles.z > 90.0f)
+            //{
+            //	Vector3 newRot = new Vector3(0, 0, 90.0f);
+            //	transform.rotation = Quaternion.Euler(newRot);
+            //}
 
-            float lowerRotationAngle = rotationAngle - Random.Range(20.0f, 50.0f);
-            float higherRotationAngle = rotationAngle + Random.Range(20.0f, 50.0f);
+            //rotationAngle = Mathf.Clamp(rotationAngle, -90.0f, 90.0f);
 
-            if (rotationAngle < 0) {
-                rotationAngle = higherRotationAngle;
-            } else {
-                rotationAngle = lowerRotationAngle;
+            //float lowerRotationAngle = rotationAngle - Random.Range(20.0f, 80.0f);
+            //float higherRotationAngle = rotationAngle + Random.Range(20.0f, 80.0f);
+
+
+            if (transform.localRotation.eulerAngles.z <= 0.0f || transform.localRotation.eulerAngles.z >= 270.0f)
+            {
+                //rotationAngle = higherRotationAngle;
+                rotationAngle = Random.Range(90.0f, 90.0f);
+                Debug.Log("LOCAL Z-IF: " + transform.localRotation.eulerAngles.z);
+
+            }
+            else if (transform.localRotation.eulerAngles.z > 0.0f)
+            {
+                //rotationAngle = lowerRotationAngle;
+                rotationAngle = Random.Range(-90.0f, -90.0f);
+                Debug.Log("LOCAL Z-ELSE IF: " + transform.localRotation.eulerAngles.z);
+
+                //Debug.Break();
+
+
             }
 
+            //float modAngle = transform.localRotation.eulerAngles.z % 360.0f;
+            //if (modAngle >= 0.0f && modAngle <= 90.0f)
+            //{
+            //	//rotationAngle = higherRotationAngle;
+            //	rotationAngle = Random.Range(-90.0f, -90.0f);
+            //	Debug.Log("LOCAL Z-IF: " + transform.localRotation.eulerAngles.z);
+
+            //}
+            //else if (modAngle >= 270.0f && modAngle <= 360.0f)
+            //{
+            //	//rotationAngle = lowerRotationAngle;
+            //	rotationAngle = Random.Range(90.0f, 90.0f);
+            //	Debug.Log("LOCAL Z-ELSE IF: " + transform.localRotation.eulerAngles.z);
+
+            //	//Debug.Break();
+
+
+            //}
+            //else
+            //{
+            //	Debug.Log("ELSE CASE REACHED");
+            //}
+            //         else if (transform.localRotation.eulerAngles.z >= 0.0f)
+            //         {
+            //             rotationAngle = Random.Range(-90.0f, 0.0f);
+            //         }
+            //         else if (transform.localRotation.eulerAngles.z < 0.0f)
+            //         {
+            //             rotationAngle = Random.Range(0.0f, 90.0f);
+            //}
+
+            //rotationAngle = Mathf.Clamp(rotationAngle, -90.0f, 90.0f);
+
             //float chosenAngle = (Random.value <= 0.5f) ? lowerRotationAngle : higherRotationAngle;
-           
-            rotationAngle = Mathf.Clamp(rotationAngle, -90.0f, 90.0f);
+
 
             yield return null;
             //Debug.Break();
