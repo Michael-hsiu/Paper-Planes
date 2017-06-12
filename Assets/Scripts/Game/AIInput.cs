@@ -111,7 +111,10 @@ public class AIInput : MonoBehaviour, InputComponent
                 {
                     //Rotate to face joystick direction
 
-                    player.transform.rotation = desiredRotation;
+                    player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, desiredRotation, 80f);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
+                    //player.transform.rotation = desiredRotation;        // Works for Mobile, not Mac (works if already collected firingPowerup)
+                    //player.transform.rotation = Quaternion.LookRotation(desiredRotation.eulerAngles);
+
 
                     // Move in new direction we're facing
                     player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);

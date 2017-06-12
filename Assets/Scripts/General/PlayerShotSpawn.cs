@@ -28,16 +28,16 @@ public class PlayerShotSpawn : ShotSpawn
     public override void CreateShot(bool isFiringBuffed = false)
     {
 
-        targetRotation = GameManager.Singleton.playerShip.gameObject;      // The parent should be the player or enemy sprite
+        targetRotation = GameManager.Singleton.playerShip.firingRig;      // The parent should be the player or enemy sprite (errata: is now the firing rig, which rotates independently)
 
         // This may need to change for MOBILE
-        transform.localRotation = targetRotation.transform.rotation;             // Rotate shotSpawn relative to parent Player
+        transform.localRotation = targetRotation.transform.rotation;             // Rotate shotSpawn relative to parent Player (errata: player firingRig)
 
         // Case 1 - Fire ultimate shot at the specified interval.
         if (shotCounter == ultiShotInterval)
         {
 
-            PoolManager.Instance.ReuseObject(ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation));
+            PoolManager.Instance.ReuseObject(ultimateShot, transform.position, targetRotation.transform.rotation);
             shotCounter = 0;
 
         }
@@ -45,11 +45,14 @@ public class PlayerShotSpawn : ShotSpawn
         // Case 2 - Fire a normal shot at specified angle.
         else
         {
-            PoolManager.Instance.ReuseObject(shot, transform.position, transform.rotation * Quaternion.Inverse(
-                        Quaternion.Euler(new Vector3(
-                                targetRotation.transform.localEulerAngles.x,
-                                targetRotation.transform.localEulerAngles.y,
-                                targetRotation.transform.localEulerAngles.z + firingAngle))));
+            //PoolManager.Instance.ReuseObject(shot, transform.position, transform.rotation * Quaternion.Inverse(
+            //Quaternion.Euler(new Vector3(
+            //targetRotation.transform.localEulerAngles.x,
+            //targetRotation.transform.localEulerAngles.y,
+            //targetRotation.transform.localEulerAngles.z - firingAngle))));
+            Quaternion fireRotation = targetRotation.transform.rotation * Quaternion.Euler(0, 0, firingAngle);
+            PoolManager.Instance.ReuseObject(shot, transform.position, fireRotation);
+
         }
 
         shotCounter += 1;   // Increment shot count

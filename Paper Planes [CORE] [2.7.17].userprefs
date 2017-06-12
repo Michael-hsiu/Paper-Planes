@@ -1,23 +1,10 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/PlayerShip.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/AIInput.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="104" Column="49" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="111" Column="29" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="94" Column="31" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/BulletHellShotSpawn.cs" Line="75" Column="43" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/BulletHellPatternGenerator.cs" Line="18" Column="134" />
-      <File FileName="Assets/Scripts/General/Shot.cs" Line="37" Column="27" />
-      <File FileName="Assets/Scripts/General/BulletHellShot.cs" Line="15" Column="3" />
-      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="38" Column="156" />
-      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="111" Column="18" />
-      <File FileName="Assets/Scripts/Powerups/BurstRushPowerup.cs" Line="76" Column="9" />
-      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="235" Column="9" />
+      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="54" Column="86" />
+      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="114" Column="193" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="14" Column="33" />
     </Files>
-    <Pads>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
