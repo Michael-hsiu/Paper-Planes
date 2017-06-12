@@ -16,6 +16,10 @@ public class BulletHellShotSpawn : ShotSpawn
     public Quaternion desiredRotation;
     public Quaternion currRotation;
 
+    public Quaternion posQuat;
+    public Quaternion negQuat;
+    public Vector3 oldForward;
+
 
     public float delayBtwnShots;
     //public Vector3 targetRot;
@@ -33,6 +37,19 @@ public class BulletHellShotSpawn : ShotSpawn
         //transform.localRotation = targetRotation.transform.rotation;    
 
         PoolManager.Instance.ReuseObject(bulletHellProjectile, transform.position, transform.rotation);
+    }
+
+    void OnDrawGizmos()
+    {
+        //Gizmos.color = Color.green;
+        //var line1 = transform.position + (oldForward * 10);
+        //line1 = posQuat * line1;
+        //Debug.DrawLine(transform.position, line1, Color.green);
+
+        //Gizmos.color = Color.blue;
+        //var line2 = transform.position + (oldForward * 10);
+        //line2 = negQuat * line2;
+        //Debug.DrawLine(transform.position, line2, Color.blue);
     }
 
     // Make this into a time-controlled coroutine
@@ -58,6 +75,7 @@ public class BulletHellShotSpawn : ShotSpawn
                 {
                     // Create new set of values
                     bulletHellPatternGenerator.GenerateRandomPatterns();
+
                     //if (rotationAngleCopy < 0)
                     //{
                     //    rotationAngleCopy = 176.0f;     // Almost full half-circle rotation
@@ -68,7 +86,7 @@ public class BulletHellShotSpawn : ShotSpawn
                     //}
                     //Debug.Break();
                 }
-                else if (numRotations % 2 == 1)
+                else /*if (numRotations % 2 == 1)*/
                 {
                     //rotationAngleCopy = rotationAngleCopy * -1;
                     // 2nd time around, rotate the other way
@@ -76,12 +94,12 @@ public class BulletHellShotSpawn : ShotSpawn
                     //Debug.Break();
 
                 }
-                else
-                {
-                    //bulletHellPatternGenerator.GenerateRandomPatterns();
-                    Debug.Log("ELSE CASE REACHED!");
-                    //Debug.Break();
-                }
+                //else
+                //{
+                //    //bulletHellPatternGenerator.GenerateRandomPatterns();
+                //    Debug.Log("ELSE CASE REACHED!");
+                //    //Debug.Break();
+                //}
                 numRotations += 1;
             }
             else
@@ -91,12 +109,26 @@ public class BulletHellShotSpawn : ShotSpawn
 
 
             // Rotation logic
+
+            if (rotationAngleCopy > 0)
+            {
+                posQuat = desiredRotation;
+                negQuat = transform.rotation * Quaternion.AngleAxis(-rotationAngleCopy, Vector3.forward);
+            }
+            else
+            {
+                posQuat = transform.rotation * Quaternion.AngleAxis(rotationAngleCopy, Vector3.forward);
+                negQuat = desiredRotation;
+            }
+            oldForward = transform.forward;
+
             desiredRotation = transform.rotation * Quaternion.AngleAxis(rotationAngleCopy, Vector3.forward);
             while (Quaternion.Angle(transform.rotation, desiredRotation) > 2.0f)
             {
                 currRotation = transform.rotation;
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, Time.deltaTime * rotationSpeed);
                 Debug.Log("ROTATING");
+                Debug.Log("ROT_ANGLE: " + rotationAngleCopy);
                 yield return null;
             }
             Debug.Log("CYCLE COMPLETED");
