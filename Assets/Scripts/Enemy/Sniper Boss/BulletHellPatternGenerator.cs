@@ -10,13 +10,17 @@ public class BulletHellPatternGenerator : MonoBehaviour
     public float generatedRotationAngle;
     public int numAnglesGenerated = 0;
 
-    public void GenerateRandomPatterns()
+    public void GenerateRandomPatterns(BulletHellShotSpawn methodCaller)
     {
         //Debug.Log("LIST LENGTH: " + listOfListOfBulletHellShotSpawns.Count);
         //Debug.Break();
         // Go through each pair of shot spawns
         // "...%2==0" b/c there are 2 shotspawns in each pair, each of which will try to call this method
-        if (numAnglesGenerated % 2 == 0)
+        // Still needs to be fixed for >1 pair, not symmetric (though the effect is sometimes nice)
+        //if (numAnglesGenerated % 2 == 0)
+        bool singleMethodCall = (listOfListOfBulletHellShotSpawns[0].pair[0].generatedPattern == listOfListOfBulletHellShotSpawns[0].pair[1].generatedPattern);
+
+        if (singleMethodCall)
         {
             foreach (BulletHellShotSpawnListWrapper shotSpawnPairList in listOfListOfBulletHellShotSpawns)
             {
@@ -28,6 +32,10 @@ public class BulletHellPatternGenerator : MonoBehaviour
                 {
                     //Debug.Log(string.Format("SPAWN_NAME:D {0}, SPAWN_ANGLE:D {1}", bulletHellShotSpawn.name, bulletHellShotSpawn.rotationAngleCopy));
                     //Debug.Break();
+
+                    // Finish the rotation by snapping to desired rotation.
+                    bulletHellShotSpawn.transform.rotation = bulletHellShotSpawn.desiredRotation;
+
                     // Give it a value.
                     if (bulletHellShotSpawn.rotationAngle > 0)
                     {
@@ -57,7 +65,9 @@ public class BulletHellPatternGenerator : MonoBehaviour
                 }
             }
         }
-        numAnglesGenerated += 1;
+        // Negate the bool value
+        methodCaller.generatedPattern = !methodCaller.generatedPattern;
+        //numAnglesGenerated += 1;
 
         //Debug.Break();
     }

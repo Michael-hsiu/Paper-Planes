@@ -19,6 +19,7 @@ public class BulletHellShotSpawn : ShotSpawn
     public Quaternion posQuat;
     public Quaternion negQuat;
     public Vector3 oldForward;
+    public bool generatedPattern = false;
 
 
     public float delayBtwnShots;
@@ -74,7 +75,7 @@ public class BulletHellShotSpawn : ShotSpawn
                 if (numRotations % 2 == 0)
                 {
                     // Create new set of values
-                    bulletHellPatternGenerator.GenerateRandomPatterns();
+                    bulletHellPatternGenerator.GenerateRandomPatterns(this);
 
                     //if (rotationAngleCopy < 0)
                     //{
