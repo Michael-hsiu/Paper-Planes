@@ -15,11 +15,12 @@ public class BulletHellPatternGenerator : MonoBehaviour
         //Debug.Log("LIST LENGTH: " + listOfListOfBulletHellShotSpawns.Count);
         //Debug.Break();
         // Go through each pair of shot spawns
+        // We use matching bool flags to signal that they each called this method, so next call will generate angle for both of them.
+        bool singleMethodCall = (listOfListOfBulletHellShotSpawns[0].pair[0].generatedPattern == listOfListOfBulletHellShotSpawns[0].pair[1].generatedPattern);
+
         // "...%2==0" b/c there are 2 shotspawns in each pair, each of which will try to call this method
         // Still needs to be fixed for >1 pair, not symmetric (though the effect is sometimes nice)
         //if (numAnglesGenerated % 2 == 0)
-        bool singleMethodCall = (listOfListOfBulletHellShotSpawns[0].pair[0].generatedPattern == listOfListOfBulletHellShotSpawns[0].pair[1].generatedPattern);
-
         if (singleMethodCall)
         {
             foreach (BulletHellShotSpawnListWrapper shotSpawnPairList in listOfListOfBulletHellShotSpawns)
