@@ -37,6 +37,16 @@ public class SniperBossFS : MonoBehaviour, IFireState
         HideLaser();
     }
 
+    void OnEnable()
+    {
+        // Start attack routines
+        sniperBoss = GetComponent<SniperBoss>();
+
+        StartCoroutine(LaserAttack());
+        StartCoroutine(BulletHellAttack());
+        HideLaser();
+    }
+
     public void UpdateState()
     {
 
@@ -99,7 +109,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
     // Set next possible time for attack 
     public void SetAttackEndTime(float attackEndTime)
     {
-        sniperBoss.nextAttackTime = attackEndTime + Random.Range(4.0f, 5.0f);
+        sniperBoss.nextAttackTime = attackEndTime + Random.Range(2.0f, 5.0f);
     }
 
     void ShowLaser()

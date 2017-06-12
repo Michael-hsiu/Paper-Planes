@@ -29,7 +29,9 @@ public class PlayerShotSpawn : ShotSpawn
     {
 
         targetRotation = GameManager.Singleton.playerShip.gameObject;      // The parent should be the player or enemy sprite
-        transform.localRotation = targetRotation.transform.rotation;	         // Rotate shotSpawn relative to parent Player
+
+        // This may need to change for MOBILE
+        transform.localRotation = targetRotation.transform.rotation;             // Rotate shotSpawn relative to parent Player
 
         // Case 1 - Fire ultimate shot at the specified interval.
         if (shotCounter == ultiShotInterval)
