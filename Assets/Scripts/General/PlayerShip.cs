@@ -90,10 +90,10 @@ public class PlayerShip : FiringShip
     {
 
         // Firing logic
-        if (Input.GetButton("Fire1") && Time.time > nextFire && ((AIInput)input).controlsEnabled)
-        {
-            Fire();
-        }
+        //if (Input.GetButton("Fire1") && Time.time > nextFire && ((AIInput)input).controlsEnabled)
+        //{
+        //    Fire();
+        //}
 
         // Temp logic for player destruction
         if (GameManager.Singleton.playerHealth <= 0)

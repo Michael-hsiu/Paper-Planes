@@ -35,7 +35,7 @@ public class PlayerShotSpawn : ShotSpawn
         if (shotCounter == ultiShotInterval)
         {
 
-            PoolManager.Instance.ReuseObject(ultimateShot, transform.position, targetRotation.transform.rotation);
+            PoolManager.Instance.ReuseObject(ultimateShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation));
             shotCounter = 0;
 
         }
@@ -43,12 +43,11 @@ public class PlayerShotSpawn : ShotSpawn
         // Case 2 - Fire a normal shot at specified angle.
         else
         {
-            PoolManager.Instance.ReuseObject(shot, transform.position,
+            PoolManager.Instance.ReuseObject(shot, transform.position, transform.rotation * Quaternion.Inverse(
                         Quaternion.Euler(new Vector3(
-                             targetRotation.transform.eulerAngles.x,
-                             targetRotation.transform.eulerAngles.y,
-                             targetRotation.transform.eulerAngles.z + firingAngle)));
-            //Debug.Log("FIRING FROM PLAYERSHOTSPAWN!");
+                                targetRotation.transform.localEulerAngles.x,
+                                targetRotation.transform.localEulerAngles.y,
+                                targetRotation.transform.localEulerAngles.z + firingAngle))));
         }
 
         shotCounter += 1;   // Increment shot count

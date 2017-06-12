@@ -27,7 +27,7 @@ public class AIInput : MonoBehaviour, InputComponent
         if (controlsEnabled)
         {
             // Auto-fire
-            if (Time.time > player.nextFire && !player.rushStarted && !player.dashStarted)
+            if (Time.time > player.nextFire && !GameManager.Singleton.isBurstRushing && !player.dashStarted)
             {
                 player.Fire();
             }
@@ -96,24 +96,32 @@ public class AIInput : MonoBehaviour, InputComponent
             // MOBILE INPUTS
 
             // Left joystick (move)
-            if (axisInput)
+            float hori = CrossPlatformInputManager.GetAxis("HorizontalJoystick");
+            float vert = CrossPlatformInputManager.GetAxis("VerticalJoystick");
+
+            Vector3 shipRotateDir = Vector3.zero;
+            shipRotateDir.x = hori;
+            shipRotateDir.z = vert;
+            if (shipRotateDir != Vector3.zero)
             {
-                float hori = CrossPlatformInputManager.GetAxis("HorizontalJoystick");
-                float vert = CrossPlatformInputManager.GetAxis("VerticalJoystick");
+                float zAngle = (Mathf.Atan2(shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+                Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
 
-                Vector3 shipRotateDir = Vector3.zero;
-                shipRotateDir.x = hori;
-                shipRotateDir.z = vert;
-                if (shipRotateDir != Vector3.zero)
+                if (axisInput)
                 {
-
                     //Rotate to face joystick direction
-                    float zAngle = (Mathf.Atan2(shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
-                    Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+
                     player.transform.rotation = desiredRotation;
 
                     // Move in new direction we're facing
                     player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
+                }
+
+                // Burst rush rotate only
+                if (GameManager.Singleton.isBurstRushing && GameManager.Singleton.turnInput)
+                {
+                    // Also change rotation of overall player if it's active
+                    player.transform.rotation = desiredRotation;
                 }
             }
 
@@ -123,7 +131,7 @@ public class AIInput : MonoBehaviour, InputComponent
                 float xInput = CrossPlatformInputManager.GetAxis("Mouse X");
                 float yInput = CrossPlatformInputManager.GetAxis("Mouse Y");
                 /*Debug.Log ("xInput: " + xInput);
-			Debug.Log ("yInput: " + yInput);*/
+            Debug.Log ("yInput: " + yInput);*/
 
                 Vector3 rigRotateDir = Vector3.zero;
                 rigRotateDir.x = xInput;
@@ -134,51 +142,10 @@ public class AIInput : MonoBehaviour, InputComponent
                     //Rotate to face joystick direction
                     float zAngle = (Mathf.Atan2(rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
                     Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
-                    if (GameManager.Singleton.isBurstRushing)
-                    {
+                    player.firingRig.transform.rotation = desiredRotation;
 
-                        // Also change rotation of overall player if it's active
-                        player.transform.rotation = desiredRotation;
-
-                    }
-                    else
-                    {
-                        player.firingRig.transform.rotation = desiredRotation;
-
-                    }
                 }
             }
-
-            //Vector3 movement = new Vector3 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"), 0f);
-            /*//player.GetComponent<Rigidbody>().AddRelativeForce(movement * player.speed);
-			Vector3 dir = Vector3.zero;
-			dir.x = Input.GetAxis ("Horizontal") * Time.deltaTime;
-			dir.z = Input.GetAxis ("Vertical") * Time.deltaTime;
-			float translation = Input.GetAxis("Vertical") * player.speed;
-			float rotation = Input.GetAxis("Horizontal") * player.speed;
-			translation *= Time.deltaTime;
-			rotation *= Time.deltaTime;
-			transform.Translate(0, 0, translation);
-			transform.Rotate(0, rotation, 0);
-			
-			// Rotation logic
-			if (virtualJoystickRotate.inputDirection != Vector3.zero) {
-
-				// Joystick Rotation logic
-				Vector3 dir = virtualJoystickRotate.inputDirection;
-				float zAngle = (Mathf.Atan2 (dir.z, dir.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-				player.transform.rotation = desiredRotation;
-
-			}
-
-			// Movement logic
-			if (virtualJoystickMove.inputDirection != Vector3.zero) {
-				
-				player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * player.speed);
-
-			}*/
-
 
             // Check if our speed cap is on (off if we're dashing!!!)
             if (GameManager.Singleton.speedCapped)
@@ -238,8 +205,8 @@ public class AIInput : MonoBehaviour, InputComponent
 
                 // Start dash co-routine
                 /*if (cr1 != null) {
-				StopCoroutine (cr1);
-			}*/
+                StopCoroutine (cr1);
+            }*/
                 cr1 = StartDash(player);
                 StartCoroutine(cr1);
             }

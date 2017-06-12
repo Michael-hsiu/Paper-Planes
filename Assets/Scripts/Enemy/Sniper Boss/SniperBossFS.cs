@@ -53,7 +53,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal <= 0.00000000005f)
+        if (randomVal <= 0.5f)
         {
             // Trigger the Laser attack
             laserActive = true;
@@ -99,7 +99,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
     // Set next possible time for attack 
     public void SetAttackEndTime(float attackEndTime)
     {
-        sniperBoss.nextAttackTime = attackEndTime + Random.Range(1.0f, 2.0f);
+        sniperBoss.nextAttackTime = attackEndTime + Random.Range(4.0f, 5.0f);
     }
 
     void ShowLaser()
