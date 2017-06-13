@@ -1,97 +1,125 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangedMS : MonoBehaviour, IMoveState {
+public class RangedMS : MonoBehaviour, IMoveState
+{
 
-	public Direction direction;
-	public Direction Direction {
-		get
-		{
-			return direction;
-		}
-		set
-		{
-			direction = value;
-		}
-	}
-	public RangedShip rangedShip;
+    public Direction direction;
+    public Direction Direction
+    {
+        get
+        {
+            return direction;
+        }
+        set
+        {
+            direction = value;
+        }
+    }
+    public RangedShip rangedShip;
 
-    void Start() {
+    void Start()
+    {
         rangedShip = GetComponent<RangedShip>();
     }
 
-	public void EnterState () {
+    public void EnterState()
+    {
 
-	}
+    }
 
-	public void ExitState() {
+    public void ExitState()
+    {
 
-	}
+    }
 
-	public void UpdateState() {
+    public void UpdateState()
+    {
 
-		bool playerOnDashCooldown = GameManager.Singleton.onDashCooldown;
+        bool playerOnDashCooldown = GameManager.Singleton.onDashCooldown;
 
-		// If player is dashing, use math to check if player is too far from us.
-		if (playerOnDashCooldown) {
-			if (Utils.SquaredEuclideanDistance(rangedShip.gameObject, rangedShip.target.gameObject) > rangedShip.sqMoveDist) {
-				direction = Direction.FORWARDS;
-			} else {
-				direction = Direction.PLAYER_TOO_CLOSE;
-			}
-		}
+        // If player is dashing, use math to check if player is too far from us.
+        if (playerOnDashCooldown)
+        {
+            if (Utils.SquaredEuclideanDistance(rangedShip.gameObject, rangedShip.target.gameObject) > rangedShip.sqMoveDist)
+            {
+                direction = Direction.FORWARDS;
+            }
+            else
+            {
+                direction = Direction.PLAYER_TOO_CLOSE;
+            }
+        }
 
-		// Apply method based on player direction
-		if (direction == Direction.FORWARDS) {
-			MoveToPlayer ();
-		} else if (direction == Direction.PLAYER_TOO_CLOSE) {
-			MoveBackwards ();
-		}
-	}
-       
-	public void MoveToPlayer () {
+        // Apply method based on player direction
+        if (direction == Direction.FORWARDS)
+        {
+            MoveToPlayer();
+        }
+        else if (direction == Direction.PLAYER_TOO_CLOSE)
+        {
+            MoveBackwards();
+        }
+    }
 
-		if (rangedShip.target != null) {
-			Vector3 dist = rangedShip.target.transform.position - rangedShip.transform.position;	// Find vector difference between target and this
-			dist.Normalize ();		// Get unit vector
+    public void MoveToPlayer()
+    {
 
-			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+        if (rangedShip.target != null)
+        {
+            Vector3 dist = rangedShip.target.transform.position - rangedShip.transform.position;    // Find vector difference between target and this
+            dist.Normalize();       // Get unit vector
 
-			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+            float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
 
-			rangedShip.transform.rotation = Quaternion.RotateTowards (rangedShip.transform.rotation, desiredRotation, rangedShip.rotationSpeed * Time.deltaTime);	// Rotate the enemy
+            Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
 
-			/** MOVEMENT UPDATE */
-			if (!rangedShip.isSpeedBuffed) {
-				rangedShip.transform.position = Vector2.MoveTowards (rangedShip.transform.position, rangedShip.target.transform.position, Time.deltaTime * rangedShip.speed);
-			} else {
-				rangedShip.transform.position = Vector2.MoveTowards (rangedShip.transform.position, rangedShip.target.transform.position, Time.deltaTime * rangedShip.speed * rangedShip.buffedSpeedFactor);
+            rangedShip.transform.rotation = Quaternion.RotateTowards(rangedShip.transform.rotation, desiredRotation, rangedShip.rotationSpeed * Time.deltaTime);    // Rotate the enemy
 
-			}	
-		}
-	}	
+            /** MOVEMENT UPDATE */
+            if (!rangedShip.isSpeedBuffed)
+            {
+                rangedShip.transform.position = Vector2.MoveTowards(rangedShip.transform.position, rangedShip.target.transform.position, Time.deltaTime * rangedShip.speed);
+            }
+            else
+            {
+                rangedShip.transform.position = Vector2.MoveTowards(rangedShip.transform.position, rangedShip.target.transform.position, Time.deltaTime * rangedShip.speed * rangedShip.buffedSpeedFactor);
 
-	public void MoveBackwards () {
-      
-		if (rangedShip.target != null) {
-			Vector3 dist = rangedShip.target.transform.position - rangedShip.transform.position;	// Find vector difference between target and this
-			dist.Normalize ();		// Get unit vector
+            }
+        }
+    }
 
-			float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+    public void MoveBackwards()
+    {
 
-			Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+        if (rangedShip.target != null)
+        {
+            Vector3 dist = rangedShip.target.transform.position - rangedShip.transform.position;    // Find vector difference between target and this
+            dist.Normalize();       // Get unit vector
 
-			rangedShip.transform.rotation = Quaternion.RotateTowards (rangedShip.transform.rotation, desiredRotation, rangedShip.rotationSpeed * Time.deltaTime);	// Rotate the enemy
+            float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
 
-			/** MOVEMENT UPDATE */
-			if (!rangedShip.isSpeedBuffed) {
-				rangedShip.transform.position = Vector2.MoveTowards (rangedShip.transform.position, -rangedShip.target.transform.position, Time.deltaTime * rangedShip.speed);
-			} else {
-				rangedShip.transform.position = Vector2.MoveTowards (rangedShip.transform.position, -rangedShip.target.transform.position, Time.deltaTime * rangedShip.speed * rangedShip.buffedSpeedFactor);
+            Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
 
-			}	
-		} 
-	}	
+            rangedShip.transform.rotation = Quaternion.RotateTowards(rangedShip.transform.rotation, desiredRotation, rangedShip.rotationSpeed * Time.deltaTime);    // Rotate the enemy
 
+            /** MOVEMENT UPDATE */
+            if (!rangedShip.isSpeedBuffed)
+            {
+                rangedShip.transform.position = Vector2.MoveTowards(rangedShip.transform.position, -rangedShip.target.transform.position, Time.deltaTime * rangedShip.speed);
+            }
+            else
+            {
+                rangedShip.transform.position = Vector2.MoveTowards(rangedShip.transform.position, -rangedShip.target.transform.position, Time.deltaTime * rangedShip.speed * rangedShip.buffedSpeedFactor);
+
+            }
+        }
+    }
+
+    public void OnObjectReuse()
+    {
+
+    }
 }

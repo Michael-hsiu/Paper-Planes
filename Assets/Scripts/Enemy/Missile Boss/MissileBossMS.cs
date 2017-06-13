@@ -2,71 +2,95 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissileBossMS : MonoBehaviour, IMoveState {
+public class MissileBossMS : MonoBehaviour, IMoveState
+{
 
 
-	public Direction direction = Direction.PLAYER_UNDETECTED;
+    public Direction direction = Direction.PLAYER_UNDETECTED;
 
-	// Wander logic
-	public float DIST_TO_CIRCLE = 5.0f;	    // Distance from circle to player
-	public float CIRCLE_RADIUS = 1.0f;		// Radius of circle
-	public float ANGLE_CHANGE = 10.0f;		// How many angle changes every frame
-	public float displInterval = 2.0f;		// How often direction gets changed
-	public float angleChange;
-	public bool rotSetOnce = false;
-	public bool startedWander = false;
-	public bool shouldWander = true;
-	public bool behaviorChangedOnce = false;
-	//public Quaternion wanderAngle;		// Stores the rotation of each displacement vector
+    // Wander logic
+    public float DIST_TO_CIRCLE = 5.0f;     // Distance from circle to player
+    public float CIRCLE_RADIUS = 1.0f;      // Radius of circle
+    public float ANGLE_CHANGE = 10.0f;      // How many angle changes every frame
+    public float displInterval = 2.0f;      // How often direction gets changed
+    public float angleChange;
+    public bool rotSetOnce = false;
+    public bool startedWander = false;
+    public bool shouldWander = true;
+    public bool behaviorChangedOnce = false;
+    //public Quaternion wanderAngle;		// Stores the rotation of each displacement vector
     public float wanderAngle;
-	public Vector3 vel;
-	public Vector3 circleCenter;
-	public Vector3 displacement;
-	public Vector3 oldVel;				// For when we change behaviors
+    public Vector3 vel;
+    public Vector3 circleCenter;
+    public Vector3 displacement;
+    public Vector3 oldVel;				// For when we change behaviors
 
     public Quaternion desiredRotation;
     public bool shouldRotate = true;
     public float maxHeadingChange = 10.0f;
     public bool reversingDirection = false;
 
-	public Direction Direction {
-		get
-		{
-			return direction;
-		}
-		set
-		{
-			direction = value;
-		}
-	}
-	public MissileBoss missileBoss;
+    public Direction Direction
+    {
+        get
+        {
+            return direction;
+        }
+        set
+        {
+            direction = value;
+        }
+    }
+    public MissileBoss missileBoss;
 
-    void Start() {
+    void Start()
+    {
         missileBoss = GetComponent<MissileBoss>();
     }
 
-	public void EnterState () {
+    // Setup activities after being activated from Object Pool
+    public void OnObjectReuse()
+    {
 
-	}
+    }
 
-	public void ExitState() {
+    void Update()
+    {
+        if (shouldRotate)
+        {
+            missileBoss.transform.rotation = Quaternion.RotateTowards(missileBoss.transform.rotation, desiredRotation, missileBoss.rotationSpeed * Time.deltaTime); // Rotate the enemy
+        }
 
-	}
-		
-	public void UpdateState() {
-		// If we're attacking right now, we should be idle
+    }
+
+    public void EnterState()
+    {
+
+    }
+
+    public void ExitState()
+    {
+
+    }
+
+    public void UpdateState()
+    {
+        // If we're attacking right now, we should be idle
         /*if (mb.attacking) {
 			direction = Direction.Idle;
 		} */
 
-		if (direction == Direction.IDLE) {
-			// Do nothing if we're supposed to be idle; MissileBoss.cs will still take care of attacking
+        if (direction == Direction.IDLE)
+        {
+            // Do nothing if we're supposed to be idle; MissileBoss.cs will still take care of attacking
 
 
-		} else if (direction == Direction.PLAYER_UNDETECTED) {
+        }
+        else if (direction == Direction.PLAYER_UNDETECTED)
+        {
 
 
-			// For after the first time we switch behavior states
+            // For after the first time we switch behavior states
             /*shouldWander = true;
 
 			if (!startedWander) {
@@ -74,13 +98,16 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 				startedWander = true;
 			}*/
 
-		} else if (direction == Direction.PLAYER_DETECTED) {
+        }
+        else if (direction == Direction.PLAYER_DETECTED)
+        {
 
-			// Store the velocity from detection phase
-			if (!behaviorChangedOnce) {
-				oldVel = missileBoss.GetComponent<Rigidbody> ().velocity;
-			}
-			behaviorChangedOnce = true;
+            // Store the velocity from detection phase
+            if (!behaviorChangedOnce)
+            {
+                oldVel = missileBoss.GetComponent<Rigidbody>().velocity;
+            }
+            behaviorChangedOnce = true;
 
             /*shouldWander = false;
 			mb.GetComponent<Rigidbody> ().velocity = Vector3.zero;*/
@@ -94,42 +121,49 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 				direction = Direction.PlayerDetected;
 			}*/
 
-			if (missileBoss.target != null) {
-				Vector3 dist = missileBoss.target.transform.position - missileBoss.transform.position;	// Find vector difference between target and this
-				dist.Normalize ();		// Get unit vector
+            if (missileBoss.target != null)
+            {
+                Vector3 dist = missileBoss.target.transform.position - missileBoss.transform.position;  // Find vector difference between target and this
+                dist.Normalize();       // Get unit vector
 
-				float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
+                float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
 
-				Quaternion desiredRotation = Quaternion.Euler (0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
+                Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
 
-				missileBoss.transform.rotation = Quaternion.RotateTowards (missileBoss.transform.rotation, desiredRotation, missileBoss.rotationSpeed * Time.deltaTime);	// Rotate the enemy
+                missileBoss.transform.rotation = Quaternion.RotateTowards(missileBoss.transform.rotation, desiredRotation, missileBoss.rotationSpeed * Time.deltaTime); // Rotate the enemy
 
-				/** MOVEMENT UPDATE */
-				if (!missileBoss.isSpeedBuffed) {
-					missileBoss.transform.position = Vector2.MoveTowards (missileBoss.transform.position, missileBoss.target.transform.position, Time.deltaTime * missileBoss.speed);
-				} else {
-					missileBoss.transform.position = Vector2.MoveTowards (missileBoss.transform.position, missileBoss.target.transform.position, Time.deltaTime * missileBoss.speed * missileBoss.buffedSpeedFactor);
-				}
-			}
-		}
-	}
+                /** MOVEMENT UPDATE */
+                if (!missileBoss.isSpeedBuffed)
+                {
+                    missileBoss.transform.position = Vector2.MoveTowards(missileBoss.transform.position, missileBoss.target.transform.position, Time.deltaTime * missileBoss.speed);
+                }
+                else
+                {
+                    missileBoss.transform.position = Vector2.MoveTowards(missileBoss.transform.position, missileBoss.target.transform.position, Time.deltaTime * missileBoss.speed * missileBoss.buffedSpeedFactor);
+                }
+            }
+        }
+    }
 
-	// Adjusts direction as needed
-	private void CheckEnv(Ship s) {
-		GameObject player = s.gameObject;
-	}
+    // Adjusts direction as needed
+    private void CheckEnv(Ship s)
+    {
+        GameObject player = s.gameObject;
+    }
 
-	IEnumerator Idle(Ship s) {
-		if (missileBoss == null) {
-			missileBoss = (MissileBoss) s;
-		}
-		yield return new WaitForSeconds (4.0f);		// Wait while we execute behavior
-		direction = Direction.PLAYER_DETECTED;		// Resume pursuing player
+    IEnumerator Idle(Ship s)
+    {
+        if (missileBoss == null)
+        {
+            missileBoss = (MissileBoss)s;
+        }
+        yield return new WaitForSeconds(4.0f);      // Wait while we execute behavior
+        direction = Direction.PLAYER_DETECTED;      // Resume pursuing player
 
-	}
+    }
 
-	// Based on logic from: https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-wander--gamedev-1624
-	/*IEnumerator Wander(Ship s) {
+    // Based on logic from: https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-wander--gamedev-1624
+    /*IEnumerator Wander(Ship s) {
 		if (mb == null) {
 			mb = (MissileBoss) s;
 		}
@@ -204,39 +238,36 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
                     }
                     //usedOldVel = true;
                     yield return null;*/
-                    /*}
-                    yield return null;
-                }
+    /*}
+    yield return null;
+}
 
-            yield return null;
-		}
-    }*/
+yield return null;
+}
+}*/
 
 
-    public void ReverseDirection() {
+    public void ReverseDirection()
+    {
         //mb.GetComponent<Rigidbody>().velocity = -mb.GetComponent<Rigidbody>().velocity;
         missileBoss.GetComponent<Rigidbody>().velocity = new Vector2(0, -1);
         wanderAngle = -180f;
-        desiredRotation = Quaternion.Euler (0, 0, wanderAngle);       // Store rotation as an Euler, then Quaternion
+        desiredRotation = Quaternion.Euler(0, 0, wanderAngle);       // Store rotation as an Euler, then Quaternion
         missileBoss.transform.rotation = desiredRotation;
         StartCoroutine(ReversingDirection());
     }
 
-    IEnumerator ReversingDirection() {
+    IEnumerator ReversingDirection()
+    {
         reversingDirection = true;
         yield return new WaitForSeconds(5.0f);
         reversingDirection = false;
     }
 
-    void Update() {
-        if (shouldRotate) {
-            missileBoss.transform.rotation = Quaternion.RotateTowards (missileBoss.transform.rotation, desiredRotation, missileBoss.rotationSpeed * Time.deltaTime); // Rotate the enemy
-        }
-
-    }
 
 
-    public void OnDrawGizmosSelected() {
+    public void OnDrawGizmosSelected()
+    {
 
         /* VECTOR VISUALIZATION */
         // Draw wander circle
@@ -245,15 +276,15 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
         // Draw displacement
         Gizmos.color = Color.blue;
-        Gizmos.DrawRay (missileBoss.transform.position + circleCenter, displacement);
+        Gizmos.DrawRay(missileBoss.transform.position + circleCenter, displacement);
 
         // Draw circle center
         Gizmos.color = Color.green;
-        Gizmos.DrawRay (missileBoss.transform.position, circleCenter);
+        Gizmos.DrawRay(missileBoss.transform.position, circleCenter);
 
         // Draw added force
         Gizmos.color = Color.red;
-        Gizmos.DrawRay (missileBoss.transform.position, circleCenter + displacement);
+        Gizmos.DrawRay(missileBoss.transform.position, circleCenter + displacement);
 
         // Draw velocity
         Gizmos.color = Color.magenta;
@@ -261,42 +292,49 @@ public class MissileBossMS : MonoBehaviour, IMoveState {
 
     }
 
-    public void OnDrawGizmos() {
+    public void OnDrawGizmos()
+    {
         /* ATTACK VISUALIZATION */
-        if (missileBoss.usingSpinAtk) {
+        if (missileBoss.usingSpinAtk)
+        {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere (missileBoss.transform.position, missileBoss.spinAtkRadius);
+            Gizmos.DrawWireSphere(missileBoss.transform.position, missileBoss.spinAtkRadius);
         }
     }
 
-	private Vector3 SetAngle(Vector3 v, Quaternion wanderAngle) {
-		float length = v.magnitude;
-		float angleX = wanderAngle.eulerAngles.z;
-		float angleY = wanderAngle.eulerAngles.y;
-		//Debug.Log ("ANGLE X: " + angleX);
-		//Debug.Log ("ANGLE Y: " + angleY);
+    private Vector3 SetAngle(Vector3 v, Quaternion wanderAngle)
+    {
+        float length = v.magnitude;
+        float angleX = wanderAngle.eulerAngles.z;
+        float angleY = wanderAngle.eulerAngles.y;
+        //Debug.Log ("ANGLE X: " + angleX);
+        //Debug.Log ("ANGLE Y: " + angleY);
 
-		float cosX = Mathf.Cos (angleX) * Mathf.Rad2Deg;
-		float sinY = Mathf.Sin (angleX) * Mathf.Rad2Deg;
+        float cosX = Mathf.Cos(angleX) * Mathf.Rad2Deg;
+        float sinY = Mathf.Sin(angleX) * Mathf.Rad2Deg;
 
-		v.x = cosX * length;
-		v.y = sinY * length;	
+        v.x = cosX * length;
+        v.y = sinY * length;
 
-		return v;
-	}
- 
-	public void MoveToPlayer (Ship s) {
-		if (missileBoss == null) {
-			missileBoss = (MissileBoss) s;
-		}
+        return v;
+    }
 
-	}	
+    public void MoveToPlayer(Ship s)
+    {
+        if (missileBoss == null)
+        {
+            missileBoss = (MissileBoss)s;
+        }
 
-	public void MoveBackwards (Ship s) {
-		if (missileBoss == null) {
-			missileBoss = (MissileBoss) s;
-		}
-	}	
+    }
+
+    public void MoveBackwards(Ship s)
+    {
+        if (missileBoss == null)
+        {
+            missileBoss = (MissileBoss)s;
+        }
+    }
 
 }
 

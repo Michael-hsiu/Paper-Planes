@@ -19,8 +19,27 @@ public class SniperBossFS : MonoBehaviour, IFireState
     public float numRotations = 3;
     public float rotationLength = 1.0f;
     public float endTime;
+
     public SniperBoss sniperBoss;
+
+    IEnumerator laserAttackRoutine;
+    IEnumerator bulletHellAttackRoutine;
+    IEnumerator teleportRoutine;
+
+    [Header("TELEPORT ATK")]
+    public bool teleportActive = false;
+    public float teleDelay = 0.5f;  // The time btwn when visual marker for teleport marker appears, and when we actually teleport
+    public float teleCooldown = 8.0f;   // Cooldown time for teleport
+    public float postTeleDelay = 1.0f;
+    public GameObject teleMarker;
+    public Vector3 teleportLocation;
+    public PoolObject activeTeleMarker;
+
     public GameObject laserCollider;
+    public Collider mapCollider;
+    public float xBound;
+    public float yBound;
+
     public FiringMode Mode
     {
         get;
@@ -32,20 +51,37 @@ public class SniperBossFS : MonoBehaviour, IFireState
         // Start attack routines
         sniperBoss = GetComponent<SniperBoss>();
 
-        StartCoroutine(LaserAttack());
-        StartCoroutine(BulletHellAttack());
+        laserAttackRoutine = LaserAttack();
+        bulletHellAttackRoutine = BulletHellAttack();
+
+        StartCoroutine(laserAttackRoutine);
+        StartCoroutine(bulletHellAttackRoutine);
         HideLaser();
     }
 
-    void OnEnable()
+    void Start()
     {
-        // Start attack routines
-        sniperBoss = GetComponent<SniperBoss>();
+        mapCollider = GameManager.Singleton.mapCollider;
+        Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
 
-        StartCoroutine(LaserAttack());
-        StartCoroutine(BulletHellAttack());
+        xBound = boxSize.x / 2;
+        yBound = boxSize.y / 2;
+    }
+
+    // This will be called from the SniperBoss's overridden OnObjectReuse() method
+    public void OnObjectReuse()
+    {
+        StopAllCoroutines();
+        laserAttackRoutine = LaserAttack();
+        bulletHellAttackRoutine = BulletHellAttack();
+        teleportRoutine = Teleport();
+
+        StartCoroutine(laserAttackRoutine);
+        StartCoroutine(bulletHellAttackRoutine);
+        StartCoroutine(teleportRoutine);
         HideLaser();
     }
+
 
     public void UpdateState()
     {
@@ -63,17 +99,54 @@ public class SniperBossFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal <= 0.5f)
+        if (randomVal <= 0.3f)
         {
             // Trigger the Laser attack
             laserActive = true;
             attackStatus = AttackStatus.SNIPER_BOSS_LASER_ATTACK;
         }
-        else
+        else if (randomVal <= 0.7f)
         {
             // Trigger the Bullet Hell attack
             bulletHellActive = true;
             attackStatus = AttackStatus.SNIPER_BOSS_BULLET_HELL_ATTACK;
+        }
+        else
+        {
+            // Trigger the Teleport attack
+            teleportActive = true;
+            attackStatus = AttackStatus.SNIPER_BOSS_TELEPORT_ATTACK;
+        }
+    }
+
+    // Teleport routine
+    // If player in zone, knocked backwards radially outwards
+    IEnumerator Teleport()
+    {
+
+        // Keep true while in current round
+        while (true)
+        {
+            if (teleportActive)
+            {
+
+                endTime = Time.time + teleDelay;
+                SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
+                sniperBoss.ActivateMovementState(endTime, Direction.SNIPER_BOSS_TELEPORT_MOVEMENT);
+
+                // Choose a location to teleport to within collider bounds, then wait for a moment.
+                teleportLocation = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
+
+                activeTeleMarker = PoolManager.Instance.ReuseObjectRef(teleMarker, teleportLocation, Quaternion.identity);
+                teleportActive = false;     // Can no longer teleport for awhile
+                yield return new WaitForSeconds(endTime - Time.time);     // Activate visual marker, waiting to teleport
+
+                // Teleport to the random location
+                transform.position = teleportLocation;
+                activeTeleMarker.DestroyForReuse();
+
+            }
+            yield return null;
         }
     }
 
@@ -88,7 +161,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
 
                 endTime = Time.time + bulletHellDuration;
                 SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
-                sniperBoss.ActivateBulletHellMovementState(endTime);
+                sniperBoss.ActivateMovementState(endTime, Direction.SNIPER_BOSS_BULLET_HELL_MOVEMENT);
 
                 foreach (BulletHellShotSpawn bulletHellShotSpawn in bulletHellShotSpawns)
                 {
@@ -109,7 +182,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
     // Set next possible time for attack 
     public void SetAttackEndTime(float attackEndTime)
     {
-        sniperBoss.nextAttackTime = attackEndTime + Random.Range(2.0f, 5.0f);
+        sniperBoss.nextAttackTime = attackEndTime + Random.Range(1.0f, 2.0f);
     }
 
     void ShowLaser()
@@ -151,7 +224,8 @@ public class SniperBossFS : MonoBehaviour, IFireState
                 for (int i = 0; i < numRotations; i++)
                 {
                     // Setup movement and laser
-                    sniperBoss.ActivateLaserMovementState(Time.time + rotationLength);
+                    sniperBoss.ActivateMovementState(Time.time + rotationLength, Direction.SNIPER_BOSS_LASER_MOVEMENT);
+                    //sniperBoss.ActivateLaserMovementState(Time.time + rotationLength);
                     ShowLaser();
 
                     // Resume operation at endTime

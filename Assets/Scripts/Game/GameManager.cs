@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
 {
 
     public PlayerShip playerShip;
-    public GameObject firingRig;
     public GameObject normalSS;         // Player's normal shotspawn
     public PowerupSpawner powerupSpawner;
     public MovingSpawnManager movingSpawnManager;

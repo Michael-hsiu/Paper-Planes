@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,19 +14,16 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 
 
     [Header("TELE LOGIC")]
-    public float teleDelay = 0.5f;  // The time btwn when visual marker for teleport marker appears, and when we actually teleport
-    public float teleCooldown = 8.0f;   // Cooldown time for teleport
+
     public bool laserMovementActive = false;
     public bool bulletHellMovementActive = false;
+    public bool teleportMovementActive = false;
 
-    public float postTeleDelay = 1.0f;
     public float xBound;
     public float yBound;
-    public bool teleportActive = false;
     public bool moveStateOverridden = false;
     public IEnumerator laserRoutine;
 
-    public GameObject teleMarker;
     public Collider mapCollider;
 
 
@@ -43,21 +41,19 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 
     public SniperBoss sniperBoss;
 
-    void Awake()
-    {
-        sniperBoss = GetComponent<SniperBoss>();
-
-    }
-
     void Start()
     {
+        sniperBoss = GetComponent<SniperBoss>();
 
         mapCollider = GameManager.Singleton.mapCollider;
         Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
 
         xBound = boxSize.x / 2;
         yBound = boxSize.y / 2;
-        StartCoroutine(Teleport());
+
+        // This need to be settled for OnEnable; use PoolObject override methods
+        //laserRoutine = LaserMovement();
+
     }
 
     public void UpdateState()
@@ -88,7 +84,44 @@ public class SniperBossMS : MonoBehaviour, IMoveState
         {
             // We don't move; we just FIRE!
         }
+        else if (direction == Direction.SNIPER_BOSS_TELEPORT_MOVEMENT)
+        {
+            // We don't move; we just stay still.
+        }
 
+    }
+
+
+    public void ActivateMovementState(float endTime, Direction newDirection)
+    {
+        if (newDirection == Direction.SNIPER_BOSS_LASER_MOVEMENT)
+        {
+            ActivateLaserMovement(endTime);
+        }
+        else if (newDirection == Direction.SNIPER_BOSS_BULLET_HELL_MOVEMENT)
+        {
+            ActivateBulletHellMovement(endTime);
+        }
+        else if (newDirection == Direction.SNIPER_BOSS_TELEPORT_MOVEMENT)
+        {
+            ActivateTeleportMovement(endTime);
+        }
+    }
+
+    public void DeactivateMovementState()
+    {
+        if (direction == Direction.SNIPER_BOSS_LASER_MOVEMENT)
+        {
+            DeactivateLaserMovement();
+        }
+        else if (direction == Direction.SNIPER_BOSS_BULLET_HELL_MOVEMENT)
+        {
+            DeactivateBulletHellMovement();
+        }
+        else if (direction == Direction.SNIPER_BOSS_TELEPORT_MOVEMENT)
+        {
+            DeactivateTeleportMovement();
+        }
     }
 
     public void ActivateLaserMovement(float endTime)
@@ -109,6 +142,20 @@ public class SniperBossMS : MonoBehaviour, IMoveState
         laserMovementActive = false;
 
         laserRoutine = null;
+    }
+
+    public void ActivateTeleportMovement(float endTime)
+    {
+        direction = Direction.SNIPER_BOSS_TELEPORT_MOVEMENT;
+        moveStateOverridden = true;
+        teleportMovementActive = true;
+    }
+
+    public void DeactivateTeleportMovement()
+    {
+        direction = Direction.SNIPER_BOSS_TELEPORT_MOVEMENT;
+        moveStateOverridden = true;
+        teleportMovementActive = true;
     }
 
     public void ActivateBulletHellMovement(float endTime)
@@ -149,34 +196,7 @@ public class SniperBossMS : MonoBehaviour, IMoveState
         }
     }
 
-    // Teleport routine
-    IEnumerator Teleport()
-    {
 
-        // Keep true while in current round
-        while (true)
-        {
-            while (teleportActive)
-            {
-
-                // Choose a location to teleport to within collider bounds, then wait for a moment.
-                Vector3 spawnLoc = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
-                //GameObject teleMarkerFab = Instantiate(teleMarker, spawnLoc, Quaternion.identity);
-                PoolObject teleMarkerFab =
-                    PoolManager.Instance.ReuseObjectRef(teleMarker, spawnLoc, Quaternion.identity);
-                teleportActive = false;     // Can no longer teleport for awhile
-                yield return new WaitForSeconds(teleDelay);     // Activate visual marker, waiting to teleport
-
-
-                // Teleport to the random location
-                transform.position = spawnLoc;
-                teleMarkerFab.DestroyForReuse();
-                yield return new WaitForSeconds(postTeleDelay);
-
-            }
-            yield return null;
-        }
-    }
 
     // Call this if IDLE
     public void TurnToPlayer()
@@ -246,5 +266,9 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 
     }
 
+    public void OnObjectReuse()
+    {
+
+    }
 }
 

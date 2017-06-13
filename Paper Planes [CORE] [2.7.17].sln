@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paper Planes [CORE] [2.7.17
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paper Planes [CORE] [2.7.17].Editor.Plugins", "Paper Planes [CORE] [2.7.17].Editor.Plugins.csproj", "{4179EBEC-37B0-A11D-AFFD-E351ADD56AEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paper Planes [CORE] [2.7.17].Editor", "Paper Planes [CORE] [2.7.17].Editor.csproj", "{433AE90F-2A00-CFAF-3F47-A3426CD72059}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{4179EBEC-37B0-A11D-AFFD-E351ADD56AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4179EBEC-37B0-A11D-AFFD-E351ADD56AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4179EBEC-37B0-A11D-AFFD-E351ADD56AEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{433AE90F-2A00-CFAF-3F47-A3426CD72059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{433AE90F-2A00-CFAF-3F47-A3426CD72059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{433AE90F-2A00-CFAF-3F47-A3426CD72059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{433AE90F-2A00-CFAF-3F47-A3426CD72059}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

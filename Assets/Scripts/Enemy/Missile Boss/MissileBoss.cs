@@ -79,6 +79,12 @@ public class MissileBoss : Ship, IEnemy
         StartCoroutine(UseAttack());
     }
 
+    public override void OnObjectReuse()
+    {
+        moveState.OnObjectReuse();
+        fireState.OnObjectReuse();
+    }
+
     #endregion
 
     void OnGui()

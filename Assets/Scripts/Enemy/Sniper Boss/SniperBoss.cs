@@ -16,7 +16,7 @@ public class SniperBoss : Ship, IEnemy
 		2) Then fire laser for X sec, rotating at Y angles / sec. (can fire 3 lasers consecutively!!!!)
 		3) Then brief cooldown in which boss can't do anything except rotate.
 		4) Then teleport, start charging + repeat process again.
-	 - Scatters small explosives 
+	 - Scatters small explosives (errata: Bullet Hell attack)
 	 */
 
     #region Variables
@@ -30,21 +30,11 @@ public class SniperBoss : Ship, IEnemy
     public float postTeleDelay = 1.0f;
     public bool teleportActive = false;
     public float nextAttackTime = 3.0f;     // When we start attacking after spawning
-    //public bool isAtking = false;   // Desc. if boss is attacking
-    //public int numAtks = 0;     // Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
     public bool explAtkActive = false;
 
+    //public bool isAtking = false;   // Desc. if boss is attacking
+    //public int numAtks = 0;     // Tracks # of times we atked. Useful for if we fire laser mult. times in a row.
 
-    //public float endTime;
-
-    //public bool spawnEnabled = false;
-
-
-    //public GameObject laserSprite;		// Temporary sprite
-    //public GameObject teleMarker;
-    // Visual marker for future teleport location
-
-    //public float nextAtkTime;
     // Time at which we can launch next valid atk
     public IEnumerator teleRoutine;
     public IEnumerator laserRoutine;
@@ -64,7 +54,12 @@ public class SniperBoss : Ship, IEnemy
         //nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
     }
 
-
+    // This is called everytime this prefab is reused
+    public override void OnObjectReuse()
+    {
+        moveState.OnObjectReuse();
+        fireState.OnObjectReuse();
+    }
 
     #endregion
 
@@ -92,6 +87,30 @@ public class SniperBoss : Ship, IEnemy
     }
 
     // Tells MS to use appropriate movement
+    public void ActivateMovementState(float endTime, Direction direction)
+    {
+        ((SniperBossMS)moveState).ActivateMovementState(endTime, direction);
+        //if (direction == Direction.SNIPER_BOSS_LASER_MOVEMENT)
+        //{
+        //    ((SniperBossMS)moveState).ActivateLaserMovement(endTime);
+
+        //}
+        //else if (direction == Direction.SNIPER_BOSS_BULLET_HELL_MOVEMENT)
+        //{
+        //    ((SniperBossMS)moveState).ActivateBulletHellMovement(endTime);
+        //}
+        //else if (direction == Direction.SNIPER_BOSS_TELEPORT_MOVEMENT)
+        //{
+        //    ((SniperBossMS)moveState).ActivateTeleportMovement(endTime);
+        //}
+    }
+
+    public void DeactivateMovementState()
+    {
+        ((SniperBossMS)moveState).DeactivateMovementState();
+    }
+
+
     public void ActivateLaserMovementState(float endTime)
     {
         ((SniperBossMS)moveState).ActivateLaserMovement(endTime);
@@ -113,19 +132,19 @@ public class SniperBoss : Ship, IEnemy
 
 
 
-    IEnumerator UseExplosives()
-    {
+    //IEnumerator UseExplosives()
+    //{
 
-        while (true)
-        {
-            if (explAtkActive)
-            {
+    //    while (true)
+    //    {
+    //        if (explAtkActive)
+    //        {
 
 
-            }
-            yield return null;
-        }
-    }
+    //        }
+    //        yield return null;
+    //    }
+    //}
 
     void OnTriggerEnter(Collider other)
     {
