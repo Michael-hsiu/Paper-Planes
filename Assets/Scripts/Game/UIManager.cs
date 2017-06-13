@@ -67,11 +67,13 @@ public class UIManager : MonoBehaviour
         {
             startHealthCopy += healthStep;
             lerpRatio = startHealthCopy / endHealthCopy;
-
+            //lerpRatio *= (lerpRatio * lerpRatio);
+            //lerpRatio = 1f - Mathf.Abs(Mathf.Cos(lerpRatio * Mathf.PI * 0.5f));
+            lerpRatio = Mathf.Abs(Mathf.Sin(lerpRatio * Mathf.PI * 0.5f));
             healthBar.rectTransform.localScale = Vector3.Lerp(oldScale, newScale, lerpRatio);     // Resize health bar proportionally
             Debug.Log("NOW LERPING");
             //Debug.Break();
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
 
         // Update healths

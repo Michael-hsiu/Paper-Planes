@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/UIManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/PawnShip/PawnShip.cs">
     <Files>
       <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="50" Column="59" />
       <File FileName="Assets/Scripts/Game/AIInput.cs" Line="135" Column="52" />
@@ -10,10 +10,11 @@
       <File FileName="Assets/Scripts/FSM/IFireState.cs" Line="22" Column="28" />
       <File FileName="Assets/Scripts/FSM/IMoveState.cs" Line="27" Column="34" />
       <File FileName="Assets/Scripts/General/PoolManager.cs" Line="69" Column="13" />
-      <File FileName="Assets/Scripts/General/TeleMarker.cs" Line="13" Column="83" />
+      <File FileName="Assets/Scripts/General/TeleMarker.cs" Line="15" Column="1" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFiringDistanceCollider.cs" Line="23" Column="1" />
       <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="84" Column="37" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="75" Column="50" />
+      <File FileName="Assets/Scripts/Enemy/PawnShip/PawnShip.cs" Line="10" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
