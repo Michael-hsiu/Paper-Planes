@@ -206,6 +206,7 @@
     <Compile Include="Assets\Scripts\General\Shot.cs" />
     <Compile Include="Assets\Scripts\General\ShotSpawn.cs" />
     <Compile Include="Assets\Scripts\General\ShotSpawnContainer.cs" />
+    <Compile Include="Assets\Scripts\General\TeleMarker.cs" />
     <Compile Include="Assets\Scripts\General\TurretShotSpawn.cs" />
     <Compile Include="Assets\Scripts\General\Utils.cs" />
     <Compile Include="Assets\Scripts\General\WaveShot.cs" />

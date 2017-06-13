@@ -53,9 +53,11 @@ public class SniperBossFS : MonoBehaviour, IFireState
 
         laserAttackRoutine = LaserAttack();
         bulletHellAttackRoutine = BulletHellAttack();
+        teleportRoutine = Teleport();
 
         StartCoroutine(laserAttackRoutine);
         StartCoroutine(bulletHellAttackRoutine);
+        StartCoroutine(teleportRoutine);
         HideLaser();
     }
 
@@ -127,24 +129,23 @@ public class SniperBossFS : MonoBehaviour, IFireState
         // Keep true while in current round
         while (true)
         {
-            if (teleportActive)
+            while (teleportActive)
             {
-
                 endTime = Time.time + teleDelay;
                 SetAttackEndTime(endTime);      // So that SniperBoss script won't launch any more attacks
                 sniperBoss.ActivateMovementState(endTime, Direction.SNIPER_BOSS_TELEPORT_MOVEMENT);
 
                 // Choose a location to teleport to within collider bounds, then wait for a moment.
                 teleportLocation = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
-
                 activeTeleMarker = PoolManager.Instance.ReuseObjectRef(teleMarker, teleportLocation, Quaternion.identity);
-                teleportActive = false;     // Can no longer teleport for awhile
+
+                Debug.Break();
                 yield return new WaitForSeconds(endTime - Time.time);     // Activate visual marker, waiting to teleport
 
                 // Teleport to the random location
                 transform.position = teleportLocation;
                 activeTeleMarker.DestroyForReuse();
-
+                teleportActive = false;     // Can no longer teleport for awhile
             }
             yield return null;
         }
