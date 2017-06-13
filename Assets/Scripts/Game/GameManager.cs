@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
     public void OnLevelStartEnableMovingSpawners()
     {
         // TODO: Disable old spawners
-        // TODO: Enable new spaners
+        // TODO: Enable new spawners
         movingSpawnManager.spawnEnabled = true;
     }
     /* END StartLevelEvent subscriber list. */

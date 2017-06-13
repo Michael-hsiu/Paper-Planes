@@ -81,8 +81,8 @@ public class MissileBoss : Ship, IEnemy
 
     public override void OnObjectReuse()
     {
-        moveState.OnObjectReuse();
-        fireState.OnObjectReuse();
+        //moveState.OnObjectReuse();
+        //fireState.OnObjectReuse();
     }
 
     #endregion

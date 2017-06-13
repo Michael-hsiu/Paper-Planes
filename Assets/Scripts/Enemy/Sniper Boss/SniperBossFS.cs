@@ -101,13 +101,13 @@ public class SniperBossFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal <= 0.3f)
+        if (randomVal <= 0.4f)
         {
             // Trigger the Laser attack
             laserActive = true;
             attackStatus = AttackStatus.SNIPER_BOSS_LASER_ATTACK;
         }
-        else if (randomVal <= 0.7f)
+        else if (randomVal <= 0.1f)
         {
             // Trigger the Bullet Hell attack
             bulletHellActive = true;
@@ -139,7 +139,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
                 teleportLocation = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
                 activeTeleMarker = PoolManager.Instance.ReuseObjectRef(teleMarker, teleportLocation, Quaternion.identity);
 
-                Debug.Break();
+                //Debug.Break();
                 yield return new WaitForSeconds(endTime - Time.time);     // Activate visual marker, waiting to teleport
 
                 // Teleport to the random location
@@ -183,7 +183,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
     // Set next possible time for attack 
     public void SetAttackEndTime(float attackEndTime)
     {
-        sniperBoss.nextAttackTime = attackEndTime + Random.Range(1.0f, 2.0f);
+        sniperBoss.nextAttackTime = attackEndTime + Random.Range(4.0f, 5.0f);
     }
 
     void ShowLaser()

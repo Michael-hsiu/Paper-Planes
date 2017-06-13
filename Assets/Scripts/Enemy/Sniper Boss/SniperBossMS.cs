@@ -18,6 +18,7 @@ public class SniperBossMS : MonoBehaviour, IMoveState
     public bool laserMovementActive = false;
     public bool bulletHellMovementActive = false;
     public bool teleportMovementActive = false;
+    public float laserRotationSpeed = 5.0f;
 
     public float xBound;
     public float yBound;
@@ -25,7 +26,10 @@ public class SniperBossMS : MonoBehaviour, IMoveState
     public IEnumerator laserRoutine;
 
     public Collider mapCollider;
-
+    public Collider bossHitCollider;
+    public Color bossOriginalColor;
+    public Color stealthColor;
+    public SpriteRenderer spriteRenderer;
 
     public Direction Direction
     {
@@ -44,6 +48,11 @@ public class SniperBossMS : MonoBehaviour, IMoveState
     void Start()
     {
         sniperBoss = GetComponent<SniperBoss>();
+        bossHitCollider = sniperBoss.GetComponent<Collider>();
+        bossOriginalColor = spriteRenderer.color;
+
+        stealthColor = bossOriginalColor;
+        stealthColor.a = 0.5f;
 
         mapCollider = GameManager.Singleton.mapCollider;
         Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
@@ -62,35 +71,57 @@ public class SniperBossMS : MonoBehaviour, IMoveState
         if (direction == Direction.PLAYER_DETECTED)
         {
             MoveToPlayer(); // Change to be AWAY from player if too close
+            EnableStealthMode();
 
         }
         else if (direction == Direction.PLAYER_TOO_CLOSE)
         {
             MoveBackwards();
+            DisableStealthMode();
         }
         else if (direction == Direction.IDLE)
         {
             // For when we're not attacking, so we just stay put.
             // Only attack if we're in range!
             TurnToPlayer();
+            DisableStealthMode();
         }
         else if (direction == Direction.SNIPER_BOSS_LASER_MOVEMENT)
         {
             // This means that we're close enough to the player to attack; no need to move.
             // Still rotates to meet player
+            DisableStealthMode();
 
         }
         else if (direction == Direction.SNIPER_BOSS_BULLET_HELL_MOVEMENT)
         {
             // We don't move; we just FIRE!
+            DisableStealthMode();
+
         }
         else if (direction == Direction.SNIPER_BOSS_TELEPORT_MOVEMENT)
         {
             // We don't move; we just stay still.
+            DisableStealthMode();
+
         }
 
     }
 
+    public void EnableStealthMode()
+    {
+        // Enable Stealth Mode
+        bossHitCollider.enabled = false;
+        spriteRenderer.color = stealthColor;
+    }
+
+    public void DisableStealthMode()
+    {
+        // Disable Stealth Mode
+        bossHitCollider.enabled = true;
+        spriteRenderer.color = bossOriginalColor;
+
+    }
 
     public void ActivateMovementState(float endTime, Direction newDirection)
     {
@@ -184,7 +215,7 @@ public class SniperBossMS : MonoBehaviour, IMoveState
 
             // Randomly pick a direction to rotate in
             float randomValue = Random.value;
-            float rotSpeed = (randomValue < 0.5f) ? 5.0f : -5.0f;
+            float rotSpeed = (randomValue < 0.5f) ? laserRotationSpeed : -laserRotationSpeed;
 
             while (Time.time < endTime)
             {
@@ -214,11 +245,13 @@ public class SniperBossMS : MonoBehaviour, IMoveState
     }
 
     // Call this if PLAYER_DETECTED
+    // While moving to player, SniperBoss is in stealth mode and can't be hit by player attacks.
     public void MoveToPlayer()
     {
 
         if (sniperBoss.target != null)
         {
+
 
             Vector3 dist = (sniperBoss.target.transform.position - sniperBoss.transform.position).normalized;   // Find unit vector difference between target and this
 
@@ -226,15 +259,8 @@ public class SniperBossMS : MonoBehaviour, IMoveState
             Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
             sniperBoss.transform.rotation = Quaternion.RotateTowards(sniperBoss.transform.rotation, desiredRotation, sniperBoss.rotationSpeed * Time.deltaTime);    // Rotate the enemy
 
-            /** MOVEMENT UPDATE */
-            if (!sniperBoss.isSpeedBuffed)
-            {
-                sniperBoss.transform.position = Vector2.MoveTowards(sniperBoss.transform.position, sniperBoss.target.transform.position, Time.deltaTime * sniperBoss.speed);
-            }
-            else
-            {
-                sniperBoss.transform.position = Vector2.MoveTowards(sniperBoss.transform.position, sniperBoss.target.transform.position, Time.deltaTime * sniperBoss.speed * sniperBoss.buffedSpeedFactor);
-            }
+            sniperBoss.transform.position = Vector2.MoveTowards(sniperBoss.transform.position, sniperBoss.target.transform.position, Time.deltaTime * sniperBoss.speed);
+
         }
     }
 

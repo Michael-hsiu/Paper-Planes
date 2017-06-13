@@ -57,6 +57,10 @@ public class SniperBoss : Ship, IEnemy
     // This is called everytime this prefab is reused
     public override void OnObjectReuse()
     {
+
+        moveState = GetComponent<IMoveState>();
+        fireState = GetComponent<IFireState>();
+
         moveState.OnObjectReuse();
         fireState.OnObjectReuse();
     }
