@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+
 
 public class UIManager : MonoBehaviour
 {
@@ -38,6 +40,9 @@ public class UIManager : MonoBehaviour
     public float endHealthCopy;
     public float ratio;
 
+    // For when player is hit multiple times in a row, quickly one after another
+    public Queue<int> damageQueue = new Queue<int>();
+
     public void UpdateHealth()
     {
         // Text
@@ -46,7 +51,7 @@ public class UIManager : MonoBehaviour
 
         // Health bar
         endHealth = GameManager.Singleton.playerHealth;
-        StopAllCoroutines();
+        //StopAllCoroutines();
         StartCoroutine(LerpHealthBar());
         //Debug.Log ("RATIO: " + ratio);
         //healthBar.rectTransform.localScale = new Vector3 (ratio, 1, 1);       // Resize health bar proportionally
@@ -54,6 +59,8 @@ public class UIManager : MonoBehaviour
 
     }
 
+    // TODO: This is problematic when hit by consecutive hits, like when MissileBoss spams missiles. Possible soln: use a queue for additional damage values,
+    // which is used if UpdateHealth() is called while a lerp is still active. After the active lerp, the next one is called, and so on, until queue is empty.
     IEnumerator LerpHealthBar()
     {
         startHealthCopy = 0f;
@@ -63,13 +70,15 @@ public class UIManager : MonoBehaviour
         oldScale = healthBar.rectTransform.localScale;
         newScale = new Vector3(8.02f * ratio, scaleY, 1);
 
-        while ((endHealthCopy - startHealthCopy) > 1.0f)
+        while (Mathf.Abs(endHealthCopy - startHealthCopy) > 1.0f)
         {
             startHealthCopy += healthStep;
             lerpRatio = startHealthCopy / endHealthCopy;
             //lerpRatio *= (lerpRatio * lerpRatio);
             //lerpRatio = 1f - Mathf.Abs(Mathf.Cos(lerpRatio * Mathf.PI * 0.5f));
             lerpRatio = Mathf.Abs(Mathf.Sin(lerpRatio * Mathf.PI * 0.5f));
+            //lerpRatio = (float)Math.Pow(lerpRatio, 3) * (lerpRatio * (6f * lerpRatio - 15f) + 10f);
+
             healthBar.rectTransform.localScale = Vector3.Lerp(oldScale, newScale, lerpRatio);     // Resize health bar proportionally
             Debug.Log("NOW LERPING");
             //Debug.Break();
