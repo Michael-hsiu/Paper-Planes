@@ -46,6 +46,9 @@ public class UIManager : MonoBehaviour
 
     // For when player is hit multiple times in a row, quickly one after another
     public Queue<int> damageQueue = new Queue<int>();
+    public int targetEndHealth;
+    public int peekValue;
+    public int currentMin;
 
     public void UpdateHealth()
     {
@@ -56,7 +59,8 @@ public class UIManager : MonoBehaviour
         // Health bar
         endHealth = GameManager.Singleton.playerHealth;
         damageQueue.Enqueue(endHealth);
-        Utils.PrintValues("DAMAGE QUEUE POST ENQUEUE", damageQueue);
+        Debug.Log("DAMAGE QUEUE POST ENQUEUE" + Utils.CollectionValues(damageQueue));
+
         //Debug.Break();
         //StopAllCoroutines();
         if (!isLerping)
@@ -87,13 +91,14 @@ public class UIManager : MonoBehaviour
         //}
 
         numDequeued = 1;
-        int targetEndHealth = damageQueue.Dequeue();
-        int peekValue = targetEndHealth;
-        int currentMin = targetEndHealth;
+        targetEndHealth = damageQueue.Dequeue();
+        peekValue = targetEndHealth;
+        currentMin = targetEndHealth;
+
         bool keepCollectingValues = true;
-        while (damageQueue.Count > 0)
+        while (damageQueue.Count > 0 && keepCollectingValues)
         {
-            if (peekValue > 0 && keepCollectingValues)
+            if (peekValue > 0)
             {
                 // Only collect values until we pick up a health pack
                 peekValue = damageQueue.Peek();
@@ -110,14 +115,12 @@ public class UIManager : MonoBehaviour
 
                 //targetEndHealth = Mathf.Max(targetEndHealth, dequeuedValue);
             }
-            else
-            {
-                break;
-            }
-            Utils.PrintValues("DAMAGE QUEUE POST MULTI-DEQUEUE", damageQueue);
+            Debug.Log("DAMAGE QUEUE POST MULTI-DEQUEUE" + Utils.CollectionValues(damageQueue));
+            //Debug.Break();
             yield return null;
         }
-
+        //Debug.Break();
+        targetEndHealth = currentMin;
         ratio = (float)targetEndHealth / GameManager.Singleton.playerMaxHealth;
         oldScale = healthBar.rectTransform.localScale;
         newScale = new Vector3(8.02f * ratio, scaleY, 1);
@@ -151,18 +154,19 @@ public class UIManager : MonoBehaviour
 
             currLerpTime += Time.deltaTime;
             lerpRatio = currLerpTime / workingLerpInterval;
-
+            Debug.Log("INSIDE WHILE LOOP");
+            //Debug.Break();
             // Speed up lerp if we keep taking damage
             // Many hits registered, so lerp them quickly
-            if (!lerpSpedUp && numDequeued > 3)
-            {
-                //workingLerpInterval = Mathf.Clamp(workingLerpInterval * 0.8f, currLerpTime, workingLerpInterval * 0.8f);
-                lerpSpedUp = true;
-                lerpRatio = 1;
-                //timeFactor = 2f;
-                Debug.Log("FASTER LERP ACTIVATED!");
-                //Debug.Break();
-            }
+            //if (!lerpSpedUp && numDequeued > 3)
+            //{
+            //    //workingLerpInterval = Mathf.Clamp(workingLerpInterval * 0.8f, currLerpTime, workingLerpInterval * 0.8f);
+            //    lerpSpedUp = true;
+            //    //lerpRatio = 1;
+            //    //timeFactor = 2f;
+            //    Debug.Log("FASTER LERP ACTIVATED!");
+            //    //Debug.Break();
+            //}
 
             // Terminate this lerp if there are too many damages we need to lerp
             //if (damageQueue.Count > 3 && !lerpSpedUp)

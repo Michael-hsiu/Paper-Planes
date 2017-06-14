@@ -172,14 +172,14 @@ public static class Utils
     }
 
     // From MSDN
-    public static void PrintValues(string dataStructureName, IEnumerable myCollection)
+    public static string CollectionValues(IEnumerable myCollection)
     {
-        string values = "";
+        string values = " VALUES: ";
         foreach (object obj in myCollection)
         {
             values = values + "    " + obj;
 
         }
-        Debug.Log(dataStructureName + " VALUES: " + values);
+        return values;
     }
 }
