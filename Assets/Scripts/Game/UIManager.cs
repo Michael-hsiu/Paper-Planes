@@ -30,15 +30,19 @@ public class UIManager : MonoBehaviour
     public IEnumerator levelEndRoutine;
 
     public float displayLength = 3.0f;  // How long dialog appears on-screen
-    public float startHealth = -1f;
-    public float endHealth = -1f;
+    public int startHealth = -1;
+    public int endHealth = -1;
     public float healthStep = 5.0f;
     public float lerpRatio;
     public Vector3 oldScale;
     public Vector3 newScale;
-    public float startHealthCopy = 0f;
+    public float currLerpTime = 0f;
+    public float lerpInterval;      // How long each lerp should take, independent of damage
+    public bool isLerping = false;
     public float endHealthCopy;
     public float ratio;
+    public int numDequeued = 0;
+    public int numTimesHealthUpdated = 0;
 
     // For when player is hit multiple times in a row, quickly one after another
     public Queue<int> damageQueue = new Queue<int>();
@@ -51,42 +55,154 @@ public class UIManager : MonoBehaviour
 
         // Health bar
         endHealth = GameManager.Singleton.playerHealth;
+        damageQueue.Enqueue(endHealth);
+        Utils.PrintValues("DAMAGE QUEUE POST ENQUEUE", damageQueue);
+        //Debug.Break();
         //StopAllCoroutines();
-        StartCoroutine(LerpHealthBar());
-        //Debug.Log ("RATIO: " + ratio);
-        //healthBar.rectTransform.localScale = new Vector3 (ratio, 1, 1);       // Resize health bar proportionally
-        //healthBar.rectTransform.localScale = new Vector3(8.02f * ratio, scaleY, 1);     // Resize health bar proportionally
-
+        if (!isLerping)
+        {
+            StartNextLerp();
+        }
     }
 
     // TODO: This is problematic when hit by consecutive hits, like when MissileBoss spams missiles. Possible soln: use a queue for additional damage values,
     // which is used if UpdateHealth() is called while a lerp is still active. After the active lerp, the next one is called, and so on, until queue is empty.
     IEnumerator LerpHealthBar()
     {
-        startHealthCopy = 0f;
-        endHealthCopy = startHealth - endHealth;
+        // Prevent >1 routine from running at once
+        isLerping = true;
+        currLerpTime = 0f;
 
-        ratio = (float)GameManager.Singleton.playerHealth / GameManager.Singleton.playerMaxHealth;
+        // If we have many damage values to calculate, bundle multiple into one lerp
+        //float damageQueueCount = damageQueue.Count;
+        //for (int i = 0; i < damageQueueCount; i++)
+        //{
+        //    int dequeuedValue = damageQueue.Dequeue();
+        //    if (dequeuedValue > 0)
+        //    {
+        //        targetEndHealth = Mathf.Max(targetEndHealth, dequeuedValue);
+        //    }
+        //    Utils.PrintValues("DAMAGE QUEUE POST MULTI-DEQUEUE", damageQueue);
+
+        //}
+
+        numDequeued = 1;
+        int targetEndHealth = damageQueue.Dequeue();
+        int peekValue = targetEndHealth;
+        int currentMin = targetEndHealth;
+        bool keepCollectingValues = true;
+        while (damageQueue.Count > 0)
+        {
+            if (peekValue > 0 && keepCollectingValues)
+            {
+                // Only collect values until we pick up a health pack
+                peekValue = damageQueue.Peek();
+                if (peekValue < currentMin)
+                {
+                    currentMin = damageQueue.Dequeue();
+                    numDequeued += 1;
+
+                }
+                else
+                {
+                    keepCollectingValues = false;
+                }
+
+                //targetEndHealth = Mathf.Max(targetEndHealth, dequeuedValue);
+            }
+            else
+            {
+                break;
+            }
+            Utils.PrintValues("DAMAGE QUEUE POST MULTI-DEQUEUE", damageQueue);
+            yield return null;
+        }
+
+        ratio = (float)targetEndHealth / GameManager.Singleton.playerMaxHealth;
         oldScale = healthBar.rectTransform.localScale;
         newScale = new Vector3(8.02f * ratio, scaleY, 1);
 
-        while (Mathf.Abs(endHealthCopy - startHealthCopy) > 1.0f)
+        //while (Mathf.Abs(endHealthCopy - startHealthCopy) > 1.0f)
+        float workingLerpInterval = lerpInterval;
+        float timeFactor = 1f;
+        bool lerpSpedUp = false;
+        while (currLerpTime < workingLerpInterval)
         {
-            startHealthCopy += healthStep;
-            lerpRatio = startHealthCopy / endHealthCopy;
-            //lerpRatio *= (lerpRatio * lerpRatio);
-            //lerpRatio = 1f - Mathf.Abs(Mathf.Cos(lerpRatio * Mathf.PI * 0.5f));
-            lerpRatio = Mathf.Abs(Mathf.Sin(lerpRatio * Mathf.PI * 0.5f));
-            //lerpRatio = (float)Math.Pow(lerpRatio, 3) * (lerpRatio * (6f * lerpRatio - 15f) + 10f);
+
+            // If the player isn't hurt
+            if (numTimesHealthUpdated == 0)
+            {
+                numTimesHealthUpdated += 1;
+                break;
+            }
+
+            // For if we get health pack while getting attacked
+            if (GameManager.Singleton.playerHealth > targetEndHealth)
+            {
+                break;
+            }
+
+            // For if player dies 
+            if (GameManager.Singleton.playerHealth == 0)
+            {
+                newScale = new Vector3(0f, scaleY, 1);
+            }
+
+
+            currLerpTime += Time.deltaTime;
+            lerpRatio = currLerpTime / workingLerpInterval;
+
+            // Speed up lerp if we keep taking damage
+            // Many hits registered, so lerp them quickly
+            if (!lerpSpedUp && numDequeued > 3)
+            {
+                //workingLerpInterval = Mathf.Clamp(workingLerpInterval * 0.8f, currLerpTime, workingLerpInterval * 0.8f);
+                lerpSpedUp = true;
+                lerpRatio = 1;
+                //timeFactor = 2f;
+                Debug.Log("FASTER LERP ACTIVATED!");
+                //Debug.Break();
+            }
+
+            // Terminate this lerp if there are too many damages we need to lerp
+            //if (damageQueue.Count > 3 && !lerpSpedUp)
+            //{
+            //    break;
+
+            //}
+
+            // Use custom interpolation if only one hit was detected (style points) (currently broken)
+            //if (numDequeued == -1)
+            //{
+
+            //    lerpRatio *= (lerpRatio * lerpRatio);
+            //    //Debug.Break();
+            //    //lerpRatio = (float)Math.Pow(lerpRatio, 3) * (lerpRatio * (6f * lerpRatio - 15f) + 10f);
+            //    //lerpRatio = 1f - Mathf.Abs(Mathf.Cos(lerpRatio * Mathf.PI * 0.5f));
+            //    //lerpRatio = Mathf.Sin(lerpRatio * Mathf.PI * 0.5f);
+            //}
 
             healthBar.rectTransform.localScale = Vector3.Lerp(oldScale, newScale, lerpRatio);     // Resize health bar proportionally
             Debug.Log("NOW LERPING");
-            //Debug.Break();
             yield return new WaitForEndOfFrame();
         }
 
         // Update healths
-        startHealth = endHealth;
+        isLerping = false;
+        if (damageQueue.Count != 0)
+        {
+            StartNextLerp();
+        }
+
+        //startHealth = endHealth;
+    }
+
+    // Called from Lerp routine if there are multiple damages we still need to process
+    public void StartNextLerp()
+    {
+        //int targetEndHealth = damageQueue.Dequeue();
+        //Utils.PrintValues("DAMAGE QUEUE POST DEQUEUE", damageQueue);
+        StartCoroutine(LerpHealthBar());
     }
 
     void Awake()
