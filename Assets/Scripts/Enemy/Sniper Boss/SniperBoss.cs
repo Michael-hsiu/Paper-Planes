@@ -115,23 +115,23 @@ public class SniperBoss : Ship, IEnemy
     }
 
 
-    public void ActivateLaserMovementState(float endTime)
-    {
-        ((SniperBossMS)moveState).ActivateLaserMovement(endTime);
-    }
-    public void DeactivateLaserMovementState()
-    {
-        ((SniperBossMS)moveState).DeactivateLaserMovement();
-    }
-    // Tells MS to use appropriate movement
-    public void ActivateBulletHellMovementState(float endTime)
-    {
-        ((SniperBossMS)moveState).ActivateBulletHellMovement(endTime);
-    }
-    public void DeactivateBulletHellMovementState()
-    {
-        ((SniperBossMS)moveState).DeactivateBulletHellMovement();
-    }
+    //public void ActivateLaserMovementState(float endTime)
+    //{
+    //    ((SniperBossMS)moveState).ActivateLaserMovement(endTime);
+    //}
+    //public void DeactivateLaserMovementState()
+    //{
+    //    ((SniperBossMS)moveState).DeactivateLaserMovement();
+    //}
+    //// Tells MS to use appropriate movement
+    //public void ActivateBulletHellMovementState(float endTime)
+    //{
+    //    ((SniperBossMS)moveState).ActivateBulletHellMovement(endTime);
+    //}
+    //public void DeactivateBulletHellMovementState()
+    //{
+    //    ((SniperBossMS)moveState).DeactivateBulletHellMovement();
+    //}
 
 
 

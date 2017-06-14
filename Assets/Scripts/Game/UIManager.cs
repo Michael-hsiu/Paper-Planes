@@ -59,7 +59,7 @@ public class UIManager : MonoBehaviour
         // Health bar
         endHealth = GameManager.Singleton.playerHealth;
         damageQueue.Enqueue(endHealth);
-        Debug.Log("DAMAGE QUEUE POST ENQUEUE" + Utils.CollectionValues(damageQueue));
+        //Debug.Log("DAMAGE QUEUE POST ENQUEUE" + Utils.CollectionValues(damageQueue));
 
         //Debug.Break();
         //StopAllCoroutines();
@@ -115,7 +115,7 @@ public class UIManager : MonoBehaviour
 
                 //targetEndHealth = Mathf.Max(targetEndHealth, dequeuedValue);
             }
-            Debug.Log("DAMAGE QUEUE POST MULTI-DEQUEUE" + Utils.CollectionValues(damageQueue));
+            //Debug.Log("DAMAGE QUEUE POST MULTI-DEQUEUE" + Utils.CollectionValues(damageQueue));
             //Debug.Break();
             yield return null;
         }
@@ -154,7 +154,7 @@ public class UIManager : MonoBehaviour
 
             currLerpTime += Time.deltaTime;
             lerpRatio = currLerpTime / workingLerpInterval;
-            Debug.Log("INSIDE WHILE LOOP");
+            //Debug.Log("INSIDE WHILE LOOP");
             //Debug.Break();
             // Speed up lerp if we keep taking damage
             // Many hits registered, so lerp them quickly
@@ -164,7 +164,7 @@ public class UIManager : MonoBehaviour
                 lerpSpedUp = true;
                 //lerpRatio = 1;
                 //timeFactor = 2f;
-                Debug.Log("FASTER LERP ACTIVATED!");
+                //Debug.Log("FASTER LERP ACTIVATED!");
                 //Debug.Break();
             }
 
@@ -183,12 +183,12 @@ public class UIManager : MonoBehaviour
                 //lerpRatio = (float)Math.Pow(lerpRatio, 3) * (lerpRatio * (6f * lerpRatio - 15f) + 10f);
                 //lerpRatio = 1f - Mathf.Abs(Mathf.Cos(lerpRatio * Mathf.PI * 0.5f));
                 lerpRatio = Mathf.Sin(lerpRatio * Mathf.PI * 0.5f);
-                Debug.Log("STYLIZED LERP ACTIVATED!");
+                //Debug.Log("STYLIZED LERP ACTIVATED!");
                 //Debug.Break();
             }
 
             healthBar.rectTransform.localScale = Vector3.Lerp(oldScale, newScale, lerpRatio);     // Resize health bar proportionally
-            Debug.Log("NOW LERPING");
+            //Debug.Log("NOW LERPING");
             yield return new WaitForEndOfFrame();
         }
 

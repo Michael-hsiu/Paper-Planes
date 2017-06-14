@@ -53,11 +53,11 @@ public class SniperBossFS : MonoBehaviour, IFireState
 
         laserAttackRoutine = LaserAttack();
         bulletHellAttackRoutine = BulletHellAttack();
-        teleportRoutine = Teleport();
+        //teleportRoutine = Teleport();
 
         StartCoroutine(laserAttackRoutine);
         StartCoroutine(bulletHellAttackRoutine);
-        StartCoroutine(teleportRoutine);
+        //StartCoroutine(teleportRoutine);
         HideLaser();
     }
 
@@ -76,11 +76,11 @@ public class SniperBossFS : MonoBehaviour, IFireState
         StopAllCoroutines();
         laserAttackRoutine = LaserAttack();
         bulletHellAttackRoutine = BulletHellAttack();
-        teleportRoutine = Teleport();
+        //teleportRoutine = Teleport();
 
         StartCoroutine(laserAttackRoutine);
         StartCoroutine(bulletHellAttackRoutine);
-        StartCoroutine(teleportRoutine);
+        //StartCoroutine(teleportRoutine);
         HideLaser();
     }
 
@@ -107,18 +107,18 @@ public class SniperBossFS : MonoBehaviour, IFireState
             laserActive = true;
             attackStatus = AttackStatus.SNIPER_BOSS_LASER_ATTACK;
         }
-        else if (randomVal <= 0.1f)
+        else
         {
             // Trigger the Bullet Hell attack
             bulletHellActive = true;
             attackStatus = AttackStatus.SNIPER_BOSS_BULLET_HELL_ATTACK;
         }
-        else
-        {
-            // Trigger the Teleport attack
-            teleportActive = true;
-            attackStatus = AttackStatus.SNIPER_BOSS_TELEPORT_ATTACK;
-        }
+        //else
+        //{
+        //    // Trigger the Teleport attack
+        //    teleportActive = true;
+        //    attackStatus = AttackStatus.SNIPER_BOSS_TELEPORT_ATTACK;
+        //}
     }
 
     // Teleport routine
@@ -172,7 +172,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
                 // Wait until end time
                 yield return new WaitForSeconds(endTime - Time.time);
                 bulletHellActive = false;
-                sniperBoss.DeactivateBulletHellMovementState();
+                sniperBoss.DeactivateMovementState();
 
             }
             yield return null;
@@ -238,7 +238,7 @@ public class SniperBossFS : MonoBehaviour, IFireState
                 }
 
                 // End the attack
-                sniperBoss.DeactivateLaserMovementState();
+                sniperBoss.DeactivateMovementState();
                 attackStatus = AttackStatus.NOT_ATTACKING;
                 laserActive = false;
                 HideLaser();
