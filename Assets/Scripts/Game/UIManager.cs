@@ -158,33 +158,34 @@ public class UIManager : MonoBehaviour
             //Debug.Break();
             // Speed up lerp if we keep taking damage
             // Many hits registered, so lerp them quickly
-            //if (!lerpSpedUp && numDequeued > 3)
-            //{
-            //    //workingLerpInterval = Mathf.Clamp(workingLerpInterval * 0.8f, currLerpTime, workingLerpInterval * 0.8f);
-            //    lerpSpedUp = true;
-            //    //lerpRatio = 1;
-            //    //timeFactor = 2f;
-            //    Debug.Log("FASTER LERP ACTIVATED!");
-            //    //Debug.Break();
-            //}
+            if (!lerpSpedUp && numDequeued > 3)
+            {
+                workingLerpInterval = Mathf.Clamp(workingLerpInterval * 0.8f, currLerpTime, workingLerpInterval * 0.8f);
+                lerpSpedUp = true;
+                //lerpRatio = 1;
+                //timeFactor = 2f;
+                Debug.Log("FASTER LERP ACTIVATED!");
+                //Debug.Break();
+            }
 
             // Terminate this lerp if there are too many damages we need to lerp
-            //if (damageQueue.Count > 3 && !lerpSpedUp)
-            //{
-            //    break;
+            if (damageQueue.Count > 3 && !lerpSpedUp)
+            {
+                break;
 
-            //}
+            }
 
             // Use custom interpolation if only one hit was detected (style points) (currently broken)
-            //if (numDequeued == -1)
-            //{
+            if (numDequeued == 1)
+            {
 
-            //    lerpRatio *= (lerpRatio * lerpRatio);
-            //    //Debug.Break();
-            //    //lerpRatio = (float)Math.Pow(lerpRatio, 3) * (lerpRatio * (6f * lerpRatio - 15f) + 10f);
-            //    //lerpRatio = 1f - Mathf.Abs(Mathf.Cos(lerpRatio * Mathf.PI * 0.5f));
-            //    //lerpRatio = Mathf.Sin(lerpRatio * Mathf.PI * 0.5f);
-            //}
+                //lerpRatio *= (lerpRatio * lerpRatio);
+                //lerpRatio = (float)Math.Pow(lerpRatio, 3) * (lerpRatio * (6f * lerpRatio - 15f) + 10f);
+                //lerpRatio = 1f - Mathf.Abs(Mathf.Cos(lerpRatio * Mathf.PI * 0.5f));
+                lerpRatio = Mathf.Sin(lerpRatio * Mathf.PI * 0.5f);
+                Debug.Log("STYLIZED LERP ACTIVATED!");
+                //Debug.Break();
+            }
 
             healthBar.rectTransform.localScale = Vector3.Lerp(oldScale, newScale, lerpRatio);     // Resize health bar proportionally
             Debug.Log("NOW LERPING");
