@@ -188,6 +188,31 @@ public class AIInput : MonoBehaviour, InputComponent
         controlsEnabled = true;
     }
 
+    // Overloaded alternatives
+    public void DisableControls(float givenEndTime)
+    {
+        StopAllCoroutines();
+        if (Time.time < GameManager.Singleton.playerShip.dashEndTime)
+        {
+            GameManager.Singleton.playerShip.GetComponent<Rigidbody>().velocity = lastDashVelocity;
+        }
+        else
+        {
+            GameManager.Singleton.playerShip.GetComponent<Rigidbody>().velocity = savedVelocity;
+        }
+        GameManager.Singleton.playerShip.dashStarted = false;
+        StartCoroutine(DisableControlsRoutine(givenEndTime));
+    }
+
+    IEnumerator DisableControlsRoutine(float givenDisableTime)
+    {
+        controlsEnabled = false;
+        yield return new WaitForSeconds(givenDisableTime);
+        controlsEnabled = true;
+    }
+
+
+
 
     // Dash powerup for player
     public void Dash(PlayerShip player)

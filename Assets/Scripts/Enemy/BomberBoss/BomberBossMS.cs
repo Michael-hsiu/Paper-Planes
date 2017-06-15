@@ -6,27 +6,31 @@ using UnityEngine;
 public class BomberBossMS : MonoBehaviour, IMoveState
 {
 
+    [Header("GENERAL_DATA")]
     public Direction direction = Direction.PLAYER_UNDETECTED;
     public Direction Direction { get; set; }
+    public BomberBoss bomberBoss;
+    public float endTime;
 
-    [Header("ROTATION DATA")]
+    [Header("ROTATION_DATA")]
     public Transform rotatingGear;      // Gear that starts rotating faster whenever attack is about to initiate
     public float startingRotationFactor = 3.0f;
     public float rotationFactorInterval = 5.0f;     // How much we increase the rotation speed by
     public float maxRotationSpeed = 20.0f;
     public bool rotationSpeedIncreased = false;
     public float currentRotationSpeed;
+    public Rigidbody rushCollisionRigidBody;
     IEnumerator rotationRoutine;
 
     [Header("RUSH_ATTACK_DATA")]
     public bool rushAttackMovementActive = false;
     public float thrustFactor = 5.0f;
     public float rushAttackChargeTime = 5.0f;
+    public float knockbackForce = 4000.0f;
     public Vector3 directionToPlayer;
     IEnumerator rushAttackMovementRoutine;
 
-    public BomberBoss bomberBoss;
-    public float endTime;
+
 
     void Start()
     {
@@ -53,13 +57,15 @@ public class BomberBossMS : MonoBehaviour, IMoveState
                 rotationSpeedIncreased = false;
 
                 // Rush to player
+                // Collisions will knock player back and knock powerups out of them
                 directionToPlayer = (bomberBoss.target.transform.position - bomberBoss.transform.position).normalized;
-                bomberBoss.GetComponent<Rigidbody>().AddForce(directionToPlayer * thrustFactor, ForceMode.Impulse);     // Propel player forward
+                bomberBoss.GetComponent<Rigidbody>().AddForce(directionToPlayer * thrustFactor, ForceMode.Impulse);     // Propel boss forward
 
             }
             yield return null;
         }
     }
+
 
     // This routine is always active, but speed can be modified when attack starts 
     IEnumerator StartRotating()

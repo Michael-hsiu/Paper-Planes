@@ -22,6 +22,7 @@ public class BomberMS : MonoBehaviour, IMoveState
     void Start()
     {
         bs = GetComponent<BomberShip>();
+
     }
 
     // Setup activities after being activated from Object Pool

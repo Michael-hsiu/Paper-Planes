@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface InputComponent {
+public interface InputComponent
+{
 
 
-	//public PlayerShip player = GameObject.FindGameObjectWithTag(Constants.PlayerTag);
-	void DisableControls ();
-	void UpdateInput (PlayerShip player);
+    //public PlayerShip player = GameObject.FindGameObjectWithTag(Constants.PlayerTag);
+    void DisableControls();
+    void DisableControls(float givenDisableTime);
+
+    void UpdateInput(PlayerShip player);
 
 }
