@@ -34,6 +34,7 @@ public class PlayerShip : FiringShip
     public float maxDash = 20.0f;
     public float dashDuration = 5f;
     public bool rushStarted = false;
+    public bool canBeDamaged = true;
 
     [Header("WAVE_SHOT DEPENDENCIES")]
     // Wave shot dependencies
@@ -212,20 +213,24 @@ public class PlayerShip : FiringShip
     public override void Damage(int damageTaken)
     {
 
-        // Restart flicker animation
-        if (hitFlickerRoutine != null)
+        if (canBeDamaged)
         {
-            StopCoroutine(hitFlickerRoutine);
-        }
-        hitFlickerRoutine = FlickerHit();
-        StartCoroutine(hitFlickerRoutine);
+            // Restart flicker animation
+            if (hitFlickerRoutine != null)
+            {
+                StopCoroutine(hitFlickerRoutine);
+            }
+            hitFlickerRoutine = FlickerHit();
+            StartCoroutine(hitFlickerRoutine);
 
-        GameManager.Singleton.playerHealth -= damageTaken;
-        if (GameManager.Singleton.playerHealth <= 0)
-        {
-            GameManager.Singleton.LevelFailed();            // Initiate level failure logic
+            GameManager.Singleton.playerHealth -= damageTaken;
+            if (GameManager.Singleton.playerHealth <= 0)
+            {
+                GameManager.Singleton.LevelFailed();            // Initiate level failure logic
+            }
+            UIManager.Singleton.UpdateHealth();
         }
-        UIManager.Singleton.UpdateHealth();
+
     }
 
     // Flicker when hit

@@ -7,19 +7,22 @@ using UnityEngine.Assertions;
 public class PawnShip : Ship
 {
 
-    public IMoveState moveState;
     public int touchDamage = 10;
 
     #region Unity Life Cycle
     protected override void Start()
     {
-        // Call our overridden initalization method
         base.Start();
-        //Initialize ();
         enemyType = EnemyType.Pawn;
-        // Component state initialization
         moveState = GetComponent<IMoveState>();
-        //firingState = new PawnFS ();
+    }
+
+    // This is called everytime this prefab is reused
+    public override void OnObjectReuse()
+    {
+
+        moveState = GetComponent<IMoveState>();
+        moveState.OnObjectReuse();
 
     }
 

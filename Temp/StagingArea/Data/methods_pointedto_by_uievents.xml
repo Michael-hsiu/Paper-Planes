@@ -1,0 +1,36 @@
+<linker>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="PauseMenu">
+			<method name="Resume"/>
+			<method name="ExitToMainMenu"/>
+		</type>
+		<type fullname="GameManager">
+			<method name="OpenShop"/>
+			<method name="OpenShop"/>
+			<method name="OpenShop"/>
+			<method name="StartGame"/>
+		</type>
+		<type fullname="AIInput">
+			<method name="Dash"/>
+		</type>
+		<type fullname="MainMenu">
+			<method name="StartGame"/>
+			<method name="QuitGame"/>
+		</type>
+		<type fullname="ShopMenu">
+			<method name="IndividualPowerupPressed"/>
+			<method name="PowerupUpgradesPressed"/>
+			<method name="ShipUpgradesPressed"/>
+			<method name="IndividualPowerupPressed"/>
+			<method name="CloseShop"/>
+			<method name="BackButtonPressed"/>
+			<method name="BuyItem"/>
+			<method name="IndividualPowerupPressed"/>
+			<method name="OpenShop"/>
+		</type>
+		<type fullname="PowerupHolder">
+			<method name="IndividualPowerupPressed"/>
+			<method name="IndividualPowerupPressed"/>
+		</type>
+	</assembly>
+</linker>

@@ -1,0 +1,2 @@
+/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/UnityVS_obj/Debug/Paper Planes [CORE] [2.7.17].csprojResolveAssemblyReference.cache
+/Users/michaelhsiu/Documents/Box Sync/Code/Unity/Paper Planes [CORE] [2.7.17]/Temp/UnityVS_obj/Debug/Paper Planes [CORE] [2.7.17].csproj.CoreCompileInputs.cache

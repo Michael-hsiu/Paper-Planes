@@ -4,98 +4,127 @@ using UnityEngine;
 using System;
 
 [SelectionBase]
-public class RangedShip : FiringShip, IEnemy {
+public class RangedShip : FiringShip, IEnemy
+{
 
-	#region Variables
+    #region Variables
 
-	// States
-	public IMoveState moveState;
-	public IFireState firingState;
+    // States
+    public IMoveState moveState;
+    public IFireState firingState;
 
-	public GameObject firingRangeColliders;
-	public GameObject safeDistanceColliders;
-	public float offsetY = 3.0f;
-	public float sqFireDist;
-	public float sqMoveDist;
-	#endregion
+    public GameObject firingRangeColliders;
+    public GameObject safeDistanceColliders;
+    public float offsetY = 3.0f;
+    public float sqFireDist;
+    public float sqMoveDist;
+    #endregion
 
 
-	#region Unity Life Cycle
-	protected override void Start () {
+    #region Unity Life Cycle
+    protected override void Start()
+    {
 
-		// Call our overridden initalization method
-		base.Start ();
-		//Initialize ();
-		enemyType = EnemyType.Ranged;
+        base.Start();
+        enemyType = EnemyType.Ranged;
 
-		firingRangeColliders = Utils.FindChildWithTag (this.gameObject, Constants.FiringRangeColliders);
-		safeDistanceColliders = Utils.FindChildWithTag (this.gameObject, Constants.SafeDistanceColliders);
+        firingRangeColliders = Utils.FindChildWithTag(gameObject, Constants.FiringRangeColliders);
+        safeDistanceColliders = Utils.FindChildWithTag(gameObject, Constants.SafeDistanceColliders);
 
-		// This is the squared distance, used when Player dashes and we need to see if they're too far from enemy
-		sqMoveDist = Mathf.Pow (((CapsuleCollider) safeDistanceColliders.GetComponent<Collider>()).radius, 2);
-		sqFireDist = Mathf.Pow (((CapsuleCollider) firingRangeColliders.GetComponent<Collider>()).radius, 2);
+        // This is the squared distance, used when Player dashes and we need to see if they're too far from enemy
+        sqMoveDist = Mathf.Pow(((CapsuleCollider)safeDistanceColliders.GetComponent<Collider>()).radius, 2);
+        sqFireDist = Mathf.Pow(((CapsuleCollider)firingRangeColliders.GetComponent<Collider>()).radius, 2);
 
-		// Component state initialization
-		moveState = GetComponent<IMoveState>();
-		firingState = GetComponent<IFireState>();
+        // Component state initialization
+        moveState = GetComponent<IMoveState>();
+        firingState = GetComponent<IFireState>();
 
-		// Check that we're calling the right Start() method
-		Debug.Log("RANGED SHIP START");
+        moveState.OnObjectReuse();
+        fireState.OnObjectReuse();
 
-	}
+    }
 
-	protected override void Update() {
+    public override void OnObjectReuse()
+    {
 
-		// Use default movement
-		//base.Update ();
+        base.Start();
+        enemyType = EnemyType.Ranged;
 
-		// State controls movement (satisfies inheritance impl, with state modularizing control)
-		Move ();
-		
-		// Basic AI - firing logic
-		if (Time.time > nextFire) {
-			Fire ();
-		}
-	}
-	#endregion
+        firingRangeColliders = Utils.FindChildWithTag(gameObject, Constants.FiringRangeColliders);
+        safeDistanceColliders = Utils.FindChildWithTag(gameObject, Constants.SafeDistanceColliders);
 
-	#region Game Logic
+        // This is the squared distance, used when Player dashes and we need to see if they're too far from enemy
+        sqMoveDist = Mathf.Pow(((CapsuleCollider)safeDistanceColliders.GetComponent<Collider>()).radius, 2);
+        sqFireDist = Mathf.Pow(((CapsuleCollider)firingRangeColliders.GetComponent<Collider>()).radius, 2);
 
-	public override void Kill() {
-		// Graphics
-		Instantiate (explosion, transform.position, transform.rotation);
-		float randomVal = UnityEngine.Random.value;
-		if (randomVal <= 0.3f) {
-			GameManager.Singleton.powerupSpawner.SpawnPowerupDrop (this.transform.position);
-		}
+        moveState = GetComponent<IMoveState>();
+        fireState = GetComponent<IFireState>();
 
-		// Kill logic
-		base.Kill ();		// Bare-bones destroyForReuse()
+        moveState.OnObjectReuse();
+        fireState.OnObjectReuse();
+    }
 
-	}
+    protected override void Update()
+    {
 
-	public override void Move () {
-		// Allows movement state to control movement
-		moveState.UpdateState ();
+        // Use default movement
+        //base.Update ();
 
-	}	
+        // State controls movement (satisfies inheritance impl, with state modularizing control)
+        Move();
 
-	public override void Fire() {
-		firingState.UpdateState ();
-	}
+        // Basic AI - firing logic
+        if (Time.time > nextFire)
+        {
+            Fire();
+        }
+    }
+    #endregion
 
-	void OnTriggerEnter(Collider other) {
+    #region Game Logic
 
-		if (other.gameObject.activeSelf && other.gameObject.CompareTag (Constants.PlayerShot)) {
+    public override void Kill()
+    {
+        // Graphics
+        Instantiate(explosion, transform.position, transform.rotation);
+        float randomVal = UnityEngine.Random.value;
+        if (randomVal <= 0.3f)
+        {
+            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(this.transform.position);
+        }
 
-			Debug.Log (String.Format("RANGED SHIP HIT BY PLAYER {0}", other.name));
+        // Kill logic
+        base.Kill();        // Bare-bones destroyForReuse()
 
-			if (other != null) {
-				other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
-			}
+    }
 
-			Damage(GameManager.Singleton.playerDamage);			// We lost health
-		}
-	}
-	#endregion
+    public override void Move()
+    {
+        // Allows movement state to control movement
+        moveState.UpdateState();
+
+    }
+
+    public override void Fire()
+    {
+        firingState.UpdateState();
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+
+        if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
+        {
+
+            Debug.Log(String.Format("RANGED SHIP HIT BY PLAYER {0}", other.name));
+
+            if (other != null)
+            {
+                other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
+            }
+
+            Damage(GameManager.Singleton.playerDamage);         // We lost health
+        }
+    }
+    #endregion
 }
