@@ -9,16 +9,87 @@ public class BomberBossMS : MonoBehaviour, IMoveState
     public Direction direction = Direction.PLAYER_UNDETECTED;
     public Direction Direction { get; set; }
 
+    [Header("ROTATION DATA")]
+    public Transform rotatingGear;      // Gear that starts rotating faster whenever attack is about to initiate
+    public float startingRotationFactor = 3.0f;
+    public float rotationFactorInterval = 5.0f;     // How much we increase the rotation speed by
+    public float maxRotationSpeed = 20.0f;
+    public bool rotationSpeedIncreased = false;
+    public float currentRotationSpeed;
+    IEnumerator rotationRoutine;
 
+    [Header("RUSH_ATTACK_DATA")]
+    public bool rushAttackMovementActive = false;
+    public float thrustFactor = 5.0f;
+    public float rushAttackChargeTime = 5.0f;
+    public Vector3 directionToPlayer;
+    IEnumerator rushAttackMovementRoutine;
 
     public BomberBoss bomberBoss;
+    public float endTime;
 
     void Start()
     {
         bomberBoss = GetComponent<BomberBoss>();
 
+        rotationRoutine = StartRotating();
+        rushAttackMovementRoutine = RushAttackMovement();
 
+        StartCoroutine(rotationRoutine);
+        StartCoroutine(rushAttackMovementRoutine);
     }
+
+    // This routine is for BOMBER_BOSS_RUSH_MOVEMENT
+    IEnumerator RushAttackMovement()
+    {
+        while (true)
+        {
+            if (rushAttackMovementActive)
+            {
+
+                // Start rotating faster, getting ready to rush to player. Eye should move, colors should change.
+                rotationSpeedIncreased = true;
+                yield return new WaitForSeconds(rushAttackChargeTime);
+                rotationSpeedIncreased = false;
+
+                // Rush to player
+                directionToPlayer = (bomberBoss.target.transform.position - bomberBoss.transform.position).normalized;
+                bomberBoss.GetComponent<Rigidbody>().AddForce(directionToPlayer * thrustFactor, ForceMode.Impulse);     // Propel player forward
+
+            }
+            yield return null;
+        }
+    }
+
+    // This routine is always active, but speed can be modified when attack starts 
+    IEnumerator StartRotating()
+    {
+        while (true)
+        {
+
+            // Always reset rotation speed at top of the loop
+            currentRotationSpeed = startingRotationFactor;
+
+            // GO into loop if we're under influence of attack; coroutine controls how long we stay in loop
+            while (rotationSpeedIncreased)
+            {
+
+                transform.Rotate(Vector3.forward * currentRotationSpeed * Time.deltaTime); // Rotate the gear much faster
+                if (currentRotationSpeed < maxRotationSpeed)
+                {
+                    // Increase by our interval, or as much as possible under the max
+                    float rotationFactorDiff = maxRotationSpeed - currentRotationSpeed;
+                    currentRotationSpeed += Mathf.Min(rotationFactorInterval, rotationFactorDiff);
+                }
+                yield return null;
+            }
+            // The normal rotation logic
+            transform.Rotate(Vector3.forward * startingRotationFactor * Time.deltaTime); // Rotate the gear much faster
+
+            yield return null;
+        }
+    }
+
 
     public void UpdateState()
     {

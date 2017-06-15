@@ -6,159 +6,159 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 {
 
 
-	/** INSTANCE VARS */
+    /** INSTANCE VARS */
 
-	public GameObject target;
-	public GameObject explosion;
-	public float moveFactor;
-	public float speed = 1.0f;
-	public float rotationSpeed = 90.0f;
-	public int health = 100;
-	public int enemyPoints = 100;
-	public bool isSpeedBuffed = false;
-	public float buffedSpeedFactor = 10.0f;
-	public bool isMarked = false;
+    public GameObject target;
+    public GameObject explosion;
+    public float moveFactor;
+    public float speed = 1.0f;
+    public float rotationSpeed = 90.0f;
+    public int health = 100;
+    public int enemyPoints = 100;
+    public bool isSpeedBuffed = false;
+    public float buffedSpeedFactor = 10.0f;
+    public bool isMarked = false;
 
-	public Vector2 initialPos;
+    public Vector2 initialPos;
+    public IEnumerator hitFlickerRoutine;
 
-	[Header("RENDERER/FLICKER")]
-	public IEnumerator hitFlickerRoutine;
-	public Color startColor;
-	public Renderer sprite;
-	public float flickerTime = 0.05f;
-
-
-	/** INTERFACE METHODS */
-
-	public virtual void Move()
-	{
-
-		// Default move pattern is to turn and move towards player.
-		Vector3 dist = target.transform.position - transform.position;		// Find vector difference between target and this
-		dist.Normalize();													// Get unit vector
-		float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;	// Angle of rotation around z-axis (pointing upwards)
-		Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);		// Store rotation as an Euler, then Quaternion
-
-		if (!isSpeedBuffed)
-		{
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
-			transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-		}
-		else
-		{
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, rotationSpeed * buffedSpeedFactor * Time.deltaTime);	// Rotate the enemy
-			transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * buffedSpeedFactor * Time.deltaTime);
-		}
-	}
-
-	public virtual void Damage(int damageTaken)
-	{
-
-		// Restart flicker animation
-		if (hitFlickerRoutine != null)
-		{
-			StopCoroutine(hitFlickerRoutine);
-		}
-		hitFlickerRoutine = FlickerHit();
-		StartCoroutine(hitFlickerRoutine);
-
-		health -= damageTaken;		// We lose health
-		if (this.health <= 0)
-		{
-			Kill();
-			//Debug.Log ("Killed via projectile weapon");
-		}
-	}
-
-	// Flicker when hit
-	IEnumerator FlickerHit()
-	{
-		//Debug.Log("FLICKERING");
-		Color flickerColor = sprite.material.color;
-		flickerColor.a = 0.45f;
-
-		sprite.material.color = flickerColor;
-		yield return new WaitForSeconds(flickerTime);
-		sprite.material.color = startColor;
-	}
-
-	public virtual void Kill()
-	{
-		//Destroy (transform.gameObject);		// Destroy our gameobject
-		//transform.gameObject.SetActive(false);	// "Destroy" our gameobject
-		DestroyForReuse();
-		// Score updates
-		//if (GameManager.Singleton.levelActive) {
-
-		GameManager.Singleton.RecordEnemyKilled(enemyType);	// REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
-		GameManager.Singleton.UpdateScore(enemyPoints);	// Add new score in GameManager
-		UIManager.Singleton.UpdateScore();	// Update score in UI
-
-		Debug.Log("RANGED SHIP KILLED! Obtained: " + enemyPoints + "points!");
-		//}
-		//Instantiate(explosion, transform.position, transform.rotation);
-	}
+    [Header("RENDERER/FLICKER")]
+    public Color startColor;
+    public Renderer sprite;
+    public float flickerTime = 0.05f;
 
 
-	/** HELPER METHODS */
+    /** INTERFACE METHODS */
 
-	/*	protected virtual void Initialize() {
+    public virtual void Move()
+    {
+
+        // Default move pattern is to turn and move towards player.
+        Vector3 dist = target.transform.position - transform.position;      // Find vector difference between target and this
+        dist.Normalize();                                                   // Get unit vector
+        float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+        Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+
+        if (!isSpeedBuffed)
+        {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime); // Rotate the enemy
+            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+        }
+        else
+        {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, rotationSpeed * buffedSpeedFactor * Time.deltaTime); // Rotate the enemy
+            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * buffedSpeedFactor * Time.deltaTime);
+        }
+    }
+
+    public virtual void Damage(int damageTaken)
+    {
+
+        // Restart flicker animation
+        if (hitFlickerRoutine != null)
+        {
+            StopCoroutine(hitFlickerRoutine);
+        }
+        hitFlickerRoutine = FlickerHit();
+        StartCoroutine(hitFlickerRoutine);
+
+        health -= damageTaken;      // We lose health
+        if (this.health <= 0)
+        {
+            Kill();
+            //Debug.Log ("Killed via projectile weapon");
+        }
+    }
+
+    // Flicker when hit
+    IEnumerator FlickerHit()
+    {
+        //Debug.Log("FLICKERING");
+        Color flickerColor = sprite.material.color;
+        flickerColor.a = 0.45f;
+
+        sprite.material.color = flickerColor;
+        yield return new WaitForSeconds(flickerTime);
+        sprite.material.color = startColor;
+    }
+
+    public virtual void Kill()
+    {
+        //Destroy (transform.gameObject);		// Destroy our gameobject
+        //transform.gameObject.SetActive(false);	// "Destroy" our gameobject
+        DestroyForReuse();
+        // Score updates
+        //if (GameManager.Singleton.levelActive) {
+
+        GameManager.Singleton.RecordEnemyKilled(enemyType); // REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
+        GameManager.Singleton.UpdateScore(enemyPoints); // Add new score in GameManager
+        UIManager.Singleton.UpdateScore();  // Update score in UI
+
+        Debug.Log("RANGED SHIP KILLED! Obtained: " + enemyPoints + "points!");
+        //}
+        //Instantiate(explosion, transform.position, transform.rotation);
+    }
+
+
+    /** HELPER METHODS */
+
+    /*	protected virtual void Initialize() {
 		
 	}*/
 
-	public void BuffSpeed()
-	{
-		this.isSpeedBuffed = true;
-	}
+    public void BuffSpeed()
+    {
+        this.isSpeedBuffed = true;
+    }
 
-	public void DebuffSpeed()
-	{
-		this.isSpeedBuffed = false;
-	}
-
-
-	/** UNITY CALLBACKS */
-
-	protected virtual void Start()
-	{
-		initialPos = new Vector2(transform.position.x, transform.position.y);	// Cache our initial position
-		target = GameObject.FindGameObjectWithTag(Constants.PlayerTag);		// Get Player at runtime
-
-		sprite = Utils.FindChildWithTag(this.gameObject, "Sprite").GetComponent<Renderer>();
-		startColor = sprite.material.color;
-
-		//Debug.Log ("SHIP START");
-	}
-
-	protected virtual void Update()
-	{
-		Move();
-	}
+    public void DebuffSpeed()
+    {
+        this.isSpeedBuffed = false;
+    }
 
 
-	/** PROPERTIES */
+    /** UNITY CALLBACKS */
 
-	public float Speed
-	{ 
-		get { return speed; } 
-		set { speed = value; } 
-	}
+    protected virtual void Start()
+    {
+        initialPos = new Vector2(transform.position.x, transform.position.y);   // Cache our initial position
+        target = GameObject.FindGameObjectWithTag(Constants.PlayerTag);     // Get Player at runtime
 
-	public float RotationSpeed
-	{ 
-		get { return rotationSpeed; } 
-		set { rotationSpeed = value; } 
-	}
+        sprite = Utils.FindChildWithTag(this.gameObject, "Sprite").GetComponent<Renderer>();
+        startColor = sprite.material.color;
 
-	public int Health
-	{ 
-		get { return health; } 
-		set { health = value; } 
-	}
+        //Debug.Log ("SHIP START");
+    }
 
-	public int EnemyPoints
-	{ 
-		get { return enemyPoints; } 
-		set { enemyPoints = value; } 
-	}
+    protected virtual void Update()
+    {
+        Move();
+    }
+
+
+    /** PROPERTIES */
+
+    public float Speed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }
+
+    public float RotationSpeed
+    {
+        get { return rotationSpeed; }
+        set { rotationSpeed = value; }
+    }
+
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+
+    public int EnemyPoints
+    {
+        get { return enemyPoints; }
+        set { enemyPoints = value; }
+    }
 }

@@ -66,7 +66,7 @@ public class BomberMS : MonoBehaviour, IMoveState
             return;     // Break out of method
 
         }
-        else
+        else if (GameManager.Singleton.playerShip.gameObject.activeInHierarchy)
         {
 
             // Enemy ship turns to face player
