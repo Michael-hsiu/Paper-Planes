@@ -43,7 +43,6 @@ public class BomberBossMS : MonoBehaviour, IMoveState
         StartCoroutine(rotationRoutine);
         StartCoroutine(rushAttackMovementRoutine);
 
-        StartCoroutine(SpawnBombers());
     }
 
     // This routine is for BOMBER_BOSS_RUSH_MOVEMENT
@@ -116,21 +115,6 @@ public class BomberBossMS : MonoBehaviour, IMoveState
             yield return null;
         }
     }
-
-    IEnumerator SpawnBombers()
-    {
-        while (true)
-        {
-
-            foreach (ShipSpawn shipSpawn in bomberBoss.shipSpawns)
-            {
-                shipSpawn.Spawn();
-            }
-            yield return new WaitForSeconds(.2f);
-
-        }
-    }
-
 
     public void UpdateState()
     {

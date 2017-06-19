@@ -7,7 +7,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
 
     /** INSTANCE VARS */
-
+    [Header("GENERAL_SHIP_DATA")]
     public EnemyScriptableObject defaultValues;
     public GameObject target;
     public GameObject explosion;
@@ -23,7 +23,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     public Vector2 initialPos;
     public IEnumerator hitFlickerRoutine;
 
-    [Header("RENDERER/FLICKER")]
+    [Header("RENDERER/FLICKER_DATA")]
     public Color startColor;
     public Renderer sprite;
     public float flickerTime = 0.05f;

@@ -11,4 +11,8 @@ public class EnemyScriptableObject : ScriptableObject
     public int health;
     public float rotationSpeed;
     public float rotationFactor;
+
+    // Mostly used for Bomber Mini-bosses
+    public Vector3 initialPosition;
+    public Quaternion initialRotation;
 }
