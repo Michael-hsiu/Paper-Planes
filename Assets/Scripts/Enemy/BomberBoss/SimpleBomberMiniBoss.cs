@@ -7,8 +7,6 @@ public class SimpleBomberMiniBoss : Ship
 {
 
     #region Variables
-    public Vector3 initialPosition;
-    public Quaternion initialRotation;
     public float rotationFactor;
     #endregion
 
@@ -23,15 +21,16 @@ public class SimpleBomberMiniBoss : Ship
         health = defaultValues.health;
         rotationSpeed = defaultValues.rotationSpeed;
         rotationFactor = defaultValues.rotationFactor;
+        sprite.transform.localRotation = defaultValues.spriteInitialRotation;
 
         // Component state initialization
         moveState = GetComponent<IMoveState>();
-        moveState.OnObjectReuse();
+        //moveState.OnObjectReuse();
 
         // Set start position/rotation to match sprites from Stage 1
         // These should work b/c if multiple Bomber Bosses killed, should still call Start() in order of kills
-        transform.position = defaultValues.initialPosition;
-        transform.rotation = defaultValues.initialRotation;
+        //transform.position = defaultValues.initialPosition;
+        //transform.rotation = defaultValues.initialRotation;
 
     }
 

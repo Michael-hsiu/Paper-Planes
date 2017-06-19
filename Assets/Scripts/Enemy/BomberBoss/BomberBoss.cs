@@ -32,11 +32,28 @@ public class BomberBoss : Ship, IEnemy
     public GameObject stageOneDeathExplosion;
     IEnumerator spawnBombersRoutine;
 
+    [Header("PREP_FOR_STAGE_2")]
+    public EnemyScriptableObject topGearDefaultValues;
+    public EnemyScriptableObject leftGearDefaultValues;
+    public EnemyScriptableObject rightGearDefaultValues;
+
+    public GameObject topGearStageTwoBoss;
+    public GameObject leftGearStageTwoBoss;
+    public GameObject rightGearStageTwoBoss;
+
     [Header("SPRITE_REFERENCES")]
+    // The parent object
+    // These are the actual sprites
     public GameObject centerGear;
     public GameObject topGear;
     public GameObject lowerLeftGear;
     public GameObject lowerRightGear;
+
+    // The child object (containing sprite)
+    // Assigned in inspector
+    public GameObject topGearSprite;
+    public GameObject lowerLeftGearSprite;
+    public GameObject lowerRightGearSprite;
 
     #endregion
 
@@ -117,10 +134,27 @@ public class BomberBoss : Ship, IEnemy
         Debug.Break();
 
         // Spawn the 3 mini-bosses, administer their setup logic
-        // They are each their own prefab, spawn them at appropriate position, rotation of sprites
+        // They are each their own prefab, save positions/rotations as of sprites
+
+        //topGearDefaultValues.spriteInitialPosition = topGear.transform.position;
+        topGearDefaultValues.spriteInitialRotation = topGear.transform.localRotation;
+
+        //leftGearDefaultValues.spriteInitialPosition = lowerLeftGear.transform.position;
+        //leftGearDefaultValues.spriteInitialRotation = lowerLeftGear.transform.rotation;
+
+        //rightGearDefaultValues.spriteInitialPosition = lowerRightGear.transform.position;
+        //rightGearDefaultValues.spriteInitialRotation = lowerRightGear.transform.rotation;
+
+        // Spawn at position of miniboss container, at rotation of miniboss sprite (child)
+        // We set rotation of sprites within the Start method of each miniboss, accessed thru scrObj
+        PoolManager.Instance.ReuseObject(topGearStageTwoBoss, topGear.transform.position, Quaternion.identity);
+        //PoolManager.Instance.ReuseObject(leftGearStageTwoBoss, lowerLeftGear.transform.position, lowerLeftGearSprite.transform.localRotation);
+        //PoolManager.Instance.ReuseObject(rightGearStageTwoBoss, lowerRightGear.transform.position, lowerRightGearSprite.transform.localRotation);
+
+        //Kill();
+        Debug.Break();
 
         // Normal kill logic, point distribution
-        //Kill();
 
         Debug.Log("STAGE TWO ACTIVATED!");
         Debug.Break();

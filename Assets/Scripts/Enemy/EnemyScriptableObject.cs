@@ -13,6 +13,6 @@ public class EnemyScriptableObject : ScriptableObject
     public float rotationFactor;
 
     // Mostly used for Bomber Mini-bosses
-    public Vector3 initialPosition;
-    public Quaternion initialRotation;
+    public Vector3 spriteInitialPosition;
+    public Quaternion spriteInitialRotation;
 }

@@ -63,6 +63,10 @@ public class GamePoolManager : MonoBehaviour
     public GameObject bomberShip;
     public GameObject missileBoss;
     public GameObject sniperBoss;
+    public GameObject bomberBossStageOne;
+    public GameObject topGearStageTwoBoss;
+    public GameObject leftGearStageTwoBoss;
+    public GameObject rightGearStageTwoBoss;
 
     public GameObject rangedTest;
 
@@ -123,8 +127,13 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(turret, 100);
         PoolManager.Instance.CreatePool(dropShip, 100);
         PoolManager.Instance.CreatePool(assassinShip, 100);
-        PoolManager.Instance.CreatePool(missileBoss, 100);
-        PoolManager.Instance.CreatePool(sniperBoss, 100);
+        PoolManager.Instance.CreatePool(missileBoss, 5);
+        PoolManager.Instance.CreatePool(sniperBoss, 5);
+        PoolManager.Instance.CreatePool(bomberBossStageOne, 15);
+        PoolManager.Instance.CreatePool(topGearStageTwoBoss, 5);
+        PoolManager.Instance.CreatePool(leftGearStageTwoBoss, 5);
+        PoolManager.Instance.CreatePool(rightGearStageTwoBoss, 5);
+
 
         // Spawners
         //PoolManager.Instance.CreatePool (movingSpawn, 20);

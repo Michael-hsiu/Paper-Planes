@@ -86,7 +86,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
         StartCoroutine(hitFlickerRoutine);
 
         health -= damageTaken;      // We lose health
-        if (this.health <= 0)
+        if (health <= 0)
         {
             Kill();
             //Debug.Log ("Killed via projectile weapon");
@@ -97,12 +97,13 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     IEnumerator FlickerHit()
     {
         //Debug.Log("FLICKERING");
-        Color flickerColor = sprite.material.color;
+        Color beforeFlickerColor = sprite.material.color;
+        Color flickerColor = beforeFlickerColor;
         flickerColor.a = 0.45f;
 
         sprite.material.color = flickerColor;
         yield return new WaitForSeconds(flickerTime);
-        sprite.material.color = startColor;
+        sprite.material.color = beforeFlickerColor;
     }
 
     public virtual void Kill()
