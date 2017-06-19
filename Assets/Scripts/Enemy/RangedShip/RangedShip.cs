@@ -10,9 +10,6 @@ public class RangedShip : FiringShip, IEnemy
     #region Variables
 
     // States
-    public IMoveState moveState;
-    public IFireState firingState;
-
     public GameObject firingRangeColliders;
     public GameObject safeDistanceColliders;
     public float offsetY = 3.0f;
@@ -38,7 +35,7 @@ public class RangedShip : FiringShip, IEnemy
 
         // Component state initialization
         moveState = GetComponent<IMoveState>();
-        firingState = GetComponent<IFireState>();
+        fireState = GetComponent<IFireState>();
 
         moveState.OnObjectReuse();
         fireState.OnObjectReuse();
@@ -101,7 +98,7 @@ public class RangedShip : FiringShip, IEnemy
 
     public override void Fire()
     {
-        firingState.UpdateState();
+        fireState.UpdateState();
     }
 
     void OnTriggerEnter(Collider other)

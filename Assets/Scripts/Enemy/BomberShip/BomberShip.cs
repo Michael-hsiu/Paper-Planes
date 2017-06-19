@@ -10,9 +10,6 @@ public class BomberShip : Ship
     #region Variables
 
     [Header("BOMBER_SHIP")]
-    public IMoveState moveState;
-    public IFireState fireState;
-
     public int explosionDamage = 50;
     public float explosionDelay = 3.0f;
     public float damageRange = 8.0f;
@@ -62,13 +59,13 @@ public class BomberShip : Ship
         StopAllCoroutines();
         Start();
 
-        if (sprite != null)
-        {
-            Color resetColor = startColor;
-            resetColor.a = 1f;
-            sprite.material.color = resetColor;
-            Debug.Log("SPRITE RESET!");
-        }
+        //if (sprite != null)
+        //{
+        Color resetColor = startColor;
+        resetColor.a = 1f;
+        sprite.material.color = resetColor;
+        Debug.Log("BOMBER SPRITE RESET!");
+        //}
     }
 
     protected override void Update()
@@ -150,7 +147,10 @@ public class BomberShip : Ship
 
         // Set this to have only one co-routine running
         explosionActive = true;
-        GetComponentInChildren<SpriteRenderer>().color = Color.red;
+
+        // The following 2 'color's are different! The first one, changing material color, is what we want!
+        sprite.material.color = Color.red;        // This will show a change in the material color
+        //GetComponentInChildren<SpriteRenderer>().color = Color.red;     // This will show a change in color field of Sprite Renderer, which isn't what we want in this case
 
         //Debug.Log ("EXPLOSION COUNTDOWN BEGINS!");
 

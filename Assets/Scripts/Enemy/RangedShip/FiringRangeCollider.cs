@@ -21,7 +21,7 @@ public class FiringRangeCollider : MonoBehaviour
 		{
 			try
 			{
-				GetComponentInParent<RangedShip>().firingState.Mode = FiringMode.Firing;
+				GetComponentInParent<RangedShip>().fireState.Mode = FiringMode.Firing;
 			}
 			catch (NullReferenceException e)
 			{
@@ -46,7 +46,7 @@ public class FiringRangeCollider : MonoBehaviour
 		{
 			try
 			{
-				GetComponentInParent<RangedShip>().firingState.Mode = FiringMode.NotFiring;
+				GetComponentInParent<RangedShip>().fireState.Mode = FiringMode.NotFiring;
 			}
 			catch (NullReferenceException e)
 			{
