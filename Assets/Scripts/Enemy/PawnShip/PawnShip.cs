@@ -13,23 +13,36 @@ public class PawnShip : Ship
     protected override void Start()
     {
         base.Start();
+        health = defaultValues.health;
         enemyType = EnemyType.Pawn;
-        moveState = GetComponent<IMoveState>();
-    }
-
-    // This is called everytime this prefab is reused
-    public override void OnObjectReuse()
-    {
 
         moveState = GetComponent<IMoveState>();
         moveState.OnObjectReuse();
 
     }
 
+    // This is called everytime this prefab is reused
+    public override void OnObjectReuse()
+    {
+        Start();
+
+        // Reset start color? -color seems to freeze on last flicker
+        // The only change that ever occurs is for alpha
+        if (sprite != null)
+        {
+            Color resetColor = startColor;
+            resetColor.a = 1f;
+            sprite.material.color = resetColor;
+            Debug.Log("SPRITE RESET!");
+        }
+    }
+
     protected override void Update()
     {
         //base.Update ();
         Move();
+        Debug.Log("HEALTH3: " + health);
+        //Debug.Break();
     }
 
     #endregion
@@ -42,10 +55,10 @@ public class PawnShip : Ship
         Instantiate(explosion, transform.position, transform.rotation);
 
         // Powerup spawn chance
-        float randomVal = UnityEngine.Random.value;
+        float randomVal = Random.value;
         if (randomVal <= 0.2f)
         {
-            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(this.transform.position);
+            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(transform.position);
         }
 
         // Kill logic

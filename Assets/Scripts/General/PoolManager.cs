@@ -30,7 +30,7 @@ public class PoolManager : MonoBehaviour
         {
             poolDictionary.Add(poolKey, new Queue<ObjectInstance>());
 
-            GameObject poolHolder = new GameObject(prefab.name + " pool");      // Holds all the prefabs
+            GameObject poolHolder = new GameObject(prefab.name + " Pool");      // Holds all the prefabs
             poolHolder.transform.parent = transform;
 
             for (int i = 0; i < poolSize; i++)

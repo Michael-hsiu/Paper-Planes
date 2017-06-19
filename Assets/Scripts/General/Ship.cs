@@ -8,6 +8,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     /** INSTANCE VARS */
 
+    public EnemyScriptableObject defaultValues;
     public GameObject target;
     public GameObject explosion;
     public float moveFactor;
@@ -27,6 +28,28 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     public Renderer sprite;
     public float flickerTime = 0.05f;
 
+
+    /** UNITY CALLBACKS */
+
+    protected virtual void Start()
+    {
+        initialPos = new Vector2(transform.position.x, transform.position.y);   // Cache our initial position
+        target = GameObject.FindGameObjectWithTag(Constants.PlayerTag);     // Get Player at runtime
+
+        if (sprite == null)
+        {
+            sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
+            startColor = sprite.material.color;
+        }
+
+
+        //Debug.Log ("SHIP START");
+    }
+
+    protected virtual void Update()
+    {
+        Move();
+    }
 
     /** INTERFACE METHODS */
 
@@ -94,7 +117,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
         GameManager.Singleton.UpdateScore(enemyPoints); // Add new score in GameManager
         UIManager.Singleton.UpdateScore();  // Update score in UI
 
-        Debug.Log("RANGED SHIP KILLED! Obtained: " + enemyPoints + "points!");
+        //Debug.Log("RANGED SHIP KILLED! Obtained: " + enemyPoints + "points!");
         //}
         //Instantiate(explosion, transform.position, transform.rotation);
     }
@@ -108,32 +131,16 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     public void BuffSpeed()
     {
-        this.isSpeedBuffed = true;
+        isSpeedBuffed = true;
     }
 
     public void DebuffSpeed()
     {
-        this.isSpeedBuffed = false;
+        isSpeedBuffed = false;
     }
 
 
-    /** UNITY CALLBACKS */
 
-    protected virtual void Start()
-    {
-        initialPos = new Vector2(transform.position.x, transform.position.y);   // Cache our initial position
-        target = GameObject.FindGameObjectWithTag(Constants.PlayerTag);     // Get Player at runtime
-
-        sprite = Utils.FindChildWithTag(this.gameObject, "Sprite").GetComponent<Renderer>();
-        startColor = sprite.material.color;
-
-        //Debug.Log ("SHIP START");
-    }
-
-    protected virtual void Update()
-    {
-        Move();
-    }
 
 
     /** PROPERTIES */

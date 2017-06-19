@@ -1,19 +1,16 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/PlayerInput.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/EnemyScriptableObject.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="69" Column="5" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="252" Column="39" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="66" Column="6" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="295" Column="22" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="47" Column="6" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="74" Column="25" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossMS.cs" Line="62" Column="135" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossCollider.cs" Line="42" Column="9" />
-      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="174" Column="100" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/EMPWaveShot.cs" Line="51" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="25" Column="9" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossFS.cs" Line="79" Column="37" />
-      <File FileName="Assets/Scripts/FSM/IMoveState.cs" Line="33" Column="30" />
-      <File FileName="Assets/Scripts/Powerups/BurstRushPowerup.cs" Line="119" Column="129" />
-      <File FileName="Assets/Scripts/Game/PlayerInput.cs" Line="75" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="93" Column="23" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossMS.cs" Line="129" Column="50" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossFS.cs" Line="70" Column="6" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="20" Column="32" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="40" Column="44" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="70" Column="14" />
+      <File FileName="Assets/Scripts/Enemy/EnemyScriptableObject.cs" Line="12" Column="32" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -4,129 +4,181 @@ using UnityEngine;
 using System.Linq;
 
 [SelectionBase]
-public class BomberShip : Ship {
+public class BomberShip : Ship
+{
 
-	#region Variables
+    #region Variables
 
-	// States
-	public IMoveState moveState;
-	public IFireState firingState;
+    [Header("BOMBER_SHIP")]
+    public IMoveState moveState;
+    public IFireState fireState;
 
-	public int explosionDamage = 50;
-	public float explosionDelay = 3.0f;
-	public float damageRange = 8.0f;
-	public float rotationFactor = 150.0f;
-	public bool isExploding = false;
-	public bool explosionActive = false;
+    public int explosionDamage = 50;
+    public float explosionDelay = 3.0f;
+    public float damageRange = 8.0f;
+    public float rotationFactor = 150.0f;
+    public bool isExploding = false;
+    public bool explosionActive = false;
+    public bool canExplode = true;
+    public bool isCore = false;
+    public BomberBoss bomberBoss;
 
-	private Rigidbody rb;
-	#endregion
+    private Rigidbody rb;
+    #endregion
 
-	#region Unity Life Cycle
-	protected override void Start () {
+    #region Unity Life Cycle
+    protected override void Start()
+    {
 
-		// Call our overridden initalization method
-		//Initialize ();
-		base.Start ();
+        // Call our overridden initalization method
+        //Initialize ();
+        base.Start();
 
-		rb = GetComponent<Rigidbody> ();	// For use in adjusting velocity
-		enemyType = EnemyType.Bomber;
+        rb = GetComponent<Rigidbody>(); // For use in adjusting velocity
+        enemyType = EnemyType.Bomber;
 
-		// Component state initialization
-		moveState = GetComponent<IMoveState>();
-		firingState = GetComponent<IFireState>();
+        // Reset values from defaultValues scrObj
+        health = defaultValues.health;
+        rotationSpeed = defaultValues.rotationSpeed;
+        rotationFactor = defaultValues.rotationFactor;
 
-		// Check that we're calling the right Start() method
-		//Debug.Log("BOMBER SHIP START");
+        isExploding = false;
+        explosionActive = false;
 
-	}
+        // Component state initialization
+        moveState = GetComponent<IMoveState>();
+        moveState.OnObjectReuse();
 
-	protected override void Update() {
+        //fireState = GetComponent<IFireState>();
 
-		// Use default movement
-		base.Update ();
+        // Check that we're calling the right Start() method
+        //Debug.Log("BOMBER SHIP START");
 
-	}
-	#endregion
+    }
 
-	#region Game Logic
-/*	protected override void Initialize() {
+    // This is called everytime this prefab is reused
+    public override void OnObjectReuse()
+    {
+        StopAllCoroutines();
+        Start();
 
-		// Do normal initalization
-		//base.Initialize ();
-		//damageRange = GetComponentInChildren<BomberCollisionHelper> ().GetComponent<CapsuleCollider> ().radius;
-	}
-*/
-	public override void Kill() {
+        if (sprite != null)
+        {
+            Color resetColor = startColor;
+            resetColor.a = 1f;
+            sprite.material.color = resetColor;
+            Debug.Log("SPRITE RESET!");
+        }
+    }
 
-		// Graphics
-		Instantiate (explosion, transform.position, transform.rotation);
-		float randomVal = UnityEngine.Random.value;
-		if (randomVal <= 0.3f) {
-			GameManager.Singleton.powerupSpawner.SpawnPowerupDrop (this.transform.position);
-		}
+    protected override void Update()
+    {
 
-		// Kill logic
-		base.Kill ();		// Bare-bones destroyForReuse()
+        // Use default movement
+        base.Update();
 
-	}
+    }
+    #endregion
 
-	public override void Move () {
-		moveState.UpdateState ();
-	}		
+    #region Game Logic
+    /*	protected override void Initialize() {
 
+            // Do normal initalization
+            //base.Initialize ();
+            //damageRange = GetComponentInChildren<BomberCollisionHelper> ().GetComponent<CapsuleCollider> ().radius;
+        }
+    */
+    public override void Kill()
+    {
 
-	// For shots
-	protected void OnTriggerEnter(Collider other) {
+        // Graphics
+        Instantiate(explosion, transform.position, transform.rotation);
+        float randomVal = UnityEngine.Random.value;
+        if (randomVal <= 0.3f)
+        {
+            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(transform.position);
+        }
 
-		// If player shot hits us...
-		if (other.gameObject.CompareTag (Constants.PlayerShot)) {
+        // Kill logic
+        // CORE logic is only for BomberBoss-utilized Bombers
+        if (isCore)
+        {
+            bomberBoss.numCoresAlive -= 1;
+            if (bomberBoss.numCoresAlive == 0)
+            {
+                bomberBoss.ActivateStageTwo();
+            }
+        }
+        base.Kill();        // Bare-bones destroyForReuse()
 
-			other.gameObject.GetComponent<PoolObject>().DestroyForReuse();		// Destroy the shot that hit us
+    }
 
-			Damage(GameManager.Singleton.playerDamage);			// We lost health
-
-			//Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console */
-		}
-	}
-
-	public void StartExploding() {
-		StartCoroutine (BeginExplosion ());
-	}
-
-	/** CO-ROUTINES */
-
-	IEnumerator BeginExplosion() {
-
-		// Set this to have only one co-routine running
-		explosionActive = true;
-		GetComponentInChildren<SpriteRenderer> ().color = Color.red;
-
-		//Debug.Log ("EXPLOSION COUNTDOWN BEGINS!");
-
-		yield return new WaitForSeconds(explosionDelay);	 // Wait for a few seconds while beeping animation plays
-
-		// Get all colliders in area
-		Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
-
-
-		//List<GameObject> targets = new List<GameObject> ();
-		List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
+    public override void Move()
+    {
+        moveState.UpdateState();
+    }
 
 
-		// Damage all gameobjects 
-		foreach (GameObject go in targets) {
-			
-			// Retrieve the script that implements IDamageable
-			IDamageable<int> i = go.GetComponent (typeof(IDamageable<int>)) as IDamageable<int>;
-			if (i != null) {
-				i.Damage(explosionDamage);
-			}
-		}
+    // For shots
+    protected void OnTriggerEnter(Collider other)
+    {
 
-		Kill ();		// We're dead, so hide this object!
-		Instantiate (explosion, transform.position, transform.rotation);	// Explode! 
+        // If player shot hits us...
+        if (other.gameObject.CompareTag(Constants.PlayerShot))
+        {
 
-	}
-	#endregion
+            other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
+
+            Damage(GameManager.Singleton.playerDamage);         // We lost health
+
+            //Debug.Log ("ENEMY HEALTH: " + health);	// Print message to console */
+        }
+    }
+
+    public void StartExploding()
+    {
+        if (canExplode)
+        {
+            StartCoroutine(BeginExplosion());
+        }
+    }
+
+    /** CO-ROUTINES */
+
+    IEnumerator BeginExplosion()
+    {
+
+        // Set this to have only one co-routine running
+        explosionActive = true;
+        GetComponentInChildren<SpriteRenderer>().color = Color.red;
+
+        //Debug.Log ("EXPLOSION COUNTDOWN BEGINS!");
+
+        yield return new WaitForSeconds(explosionDelay);     // Wait for a few seconds while beeping animation plays
+
+        // Get all colliders in area
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
+
+
+        //List<GameObject> targets = new List<GameObject> ();
+        List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
+
+
+        // Damage all gameobjects 
+        foreach (GameObject go in targets)
+        {
+
+            // Retrieve the script that implements IDamageable
+            IDamageable<int> i = go.GetComponent(typeof(IDamageable<int>)) as IDamageable<int>;
+            if (i != null)
+            {
+                i.Damage(explosionDamage);
+            }
+        }
+
+        Kill();     // We're dead, so hide this object!
+        Instantiate(explosion, transform.position, transform.rotation); // Explode! 
+
+    }
+    #endregion
 }

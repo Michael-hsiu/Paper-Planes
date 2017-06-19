@@ -23,8 +23,17 @@ public class BomberBoss : Ship, IEnemy
 		 */
 
     #region Variables
+    [Header("BOMBER_BOSS")]
     public float nextAttackTime = 3.0f;     // When we start attacking after spawning
+    public List<ShipSpawn> shipSpawns = new List<ShipSpawn>();
+    public List<BomberShip> bomberCores = new List<BomberShip>();   // STAGE 1: the parts that are damageable
+    public int numCoresAlive;
 
+    [Header("SPRITE_REFERENCES")]
+    public GameObject centerGear;
+    public GameObject topGear;
+    public GameObject lowerLeftGear;
+    public GameObject lowerRightGear;
     #endregion
 
 
@@ -37,6 +46,7 @@ public class BomberBoss : Ship, IEnemy
         moveState = GetComponent<IMoveState>();
         fireState = GetComponent<IFireState>();
 
+        numCoresAlive = bomberCores.Count;   // # of spawning cores
         //nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
     }
 
@@ -73,19 +83,26 @@ public class BomberBoss : Ship, IEnemy
 
     public void Attack()
     {
-        ((SniperBossFS)fireState).UseAttack();
+        ((BomberBossFS)fireState).UseAttack();
+    }
+
+    // This is called by the CORE Bombers upon the last one's death
+    public void ActivateStageTwo()
+    {
+        Debug.Log("STAGE TWO ACTIVATED!");
+        Debug.Break();
     }
 
     // Tells MS to use appropriate movement
     public void ActivateMovementState(float endTime, Direction direction)
     {
-        ((SniperBossMS)moveState).ActivateMovementState(endTime, direction);
+        ((BomberBossMS)moveState).ActivateMovementState(endTime, direction);
 
     }
 
     public void DeactivateMovementState()
     {
-        ((SniperBossMS)moveState).DeactivateMovementState();
+        ((BomberBossMS)moveState).DeactivateMovementState();
     }
 
     void OnTriggerEnter(Collider other)

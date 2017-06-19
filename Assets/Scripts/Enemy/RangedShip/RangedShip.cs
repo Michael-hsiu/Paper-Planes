@@ -27,6 +27,7 @@ public class RangedShip : FiringShip, IEnemy
 
         base.Start();
         enemyType = EnemyType.Ranged;
+        health = defaultValues.health;
 
         firingRangeColliders = Utils.FindChildWithTag(gameObject, Constants.FiringRangeColliders);
         safeDistanceColliders = Utils.FindChildWithTag(gameObject, Constants.SafeDistanceColliders);
@@ -47,21 +48,14 @@ public class RangedShip : FiringShip, IEnemy
     public override void OnObjectReuse()
     {
 
-        base.Start();
-        enemyType = EnemyType.Ranged;
-
-        firingRangeColliders = Utils.FindChildWithTag(gameObject, Constants.FiringRangeColliders);
-        safeDistanceColliders = Utils.FindChildWithTag(gameObject, Constants.SafeDistanceColliders);
-
-        // This is the squared distance, used when Player dashes and we need to see if they're too far from enemy
-        sqMoveDist = Mathf.Pow(((CapsuleCollider)safeDistanceColliders.GetComponent<Collider>()).radius, 2);
-        sqFireDist = Mathf.Pow(((CapsuleCollider)firingRangeColliders.GetComponent<Collider>()).radius, 2);
-
-        moveState = GetComponent<IMoveState>();
-        fireState = GetComponent<IFireState>();
-
-        moveState.OnObjectReuse();
-        fireState.OnObjectReuse();
+        Start();
+        if (sprite != null)
+        {
+            Color resetColor = startColor;
+            resetColor.a = 1f;
+            sprite.material.color = resetColor;
+            Debug.Log("SPRITE RESET!");
+        }
     }
 
     protected override void Update()
@@ -90,7 +84,7 @@ public class RangedShip : FiringShip, IEnemy
         float randomVal = UnityEngine.Random.value;
         if (randomVal <= 0.3f)
         {
-            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(this.transform.position);
+            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(transform.position);
         }
 
         // Kill logic

@@ -116,8 +116,8 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(teleMarker, 10);
 
         // Enemies
-        PoolManager.Instance.CreatePool(pawnShip, 500);
-        PoolManager.Instance.CreatePool(rangedShip, 100);
+        PoolManager.Instance.CreatePool(pawnShip, 3);
+        PoolManager.Instance.CreatePool(rangedShip, 1);
         PoolManager.Instance.CreatePool(bomberShip, 100);
         PoolManager.Instance.CreatePool(mediShip, 100);
         PoolManager.Instance.CreatePool(turret, 100);

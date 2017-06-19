@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour
     public void UpdateHealth()
     {
         // Text
-        Debug.Log("HEALTH UPDATED");
+        //Debug.Log("HEALTH UPDATED");
         healthText.text = "Health: " + GameManager.Singleton.playerHealth.ToString() + " / " + GameManager.Singleton.playerMaxHealth.ToString();
 
         // Health bar

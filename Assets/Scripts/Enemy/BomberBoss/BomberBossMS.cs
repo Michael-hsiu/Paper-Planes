@@ -11,6 +11,7 @@ public class BomberBossMS : MonoBehaviour, IMoveState
     public Direction Direction { get; set; }
     public BomberBoss bomberBoss;
     public float endTime;
+    public bool spawned = false;
 
     [Header("ROTATION_DATA")]
     public Transform rotatingGear;      // Gear that starts rotating faster whenever attack is about to initiate
@@ -41,6 +42,8 @@ public class BomberBossMS : MonoBehaviour, IMoveState
 
         StartCoroutine(rotationRoutine);
         StartCoroutine(rushAttackMovementRoutine);
+
+        StartCoroutine(SpawnBombers());
     }
 
     // This routine is for BOMBER_BOSS_RUSH_MOVEMENT
@@ -80,7 +83,16 @@ public class BomberBossMS : MonoBehaviour, IMoveState
             while (rotationSpeedIncreased)
             {
 
-                transform.Rotate(Vector3.forward * currentRotationSpeed * Time.deltaTime); // Rotate the gear much faster
+                // Rotate each of the sprites
+                Vector3 newRotationAngle = Vector3.forward * currentRotationSpeed * Time.deltaTime;
+
+                bomberBoss.transform.Rotate(newRotationAngle * 1 / 3);
+                bomberBoss.centerGear.transform.Rotate(newRotationAngle);
+                bomberBoss.topGear.transform.Rotate(newRotationAngle);
+                bomberBoss.lowerLeftGear.transform.Rotate(newRotationAngle);
+                bomberBoss.lowerRightGear.transform.Rotate(-newRotationAngle);
+
+                //transform.Rotate(Vector3.forward * currentRotationSpeed * Time.deltaTime); // Rotate the gear much faster
                 if (currentRotationSpeed < maxRotationSpeed)
                 {
                     // Increase by our interval, or as much as possible under the max
@@ -90,9 +102,32 @@ public class BomberBossMS : MonoBehaviour, IMoveState
                 yield return null;
             }
             // The normal rotation logic
-            transform.Rotate(Vector3.forward * startingRotationFactor * Time.deltaTime); // Rotate the gear much faster
+            Vector3 rotationAngle = Vector3.forward * startingRotationFactor * Time.deltaTime;
+
+            //bomberBoss.transform.Rotate(rotationAngle * 1 / 3);
+            bomberBoss.centerGear.transform.Rotate(rotationAngle);
+            bomberBoss.topGear.transform.Rotate(rotationAngle);
+            bomberBoss.lowerLeftGear.transform.Rotate(rotationAngle);
+            bomberBoss.lowerRightGear.transform.Rotate(-rotationAngle);
+
+
+            //transform.Rotate(Vector3.forward * startingRotationFactor * Time.deltaTime); // Rotate the gear much faster
 
             yield return null;
+        }
+    }
+
+    IEnumerator SpawnBombers()
+    {
+        while (true)
+        {
+
+            foreach (ShipSpawn shipSpawn in bomberBoss.shipSpawns)
+            {
+                shipSpawn.Spawn();
+            }
+            yield return new WaitForSeconds(.2f);
+
         }
     }
 
@@ -148,7 +183,6 @@ public class BomberBossMS : MonoBehaviour, IMoveState
 
         if (bomberBoss.target != null)
         {
-
 
             Vector3 dist = (bomberBoss.target.transform.position - bomberBoss.transform.position).normalized;   // Find unit vector difference between target and this
 
