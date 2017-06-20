@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 [SelectionBase]
 public class BomberShip : Ship
@@ -45,11 +46,7 @@ public class BomberShip : Ship
         // Component state initialization
         moveState = GetComponent<IMoveState>();
         moveState.OnObjectReuse();
-
         //fireState = GetComponent<IFireState>();
-
-        // Check that we're calling the right Start() method
-        //Debug.Log("BOMBER SHIP START");
 
     }
 
@@ -68,23 +65,9 @@ public class BomberShip : Ship
         //}
     }
 
-    protected override void Update()
-    {
-
-        // Use default movement
-        base.Update();
-
-    }
     #endregion
 
     #region Game Logic
-    /*	protected override void Initialize() {
-
-            // Do normal initalization
-            //base.Initialize ();
-            //damageRange = GetComponentInChildren<BomberCollisionHelper> ().GetComponent<CapsuleCollider> ().radius;
-        }
-    */
     public override void Kill()
     {
 
@@ -140,6 +123,46 @@ public class BomberShip : Ship
         }
     }
 
+    public override void Damage(int damageTaken)
+    {
+
+        // Restart flicker animation
+        if (hitFlickerRoutine == null)
+        {
+            //StopCoroutine(hitFlickerRoutine);
+            hitFlickerRoutine = FlickerHit();
+            StartCoroutine(hitFlickerRoutine);
+        }
+
+        health -= damageTaken;      // We lose health
+        if (health <= 0)
+        {
+            Kill();
+            //Debug.Log ("Killed via projectile weapon");
+        }
+    }
+
+    // Flicker when hit
+    protected override IEnumerator FlickerHit()
+    {
+        Color beforeFlickerColor = sprite.material.color;
+        Color flickerColor = beforeFlickerColor;
+        flickerColor.a = 0.45f;
+
+        sprite.material.color = flickerColor;
+        yield return new WaitForSeconds(flickerTime);
+        if (explosionActive)
+        {
+            sprite.material.color = Color.red;
+        }
+        else
+        {
+            sprite.material.color = beforeFlickerColor;
+        }
+        // Open up flicker routine to next hit
+        hitFlickerRoutine = null;
+    }
+
     /** CO-ROUTINES */
 
     IEnumerator BeginExplosion()
@@ -158,16 +181,11 @@ public class BomberShip : Ship
 
         // Get all colliders in area
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, damageRange);
-
-
-        //List<GameObject> targets = new List<GameObject> ();
         List<GameObject> targets = (from c in hitColliders select c.gameObject).ToList();
-
 
         // Damage all gameobjects 
         foreach (GameObject go in targets)
         {
-
             // Retrieve the script that implements IDamageable
             IDamageable<int> i = go.GetComponent(typeof(IDamageable<int>)) as IDamageable<int>;
             if (i != null)

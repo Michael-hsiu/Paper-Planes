@@ -21,6 +21,8 @@ public class SimpleBomberMiniBoss : Ship
         health = defaultValues.health;
         rotationSpeed = defaultValues.rotationSpeed;
         rotationFactor = defaultValues.rotationFactor;
+
+        // Also set rotation to match the just-destroyed Stage 1 boss!
         sprite.transform.localRotation = defaultValues.spriteInitialRotation;
 
         // Component state initialization
@@ -31,6 +33,11 @@ public class SimpleBomberMiniBoss : Ship
         // These should work b/c if multiple Bomber Bosses killed, should still call Start() in order of kills
         //transform.position = defaultValues.initialPosition;
         //transform.rotation = defaultValues.initialRotation;
+
+    }
+
+    public override void Move()
+    {
 
     }
 

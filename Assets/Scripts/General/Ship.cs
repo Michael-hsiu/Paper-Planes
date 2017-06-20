@@ -78,12 +78,12 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     {
 
         // Restart flicker animation
-        if (hitFlickerRoutine != null)
+        if (hitFlickerRoutine == null)
         {
-            StopCoroutine(hitFlickerRoutine);
+            //StopCoroutine(hitFlickerRoutine);
+            hitFlickerRoutine = FlickerHit();
+            StartCoroutine(hitFlickerRoutine);
         }
-        hitFlickerRoutine = FlickerHit();
-        StartCoroutine(hitFlickerRoutine);
 
         health -= damageTaken;      // We lose health
         if (health <= 0)
@@ -94,7 +94,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     }
 
     // Flicker when hit
-    IEnumerator FlickerHit()
+    protected virtual IEnumerator FlickerHit()
     {
         //Debug.Log("FLICKERING");
         Color beforeFlickerColor = sprite.material.color;
@@ -104,6 +104,8 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
         sprite.material.color = flickerColor;
         yield return new WaitForSeconds(flickerTime);
         sprite.material.color = beforeFlickerColor;
+
+        hitFlickerRoutine = null;
     }
 
     public virtual void Kill()
@@ -113,7 +115,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
         DestroyForReuse();
         // Score updates
         //if (GameManager.Singleton.levelActive) {
-
+        sprite.material.color = startColor;
         GameManager.Singleton.RecordEnemyKilled(enemyType); // REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
         GameManager.Singleton.UpdateScore(enemyPoints); // Add new score in GameManager
         UIManager.Singleton.UpdateScore();  // Update score in UI

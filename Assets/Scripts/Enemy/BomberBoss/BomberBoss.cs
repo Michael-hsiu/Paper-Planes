@@ -136,27 +136,18 @@ public class BomberBoss : Ship, IEnemy
         // Spawn the 3 mini-bosses, administer their setup logic
         // They are each their own prefab, save positions/rotations as of sprites
 
-        //topGearDefaultValues.spriteInitialPosition = topGear.transform.position;
         topGearDefaultValues.spriteInitialRotation = topGear.transform.localRotation;
-
-        //leftGearDefaultValues.spriteInitialPosition = lowerLeftGear.transform.position;
-        //leftGearDefaultValues.spriteInitialRotation = lowerLeftGear.transform.rotation;
-
-        //rightGearDefaultValues.spriteInitialPosition = lowerRightGear.transform.position;
-        //rightGearDefaultValues.spriteInitialRotation = lowerRightGear.transform.rotation;
+        leftGearDefaultValues.spriteInitialRotation = lowerLeftGear.transform.rotation;
+        rightGearDefaultValues.spriteInitialRotation = lowerRightGear.transform.rotation;
 
         // Spawn at position of miniboss container, at rotation of miniboss sprite (child)
         // We set rotation of sprites within the Start method of each miniboss, accessed thru scrObj
         PoolManager.Instance.ReuseObject(topGearStageTwoBoss, topGear.transform.position, Quaternion.identity);
-        //PoolManager.Instance.ReuseObject(leftGearStageTwoBoss, lowerLeftGear.transform.position, lowerLeftGearSprite.transform.localRotation);
-        //PoolManager.Instance.ReuseObject(rightGearStageTwoBoss, lowerRightGear.transform.position, lowerRightGearSprite.transform.localRotation);
-
-        //Kill();
-        Debug.Break();
+        PoolManager.Instance.ReuseObject(leftGearStageTwoBoss, lowerLeftGear.transform.position, Quaternion.identity);
+        PoolManager.Instance.ReuseObject(rightGearStageTwoBoss, lowerRightGear.transform.position, Quaternion.identity);
 
         // Normal kill logic, point distribution
-
-        Debug.Log("STAGE TWO ACTIVATED!");
+        Kill();
         Debug.Break();
     }
 
