@@ -26,6 +26,7 @@ public class BomberBoss : Ship, IEnemy
     [Header("BOMBER_BOSS")]
     public float nextAttackTime = 3.0f;     // When we start attacking after spawning
     public float bomberSpawnDelay = 0.2f;   // Delay between bombers spawned
+    public float stageOneExplosionForce = 1000.0f;
     public List<ShipSpawn> shipSpawns = new List<ShipSpawn>();
     public List<BomberShip> bomberCores = new List<BomberShip>();   // STAGE 1: the parts that are damageable
     public int numCoresAlive;
@@ -129,9 +130,9 @@ public class BomberBoss : Ship, IEnemy
     public void ActivateStageTwo()
     {
         // Destroy the middle core
-        centerGear.SetActive(false);
+        //centerGear.SetActive(false);
         Instantiate(stageOneDeathExplosion, centerGear.transform.position, Quaternion.identity);
-        Debug.Break();
+        //Debug.Break();
 
         // Spawn the 3 mini-bosses, administer their setup logic
         // They are each their own prefab, save positions/rotations as of sprites
@@ -142,13 +143,22 @@ public class BomberBoss : Ship, IEnemy
 
         // Spawn at position of miniboss container, at rotation of miniboss sprite (child)
         // We set rotation of sprites within the Start method of each miniboss, accessed thru scrObj
-        PoolManager.Instance.ReuseObject(topGearStageTwoBoss, topGear.transform.position, Quaternion.identity);
-        PoolManager.Instance.ReuseObject(leftGearStageTwoBoss, lowerLeftGear.transform.position, Quaternion.identity);
-        PoolManager.Instance.ReuseObject(rightGearStageTwoBoss, lowerRightGear.transform.position, Quaternion.identity);
+        PoolObject topGearRef = PoolManager.Instance.ReuseObjectRef(topGearStageTwoBoss, topGear.transform.position, Quaternion.identity);
+        PoolObject leftGearRef = PoolManager.Instance.ReuseObjectRef(leftGearStageTwoBoss, lowerLeftGear.transform.position, Quaternion.identity);
+        PoolObject rightGearRef = PoolManager.Instance.ReuseObjectRef(rightGearStageTwoBoss, lowerRightGear.transform.position, Quaternion.identity);
+
+        // Use forces to push gears away from center
+        Vector3 topGearDiff = (topGearRef.transform.position - centerGear.transform.position).normalized;
+        Vector3 leftGearDiff = (leftGearRef.transform.position - centerGear.transform.position).normalized;
+        Vector3 rightGearDiff = (rightGearRef.transform.position - centerGear.transform.position).normalized;
+
+        topGearRef.gameObject.GetComponent<Rigidbody>().AddForce(topGearDiff * stageOneExplosionForce);
+        leftGearRef.gameObject.GetComponent<Rigidbody>().AddForce(leftGearDiff * stageOneExplosionForce);
+        rightGearRef.gameObject.GetComponent<Rigidbody>().AddForce(rightGearDiff * stageOneExplosionForce);
 
         // Normal kill logic, point distribution
         Kill();
-        Debug.Break();
+        //Debug.Break();
     }
 
     // Tells MS to use appropriate movement
