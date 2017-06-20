@@ -141,8 +141,9 @@
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossCollider.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossFS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossMS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberMiniBossMS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\ShipSpawn.cs" />
-    <Compile Include="Assets\Scripts\Enemy\BomberBoss\SimpleBomberMiniBoss.cs" />
+    <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberMiniBoss.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberCollisionHelper.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberFS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberMS.cs" />

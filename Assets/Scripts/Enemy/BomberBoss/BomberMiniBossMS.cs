@@ -1,25 +1,23 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BomberBossMS : MonoBehaviour, IMoveState
+public class BomberMiniBossMS : MonoBehaviour, IMoveState
 {
-
     [Header("GENERAL_DATA")]
     public Direction direction = Direction.PLAYER_UNDETECTED;
     public Direction Direction { get; set; }
-    public BomberBoss bomberBoss;
+    public BomberMiniBoss bomberMiniBoss;
     public float endTime;
     public bool spawned = false;
 
     [Header("ROTATION_DATA")]
-    public Transform rotatingGear;      // Gear that starts rotating faster whenever attack is about to initiate
+    public Transform rotatingGearSprite;      // Gear that starts rotating faster whenever attack is about to initiate
     public float startingRotationFactor = 3.0f;
     public float rotationFactorInterval = 5.0f;     // How much we increase the rotation speed by
     public float maxRotationSpeed = 20.0f;
     public bool rotationSpeedIncreased = false;
-    public float currentRotationSpeed;
+    public float currentRotationFactor;
     public Rigidbody rushCollisionRigidBody;
     IEnumerator rotationRoutine;
 
@@ -31,11 +29,9 @@ public class BomberBossMS : MonoBehaviour, IMoveState
     public Vector3 directionToPlayer;
     IEnumerator rushAttackMovementRoutine;
 
-
-
     void Start()
     {
-        bomberBoss = GetComponent<BomberBoss>();
+        bomberMiniBoss = GetComponent<BomberMiniBoss>();
 
         rotationRoutine = StartRotating();
         rushAttackMovementRoutine = RushAttackMovement();
@@ -45,10 +41,19 @@ public class BomberBossMS : MonoBehaviour, IMoveState
 
     }
 
-
     public void OnObjectReuse()
     {
 
+    }
+
+    public void UpdateState()
+    {
+
+        if (direction == Direction.PLAYER_DETECTED)
+        {
+            MoveToPlayer(); // Change to be AWAY from player if too close
+
+        }
     }
 
     // This routine is for BOMBER_BOSS_RUSH_MOVEMENT
@@ -66,8 +71,8 @@ public class BomberBossMS : MonoBehaviour, IMoveState
 
                 // Rush to player
                 // Collisions will knock player back and knock powerups out of them
-                directionToPlayer = (bomberBoss.target.transform.position - bomberBoss.transform.position).normalized;
-                bomberBoss.GetComponent<Rigidbody>().AddForce(directionToPlayer * thrustFactor, ForceMode.Impulse);     // Propel boss forward
+                directionToPlayer = (bomberMiniBoss.target.transform.position - bomberMiniBoss.transform.position).normalized;
+                bomberMiniBoss.GetComponent<Rigidbody>().AddForce(directionToPlayer * thrustFactor, ForceMode.Impulse);     // Propel boss forward
 
             }
             yield return null;
@@ -75,63 +80,35 @@ public class BomberBossMS : MonoBehaviour, IMoveState
     }
 
 
-    // This routine is always active, but speed can be modified when attack starts 
     IEnumerator StartRotating()
     {
         while (true)
         {
-
-            // Always reset rotation speed at top of the loop
-            currentRotationSpeed = startingRotationFactor;
-
             // GO into loop if we're under influence of attack; coroutine controls how long we stay in loop
+            // Rush attack case
             while (rotationSpeedIncreased)
             {
-
                 // Rotate each of the sprites
-                Vector3 newRotationAngle = Vector3.forward * currentRotationSpeed * Time.deltaTime;
-
-                bomberBoss.transform.Rotate(newRotationAngle * 1 / 3);
-                bomberBoss.centerGear.transform.Rotate(newRotationAngle);
-                bomberBoss.topGear.transform.Rotate(newRotationAngle);
-                bomberBoss.lowerLeftGear.transform.Rotate(newRotationAngle);
-                bomberBoss.lowerRightGear.transform.Rotate(-newRotationAngle);
+                Vector3 newRotationAngle = Vector3.forward * currentRotationFactor * Time.deltaTime;
+                rotatingGearSprite.transform.Rotate(newRotationAngle);
 
                 //transform.Rotate(Vector3.forward * currentRotationSpeed * Time.deltaTime); // Rotate the gear much faster
-                if (currentRotationSpeed < maxRotationSpeed)
+                if (currentRotationFactor < maxRotationSpeed)
                 {
                     // Increase by our interval, or as much as possible under the max
-                    float rotationFactorDiff = maxRotationSpeed - currentRotationSpeed;
-                    currentRotationSpeed += Mathf.Min(rotationFactorInterval, rotationFactorDiff);
+                    float rotationFactorDiff = maxRotationSpeed - currentRotationFactor;
+                    currentRotationFactor += Mathf.Min(rotationFactorInterval, rotationFactorDiff);
                 }
                 yield return null;
             }
-            // The normal rotation logic
+
+            // The normal rotation case
+            currentRotationFactor = startingRotationFactor;
             Vector3 rotationAngle = Vector3.forward * startingRotationFactor * Time.deltaTime;
-
-            //bomberBoss.transform.Rotate(rotationAngle * 1 / 3);
-            bomberBoss.centerGear.transform.Rotate(rotationAngle);
-            bomberBoss.topGear.transform.Rotate(rotationAngle);
-            bomberBoss.lowerLeftGear.transform.Rotate(rotationAngle);
-            bomberBoss.lowerRightGear.transform.Rotate(-rotationAngle);
-
-
-            //transform.Rotate(Vector3.forward * startingRotationFactor * Time.deltaTime); // Rotate the gear much faster
-
+            rotatingGearSprite.transform.Rotate(rotationAngle);
             yield return null;
         }
     }
-
-    public void UpdateState()
-    {
-
-        if (direction == Direction.PLAYER_DETECTED)
-        {
-            MoveToPlayer(); // Change to be AWAY from player if too close
-
-        }
-    }
-
 
     public void ActivateMovementState(float endTime, Direction newDirection)
     {
@@ -155,14 +132,14 @@ public class BomberBossMS : MonoBehaviour, IMoveState
     // Call this if IDLE
     public void TurnToPlayer()
     {
-        if (bomberBoss.target != null)
+        if (bomberMiniBoss.target != null)
         {
 
-            Vector3 dist = (bomberBoss.target.transform.position - bomberBoss.transform.position).normalized;   // Find unit vector difference between target and this
+            Vector3 dist = (bomberMiniBoss.target.transform.position - bomberMiniBoss.transform.position).normalized;   // Find unit vector difference between target and this
 
             float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
             Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
-            bomberBoss.transform.rotation = Quaternion.RotateTowards(bomberBoss.transform.rotation, desiredRotation, bomberBoss.rotationSpeed * Time.deltaTime);    // Rotate the enemy
+            bomberMiniBoss.transform.rotation = Quaternion.RotateTowards(bomberMiniBoss.transform.rotation, desiredRotation, bomberMiniBoss.rotationSpeed * Time.deltaTime);    // Rotate the enemy
 
         }
     }
@@ -171,16 +148,16 @@ public class BomberBossMS : MonoBehaviour, IMoveState
     public void MoveToPlayer()
     {
 
-        if (bomberBoss.target != null)
+        if (bomberMiniBoss.target != null)
         {
 
-            Vector3 dist = (bomberBoss.target.transform.position - bomberBoss.transform.position).normalized;   // Find unit vector difference between target and this
+            Vector3 dist = (bomberMiniBoss.target.transform.position - bomberMiniBoss.transform.position).normalized;   // Find unit vector difference between target and this
 
             float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
             Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
-            bomberBoss.transform.rotation = Quaternion.RotateTowards(bomberBoss.transform.rotation, desiredRotation, bomberBoss.rotationSpeed * Time.deltaTime);    // Rotate the enemy
+            bomberMiniBoss.transform.rotation = Quaternion.RotateTowards(bomberMiniBoss.transform.rotation, desiredRotation, bomberMiniBoss.rotationSpeed * Time.deltaTime);    // Rotate the enemy
 
-            bomberBoss.transform.position = Vector2.MoveTowards(bomberBoss.transform.position, bomberBoss.target.transform.position, Time.deltaTime * bomberBoss.speed);
+            bomberMiniBoss.transform.position = Vector2.MoveTowards(bomberMiniBoss.transform.position, bomberMiniBoss.target.transform.position, Time.deltaTime * bomberMiniBoss.speed);
 
         }
     }
@@ -188,20 +165,21 @@ public class BomberBossMS : MonoBehaviour, IMoveState
     public void MoveBackwards()
     {
 
-        if (bomberBoss.target != null)
+        if (bomberMiniBoss.target != null)
         {
 
-            Vector3 dist = -(bomberBoss.target.transform.position - bomberBoss.transform.position).normalized;  // Find unit vector difference between target and this
+            Vector3 dist = -(bomberMiniBoss.target.transform.position - bomberMiniBoss.transform.position).normalized;  // Find unit vector difference between target and this
             Vector3 angleDist = -dist;
 
             float zAngle = (Mathf.Atan2(angleDist.y, angleDist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
             Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);       // Store rotation as an Euler, then Quaternion
-            bomberBoss.transform.rotation = Quaternion.RotateTowards(bomberBoss.transform.rotation, desiredRotation, bomberBoss.rotationSpeed * Time.deltaTime);   // Rotate the enemy
+            bomberMiniBoss.transform.rotation = Quaternion.RotateTowards(bomberMiniBoss.transform.rotation, desiredRotation, bomberMiniBoss.rotationSpeed * Time.deltaTime);   // Rotate the enemy
 
-            bomberBoss.transform.position = Vector2.MoveTowards(bomberBoss.transform.position, bomberBoss.transform.position + dist, Time.deltaTime * bomberBoss.speed);
+            bomberMiniBoss.transform.position = Vector2.MoveTowards(bomberMiniBoss.transform.position, bomberMiniBoss.transform.position + dist, Time.deltaTime * bomberMiniBoss.speed);
 
         }
 
     }
+
 }
 
