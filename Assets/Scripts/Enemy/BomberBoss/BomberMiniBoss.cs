@@ -10,7 +10,7 @@ public class BomberMiniBoss : Ship
     public float rotationFactor;
     public bool rushedIntoPlayer = false;
     public GameObject jointContainer;
-    public Collider collider;
+    public Collider collisionCollider;
 
     IEnumerator rushedIntoPlayerRoutine;
     #endregion
@@ -21,7 +21,7 @@ public class BomberMiniBoss : Ship
 
         base.Start();
         enemyType = EnemyType.Boss;
-        collider = GetComponent<Collider>();
+        collisionCollider = GetComponent<Collider>();
 
         // Reset values from defaultValues scrObj
         health = defaultValues.health;
@@ -57,6 +57,23 @@ public class BomberMiniBoss : Ship
 
 
     #region Game Logic
+    //  void OnCollisionEnter(Collision collision)
+    //  {
+    //if (other.gameObject.CompareTag(Constants.PlayerTag))
+    //{
+    //	if (!rushedIntoPlayer)
+    //	{
+    //		//jointContainer.transform.position = collisionCollider.ClosestPointOnBounds(other.transform.position);     // This may not work due to 3D colliders
+    //		jointContainer.transform.position = other.transform.position;
+    //		Debug.Break();
+
+    //		rushedIntoPlayerRoutine = RushedIntoPlayer(other.gameObject.GetComponent<PlayerShip>());
+    //		StartCoroutine(rushedIntoPlayerRoutine);
+    //	}
+    //}
+    //}
+
+
     void OnTriggerEnter(Collider other)
     {
 
@@ -71,8 +88,11 @@ public class BomberMiniBoss : Ship
         {
             if (!rushedIntoPlayer)
             {
-                //jointContainer.transform.position = collider.ClosestPointOnBounds(other.transform.position);
-                jointContainer.transform.position = other.transform.position;
+                //jointContainer.transform.position = collisionCollider.ClosestPointOnBounds(other.transform.position);     // This may not work due to 3D colliders
+                //jointContainer.transform.position = other.transform.position;
+
+                jointContainer.transform.position = collisionCollider.ClosestPoint(other.transform.position);     // This may not work due to 3D colliders
+                Debug.Break();
 
                 rushedIntoPlayerRoutine = RushedIntoPlayer(other.gameObject.GetComponent<PlayerShip>());
                 StartCoroutine(rushedIntoPlayerRoutine);
