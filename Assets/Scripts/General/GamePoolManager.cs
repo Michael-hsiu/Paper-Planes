@@ -67,6 +67,7 @@ public class GamePoolManager : MonoBehaviour
     public GameObject topGearStageTwoBoss;
     public GameObject leftGearStageTwoBoss;
     public GameObject rightGearStageTwoBoss;
+    public GameObject slingShotBomber;
 
     public GameObject rangedTest;
 
@@ -133,6 +134,8 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(topGearStageTwoBoss, 5);
         PoolManager.Instance.CreatePool(leftGearStageTwoBoss, 5);
         PoolManager.Instance.CreatePool(rightGearStageTwoBoss, 5);
+        PoolManager.Instance.CreatePool(slingShotBomber, 50);
+
 
 
         // Spawners

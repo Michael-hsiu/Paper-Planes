@@ -8,10 +8,11 @@ public class BomberMiniBoss : Ship
 
     #region Variables
     public float rotationFactor;
+    public float rushCollisionDuration = 4.0f;
     public bool rushedIntoPlayer = false;
     public GameObject jointContainer;
     //public CircleCollider2D collisionCollider;  // Assign in inspector
-    public Collider collisionCollider;
+    public SphereCollider collisionCollider;              // Used for RUSH_ATTACK and SLINGSHOT_ATTACK
 
     IEnumerator rushedIntoPlayerRoutine;
     #endregion
@@ -22,7 +23,7 @@ public class BomberMiniBoss : Ship
 
         base.Start();
         enemyType = EnemyType.Boss;
-        collisionCollider = GetComponent<Collider>();
+        collisionCollider = GetComponent<SphereCollider>();
 
         // Reset values from defaultValues scrObj
         health = defaultValues.health;
@@ -129,7 +130,7 @@ public class BomberMiniBoss : Ship
         GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
 
         playerShip.sprite.material.color = Color.red;
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(rushCollisionDuration);
         playerShip.sprite.material.color = Color.white;
 
         //Debug.Break();
