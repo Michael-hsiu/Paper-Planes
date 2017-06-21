@@ -119,6 +119,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\BomberMiniBossRushCollider.cs" />
     <Compile Include="Assets\Camera\CameraController.cs" />
     <Compile Include="Assets\CanvasDontDestroy.cs" />
     <Compile Include="Assets\Inputs\VirtualJoystick.cs" />
@@ -141,9 +142,9 @@
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossCollider.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossFS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossMS.cs" />
+    <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberMiniBoss.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberMiniBossMS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\ShipSpawn.cs" />
-    <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberMiniBoss.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberCollisionHelper.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberFS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberShip\BomberMS.cs" />

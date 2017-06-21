@@ -10,6 +10,7 @@ public class BomberMiniBoss : Ship
     public float rotationFactor;
     public bool rushedIntoPlayer = false;
     public GameObject jointContainer;
+    //public CircleCollider2D collisionCollider;  // Assign in inspector
     public Collider collisionCollider;
 
     IEnumerator rushedIntoPlayerRoutine;
@@ -90,9 +91,10 @@ public class BomberMiniBoss : Ship
             {
                 //jointContainer.transform.position = collisionCollider.ClosestPointOnBounds(other.transform.position);     // This may not work due to 3D colliders
                 //jointContainer.transform.position = other.transform.position;
-
-                jointContainer.transform.position = collisionCollider.ClosestPoint(other.transform.position);     // This may not work due to 3D colliders
-                Debug.Break();
+                Vector3 newPosition = collisionCollider.ClosestPoint(other.transform.position);
+                newPosition.z = 0f;
+                jointContainer.transform.position = newPosition;     // This may not work due to 3D colliders
+                //Debug.Break();
 
                 rushedIntoPlayerRoutine = RushedIntoPlayer(other.gameObject.GetComponent<PlayerShip>());
                 StartCoroutine(rushedIntoPlayerRoutine);
@@ -100,20 +102,35 @@ public class BomberMiniBoss : Ship
         }
     }
 
+    //public void RushIntoPlayerStart(ContactPoint2D contactPoint)
+    //{
+    //    if (!rushedIntoPlayer)
+    //    {
+    //        Vector3 hitPoint = contactPoint.point;
+    //        jointContainer.transform.position = new Vector3(hitPoint.x, hitPoint.y, 0f);
+    //        Debug.Break();
+
+    //        rushedIntoPlayerRoutine = RushedIntoPlayer();
+    //        StartCoroutine(rushedIntoPlayerRoutine);
+    //    }
+    //}
+
     // Called when a RUSH_ATK brings us in collision w/ player
-    IEnumerator RushedIntoPlayer(PlayerShip player)
+    IEnumerator RushedIntoPlayer(PlayerShip playerShip)
     {
+
         rushedIntoPlayer = true;
+
         // Stick the player and this object together temporarily
         var connectionJoint = jointContainer.AddComponent<FixedJoint>();
-        connectionJoint.connectedBody = player.GetComponent<Rigidbody>();
+        connectionJoint.connectedBody = playerShip.GetComponent<Rigidbody>();
 
         GameManager.Singleton.axisInput = false;                            // So we can't move while charging
         GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
 
-        player.sprite.material.color = Color.red;
+        playerShip.sprite.material.color = Color.red;
         yield return new WaitForSeconds(4f);
-        player.sprite.material.color = Color.white;
+        playerShip.sprite.material.color = Color.white;
 
         //Debug.Break();
         Destroy(connectionJoint);
