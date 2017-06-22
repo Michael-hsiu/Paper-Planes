@@ -88,7 +88,7 @@ public class BomberMiniBoss : Ship
         }
         else if (other.gameObject.CompareTag(Constants.PlayerTag))
         {
-            if (!rushedIntoPlayer)
+            if (!rushedIntoPlayer && jointContainer != null)
             {
                 //jointContainer.transform.position = collisionCollider.ClosestPointOnBounds(other.transform.position);     // This may not work due to 3D colliders
                 //jointContainer.transform.position = other.transform.position;
