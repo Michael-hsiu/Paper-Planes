@@ -8,6 +8,7 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
     public Direction direction = Direction.PLAYER_UNDETECTED;
     public Direction Direction { get; set; }
     public BomberMiniBoss bomberMiniBoss;
+    public float movementSpeed = 5.0f;
     public float endTime;
     public bool spawned = false;
 
@@ -56,9 +57,9 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
         rushAttackMovementRoutine = RushAttackMovement();
         slingShotAttackRoutine = SlingShotMovement();
 
-        StartCoroutine(rotationRoutine);
-        StartCoroutine(rushAttackMovementRoutine);
-        StartCoroutine(slingShotAttackRoutine);
+        //StartCoroutine(rotationRoutine);
+        //StartCoroutine(rushAttackMovementRoutine);
+        //StartCoroutine(slingShotAttackRoutine);
 
     }
 
@@ -78,7 +79,24 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
 
         if (direction == Direction.PLAYER_DETECTED)
         {
-            MoveToPlayer(); // Change to be AWAY from player if too close
+            MoveToCenterBomber(); // Change to be AWAY from player if too close
+
+        }
+    }
+
+    public void MoveToCenterBomber()
+    {
+
+        if (bomberMiniBoss.bomberBoss != null)
+        {
+
+            Vector3 dist = (bomberMiniBoss.bomberBoss.transform.position - transform.position).normalized;   // Find unit vector difference between target and this
+
+            //float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+            //Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+            //bomberMiniBoss.transform.rotation = Quaternion.RotateTowards(bomberBoss.transform.rotation, desiredRotation, bomberBoss.rotationSpeed * Time.deltaTime);    // Rotate the enemy
+
+            bomberMiniBoss.transform.position = Vector2.MoveTowards(bomberMiniBoss.transform.position, bomberMiniBoss.bomberBoss.transform.position, Time.deltaTime * movementSpeed);
 
         }
     }

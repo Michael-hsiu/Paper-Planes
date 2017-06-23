@@ -147,14 +147,23 @@ public class BomberBoss : Ship, IEnemy
         PoolObject leftGearRef = PoolManager.Instance.ReuseObjectRef(leftGearStageTwoBoss, lowerLeftGear.transform.position, Quaternion.identity);
         PoolObject rightGearRef = PoolManager.Instance.ReuseObjectRef(rightGearStageTwoBoss, lowerRightGear.transform.position, Quaternion.identity);
 
+        ((BomberMiniBoss)topGearRef).bomberBoss = this;
+        ((BomberMiniBoss)leftGearRef).bomberBoss = this;
+        ((BomberMiniBoss)rightGearRef).bomberBoss = this;
+
         // Use forces to push gears away from center
+        //Vector3 topGearDiff = (topGearRef.transform.position - centerGear.transform.position).normalized;
+        //Vector3 leftGearDiff = (leftGearRef.transform.position - centerGear.transform.position).normalized;
+        //Vector3 rightGearDiff = (rightGearRef.transform.position - centerGear.transform.position).normalized;
+
+        //topGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-topGearDiff * stageOneExplosionForce);
+        //leftGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-leftGearDiff * stageOneExplosionForce);
+        //rightGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-rightGearDiff * stageOneExplosionForce);
+
+        // Move all gears into the middle, expand middle gear
         Vector3 topGearDiff = (topGearRef.transform.position - centerGear.transform.position).normalized;
         Vector3 leftGearDiff = (leftGearRef.transform.position - centerGear.transform.position).normalized;
         Vector3 rightGearDiff = (rightGearRef.transform.position - centerGear.transform.position).normalized;
-
-        topGearRef.gameObject.GetComponent<Rigidbody>().AddForce(topGearDiff * stageOneExplosionForce);
-        leftGearRef.gameObject.GetComponent<Rigidbody>().AddForce(leftGearDiff * stageOneExplosionForce);
-        rightGearRef.gameObject.GetComponent<Rigidbody>().AddForce(rightGearDiff * stageOneExplosionForce);
 
         rightGearRef.gameObject.GetComponent<BomberMiniBossMS>().slingShotAttackActive = true;
 

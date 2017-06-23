@@ -11,6 +11,7 @@ public class BomberMiniBoss : Ship
     public float rushCollisionDuration = 4.0f;
     public bool rushedIntoPlayer = false;
     public GameObject jointContainer;
+    public BomberBoss bomberBoss;       // The Stage 1 boss reference
     public SphereCollider collisionCollider;              // Used for RUSH_ATTACK and SLINGSHOT_ATTACK
 
     IEnumerator rushedIntoPlayerRoutine;
@@ -39,7 +40,7 @@ public class BomberMiniBoss : Ship
 
     public override void Move()
     {
-
+        moveState.UpdateState();
     }
 
     // This is called everytime this prefab is reused
