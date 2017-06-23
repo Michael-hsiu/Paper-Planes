@@ -62,8 +62,14 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
 
     }
 
+    // Should NOT call this when starting for first time, only on reuse
     public void OnObjectReuse()
     {
+        StopAllCoroutines();
+        bombersSpawned.Clear();
+        bombersSpawnedQueue.Clear();
+        //Debug.Break();
+        //Start();
 
     }
 
@@ -86,9 +92,11 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
             {
 
                 // Start rotating faster, getting ready to rush to player. Eye should move, colors should change.
-                directionToPlayer = (bomberMiniBoss.target.transform.position - bomberMiniBoss.transform.position).normalized;
                 rotationSpeedIncreased = true;
-                yield return new WaitForSeconds(rushAttackChargeTime);
+                yield return new WaitForSeconds(rushAttackChargeTime * 2 / 3);
+                directionToPlayer = (bomberMiniBoss.target.transform.position - bomberMiniBoss.transform.position).normalized;
+                yield return new WaitForSeconds(rushAttackChargeTime * 1 / 3);
+
                 rotationSpeedIncreased = false;
 
                 // Rush to player
@@ -112,6 +120,26 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
             // Repeat process
             if (slingShotAttackActive)
             {
+                // Wait to come to a stop first before spawning
+                // Spin for a certain duration, with rotation speed constant
+                float rotEndTime = Time.time + 2.0f;
+                while (Time.time < rotEndTime)
+                {
+                    // Rotate the center sprite
+                    Vector3 newRotationAngle = Vector3.forward * currentRotationFactor * Time.deltaTime;
+                    rotatingGearSprite.transform.Rotate(newRotationAngle);
+                    yield return null;
+                }
+
+                // Clear the remaining bombers from last prefab use
+                List<GameObject> remainingBombers = Utils.GetChildren(spawnedMobsContainer);
+                foreach (GameObject go in remainingBombers)
+                {
+                    Destroy(go);
+                    //Debug.Break();
+                }
+
+
                 // Spawn the 4 sentinel bombers and put them in a container
                 foreach (GameObject spawnPoint in bomberSpawnPoints)
                 {
@@ -123,8 +151,8 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
                 // Cache player position and start spinning
                 Vector3 targetPosition = GameManager.Singleton.playerShip.transform.position;
 
-                // Spin for a certain duration, with rotation speed contant
-                float rotEndTime = Time.time + 1.0f;
+                // Spin for a certain duration, with rotation speed constant
+                rotEndTime = Time.time + 1.0f;
                 while (Time.time < rotEndTime)
                 {
                     // Rotate the center sprite

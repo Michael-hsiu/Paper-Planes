@@ -156,6 +156,9 @@ public class BomberBoss : Ship, IEnemy
         leftGearRef.gameObject.GetComponent<Rigidbody>().AddForce(leftGearDiff * stageOneExplosionForce);
         rightGearRef.gameObject.GetComponent<Rigidbody>().AddForce(rightGearDiff * stageOneExplosionForce);
 
+        rightGearRef.gameObject.GetComponent<BomberMiniBossMS>().slingShotAttackActive = true;
+
+
         // Normal kill logic, point distribution
         Kill();
         //Debug.Break();

@@ -11,7 +11,6 @@ public class BomberMiniBoss : Ship
     public float rushCollisionDuration = 4.0f;
     public bool rushedIntoPlayer = false;
     public GameObject jointContainer;
-    //public CircleCollider2D collisionCollider;  // Assign in inspector
     public SphereCollider collisionCollider;              // Used for RUSH_ATTACK and SLINGSHOT_ATTACK
 
     IEnumerator rushedIntoPlayerRoutine;
@@ -49,6 +48,9 @@ public class BomberMiniBoss : Ship
         StopAllCoroutines();
         Start();
 
+        // Reset component states
+        moveState.OnObjectReuse();
+
         // Color / alpha reset
         Color resetColor = startColor;
         resetColor.a = 1f;
@@ -59,22 +61,6 @@ public class BomberMiniBoss : Ship
 
 
     #region Game Logic
-    //  void OnCollisionEnter(Collision collision)
-    //  {
-    //if (other.gameObject.CompareTag(Constants.PlayerTag))
-    //{
-    //	if (!rushedIntoPlayer)
-    //	{
-    //		//jointContainer.transform.position = collisionCollider.ClosestPointOnBounds(other.transform.position);     // This may not work due to 3D colliders
-    //		jointContainer.transform.position = other.transform.position;
-    //		Debug.Break();
-
-    //		rushedIntoPlayerRoutine = RushedIntoPlayer(other.gameObject.GetComponent<PlayerShip>());
-    //		StartCoroutine(rushedIntoPlayerRoutine);
-    //	}
-    //}
-    //}
-
 
     void OnTriggerEnter(Collider other)
     {
@@ -102,19 +88,6 @@ public class BomberMiniBoss : Ship
             }
         }
     }
-
-    //public void RushIntoPlayerStart(ContactPoint2D contactPoint)
-    //{
-    //    if (!rushedIntoPlayer)
-    //    {
-    //        Vector3 hitPoint = contactPoint.point;
-    //        jointContainer.transform.position = new Vector3(hitPoint.x, hitPoint.y, 0f);
-    //        Debug.Break();
-
-    //        rushedIntoPlayerRoutine = RushedIntoPlayer();
-    //        StartCoroutine(rushedIntoPlayerRoutine);
-    //    }
-    //}
 
     // Called when a RUSH_ATK brings us in collision w/ player
     IEnumerator RushedIntoPlayer(PlayerShip playerShip)

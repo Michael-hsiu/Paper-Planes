@@ -51,7 +51,7 @@ public class BomberMS : MonoBehaviour, IMoveState
     public void MoveToPlayer()
     {
 
-        if (bs.isExploding)
+        if (bs.isExploding && bs.target != null)
         {
 
             transform.Rotate(Vector3.forward * bs.rotationFactor * Time.deltaTime); // Rotate the enemy MUCH FASTER; needs adjustment
