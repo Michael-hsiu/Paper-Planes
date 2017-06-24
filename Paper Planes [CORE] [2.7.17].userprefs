@@ -1,10 +1,13 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/BomberBoss/BomberMiniBoss.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/BomberShip/BomberMS.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="168" Column="9" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossMS.cs" Line="181" Column="45" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberMiniBoss.cs" Line="21" Column="6" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberMiniBossMS.cs" Line="127" Column="18" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="150" Column="56" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossMS.cs" Line="150" Column="6" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberMiniBoss.cs" Line="39" Column="6" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberMiniBossMS.cs" Line="187" Column="37" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="96" Column="24" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="16" Column="37" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="5" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

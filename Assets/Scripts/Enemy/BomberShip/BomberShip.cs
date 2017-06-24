@@ -15,10 +15,12 @@ public class BomberShip : Ship
     public float explosionDelay = 3.0f;
     public float damageRange = 8.0f;
     public float rotationFactor = 150.0f;
+    public float explodingMoveSpeed = 5.0f;
     public bool isExploding = false;
     public bool explosionActive = false;
     public bool canExplode = true;
     public bool isCore = false;
+    public bool isSlingShotBomber = false;
     public BomberBoss bomberBoss;
 
     private Rigidbody rb;

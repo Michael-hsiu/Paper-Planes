@@ -97,15 +97,18 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     protected virtual IEnumerator FlickerHit()
     {
         //Debug.Log("FLICKERING");
-        Color beforeFlickerColor = sprite.material.color;
-        Color flickerColor = beforeFlickerColor;
-        flickerColor.a = 0.45f;
+        if (sprite != null)
+        {
+            Color beforeFlickerColor = sprite.material.color;
+            Color flickerColor = beforeFlickerColor;
+            flickerColor.a = 0.45f;
 
-        sprite.material.color = flickerColor;
-        yield return new WaitForSeconds(flickerTime);
-        sprite.material.color = beforeFlickerColor;
+            sprite.material.color = flickerColor;
+            yield return new WaitForSeconds(flickerTime);
+            sprite.material.color = beforeFlickerColor;
 
-        hitFlickerRoutine = null;
+            hitFlickerRoutine = null;
+        }
     }
 
     public virtual void Kill()

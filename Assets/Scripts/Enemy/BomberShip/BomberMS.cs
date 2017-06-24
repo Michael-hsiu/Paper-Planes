@@ -51,6 +51,7 @@ public class BomberMS : MonoBehaviour, IMoveState
     public void MoveToPlayer()
     {
 
+        float movementSpeedCopy = bs.speed;
         if (bs.isExploding && bs.target != null)
         {
 
@@ -63,11 +64,15 @@ public class BomberMS : MonoBehaviour, IMoveState
                 //Debug.Log ("STARTED COROUTINE");
                 bs.StartExploding();        // Alert bomber ship to start exploding
             }
-
-            return;     // Break out of method
+            if (bs.isSlingShotBomber)
+            {
+                bs.speed = bs.explodingMoveSpeed;   // Generalize?
+                //Debug.Break();
+            }
+            //return;     // Break out of method
 
         }
-        else if (GameManager.Singleton.playerShip.gameObject.activeInHierarchy)
+        if (GameManager.Singleton.playerShip.gameObject.activeInHierarchy)
         {
 
             // Enemy ship turns to face player
@@ -79,8 +84,10 @@ public class BomberMS : MonoBehaviour, IMoveState
 
             transform.Rotate(Vector3.forward * bs.rotationFactor * Time.deltaTime); // Enemy normally rotates in circle
             transform.position = Vector2.MoveTowards(transform.position, bs.target.transform.position, Time.deltaTime * bs.speed);
+            //Debug.Break();
 
         }
+        bs.speed = movementSpeedCopy;
     }
 
     public void MoveBackwards(Ship s)

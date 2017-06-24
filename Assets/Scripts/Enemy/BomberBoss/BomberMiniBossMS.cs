@@ -9,8 +9,17 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
     public Direction Direction { get; set; }
     public BomberMiniBoss bomberMiniBoss;
     public float movementSpeed = 5.0f;
+    public float resizeDuration = 3.0f;
+    public float currRingRetractTime;
+    public float resizeStartTime;
+    public Vector3 startScale;
+    public Vector3 endScale;
+    public Vector3 ringScale;
+    public Vector3 coreScale;
     public float endTime;
     public bool spawned = false;
+    public GameObject coreSprite;
+    public GameObject ringSprite;
 
     [Header("ROTATION_DATA")]
     public Transform rotatingGearSprite;      // Gear that starts rotating faster whenever attack is about to initiate
@@ -45,22 +54,38 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
     public PoolObject bomberToSlingshot;           // Currently active bomber to slingshot
     IEnumerator slingShotAttackRoutine;
 
-    void Start()
+    IEnumerator Start()
     {
+
         bomberMiniBoss = GetComponent<BomberMiniBoss>();
         if (spawnedMobsContainer != null)
         {
             spawnedMobsContainer.transform.parent = transform;      // Nest the container under ourselves
         }
+        // Cache scales for resize
+        if (ringSprite != null && coreSprite != null)
+        {
+            ringScale = ringSprite.transform.localScale;
+            coreScale = coreSprite.transform.localScale;
+            endScale = ringScale * 0.1f;
+            resizeStartTime = Time.time;
+        }
+
+        float endResizeTime = Time.time + resizeDuration;
+        while (Time.time < endResizeTime)
+        {
+            MoveToCenterBomber();
+            yield return null;
+        }
 
         rotationRoutine = StartRotating();
         rushAttackMovementRoutine = RushAttackMovement();
         slingShotAttackRoutine = SlingShotMovement();
-
-        //StartCoroutine(rotationRoutine);
-        //StartCoroutine(rushAttackMovementRoutine);
-        //StartCoroutine(slingShotAttackRoutine);
-
+        //Debug.Break();
+        StartCoroutine(rotationRoutine);
+        StartCoroutine(rushAttackMovementRoutine);
+        StartCoroutine(slingShotAttackRoutine);
+        yield return null;
     }
 
     // Should NOT call this when starting for first time, only on reuse
@@ -90,14 +115,19 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
         if (bomberMiniBoss.bomberBoss != null)
         {
 
+            // Move towards center bomber
             Vector3 dist = (bomberMiniBoss.bomberBoss.transform.position - transform.position).normalized;   // Find unit vector difference between target and this
+            bomberMiniBoss.transform.position =
+                Vector2.MoveTowards(
+                bomberMiniBoss.transform.position, bomberMiniBoss.bomberBoss.transform.position, Time.deltaTime * movementSpeed);
 
-            //float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
-            //Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
-            //bomberMiniBoss.transform.rotation = Quaternion.RotateTowards(bomberBoss.transform.rotation, desiredRotation, bomberBoss.rotationSpeed * Time.deltaTime);    // Rotate the enemy
+            // Any resizing we need to do
+            float percTime = (Time.time - resizeStartTime) / resizeDuration;
+            if (ringSprite != null)
+            {
+                ringSprite.transform.localScale = Vector3.Lerp(ringScale, endScale, percTime);
 
-            bomberMiniBoss.transform.position = Vector2.MoveTowards(bomberMiniBoss.transform.position, bomberMiniBoss.bomberBoss.transform.position, Time.deltaTime * movementSpeed);
-
+            }
         }
     }
 
