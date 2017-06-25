@@ -12,6 +12,8 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
     public float resizeDuration = 3.0f;
     public float currRingRetractTime;
     public float resizeStartTime;
+    public int numMobsToSpawn = 6;
+    public float bomberSpawnRadius = 7.0f;
     public Vector3 startScale;
     public Vector3 endScale;
     public Vector3 ringScale;
@@ -189,13 +191,40 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
 
 
                 // Spawn the 4 sentinel bombers and put them in a container
-                foreach (GameObject spawnPoint in bomberSpawnPoints)
+                //int numMobsToSpawn = bomberSpawnPoints.Count;
+                int spawnCounter = numMobsToSpawn;
+                float spawnAngle = 360.0f / numMobsToSpawn;
+                Vector3 startPosition = transform.position;
+
+                float angle = 0f;
+                while (spawnCounter > 0)
                 {
-                    PoolObject spawnedMob = PoolManager.Instance.ReuseObjectRef(slingShotBomberShip, spawnPoint.transform.position, Quaternion.identity);
+
+                    float newX = startPosition.x + bomberSpawnRadius * Mathf.Sin(angle * Mathf.Deg2Rad);
+                    float newY = startPosition.y + bomberSpawnRadius * Mathf.Cos(angle * Mathf.Deg2Rad);
+                    float newZ = startPosition.z;
+
+                    Vector3 newPos = new Vector3(newX, newY, newZ);
+                    PoolObject spawnedMob = PoolManager.Instance.ReuseObjectRef(slingShotBomberShip, newPos, Quaternion.identity);
                     bombersSpawned.Add(spawnedMob);
                     bombersSpawnedQueue.Enqueue(spawnedMob);
                     spawnedMob.gameObject.transform.parent = spawnedMobsContainer.transform;    // Put them in container object
+
+                    spawnCounter -= 1;
+                    angle += spawnAngle;     // Spawn in 5 timess
                 }
+
+                //Debug.Break();
+
+                // Old method using manually adjusted markers
+                //foreach (GameObject spawnPoint in bomberSpawnPoints)
+                //{
+                //    PoolObject spawnedMob = PoolManager.Instance.ReuseObjectRef(slingShotBomberShip, spawnPoint.transform.position, Quaternion.identity);
+                //    bombersSpawned.Add(spawnedMob);
+                //    bombersSpawnedQueue.Enqueue(spawnedMob);
+                //    spawnedMob.gameObject.transform.parent = spawnedMobsContainer.transform;    // Put them in container object
+                //}
+
                 // Cache player position and start spinning
                 Vector3 targetPosition = GameManager.Singleton.playerShip.transform.position;
 
