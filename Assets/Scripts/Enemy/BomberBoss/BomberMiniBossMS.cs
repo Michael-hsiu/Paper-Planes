@@ -363,7 +363,10 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
                     // Rotate each of the sprites
                     Vector3 newRotationAngle = Vector3.forward * currentRotationFactor * Time.deltaTime;
                     rotatingGearSprite.transform.Rotate(newRotationAngle);
-
+                    if (ringSprite != null)
+                    {
+                        ringSprite.transform.Rotate(newRotationAngle);
+                    }
                     //transform.Rotate(Vector3.forward * currentRotationSpeed * Time.deltaTime); // Rotate the gear much faster
                     if (currentRotationFactor < maxRotationSpeed)
                     {
@@ -378,6 +381,10 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
                 currentRotationFactor = startingRotationFactor;
                 Vector3 rotationAngle = Vector3.forward * startingRotationFactor * Time.deltaTime;
                 rotatingGearSprite.transform.Rotate(rotationAngle);
+                if (ringSprite != null)
+                {
+                    ringSprite.transform.Rotate(rotationAngle);
+                }
                 yield return null;
             }
             yield return null;
