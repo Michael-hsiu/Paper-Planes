@@ -15,12 +15,23 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
     public int numMobsToSpawn = 6;
     public float bomberSpawnRadius = 7.0f;
     public Vector3 startScale;
-    public Vector3 endScale;
+    private Vector3 endRingScale;
+    private Vector3 endCoreScale;
+    private Vector3 endCoreRingScale;
+    public float ringScaleFactor = 0.1f;     // How big we want the core / ring sprite to be at the end
+    public float coreScaleFactor = 0.1f;
+    public float coreRingScaleFactor = 0.1f;
+
     public Vector3 ringScale;
     public Vector3 coreScale;
+    public Vector3 coreRingScale;
+
     public float endTime;
     public bool spawned = false;
+
+    public GameObject spawnLocation;        // The gameobject representing where all the parts will transition & come together
     public GameObject coreSprite;
+    public GameObject coreRingSprite;       // For the center core
     public GameObject ringSprite;
 
     [Header("ROTATION_DATA")]
@@ -65,14 +76,24 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
             spawnedMobsContainer.transform.parent = transform;      // Nest the container under ourselves
         }
         // Cache scales for resize
-        if (ringSprite != null && coreSprite != null)
+        if (ringSprite != null)
         {
             ringScale = ringSprite.transform.localScale;
+            endRingScale = ringScale * ringScaleFactor;      // Resize for sprites
+        }
+        if (coreSprite != null)
+        {
             coreScale = coreSprite.transform.localScale;
-            endScale = ringScale * 0.1f;
-            resizeStartTime = Time.time;
+            endCoreScale = coreScale * coreScaleFactor;
+        }
+        if (coreRingSprite != null)
+        {
+            coreRingScale = coreRingSprite.transform.localScale;
+            endCoreRingScale = coreRingScale * coreRingScaleFactor;
         }
 
+        // Set time for resize transition
+        resizeStartTime = Time.time;
         float endResizeTime = Time.time + resizeDuration;
         while (Time.time < endResizeTime)
         {
@@ -114,23 +135,29 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
     public void MoveToCenterBomber()
     {
 
-        if (bomberMiniBoss.bomberBoss != null)
+        //if (bomberMiniBoss.bomberBoss != null)
+        //{
+
+        // Move towards center bomber
+        Vector3 dist = (spawnLocation.transform.position - transform.position).normalized;   // Find unit vector difference between target and this
+        bomberMiniBoss.transform.position =
+            Vector2.MoveTowards(
+            bomberMiniBoss.transform.position, spawnLocation.transform.position, Time.deltaTime * movementSpeed);
+
+        // Any resizing we need to do
+        float percTime = (Time.time - resizeStartTime) / resizeDuration;
+        if (ringSprite != null)
         {
+            ringSprite.transform.localScale = Vector3.Lerp(ringScale, endRingScale, percTime);
 
-            // Move towards center bomber
-            Vector3 dist = (bomberMiniBoss.bomberBoss.transform.position - transform.position).normalized;   // Find unit vector difference between target and this
-            bomberMiniBoss.transform.position =
-                Vector2.MoveTowards(
-                bomberMiniBoss.transform.position, bomberMiniBoss.bomberBoss.transform.position, Time.deltaTime * movementSpeed);
-
-            // Any resizing we need to do
-            float percTime = (Time.time - resizeStartTime) / resizeDuration;
-            if (ringSprite != null)
-            {
-                ringSprite.transform.localScale = Vector3.Lerp(ringScale, endScale, percTime);
-
-            }
         }
+
+        if (coreSprite != null)
+        {
+            coreSprite.transform.localScale = Vector3.Lerp(coreScale, endCoreScale, percTime);
+
+        }
+        //}
     }
 
     // This routine is for BOMBER_BOSS_RUSH_MOVEMENT
@@ -190,7 +217,8 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
                 }
 
 
-                // Spawn the 4 sentinel bombers and put them in a container
+                // Spawn sentinel bombers symetrically in circle around boss 
+                // Put them in a container, adjust # distance from boss in inspector
                 //int numMobsToSpawn = bomberSpawnPoints.Count;
                 int spawnCounter = numMobsToSpawn;
                 float spawnAngle = 360.0f / numMobsToSpawn;
