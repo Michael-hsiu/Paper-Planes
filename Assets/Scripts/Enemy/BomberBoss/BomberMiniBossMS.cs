@@ -151,10 +151,14 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
             ringSprite.transform.localScale = Vector3.Lerp(ringScale, endRingScale, percTime);
 
         }
-
         if (coreSprite != null)
         {
             coreSprite.transform.localScale = Vector3.Lerp(coreScale, endCoreScale, percTime);
+
+        }
+        if (coreRingSprite != null)
+        {
+            coreRingSprite.transform.localScale = Vector3.Lerp(coreRingScale, endCoreRingScale, percTime);
 
         }
         //}
