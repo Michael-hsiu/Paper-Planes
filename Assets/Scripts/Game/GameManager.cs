@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
     {
 
         currLevel = Math.Min(currLevel, scoreBoundaries.Count - 1);
-        Debug.Log("SCOREBOUNDARIES COUNT: " + scoreBoundaries.Count);
+        //Debug.Log("SCOREBOUNDARIES COUNT: " + scoreBoundaries.Count);
         targetScore = scoreBoundaries[currLevel];
         levelActive = true;
 

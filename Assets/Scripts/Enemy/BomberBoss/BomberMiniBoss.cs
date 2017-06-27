@@ -31,7 +31,7 @@ public class BomberMiniBoss : Ship
         rotationFactor = defaultValues.rotationFactor;
 
         // Also set rotation to match the just-destroyed Stage 1 boss!
-        sprite.transform.localRotation = defaultValues.spriteInitialRotation;
+        //sprite.transform.localRotation = defaultValues.spriteInitialRotation;
 
         // Component state initialization
         moveState = GetComponent<IMoveState>();
@@ -41,6 +41,12 @@ public class BomberMiniBoss : Ship
     public override void Move()
     {
         moveState.UpdateState();
+    }
+
+    // Initiates the actual resizing and movement to center
+    public void StartPhaseTwoTransition()
+    {
+        ((BomberMiniBossMS)moveState).StartPhaseTwoTransition();
     }
 
     // This is called everytime this prefab is reused
@@ -66,54 +72,54 @@ public class BomberMiniBoss : Ship
     void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
-        {
+        //if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
+        //{
 
-            other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
-            Damage(GameManager.Singleton.playerDamage);         // We lost health
+        //    other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
+        //    Damage(GameManager.Singleton.playerDamage);         // We lost health
 
-        }
-        else if (other.gameObject.CompareTag(Constants.PlayerTag))
-        {
-            if (!rushedIntoPlayer && jointContainer != null)
-            {
-                //jointContainer.transform.position = collisionCollider.ClosestPointOnBounds(other.transform.position);     // This may not work due to 3D colliders
-                //jointContainer.transform.position = other.transform.position;
-                Vector3 newPosition = collisionCollider.ClosestPoint(other.transform.position);
-                newPosition.z = 0f;
-                jointContainer.transform.position = newPosition;     // This may not work due to 3D colliders
-                //Debug.Break();
+        //}
+        //else if (other.gameObject.CompareTag(Constants.PlayerTag))
+        //{
+        //    if (!rushedIntoPlayer && jointContainer != null)
+        //    {
+        //        //jointContainer.transform.position = collisionCollider.ClosestPointOnBounds(other.transform.position);     // This may not work due to 3D colliders
+        //        //jointContainer.transform.position = other.transform.position;
+        //        Vector3 newPosition = collisionCollider.ClosestPoint(other.transform.position);
+        //        newPosition.z = 0f;
+        //        jointContainer.transform.position = newPosition;     // This may not work due to 3D colliders
+        //        //Debug.Break();
 
-                rushedIntoPlayerRoutine = RushedIntoPlayer(other.gameObject.GetComponent<PlayerShip>());
-                StartCoroutine(rushedIntoPlayerRoutine);
-            }
-        }
+        //        rushedIntoPlayerRoutine = RushedIntoPlayer(other.gameObject.GetComponent<PlayerShip>());
+        //        StartCoroutine(rushedIntoPlayerRoutine);
+        //    }
+        //}
     }
 
     // Called when a RUSH_ATK brings us in collision w/ player
-    IEnumerator RushedIntoPlayer(PlayerShip playerShip)
-    {
+    //IEnumerator RushedIntoPlayer(PlayerShip playerShip)
+    //{
 
-        rushedIntoPlayer = true;
+    //    rushedIntoPlayer = true;
 
-        // Stick the player and this object together temporarily
-        var connectionJoint = jointContainer.AddComponent<FixedJoint>();
-        connectionJoint.connectedBody = playerShip.GetComponent<Rigidbody>();
+    //    // Stick the player and this object together temporarily
+    //    var connectionJoint = jointContainer.AddComponent<FixedJoint>();
+    //    connectionJoint.connectedBody = playerShip.GetComponent<Rigidbody>();
 
-        GameManager.Singleton.axisInput = false;                            // So we can't move while charging
-        GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
+    //    GameManager.Singleton.axisInput = false;                            // So we can't move while charging
+    //    GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
 
-        playerShip.sprite.material.color = Color.red;
-        yield return new WaitForSeconds(rushCollisionDuration);
-        playerShip.sprite.material.color = Color.white;
+    //    playerShip.sprite.material.color = Color.red;
+    //    yield return new WaitForSeconds(rushCollisionDuration);
+    //    playerShip.sprite.material.color = Color.white;
 
-        //Debug.Break();
-        Destroy(connectionJoint);
-        GameManager.Singleton.axisInput = true;     // Re-enable movement
-        GameManager.Singleton.turnInput = true;
+    //    //Debug.Break();
+    //    Destroy(connectionJoint);
+    //    GameManager.Singleton.axisInput = true;     // Re-enable movement
+    //    GameManager.Singleton.turnInput = true;
 
-        rushedIntoPlayer = false;
-    }
+    //    rushedIntoPlayer = false;
+    //}
 
     #endregion
 }

@@ -80,12 +80,15 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
         rushAttackMovementRoutine = RushAttackMovement();
         slingShotAttackRoutine = SlingShotMovement();
 
-        StartCoroutine(StartStageTwoTransition());
-        //StartCoroutine(rotationRoutine);
+        StartCoroutine(rotationRoutine);
         //StartCoroutine(rushAttackMovementRoutine);
         //StartCoroutine(slingShotAttackRoutine);
     }
 
+    public void StartPhaseTwoTransition()
+    {
+        StartCoroutine(StartStageTwoTransition());
+    }
     // Controls resizing
     IEnumerator StartStageTwoTransition()
     {
@@ -114,6 +117,7 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
             MoveToCenterBomber();
             yield return null;
         }
+        //Debug.Break();
     }
 
     // Should NOT call this when starting for first time, only on reuse
@@ -132,7 +136,7 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
 
         if (direction == Direction.PLAYER_DETECTED)
         {
-            MoveToCenterBomber(); // Change to be AWAY from player if too close
+            //MoveToCenterBomber(); // Change to be AWAY from player if too close
 
         }
     }

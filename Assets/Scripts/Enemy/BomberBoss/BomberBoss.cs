@@ -45,11 +45,14 @@ public class BomberBoss : Ship, IEnemy
     [Header("SPRITE_REFERENCES")]
     // The parent object
     // These are the actual sprites
-    public GameObject centerGear;
-    public GameObject topGear;
-    public GameObject lowerLeftGear;
-    public GameObject lowerRightGear;
-
+    public BomberMiniBoss centerGear;
+    public BomberMiniBoss topGear;
+    public BomberMiniBoss lowerLeftGear;
+    public BomberMiniBoss lowerRightGear;
+    public BomberMiniBoss blueRing;
+    public BomberMiniBoss smallOuterRing;
+    public GameObject stageTwoBomberBoss;       // Prefab
+    public GameObject stageTwoSpawnLocation;    // Where the prefab will spawn
     // The child object (containing sprite)
     // Assigned in inspector
     public GameObject topGearSprite;
@@ -127,13 +130,31 @@ public class BomberBoss : Ship, IEnemy
     // This is called by the CORE Bombers upon the last one's death
     public void ActivateStageTwo()
     {
+        StartCoroutine(ActivateStageTwoRoutine());
+    }
+
+    IEnumerator ActivateStageTwoRoutine()
+    {
         // Give player points
         // Move gears to middle and resize
+        centerGear.StartPhaseTwoTransition();
+        topGear.StartPhaseTwoTransition();
+        lowerLeftGear.StartPhaseTwoTransition();
+        lowerRightGear.StartPhaseTwoTransition();
 
-
+        yield return new WaitForSeconds(1.0f);      // Or however long we want transition to be (so underlying elements don't pop out!)
+        //Debug.Break();
         // Enable blue center ring and smaller outer ring once all gears have arrived at center
-        // Spawn in the actual Stage 2 prefab and hand it the rotations of each of the gears
+        blueRing.StartPhaseTwoTransition();
+        smallOuterRing.StartPhaseTwoTransition();
 
+        yield return new WaitForSeconds(5.0f);
+
+        // Spawn in the actual Stage 2 prefab and hand it the rotations of each of the gears
+        Instantiate(stageTwoBomberBoss, stageTwoSpawnLocation.transform.position, Quaternion.identity);
+        Kill();
+        Debug.Log("STAGE TWO SPAWNED");
+        //Debug.Break();
 
         /*OLD LOGIC*/
         //// Destroy the middle core
