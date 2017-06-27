@@ -95,10 +95,10 @@ public class BomberBoss : Ship, IEnemy
 
         Move();
 
-        if (Time.time > nextAttackTime)
-        {
-            Attack();
-        }
+        //if (Time.time > nextAttackTime)
+        //{
+        //    Attack();
+        //}
     }
 
     public override void Move()
@@ -106,71 +106,78 @@ public class BomberBoss : Ship, IEnemy
         moveState.UpdateState();
     }
 
-    public void Attack()
-    {
-        ((BomberBossFS)fireState).UseAttack();
-    }
+    //public void Attack()
+    //{
+    //    ((BomberBossFS)fireState).UseAttack();
+    //}
 
     // Routine for spawning bombers
     IEnumerator SpawnBombers()
     {
         while (true)
         {
-
             foreach (ShipSpawn shipSpawn in shipSpawns)
             {
                 shipSpawn.Spawn();
             }
             yield return new WaitForSeconds(bomberSpawnDelay);
-
         }
     }
 
     // This is called by the CORE Bombers upon the last one's death
     public void ActivateStageTwo()
     {
-        // Destroy the middle core
-        //centerGear.SetActive(false);
-        Instantiate(stageOneDeathExplosion, centerGear.transform.position, Quaternion.identity);
-        //Debug.Break();
+        // Give player points
+        // Move gears to middle and resize
 
-        // Spawn the 3 mini-bosses, administer their setup logic
-        // They are each their own prefab, save positions/rotations as of sprites
 
-        topGearDefaultValues.spriteInitialRotation = topGear.transform.localRotation;
-        leftGearDefaultValues.spriteInitialRotation = lowerLeftGear.transform.rotation;
-        rightGearDefaultValues.spriteInitialRotation = lowerRightGear.transform.rotation;
+        // Enable blue center ring and smaller outer ring once all gears have arrived at center
+        // Spawn in the actual Stage 2 prefab and hand it the rotations of each of the gears
 
-        // Spawn at position of miniboss container, at rotation of miniboss sprite (child)
-        // We set rotation of sprites within the Start method of each miniboss, accessed thru scrObj
-        PoolObject topGearRef = PoolManager.Instance.ReuseObjectRef(topGearStageTwoBoss, topGear.transform.position, Quaternion.identity);
-        PoolObject leftGearRef = PoolManager.Instance.ReuseObjectRef(leftGearStageTwoBoss, lowerLeftGear.transform.position, Quaternion.identity);
-        PoolObject rightGearRef = PoolManager.Instance.ReuseObjectRef(rightGearStageTwoBoss, lowerRightGear.transform.position, Quaternion.identity);
 
-        ((BomberMiniBoss)topGearRef).bomberBoss = this;
-        ((BomberMiniBoss)leftGearRef).bomberBoss = this;
-        ((BomberMiniBoss)rightGearRef).bomberBoss = this;
+        /*OLD LOGIC*/
+        //// Destroy the middle core
+        ////centerGear.SetActive(false);
+        ////Instantiate(stageOneDeathExplosion, centerGear.transform.position, Quaternion.identity);
+        ////Debug.Break();
 
-        // Use forces to push gears away from center
+        //// Spawn the 3 mini-bosses, administer their setup logic
+        //// They are each their own prefab, save positions/rotations as of sprites
+
+        //topGearDefaultValues.spriteInitialRotation = topGear.transform.localRotation;
+        //leftGearDefaultValues.spriteInitialRotation = lowerLeftGear.transform.rotation;
+        //rightGearDefaultValues.spriteInitialRotation = lowerRightGear.transform.rotation;
+
+        //// Spawn at position of miniboss container, at rotation of miniboss sprite (child)
+        //// We set rotation of sprites within the Start method of each miniboss, accessed thru scrObj
+        //PoolObject topGearRef = PoolManager.Instance.ReuseObjectRef(topGearStageTwoBoss, topGear.transform.position, Quaternion.identity);
+        //PoolObject leftGearRef = PoolManager.Instance.ReuseObjectRef(leftGearStageTwoBoss, lowerLeftGear.transform.position, Quaternion.identity);
+        //PoolObject rightGearRef = PoolManager.Instance.ReuseObjectRef(rightGearStageTwoBoss, lowerRightGear.transform.position, Quaternion.identity);
+
+        //((BomberMiniBoss)topGearRef).bomberBoss = this;
+        //((BomberMiniBoss)leftGearRef).bomberBoss = this;
+        //((BomberMiniBoss)rightGearRef).bomberBoss = this;
+
+        //// Use forces to push gears away from center
+        ////Vector3 topGearDiff = (topGearRef.transform.position - centerGear.transform.position).normalized;
+        ////Vector3 leftGearDiff = (leftGearRef.transform.position - centerGear.transform.position).normalized;
+        ////Vector3 rightGearDiff = (rightGearRef.transform.position - centerGear.transform.position).normalized;
+
+        ////topGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-topGearDiff * stageOneExplosionForce);
+        ////leftGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-leftGearDiff * stageOneExplosionForce);
+        ////rightGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-rightGearDiff * stageOneExplosionForce);
+
+        //// Move all gears into the middle, expand middle gear
         //Vector3 topGearDiff = (topGearRef.transform.position - centerGear.transform.position).normalized;
         //Vector3 leftGearDiff = (leftGearRef.transform.position - centerGear.transform.position).normalized;
         //Vector3 rightGearDiff = (rightGearRef.transform.position - centerGear.transform.position).normalized;
 
-        //topGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-topGearDiff * stageOneExplosionForce);
-        //leftGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-leftGearDiff * stageOneExplosionForce);
-        //rightGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-rightGearDiff * stageOneExplosionForce);
-
-        // Move all gears into the middle, expand middle gear
-        Vector3 topGearDiff = (topGearRef.transform.position - centerGear.transform.position).normalized;
-        Vector3 leftGearDiff = (leftGearRef.transform.position - centerGear.transform.position).normalized;
-        Vector3 rightGearDiff = (rightGearRef.transform.position - centerGear.transform.position).normalized;
-
-        rightGearRef.gameObject.GetComponent<BomberMiniBossMS>().slingShotAttackActive = true;
+        //rightGearRef.gameObject.GetComponent<BomberMiniBossMS>().slingShotAttackActive = true;
 
 
-        // Normal kill logic, point distribution
-        Kill();
-        //Debug.Break();
+        //// Normal kill logic, point distribution
+        //Kill();
+        ////Debug.Break();
     }
 
     // Tells MS to use appropriate movement

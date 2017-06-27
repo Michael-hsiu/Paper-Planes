@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class BomberMiniBossMS : MonoBehaviour, IMoveState
 {
     [Header("GENERAL_DATA")]
@@ -67,14 +68,27 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
     public PoolObject bomberToSlingshot;           // Currently active bomber to slingshot
     IEnumerator slingShotAttackRoutine;
 
-    IEnumerator Start()
+    void Start()
     {
-
         bomberMiniBoss = GetComponent<BomberMiniBoss>();
         if (spawnedMobsContainer != null)
         {
             spawnedMobsContainer.transform.parent = transform;      // Nest the container under ourselves
         }
+
+        rotationRoutine = StartRotating();
+        rushAttackMovementRoutine = RushAttackMovement();
+        slingShotAttackRoutine = SlingShotMovement();
+
+        StartCoroutine(StartStageTwoTransition());
+        //StartCoroutine(rotationRoutine);
+        //StartCoroutine(rushAttackMovementRoutine);
+        //StartCoroutine(slingShotAttackRoutine);
+    }
+
+    // Controls resizing
+    IEnumerator StartStageTwoTransition()
+    {
         // Cache scales for resize
         if (ringSprite != null)
         {
@@ -100,15 +114,6 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
             MoveToCenterBomber();
             yield return null;
         }
-
-        rotationRoutine = StartRotating();
-        rushAttackMovementRoutine = RushAttackMovement();
-        slingShotAttackRoutine = SlingShotMovement();
-        //Debug.Break();
-        StartCoroutine(rotationRoutine);
-        StartCoroutine(rushAttackMovementRoutine);
-        StartCoroutine(slingShotAttackRoutine);
-        yield return null;
     }
 
     // Should NOT call this when starting for first time, only on reuse
@@ -134,10 +139,6 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
 
     public void MoveToCenterBomber()
     {
-
-        //if (bomberMiniBoss.bomberBoss != null)
-        //{
-
         // Move towards center bomber
         Vector3 dist = (spawnLocation.transform.position - transform.position).normalized;   // Find unit vector difference between target and this
         bomberMiniBoss.transform.position =
@@ -161,7 +162,6 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
             coreRingSprite.transform.localScale = Vector3.Lerp(coreRingScale, endCoreRingScale, percTime);
 
         }
-        //}
     }
 
     // This routine is for BOMBER_BOSS_RUSH_MOVEMENT
