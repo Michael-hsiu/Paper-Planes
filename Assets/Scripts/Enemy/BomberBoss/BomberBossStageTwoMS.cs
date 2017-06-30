@@ -17,6 +17,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
     public float bomberSpawnRadius = 7.0f;
     public float endTime;
     public bool spawned = false;
+    public Dictionary<GameObject, GameObject> ringBomberDictionary = new Dictionary<GameObject, GameObject>();
 
     public GameObject coreSprite;
     public GameObject coreRingSprite;       // For the center core
@@ -51,8 +52,10 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
     public GameObject spawnedMobsContainer;
     public List<PoolObject> bombersSpawned = new List<PoolObject>();
     public Queue<PoolObject> bombersSpawnedQueue = new Queue<PoolObject>();
-    public List<GameObject> bomberSpawnPoints = new List<GameObject>();
-    public PoolObject bomberToSlingshot;           // Currently active bomber to slingshot
+    public List<GameObject> bomberSpawnPointsUnordered = new List<GameObject>();        // To move to correct angle / pos
+    public List<GameObject> bomberSpawnPointsOrdered = new List<GameObject>();          // The actual order we fire bombers
+
+    public GameObject bomberToSlingshot;           // Currently active bomber to slingshot
     IEnumerator slingShotAttackRoutine;
 
     void Start()
@@ -152,38 +155,33 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
                 // Spawn sentinel bombers symetrically in circle around boss 
                 // Put them in a container, adjust # distance from boss in inspector
                 //int numMobsToSpawn = bomberSpawnPoints.Count;
-                int spawnCounter = numMobsToSpawn;
-                float spawnAngle = 360.0f / numMobsToSpawn;
+                float spawnAngle = 360.0f / numMobsToSpawn;     // Angle btwn 2 adjacent bombers
+                float halfwayAngleIncrements = 180.0f / spawnAngle;     // Angle increments to travel 180 deg
+
                 Vector3 startPosition = spawnedMobsContainer.transform.position;
 
+                // Move each bomber spawn point to correct place
                 float angle = 0f;
-                while (spawnCounter > 0)
+                int spawnCounter = numMobsToSpawn;
+                foreach (GameObject spawnPoint in bomberSpawnPointsUnordered)
                 {
-
+                    // Move the spawn point to correct distance
                     float newX = startPosition.x + bomberSpawnRadius * Mathf.Sin(angle * Mathf.Deg2Rad);
                     float newY = startPosition.y + bomberSpawnRadius * Mathf.Cos(angle * Mathf.Deg2Rad);
                     float newZ = startPosition.z;
 
                     Vector3 newPos = new Vector3(newX, newY, newZ);
+                    spawnPoint.transform.position = newPos;
+                    angle += spawnAngle;     // Spawn in _ times
+
+                    // Spawn mob at spawn point
                     PoolObject spawnedMob = PoolManager.Instance.ReuseObjectRef(slingShotBomberShip, newPos, Quaternion.identity);
-                    bombersSpawned.Add(spawnedMob);
-                    bombersSpawnedQueue.Enqueue(spawnedMob);
+                    ringBomberDictionary[spawnPoint] = spawnedMob.gameObject;
                     spawnedMob.gameObject.transform.parent = spawnedMobsContainer.transform;    // Put them in container object
-
+                    Debug.Break();
+                    // Count # mobs spawned
                     spawnCounter -= 1;
-                    angle += spawnAngle;     // Spawn in 5 timess
                 }
-
-                //Debug.Break();
-
-                // Old method using manually adjusted markers
-                //foreach (GameObject spawnPoint in bomberSpawnPoints)
-                //{
-                //    PoolObject spawnedMob = PoolManager.Instance.ReuseObjectRef(slingShotBomberShip, spawnPoint.transform.position, Quaternion.identity);
-                //    bombersSpawned.Add(spawnedMob);
-                //    bombersSpawnedQueue.Enqueue(spawnedMob);
-                //    spawnedMob.gameObject.transform.parent = spawnedMobsContainer.transform;    // Put them in container object
-                //}
 
                 // Cache player position and start spinning
                 Vector3 targetPosition = GameManager.Singleton.playerShip.transform.position;
@@ -210,7 +208,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
                 // Currently is not time-dependent
                 rotEndTime = Time.time + 15.0f;
                 float accelStartTime = Time.time + 4.0f;
-                bomberToSlingshot = bombersSpawnedQueue.Dequeue();
+                //bomberToSlingshot = bombersSpawnedQueue.Dequeue();
                 //PoolObject bomberToSlingshot = bombersSpawned[0];
 
                 // Cache a target position
@@ -219,21 +217,18 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
                 slingShotPosition = transform.position + targetDirection;    // This is the pt on the perimeter of collider
 
                 //rotationSpeedIncreased = true;
+                int spawnIndex = 0;
+                int bombersRemainingToLaunch = bomberSpawnPointsOrdered.Count;
                 while (Time.time < rotEndTime)
                 {
-                    //Debug.Break();
-                    Debug.Log("SLINGSHOT ROT");
-                    if (bomberToSlingshot == null && bombersSpawnedQueue.Count >= 1)
+                    // Choose correct mob to launch from ordered list
+                    if (bomberToSlingshot == null)
                     {
-                        bomberToSlingshot = bombersSpawnedQueue.Dequeue();
-                        //currentRotationFactor = startingRotationFactor;
+                        GameObject activeSpawnPoint = bomberSpawnPointsOrdered[spawnIndex];
+                        bomberToSlingshot = ringBomberDictionary[activeSpawnPoint];
+                        spawnIndex += 1;
                         //Debug.Break();
                     }
-                    else if (bomberToSlingshot == null)
-                    {
-                        break;
-                    }
-
 
                     // Rotate the center sprite
                     Vector3 newRotationAngle = Vector3.forward * currentRotationFactor * Time.deltaTime;
@@ -249,10 +244,11 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
                         // Increase by our interval, or as much as possible under the max
                         float rotationFactorDiff = maxRotationSpeed - currentRotationFactor;
                         currentRotationFactor += Mathf.Min(rotationFactorInterval, rotationFactorDiff);
+                        //Debug.Break();
                     }
                     if (Time.time > accelStartTime && Vector3.Distance(bomberToSlingshot.transform.position, slingShotPosition) < slingShotErrorRange)
                     {
-
+                        //Debug.Break();
                         // Cache a target position
                         targetDirection = (GameManager.Singleton.playerShip.transform.position - transform.position).normalized;
                         targetDirection *= bomberBossStageTwo.collisionCollider.radius;     // Scale to be on the radius
@@ -260,10 +256,19 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
 
                         // Fire at target position
                         bomberToSlingshot.GetComponent<Rigidbody>().AddForce(targetDirection.normalized * slingShotForce, ForceMode.Impulse);
+                        accelStartTime = Time.time + slingShotDelay;    // Delay until the next time we can slingshot a mob
+
                         bomberToSlingshot.transform.parent = null;  // De-parent from container
                         bomberToSlingshot = null;
+                        bombersRemainingToLaunch -= 1;
+                        // Launched all our bombers (#s tracked manually)
+                        if (bombersRemainingToLaunch == 0)
+                        {
+                            break;
+                        }
+
                         accelStartTime = Time.time + slingShotDelay;    // Delay until the next time we can slingshot a mob
-                                                                        //Debug.Break();
+                        //Debug.Break();
                     }
                     yield return null;
                 }
