@@ -163,14 +163,17 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
                 // Move each bomber spawn point to correct place
                 float angle = 0f;
                 int spawnCounter = numMobsToSpawn;
-                foreach (GameObject spawnPoint in bomberSpawnPointsUnordered)
+                for (int i = 0; i < bomberSpawnPointsUnordered.Count; i++)
                 {
-                    // Move the spawn point to correct distance
-                    float newX = startPosition.x + bomberSpawnRadius * Mathf.Sin(angle * Mathf.Deg2Rad);
-                    float newY = startPosition.y + bomberSpawnRadius * Mathf.Cos(angle * Mathf.Deg2Rad);
-                    float newZ = startPosition.z;
+                    //foreach (GameObject spawnPoint in bomberSpawnPointsUnordered)
+                    //{
+                    GameObject spawnPoint = bomberSpawnPointsUnordered[i];
 
-                    Vector3 newPos = new Vector3(newX, newY, newZ);
+                    // Move the spawn point to correct distance
+                    float newX = startPosition.x + bomberSpawnRadius * Mathf.Cos(angle * Mathf.Deg2Rad);
+                    float newY = startPosition.y + bomberSpawnRadius * Mathf.Sin(angle * Mathf.Deg2Rad);
+
+                    Vector3 newPos = new Vector3(newX, newY, 0f);
                     spawnPoint.transform.position = newPos;
                     angle += spawnAngle;     // Spawn in _ times
 
@@ -178,10 +181,11 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
                     PoolObject spawnedMob = PoolManager.Instance.ReuseObjectRef(slingShotBomberShip, newPos, Quaternion.identity);
                     ringBomberDictionary[spawnPoint] = spawnedMob.gameObject;
                     spawnedMob.gameObject.transform.parent = spawnedMobsContainer.transform;    // Put them in container object
-                    Debug.Break();
+
                     // Count # mobs spawned
                     spawnCounter -= 1;
                 }
+                //Debug.Break();
 
                 // Cache player position and start spinning
                 Vector3 targetPosition = GameManager.Singleton.playerShip.transform.position;

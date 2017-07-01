@@ -8,7 +8,7 @@
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="120" Column="11" />
       <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberMiniBossMS.cs" Line="14" Column="38" />
       <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="36" Column="37" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoMS.cs" Line="260" Column="25" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoMS.cs" Line="181" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
