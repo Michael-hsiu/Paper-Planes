@@ -64,9 +64,11 @@ public class GamePoolManager : MonoBehaviour
     public GameObject missileBoss;
     public GameObject sniperBoss;
     public GameObject bomberBossStageOne;
-    public GameObject topGearStageTwoBoss;
-    public GameObject leftGearStageTwoBoss;
-    public GameObject rightGearStageTwoBoss;
+    public GameObject bomberBossStageTwo;
+
+    //public GameObject topGearStageTwoBoss;
+    //public GameObject leftGearStageTwoBoss;
+    //public GameObject rightGearStageTwoBoss;
     public GameObject slingShotBomber;
 
     public GameObject rangedTest;
@@ -131,9 +133,10 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(missileBoss, 5);
         PoolManager.Instance.CreatePool(sniperBoss, 5);
         PoolManager.Instance.CreatePool(bomberBossStageOne, 15);
-        PoolManager.Instance.CreatePool(topGearStageTwoBoss, 5);
-        PoolManager.Instance.CreatePool(leftGearStageTwoBoss, 5);
-        PoolManager.Instance.CreatePool(rightGearStageTwoBoss, 5);
+        PoolManager.Instance.CreatePool(bomberBossStageTwo, 2);
+        //PoolManager.Instance.CreatePool(topGearStageTwoBoss, 5);
+        //PoolManager.Instance.CreatePool(leftGearStageTwoBoss, 5);
+        //PoolManager.Instance.CreatePool(rightGearStageTwoBoss, 5);
         PoolManager.Instance.CreatePool(slingShotBomber, 50);
 
 

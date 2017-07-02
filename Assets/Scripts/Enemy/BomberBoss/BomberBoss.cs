@@ -151,7 +151,7 @@ public class BomberBoss : Ship, IEnemy
         yield return new WaitForSeconds(5.0f);
 
         // Spawn in the actual Stage 2 prefab and hand it the rotations of each of the gears
-        Instantiate(stageTwoBomberBoss, stageTwoSpawnLocation.transform.position, Quaternion.identity);
+        PoolManager.Instance.ReuseObject(stageTwoBomberBoss, stageTwoSpawnLocation.transform.position, Quaternion.identity);
         Kill();
         Debug.Log("STAGE TWO SPAWNED");
         //Debug.Break();

@@ -382,7 +382,7 @@ public class BomberMiniBossMS : MonoBehaviour, IMoveState
                 }
 
                 // The normal rotation case
-                currentRotationFactor = startingRotationFactor;
+                //currentRotationFactor = startingRotationFactor;
                 Vector3 rotationAngle = Vector3.forward * startingRotationFactor * Time.deltaTime;
                 rotatingGearSprite.transform.Rotate(rotationAngle);
                 if (ringSprite != null)

@@ -15,10 +15,13 @@ public interface IFireState : IEntityState
 public enum AttackStatus
 {
     NOT_ATTACKING,
-    // Attacks for Sniper Boss
+
+    // Attacks for SNIPER_BOSS
     SNIPER_BOSS_LASER_ATTACK,
     SNIPER_BOSS_BULLET_HELL_ATTACK,
     SNIPER_BOSS_TELEPORT_ATTACK,
-    SNIPER_BOSS_SUMMON_MOBS
+    SNIPER_BOSS_SUMMON_MOBS,
 
+    // Attacks for BOMBER_BOSS
+    BOMBER_BOSS_SLINGSHOT_ATTACK
 }

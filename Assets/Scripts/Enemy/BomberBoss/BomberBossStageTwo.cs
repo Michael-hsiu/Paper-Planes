@@ -8,6 +8,7 @@ public class BomberBossStageTwo : Ship
     #region Variables
     public float rotationFactor;
     public float rushCollisionDuration = 4.0f;
+    public float nextAttackTime;
     public bool rushedIntoPlayer = false;
     public GameObject jointContainer;
     public SphereCollider collisionCollider;              // Used for RUSH_ATTACK and SLINGSHOT_ATTACK
@@ -33,12 +34,40 @@ public class BomberBossStageTwo : Ship
 
         // Component state initialization
         moveState = GetComponent<IMoveState>();
+        fireState = GetComponent<IFireState>();
         //moveState.OnObjectReuse();
     }
 
     public override void Move()
     {
         moveState.UpdateState();
+    }
+
+    protected override void Update()
+    {
+
+        Move();
+
+        if (Time.time > nextAttackTime)
+        {
+            Attack();
+        }
+    }
+
+    public void Attack()
+    {
+        ((BomberBossStageTwoFS)fireState).UseAttack();
+    }
+
+    // Tells MS to use appropriate movement
+    public void ActivateMovementState(float endTime, Direction direction)
+    {
+        ((BomberBossStageTwoMS)moveState).ActivateMovementState(endTime, direction);
+    }
+
+    public void DeactivateMovementState()
+    {
+        ((BomberBossStageTwoMS)moveState).DeactivateMovementState();
     }
 
     // This is called everytime this prefab is reused

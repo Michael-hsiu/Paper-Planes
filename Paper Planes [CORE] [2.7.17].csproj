@@ -143,6 +143,7 @@
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossFS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossMS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossStageTwo.cs" />
+    <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossStageTwoFS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBossStageTwoMS.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberMiniBoss.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberMiniBossMS.cs" />
