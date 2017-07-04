@@ -44,7 +44,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
         set;
     }
 
-    void Awake()
+    void Start()
     {
         // Start attack routines
         bomberBossStageTwo = GetComponent<BomberBossStageTwo>();
@@ -61,6 +61,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
     public void OnObjectReuse()
     {
         StopAllCoroutines();
+
         slingshotAttackRoutine = SlingShotAttack();
         StartCoroutine(slingshotAttackRoutine);
     }
@@ -81,6 +82,8 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
             // Trigger the SLINGSHOT attack
             slingShotAttackActive = true;
             attackStatus = AttackStatus.BOMBER_BOSS_SLINGSHOT_ATTACK;
+            Debug.Log(slingshotAttackRoutine == null);
+            //Debug.Break();
         }
         else
         {
@@ -104,12 +107,15 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
             // Randomly select 1 bomber & rotate until it's close to the closest point
             // Apply force on selected bomber in direction of cached position
             // Repeat process
-            if (slingShotAttackActive)
+            Debug.Log("SLINGING ROUTINE");
+            while (slingShotAttackActive)
             {
+                Debug.Log("SLINGING WHILE");
                 // 2s initial in-place rotation, 1s in-place rot /w bombers, 
                 // 4s before 1st launch, 'slingShotDelay' btwn ea. launch for _ bombers
                 endTime = Time.time + initialRotationDelay + secondRotationDelay + slingShotDelay * bomberSpawnPointsUnordered.Count + 15.0f;
                 SetAttackEndTime(endTime);      // So that Boss script won't launch any more attacks
+                //Debug.Break();
                 bomberBossStageTwo.ActivateMovementState(endTime, Direction.BOMBER_BOSS_SLINGSHOT_MOVEMENT);
 
                 // MS takes over, just rotating in place
@@ -119,7 +125,14 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
                 List<GameObject> remainingBombers = Utils.GetChildren(spawnedMobsContainer);
                 foreach (GameObject go in remainingBombers)
                 {
-                    go.GetComponent<PoolObject>().DestroyForReuse();
+                    if (go.GetComponent<PoolObject>() != null)
+                    {
+                        go.GetComponent<PoolObject>().DestroyForReuse();
+                    }
+                    else
+                    {
+                        Destroy(go);
+                    }
                 }
 
                 // Spawn sentinel bombers symetrically in circle around boss 
@@ -176,24 +189,52 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
                 slingShotPosition = transform.position + targetDirection;    // This is the pt on the perimeter of collider
 
                 // Keep slinging until all bombers are gone!
+                bool continueLaunching = true;
                 while (bombersRemainingToLaunch != 0)
                 {
                     // Choose correct mob to launch from ordered list
-                    if (bomberToSlingshot == null || !bomberToSlingshot.gameObject.activeSelf)
+                    while (bomberToSlingshot == null || !bomberToSlingshot.gameObject.activeSelf && continueLaunching)
                     {
                         GameObject activeSpawnPoint = bomberSpawnPointsOrdered[spawnIndex];
                         bomberToSlingshot = ringBomberDictionary[activeSpawnPoint];
                         spawnIndex += 1;
+                        if (spawnIndex == bomberSpawnPointsOrdered.Count)
+                        {
+                            continueLaunching = false;
+                        }
                         //Debug.Break();
+                    }
+
+                    if (!continueLaunching)
+                    {
+                        break;
                     }
 
                     if (Time.time > accelStartTime && Vector3.Distance(bomberToSlingshot.transform.position, slingShotPosition) < slingShotErrorRange)
                     {
+
                         // Cache a target position
                         targetDirection = (GameManager.Singleton.playerShip.transform.position - transform.position).normalized;
                         targetDirection *= bomberBossStageTwo.collisionCollider.radius;     // Scale to be on the radius
                         slingShotPosition = transform.position + targetDirection;    // This is the pt on the perimeter of collider
 
+                        // Just-in-case get a working bomber
+                        while (bomberToSlingshot == null || !bomberToSlingshot.gameObject.activeSelf && continueLaunching)
+                        {
+                            GameObject activeSpawnPoint = bomberSpawnPointsOrdered[spawnIndex];
+                            bomberToSlingshot = ringBomberDictionary[activeSpawnPoint];
+                            spawnIndex += 1;
+                            if (spawnIndex == bomberSpawnPointsOrdered.Count)
+                            {
+                                continueLaunching = false;
+                            }
+                            //Debug.Break();
+                        }
+
+                        if (!continueLaunching)
+                        {
+                            break;
+                        }
                         // Fire at target position
                         bomberToSlingshot.GetComponent<Rigidbody>().AddForce(targetDirection.normalized * slingShotForce, ForceMode.Impulse);
                         accelStartTime = Time.time + slingShotDelay;    // Delay until the next time we can slingshot a mob
@@ -215,6 +256,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
                 // Delay btwn attacks
                 slingShotAttackActive = false;
                 bomberBossStageTwo.DeactivateMovementState();
+                yield return null;
             }
             yield return null;
         }

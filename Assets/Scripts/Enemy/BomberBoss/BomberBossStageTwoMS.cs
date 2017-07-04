@@ -76,8 +76,9 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
     public void OnObjectReuse()
     {
         StopAllCoroutines();
-        //bombersSpawned.Clear();
-        //bombersSpawnedQueue.Clear();
+
+        rotationRoutine = StartRotating();
+        StartCoroutine(rotationRoutine);
     }
 
     public void UpdateState()

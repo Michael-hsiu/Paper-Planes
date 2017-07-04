@@ -1,18 +1,13 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/BomberBoss/BomberMiniBossMS.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs">
     <Files>
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="93" Column="1" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossMS.cs" Line="125" Column="5" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBossFS.cs" Line="221" Column="60" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoMS.cs" Line="277" Column="190" />
-      <File FileName="Assets/Scripts/FSM/IMoveState.cs" Line="34" Column="35" />
-      <File FileName="Assets/Scripts/FSM/IFireState.cs" Line="26" Column="27" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="37" Column="48" NotebookId="1" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoFS.cs" Line="182" Column="95" NotebookId="1" />
-      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="136" Column="64" NotebookId="1" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoMS.cs" Line="81" Column="41" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoFS.cs" Line="64" Column="9" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="55" Column="1" NotebookId="1" />
       <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="153" Column="30" NotebookId="1" />
-      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberMiniBossMS.cs" Line="14" Column="38" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

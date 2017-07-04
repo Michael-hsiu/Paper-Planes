@@ -38,6 +38,26 @@ public class BomberBossStageTwo : Ship
         //moveState.OnObjectReuse();
     }
 
+    // This is called everytime this prefab is reused
+    public override void OnObjectReuse()
+    {
+        StopAllCoroutines();
+
+        // Reset component states
+        moveState = GetComponent<IMoveState>();
+        fireState = GetComponent<IFireState>();
+
+        moveState.OnObjectReuse();
+
+        // Color / alpha reset
+        Color resetColor = startColor;
+        resetColor.a = 1f;
+        //sprite.material.color = resetColor;
+
+        nextAttackTime = Time.time + Random.Range(2.0f, 4.0f);
+        //Debug.Break();
+    }
+
     public override void Move()
     {
         moveState.UpdateState();
@@ -50,6 +70,8 @@ public class BomberBossStageTwo : Ship
 
         if (Time.time > nextAttackTime)
         {
+            //Debug.Log(Time.time);
+            //Debug.Break();
             Attack();
         }
     }
@@ -70,20 +92,7 @@ public class BomberBossStageTwo : Ship
         ((BomberBossStageTwoMS)moveState).DeactivateMovementState();
     }
 
-    // This is called everytime this prefab is reused
-    public override void OnObjectReuse()
-    {
-        StopAllCoroutines();
-        Start();
 
-        // Reset component states
-        moveState.OnObjectReuse();
-
-        // Color / alpha reset
-        Color resetColor = startColor;
-        resetColor.a = 1f;
-        sprite.material.color = resetColor;
-    }
     #endregion
 
 
