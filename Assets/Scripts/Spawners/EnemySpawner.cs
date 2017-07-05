@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
 
     public float xBound;
     public float yBound;
-    public float spawnDelay = 5.0f;             // Delay between enemy spawns.
+    public float spawnDelay = 1.0f;             // Delay between enemy spawns. A random # btwn 0 and this.
     public bool spawnEnabled = false;
     public int currLevel = 0;       // This is used from EnemySpawner. Enemies UP TO this index are allowed to be spawned. Reflects same-named value from GameManager.
     public bool bossSpawnEnabled = false;
@@ -35,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
     public int NUM_ASSASSINS_ALIVE = 0;
     public int NUM_BOSSES_ALIVE = 0;
 
-    public IEnumerator enemySpawnRoutine;
+    IEnumerator enemySpawnRoutine;
 
     public List<GameObject> enemyShips = new List<GameObject>();
 
@@ -54,6 +54,31 @@ public class EnemySpawner : MonoBehaviour
     public void IncreaseLevel()
     {
         currLevel += 1;
+    }
+
+    public void EndLevel()
+    {
+        spawnEnabled = false;
+    }
+
+    public void RestartLevel()
+    {
+        // Reset mob counts
+        NUM_PAWNS_ALIVE = 0;
+        NUM_RANGED_ALIVE = 0;
+        NUM_BOMBERS_ALIVE = 0;
+        NUM_DROPSHIPS_ALIVE = 0;
+        NUM_MEDICS_ALIVE = 0;
+        NUM_TURRETS_ALIVE = 0;
+        NUM_ASSASSINS_ALIVE = 0;
+        NUM_BOSSES_ALIVE = 0;
+
+        currLevel = 0;
+        spawnEnabled = true;
+
+        StopAllCoroutines();
+        enemySpawnRoutine = StartSpawningEnemies();
+        StartCoroutine(enemySpawnRoutine);
     }
 
     public void RecordKill(EnemyType enemyType)
@@ -108,7 +133,6 @@ public class EnemySpawner : MonoBehaviour
                 bool alreadySpawnedMax = true;
                 while (alreadySpawnedMax)
                 {
-
                     switch (enemyType)
                     {
                         case EnemyType.Pawn:
@@ -140,7 +164,7 @@ public class EnemySpawner : MonoBehaviour
                             }
                             break;
                         case EnemyType.Medic:
-                            if (NUM_MEDICS_ALIVE < NUM_MEDICS_ALIVE)
+                            if (NUM_MEDICS_ALIVE < MAX_MEDICS)
                             {
                                 NUM_MEDICS_ALIVE += 1;
                                 alreadySpawnedMax = false;
@@ -182,13 +206,13 @@ public class EnemySpawner : MonoBehaviour
                     }
                 }
 
-                Debug.Log("ENEMY TYPE: " + enemyType);
+                //Debug.Log("ENEMY TYPE: " + enemyType);
                 // Now spawn the enemy
                 PoolManager.Instance.ReuseObject(enemyShip, spawnLoc, Quaternion.identity);
 
                 // Wait a bit before spawning next enemy.
                 // We COULD spawn multiple at a time / formations!
-                yield return new WaitForSeconds(Random.Range(0, 1.0f));
+                yield return new WaitForSeconds(Random.Range(0, spawnDelay));
             }
             yield return null;
         }

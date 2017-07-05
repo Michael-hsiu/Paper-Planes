@@ -12,10 +12,10 @@ public class GameManager : MonoBehaviour
 
     public PlayerShip playerShip;
     public GameObject normalSS;         // Player's normal shotspawn
+    public EnemySpawner enemySpawner;       // Takes care of spawning enemies
     public PowerupSpawner powerupSpawner;
     public MovingSpawnManager movingSpawnManager;
     public bool levelActive = false;
-
     public int playerHealth;
     public int playerMaxHealth;         // Must be changed w/ health bar and upgrades
 
@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public int playerBalance = 0;       // How much money the player has
     public int playerDamage = 20;
     public int scoreMultiplier = 1;
+    public Color startColor;
+    public Vector3 playerStartPosition; // Player start position at beginning of game
 
     public bool axisInput = true;
     public bool turnInput = true;
@@ -88,6 +90,8 @@ public class GameManager : MonoBehaviour
         // Setup references
         playerShip = GameObject.FindGameObjectWithTag(Constants.PlayerTag).GetComponent<PlayerShip>();      // The main reference to player ref. by all other scripts
         normalSS = Utils.FindChildWithTag(playerShip.gameObject, Constants.NormalSS);       // This is primarily for homing missile powerup
+        startColor = playerShip.sprite.material.color;
+        enemySpawner = GetComponent<EnemySpawner>();
         powerupSpawner = GetComponent<PowerupSpawner>();
         movingSpawnManager = GetComponent<MovingSpawnManager>();
         mapCollider = GetComponent<BoxCollider>();
@@ -107,15 +111,15 @@ public class GameManager : MonoBehaviour
     }
 
     // This is just for the start game button.
-    public void StartGame()
+    public void OnGameStart()
     {
-        StartLevel(0);
+        playerStartPosition = playerShip.gameObject.transform.position;
+        OnLevelStart(0);
     }
 
     // This is the PUBLISHER for events that fire on level starts.
-    public void StartLevel(int currLevel)
+    public void OnLevelStart(int currLevel)
     {
-
         currLevel = Math.Min(currLevel, scoreBoundaries.Count - 1);
         //Debug.Log("SCOREBOUNDARIES COUNT: " + scoreBoundaries.Count);
         targetScore = scoreBoundaries[currLevel];
@@ -129,7 +133,48 @@ public class GameManager : MonoBehaviour
                 StartLevelEvent();     // Tell all of our listeners to fire
             }
         }
+    }
 
+    // Called by player input if player dies
+    public void OnLevelLost()
+    {
+        Instantiate(playerShip.explosion, transform.position, transform.rotation);
+        playerShip.gameObject.SetActive(false);
+        levelActive = false;
+
+        enemySpawner.EndLevel();
+        UIManager.Singleton.DisplayFailureScreen();
+        Debug.LogError("PLAYER DIED!");
+        //Debug.Break ();
+    }
+
+    // Restarting a level after a defeat.
+    public void OnLevelRestart()
+    {
+        // Clean up the level
+        // TODO: player's powerups, health, stats need to be reset. Or use events? Are they misleading?
+        Utils.KillAllEnemies();
+        Utils.DisablePowerups();
+        enemySpawner.RestartLevel();
+
+        playerShip.rigidBody.velocity = Vector3.zero;
+        playerShip.rigidBody.angularVelocity = Vector3.zero;
+        playerShip.transform.position = playerStartPosition;    // Reset to start position
+        playerShip.transform.rotation = Quaternion.identity;
+        //Debug.Break();
+
+        playerHealth = 1000;
+        playerShip.sprite.material.color = startColor;
+        playerShip.gameObject.SetActive(true);
+
+        // Clean up UI
+        UIManager.Singleton.RestartLevel();
+
+        // Set level logic
+        targetScore = scoreBoundaries[currLevel];
+        levelActive = true;
+
+        OnLevelStart(currLevel);
     }
 
     /* START StartLevelEvent subscribers. */
@@ -143,64 +188,52 @@ public class GameManager : MonoBehaviour
     }
     /* END StartLevelEvent subscriber list. */
 
-
-
     // THIS is the new way of increasing level difficulty over time.
-    public void IncreaseLevel()
+    public void OnLevelIncrease()
     {
+        // Increase the number of total enemies that can be spawned, as well as other logic.
+        enemySpawner.IncreaseLevel();
 
         // Increase the types of enemies we can now spawn.
         currLevel += 1;
-
-        // Increase the number of total enemies that can be spawned, as well as other logic.
-        GetComponent<EnemySpawner>().IncreaseLevel();
-
-        StartLevel(currLevel);
-
+        OnLevelStart(currLevel);
     }
 
     // Called every time an enemy is defeated
     public void RecordEnemyKilled(EnemyType enemyType)
     {
-
-        GetComponent<EnemySpawner>().RecordKill(enemyType);
+        enemySpawner.RecordKill(enemyType);
         if (playerScore > scoreBoundaries[Math.Min(currLevel, scoreBoundaries.Count - 1)])
         {
-            IncreaseLevel();
+            OnLevelIncrease();
         }
     }
 
-
-
-
-
-
     // THIS is from old level progression logic.
-    public void EndGame(int level)
-    {
+    //public void OnGameEnded(int level)
+    //{
 
-        //levelActive = false;
-        //((AIInput) (InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
-        //InputManager.Instance.GetActiveInput
+    //    //levelActive = false;
+    //    //((AIInput) (InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
+    //    //InputManager.Instance.GetActiveInput
 
+    //    // Kill all enemies in scene
+    //    Utils.KillAllEnemies();
+    //    Utils.DisablePowerups();
 
-        // Kill all enemies in scene
-        Utils.KillAllEnemies();
-        Utils.DisablePowerups();
+    //    // Takedown logic for each level
+    //    // Deactivate powerup spawner
+    //    powerupSpawner.spawnEnabled = false;
 
-        // Takedown logic for each level
-        // Deactivate powerup spawner
-        powerupSpawner.spawnEnabled = false;
+    //    // Deactivate moving spawn manager
+    //    movingSpawnManager.spawnEnabled = false;
 
-        // Deactivate moving spawn manager
-        movingSpawnManager.spawnEnabled = false;
+    //    // Disable all the spawners for this level
+    //    //DisableSpawns ();
+    //    //UIManager.Singleton.EndLevel (activeLevelNum);		// Remember to activate continue screen!
 
-        // Disable all the spawners for this level
-        //DisableSpawns ();
-        //UIManager.Singleton.EndLevel (activeLevelNum);		// Remember to activate continue screen!
-
-        //activeLevelNum += 1;
-    }
+    //    //activeLevelNum += 1;
+    //}
 
     // Turn off the spawners for current level
     /*public void DisableSpawns() {
@@ -222,19 +255,6 @@ public class GameManager : MonoBehaviour
         }
         SceneManager.LoadSceneAsync("Shop");
     }
-
-    // Called by player input if player dies
-    public void LevelFailed()
-    {
-
-        Instantiate(playerShip.explosion, transform.position, transform.rotation);
-        playerShip.gameObject.SetActive(false);
-
-        UIManager.Singleton.DisplayFailureScreen();
-        Debug.LogError("PLAYER DIED!");
-        //Debug.Break ();
-    }
-
 
     private static GameManager singleton;
     public static GameManager Singleton

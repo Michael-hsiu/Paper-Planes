@@ -289,12 +289,16 @@ public class UIManager : MonoBehaviour
     }
 
 
-
-
     public void EndLevel(int level)
     {
         DisplayVictoryScreen();                                 // Opens the Victory Screen and the only current way of progressing to next level.
                                                                 //GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
+    }
+
+    public void RestartLevel()
+    {
+        DisableFailureScreen();
+        DisableContinueScreen();
     }
 
     public void DisableContinueScreen()
@@ -315,8 +319,8 @@ public class UIManager : MonoBehaviour
     {
         continueScreen.gameObject.SetActive(true);
         continueScreen.GetComponent<ContinueScreen>().OpenFailureContinueScreen();
-        /*DisableVictoryScreen ();
-		EnableFailureScreen ();*/
+        DisableVictoryScreen();
+        EnableFailureScreen();
     }
 
 

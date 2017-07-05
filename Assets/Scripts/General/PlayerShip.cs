@@ -26,6 +26,9 @@ public class PlayerShip : FiringShip
     public Stack<ShotSpawnContainer> shotSpawnStack = new Stack<ShotSpawnContainer>();
     public Dictionary<Weapons, ShotSpawnContainer> shotSpawnDictionary = new Dictionary<Weapons, ShotSpawnContainer>();
 
+    [Header("ENEMY_SPAWNERS")]
+    public EnemySpawner enemySpawner;       // Takes care of spawning enemies
+
     [Header("POWERUPS")]
     public int numShots = 0;
     public bool dashStarted = false;
@@ -56,7 +59,7 @@ public class PlayerShip : FiringShip
 
     [Header("OTHER")]
     public InputComponent input;
-    public Rigidbody rb;
+    public Rigidbody rigidBody;
     public float maxForward = 3.0f;
     public float colliderRadius = 1.2f;
 
@@ -77,7 +80,7 @@ public class PlayerShip : FiringShip
         {
             DestroyImmediate(gameObject);
         }
-        rb = GetComponent<Rigidbody>();
+        rigidBody = GetComponent<Rigidbody>();
         startColor = sprite.material.color;
     }
 
@@ -89,24 +92,12 @@ public class PlayerShip : FiringShip
 
     protected override void Update()
     {
-
-        // Firing logic
-        //if (Input.GetButton("Fire1") && Time.time > nextFire && ((AIInput)input).controlsEnabled)
-        //{
-        //    Fire();
-        //}
-
         // Temp logic for player destruction
         if (GameManager.Singleton.playerHealth <= 0)
         {
             Instantiate(explosion, transform.position, transform.rotation);
             transform.gameObject.SetActive(false);
         }
-
-        // Check for user input
-        //CheckForInput ();
-        //UpdateInput ();
-
     }
 
     void FixedUpdate()
