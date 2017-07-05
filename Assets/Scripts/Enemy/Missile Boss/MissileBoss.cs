@@ -18,41 +18,26 @@ public class MissileBoss : Ship, IEnemy
 
     //public EnemyType enemyType = EnemyType.Ranged;
     public float senseRadius;
-    public float missileDelay;
-    // Time btwn each missile firing
-    public float atkTimeRange;
-    // Next atk will be launched at random after a certain time
-    public float missileAtkTime = 5.0f;
-    // Missile atk duration
-    public float spinAtkTime = 5.0f;
-    // Spin atk duration
-    public float rotFactor;
-    // How fast spin atk rotates
-    public float atkPrefFactor = 1.5f;
-    // Similar to hashing; if one atk used too often, use other atk instead. Artificial balance.
-    public float sqMoveDist = 36.0f;
-    // Squared dist. from player (detection dist.)
+    public float missileDelay; // Time btwn each missile firing
+    public float atkTimeRange; // Next atk will be launched at random after a certain time
+    public float missileAtkTime = 5.0f; // Missile atk duration
+    public float spinAtkTime = 5.0f; // Spin atk duration
+    public float rotFactor; // How fast spin atk rotates
+    public float atkPrefFactor = 1.5f; // Similar to hashing; if one atk used too often, use other atk instead. Artificial balance.
+    public float sqMoveDist = 36.0f; // Squared dist. from player (detection dist.)
     public float spinAtkRadius = 2.0f;
-    public int numMissileAtks;
-    // For atk ratio
-    public int numSpinAtks;
-    // For atk ratio
-    public bool attacking;
-    // Tracks whether or not we're attacking
-    public bool usingSpinAtk = false;
-    // To draw the EMP wave
+    public int numMissileAtks; // For atk ratio
+    public int numSpinAtks; // For atk ratio
+    public bool attacking; // Tracks whether or not we're attacking
+    public bool usingSpinAtk = false; // To draw the EMP wave
 
-    public GameObject straightMissile;
-    // Missile fab
-    public GameObject empWave;
-    // EMP wave fab
-    public GameObject targetRot;
-    // The rotation we'll use to determine appropriate missile start rotation
-    public GameObject empWaveShotSpawn;
-    // We shoot out EMP waves from here!
+    public GameObject straightMissile; // Missile fab
+    public GameObject empWave; // EMP wave fab
+    public GameObject targetRot; // The rotation we'll use to determine appropriate missile start rotation
+    public GameObject empWaveShotSpawn; // We shoot out EMP waves from here!
 
-    [SerializeField]
-    private float nextAtkTime;
+    [SerializeField] float nextAtkTime;
+    IEnumerator attackRoutine;
     // Time at which we can launch next valid atk
 
     // States
@@ -69,20 +54,36 @@ public class MissileBoss : Ship, IEnemy
 
     protected override void Start()
     {
-
         base.Start();
+        health = defaultValues.health;
+        enemyType = EnemyType.Boss;
 
         moveState = GetComponent<IMoveState>();
 
         GetComponent<Rigidbody>().AddForce(transform.up * 0.01f);
-        nextAtkTime = Random.Range(2, 3);
-        StartCoroutine(UseAttack());
+        nextAtkTime = Time.time + Random.Range(2, 3);
+
+        attackRoutine = UseAttack();
+        StartCoroutine(attackRoutine);
     }
 
     public override void OnObjectReuse()
     {
+        StopAllCoroutines();
+        //attackRoutine = null;
+        Start();
+
         //moveState.OnObjectReuse();
-        //fireState.OnObjectReuse();
+        Debug.Break();
+        // Reset start color? -color seems to freeze on last flicker
+        // The only change that ever occurs is for alpha
+        if (sprite != null)
+        {
+            Color resetColor = startColor;
+            resetColor.a = 1f;
+            sprite.material.color = resetColor;
+            Debug.Log("SPRITE RESET!");
+        }
     }
 
     #endregion
@@ -90,11 +91,9 @@ public class MissileBoss : Ship, IEnemy
     void OnGui()
     {
         Drawing.DrawCircle(Vector3.zero, 100, Color.red, 10.0f, 10);
-
     }
 
     #region Game Logic
-
     // Logic for firing missiles, with delay btwn each, for a certain pd of time
     IEnumerator UseAttack()
     {
@@ -276,16 +275,12 @@ public class MissileBoss : Ship, IEnemy
         }
     }
 
-
     // This is how far away we can detect the player and take measures to atk player
     public void OnDrawGizmosSelected()
     {
         // Draw spin atk radius
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, senseRadius);
-
     }
-
     #endregion
-
 }

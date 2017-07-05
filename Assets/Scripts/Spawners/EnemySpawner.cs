@@ -117,6 +117,9 @@ public class EnemySpawner : MonoBehaviour
 
         while (true)
         {
+            // Wait for a bit before we check to see if spawns are enabled (naive level restart logic)
+            yield return new WaitForSeconds(2.0f);
+
             while (spawnEnabled)
             {
                 // [TEST] spawn ships.

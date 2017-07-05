@@ -130,7 +130,7 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(turret, 100);
         PoolManager.Instance.CreatePool(dropShip, 100);
         PoolManager.Instance.CreatePool(assassinShip, 100);
-        PoolManager.Instance.CreatePool(missileBoss, 5);
+        PoolManager.Instance.CreatePool(missileBoss, 15);
         PoolManager.Instance.CreatePool(sniperBoss, 5);
         PoolManager.Instance.CreatePool(bomberBossStageOne, 15);
         PoolManager.Instance.CreatePool(bomberBossStageTwo, 2);

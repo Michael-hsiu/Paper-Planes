@@ -234,6 +234,11 @@ public class UIManager : MonoBehaviour
         GameManager.Singleton.StartLevelEvent += OnLevelStartUpdateUI;
     }
 
+    public void ResetHealthBar()
+    {
+        healthBar.rectTransform.localScale = new Vector3(8.02f, scaleY, 1);
+    }
+
     // goal=enemiesToKill
     public void OnLevelStartUpdateUI()
     {
@@ -299,6 +304,7 @@ public class UIManager : MonoBehaviour
     {
         DisableFailureScreen();
         DisableContinueScreen();
+        ResetHealthBar();
     }
 
     public void DisableContinueScreen()
@@ -363,8 +369,6 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = GameManager.Singleton.playerScore.ToString();
     }
-
-
 
     public void UpdateDashText(int dashes)
     {

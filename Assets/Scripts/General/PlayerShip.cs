@@ -18,17 +18,6 @@ public class PlayerShip : FiringShip
 
     #region Variables
 
-    [Header("SHOTSPAWN_LISTS")]
-    public float firingPowerupExpirationTime;     // Tracks when firing powerup expires
-    public List<ShotSpawnContainer> shotSpawnContainers = new List<ShotSpawnContainer>();       // Main list used to hold container objects, which hold individual shot spawns.
-    public ShotSpawnContainer activeShotSpawnContainer;         // Tracks currently active ShotSpawnContainer object
-
-    public Stack<ShotSpawnContainer> shotSpawnStack = new Stack<ShotSpawnContainer>();
-    public Dictionary<Weapons, ShotSpawnContainer> shotSpawnDictionary = new Dictionary<Weapons, ShotSpawnContainer>();
-
-    [Header("ENEMY_SPAWNERS")]
-    public EnemySpawner enemySpawner;       // Takes care of spawning enemies
-
     [Header("POWERUPS")]
     public int numShots = 0;
     public bool dashStarted = false;
@@ -56,6 +45,14 @@ public class PlayerShip : FiringShip
     [Header("FIRING_RIG")]
     public GameObject firingRig;
     public GameObject chargeColliderRig;
+
+    [Header("SHOTSPAWN_LISTS")]
+    public float firingPowerupExpirationTime;     // Tracks when firing powerup expires
+    public List<ShotSpawnContainer> shotSpawnContainers = new List<ShotSpawnContainer>();       // Main list used to hold container objects, which hold individual shot spawns.
+    public ShotSpawnContainer activeShotSpawnContainer;         // Tracks currently active ShotSpawnContainer object
+
+    public Stack<ShotSpawnContainer> shotSpawnStack = new Stack<ShotSpawnContainer>();
+    public Dictionary<Weapons, ShotSpawnContainer> shotSpawnDictionary = new Dictionary<Weapons, ShotSpawnContainer>();
 
     [Header("OTHER")]
     public InputComponent input;
@@ -118,6 +115,14 @@ public class PlayerShip : FiringShip
     #endregion
 
     #region Game Logic
+
+    public void ResetPlayer()
+    {
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
+        transform.position = GameManager.Singleton.playerStartPosition;    // Reset to start position
+        transform.rotation = Quaternion.identity;
+    }
 
     private void InitializeShotSpawns()
     {
@@ -217,7 +222,7 @@ public class PlayerShip : FiringShip
             GameManager.Singleton.playerHealth -= damageTaken;
             if (GameManager.Singleton.playerHealth <= 0)
             {
-                GameManager.Singleton.LevelFailed();            // Initiate level failure logic
+                GameManager.Singleton.OnLevelLost();            // Initiate level failure logic
             }
             UIManager.Singleton.UpdateHealth();
         }

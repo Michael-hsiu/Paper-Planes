@@ -85,6 +85,8 @@ public class PowerupSpawner : MonoBehaviour
         // Keep true while in current round
         while (true)
         {
+            // Wait for a bit before we check to see if powerups are enabled (naive level restart logic)
+            yield return new WaitForSeconds(2.0f);
 
             // Spawn a fixed # of powerups at the beginning of every lvl
             while (/*numPowerupsSpawned <= 5 &&*/ spawnEnabled)
@@ -99,9 +101,9 @@ public class PowerupSpawner : MonoBehaviour
                 //numPowerupsSpawned += 1;
                 //Instantiate (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
             }
-            /*			if (!spawnEnabled) {
-                            numPowerupsSpawned = 0;		// Reset after each lvl
-                        }*/
+            /*if (!spawnEnabled) {
+                numPowerupsSpawned = 0;		// Reset after each lvl
+             }*/
             yield return null;
         }
     }

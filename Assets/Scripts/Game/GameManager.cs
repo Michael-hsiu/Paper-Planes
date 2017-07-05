@@ -153,25 +153,19 @@ public class GameManager : MonoBehaviour
     {
         // Clean up the level
         // TODO: player's powerups, health, stats need to be reset. Or use events? Are they misleading?
+        UIManager.Singleton.RestartLevel();     // // Clean up UI
         Utils.KillAllEnemies();
         Utils.DisablePowerups();
         enemySpawner.RestartLevel();
 
-        playerShip.rigidBody.velocity = Vector3.zero;
-        playerShip.rigidBody.angularVelocity = Vector3.zero;
-        playerShip.transform.position = playerStartPosition;    // Reset to start position
-        playerShip.transform.rotation = Quaternion.identity;
-        //Debug.Break();
-
-        playerHealth = 1000;
+        playerShip.ResetPlayer();       // Reset internals: position, rotation, rigidbody
+        playerHealth = playerMaxHealth;
         playerShip.sprite.material.color = startColor;
         playerShip.gameObject.SetActive(true);
+        playerScore = 0;
 
-        // Clean up UI
-        UIManager.Singleton.RestartLevel();
-
-        // Set level logic
-        targetScore = scoreBoundaries[currLevel];
+        // Reset level logic
+        targetScore = scoreBoundaries[0];
         levelActive = true;
 
         OnLevelStart(currLevel);
