@@ -11,6 +11,7 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
     public GameObject target;
     public bool isMarked = false;
+    public bool canSeePlayer = false;
 
     public GameObject explosion;
     public float rotationSpeed = 90.0f;
@@ -41,34 +42,10 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     #endregion
 
     #region Properties
-    public float RotationSpeed
-    {
-        get { return rotationSpeed; }
-        set { rotationSpeed = value; }
-    }
-
-    public int Health
-    {
-        get { return health; }
-        set { health = value; }
-    }
-
-    public int EnemyPoints
-    {
-        get { return enemyPoints; }
-        set { enemyPoints = value; }
-    }
-
     public int ShotDamage
     {
         get { return shotDamage; }
         set { shotDamage = value; }
-    }
-
-    public float FireRate
-    {
-        get { return fireRate; }
-        set { fireRate = value; }
     }
     #endregion
 
@@ -85,24 +62,19 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
         sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
         startColor = sprite.material.color;
-        //Debug.Log("SPRITE: " + sprite == null);
-        //Debug.Log("COLOR: " + startColor == null);
 
-        //Initialize ();
         if (burstFireRoutine == null)
         {
             burstFireRoutine = BurstFire();
             StartCoroutine(burstFireRoutine);
         }
-        Debug.Break();
-        //Debug.Log("TURRET START");
     }
 
     protected virtual void Update()
     {
+        canSeePlayer = CanSeePlayer();      // Only pt where it is updated
         Move();
-        Debug.Log("TURRET UPDATE");
-        if (CanSeePlayer())
+        if (canSeePlayer)
         {
             Debug.Log("ACTIVATING GUNS");
             ActivateGuns();
@@ -145,19 +117,21 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     {
 
         /** Default move pattern is to turn and move towards player. */
-        if (CanSeePlayer())
-        {
-            Vector3 dist = target.transform.position - transform.position;  // Find vector difference between target and this
-            dist.Normalize();       // Get unit vector
 
-            float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
-            Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime); // Rotate the enemy	
+        Vector3 dist = target.transform.position - transform.position;  // Find vector difference between target and this
+        dist.Normalize();       // Get unit vector
+
+        float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+        Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+        if (canSeePlayer)
+        {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime); // Rotate the enemy 
+
         }
         else
         {
             // Rotate back to original position
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, initialRot, rotationSpeed * Time.deltaTime);
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, initialRot, rotationSpeed * Time.deltaTime);
         }
     }
 
@@ -209,12 +183,10 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     {
 
         nextFire = Time.time + fireRate;    // Cooldown time for projectile firing
-
         // Check for all shotspawns in children
         foreach (Transform s in transform)
         {
             TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn>();  // Get ShotSpawn in children
-
             if (shotSpawn != null)
             {
                 shotSpawn.CreateShot(); // Fire the shot!
@@ -265,9 +237,8 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
     protected bool CanSeePlayer()
     {
-        Debug.Log("CAN_SEE_PLAYER");
         // Only cast ray onto Player layer
-        int layerMask = 1 << 8;
+        int layerMask = 1 << 11;
 
         RaycastHit hit;
         if (target != null)
@@ -296,10 +267,8 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
         {
 
             int roundsLeft = burstCount;
-            Debug.Log("OUTER LOOP");
-            Debug.Log("CAN_SEE" + CanSeePlayer());
             // Fire an entire burst
-            while (roundsLeft > 0 && CanSeePlayer())
+            while (roundsLeft > 0 && canSeePlayer)
             {
                 if (Time.time > nextFire)
                 {
@@ -310,7 +279,6 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
                 yield return null;
             }
-
             // Wait between bursts
             yield return new WaitForSeconds(burstFireDelay);
 

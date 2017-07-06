@@ -9,10 +9,10 @@
       <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="57" Column="5" />
       <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="83" Column="40" />
       <File FileName="Assets/Scripts/Enemy/PawnShip/PawnShip.cs" Line="67" Column="6" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="112" Column="6" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="95" Column="6" />
       <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="140" Column="62" />
       <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="102" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="160" Column="18" />
+      <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="192" Column="58" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
