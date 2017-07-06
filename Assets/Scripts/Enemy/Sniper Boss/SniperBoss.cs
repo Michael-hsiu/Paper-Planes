@@ -85,6 +85,21 @@ public class SniperBoss : Ship, IEnemy
         moveState.UpdateState();
     }
 
+    public override void Kill()
+    {
+        // Graphics
+        Instantiate(explosion, transform.position, transform.rotation);
+
+        // Powerup spawn chance
+        float randomVal = Random.value;
+        if (randomVal <= 1f)
+        {
+            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(transform.position);
+        }
+        // Kill logic
+        base.Kill();
+    }
+
     public void Attack()
     {
         ((SniperBossFS)fireState).UseAttack();

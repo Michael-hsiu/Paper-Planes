@@ -63,18 +63,26 @@ public class MissileBoss : Ship, IEnemy
         GetComponent<Rigidbody>().AddForce(transform.up * 0.01f);
         nextAtkTime = Time.time + Random.Range(2, 3);
 
-        attackRoutine = UseAttack();
-        StartCoroutine(attackRoutine);
+        if (attackRoutine == null)
+        {
+            attackRoutine = UseAttack();
+            StartCoroutine(attackRoutine);
+        }
     }
 
     public override void OnObjectReuse()
     {
-        StopAllCoroutines();
-        //attackRoutine = null;
+        // End routines
+        if (attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            attackRoutine = null;
+        }
+        //Debug.Log(attackRoutine == null);
         Start();
-
         //moveState.OnObjectReuse();
-        Debug.Break();
+        //Debug.Break();
+
         // Reset start color? -color seems to freeze on last flicker
         // The only change that ever occurs is for alpha
         if (sprite != null)
@@ -87,6 +95,21 @@ public class MissileBoss : Ship, IEnemy
     }
 
     #endregion
+
+    public override void Kill()
+    {
+        // Graphics
+        Instantiate(explosion, transform.position, transform.rotation);
+
+        // Powerup spawn chance
+        float randomVal = Random.value;
+        if (randomVal <= 1f)
+        {
+            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(transform.position);
+        }
+        // Kill logic
+        base.Kill();
+    }
 
     void OnGui()
     {
