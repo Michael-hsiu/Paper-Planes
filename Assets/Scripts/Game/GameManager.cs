@@ -45,13 +45,6 @@ public class GameManager : MonoBehaviour
     public int dualFireLevel = 0;
     public int triFireLevel = 0;
 
-    // Level logic
-    /*public LevelData[] levels;		// Stores each LevelData SO as an asset
-	public LevelData activeLevel;
-	public int activeLevelNum = 1;
-	public bool levelActive = true;
-	public List<GameObject> currLvlSpawners;	// Get from index (currLvl-1)
-	public List<Row> levelSpawners = new List<Row>();		// Enemy spawners; populate this manually in inspector; Row is a container class so we can emulate 2D list behavior*/
     public Collider mapCollider;
 
     // Powerup logic
@@ -110,10 +103,15 @@ public class GameManager : MonoBehaviour
         StartLevelEvent += OnLevelStartEnableMovingSpawners;
     }
 
+    public void Start()
+    {
+        playerStartPosition = playerShip.gameObject.transform.position;
+        OnGameStart();
+    }
+
     // This is just for the start game button.
     public void OnGameStart()
     {
-        playerStartPosition = playerShip.gameObject.transform.position;
         OnLevelStart(0);
     }
 
@@ -158,10 +156,10 @@ public class GameManager : MonoBehaviour
         Utils.DisablePowerups();
         enemySpawner.RestartLevel();
 
+        playerShip.gameObject.SetActive(true);
         playerShip.ResetPlayer();       // Reset internals: position, rotation, rigidbody
         playerHealth = playerMaxHealth;
         playerShip.sprite.material.color = startColor;
-        playerShip.gameObject.SetActive(true);
         playerScore = 0;
 
         // Reset level logic
@@ -203,40 +201,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // THIS is from old level progression logic.
-    //public void OnGameEnded(int level)
-    //{
-
-    //    //levelActive = false;
-    //    //((AIInput) (InputManager.Instance.GetActiveInput ())).controlsEnabled = false;
-    //    //InputManager.Instance.GetActiveInput
-
-    //    // Kill all enemies in scene
-    //    Utils.KillAllEnemies();
-    //    Utils.DisablePowerups();
-
-    //    // Takedown logic for each level
-    //    // Deactivate powerup spawner
-    //    powerupSpawner.spawnEnabled = false;
-
-    //    // Deactivate moving spawn manager
-    //    movingSpawnManager.spawnEnabled = false;
-
-    //    // Disable all the spawners for this level
-    //    //DisableSpawns ();
-    //    //UIManager.Singleton.EndLevel (activeLevelNum);		// Remember to activate continue screen!
-
-    //    //activeLevelNum += 1;
-    //}
-
-    // Turn off the spawners for current level
-    /*public void DisableSpawns() {
-
-		foreach (GameObject go in currLvlSpawners) {
-			go.GetComponent<EnemySpawnTemplate> ().startSpawning = false;
-		}
-	}*/
-
     // Start Shop scene, while preventing Managers and Player from being destroyed
     public void OpenShop()
     {
@@ -250,7 +214,12 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadSceneAsync("Shop");
     }
 
-    private static GameManager singleton;
+    public void UpdateScore(int ptIncrease)
+    {
+        playerScore += ptIncrease * scoreMultiplier;  // Add new score in GameManager
+    }
+
+    static GameManager singleton;
     public static GameManager Singleton
     {
         get
@@ -262,12 +231,6 @@ public class GameManager : MonoBehaviour
             return singleton;
         }
     }
-
-    public void UpdateScore(int ptIncrease)
-    {
-        GameManager.Singleton.playerScore += ptIncrease * scoreMultiplier;  // Add new score in GameManager
-    }
-
 }
 
 

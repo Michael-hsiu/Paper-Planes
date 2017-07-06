@@ -50,11 +50,13 @@ public class PlayerShip : FiringShip
     public float firingPowerupExpirationTime;     // Tracks when firing powerup expires
     public List<ShotSpawnContainer> shotSpawnContainers = new List<ShotSpawnContainer>();       // Main list used to hold container objects, which hold individual shot spawns.
     public ShotSpawnContainer activeShotSpawnContainer;         // Tracks currently active ShotSpawnContainer object
-
     public Stack<ShotSpawnContainer> shotSpawnStack = new Stack<ShotSpawnContainer>();
     public Dictionary<Weapons, ShotSpawnContainer> shotSpawnDictionary = new Dictionary<Weapons, ShotSpawnContainer>();
+    public Queue<Powerup> activePowerups = new Queue<Powerup>();        // Keep references to powerups so if player loses, can disable all of them
+    public Powerup waveShotPowerup;     // Tracks currently active WaveShotPowerup
 
     [Header("OTHER")]
+    public bool isResetting = false;     // Denotes that we are resetting after a failed level
     public InputComponent input;
     public Rigidbody rigidBody;
     public float maxForward = 3.0f;
@@ -102,6 +104,11 @@ public class PlayerShip : FiringShip
         UpdateInput();      // This currently takes care of both input and physics; consider separating them
     }
 
+    void UpdateInput()
+    {
+        input.UpdateInput(this);
+    }
+
     public void OnDrawGizmos()
     {
         // Only draw when we're dashing
@@ -118,13 +125,31 @@ public class PlayerShip : FiringShip
 
     public void ResetPlayer()
     {
+        isResetting = true;
         rigidBody.velocity = Vector3.zero;
         rigidBody.angularVelocity = Vector3.zero;
         transform.position = GameManager.Singleton.playerStartPosition;    // Reset to start position
         transform.rotation = Quaternion.identity;
+
+        // Reset firing order
+        numShots = 0;
+        nextFire = Time.time + fireRate;
+        // Remove Firing Powerups
+        while (shotSpawnStack.Count > 1)
+        {
+            shotSpawnStack.Pop();
+        }
+        activeShotSpawnContainer = shotSpawnStack.Peek();
+        // Remove/de-activate other powerups
+        while (activePowerups.Count > 0)
+        {
+            Powerup currPowerup = activePowerups.Dequeue();
+            currPowerup.DeactivatePower();
+        }
+        isResetting = false;
     }
 
-    private void InitializeShotSpawns()
+    void InitializeShotSpawns()
     {
 
         // Add references to each of the ShotSpawnContainers into a dictionary.
@@ -181,9 +206,7 @@ public class PlayerShip : FiringShip
         {
             nextFire = Time.time + fireRate / buffedFiringRateFactor;
         }
-
         List<ShotSpawn> activeShotSpawnList = activeShotSpawnContainer.shotSpawnList;       // Get list of active shotspawns
-
         if (activeShotSpawnList != null && activeShotSpawnList.Count > 0)
         {
             foreach (ShotSpawn spawn in activeShotSpawnList)
@@ -192,8 +215,6 @@ public class PlayerShip : FiringShip
                 numShots += 1;
             }
         }
-
-
         // Simple wave shot logic
         if (waveShotEnabled)
         {
@@ -203,12 +224,10 @@ public class PlayerShip : FiringShip
         {
             CreateFrontMissiles();
         }
-
     }
 
     public override void Damage(int damageTaken)
     {
-
         if (canBeDamaged)
         {
             // Restart flicker animation
@@ -226,7 +245,6 @@ public class PlayerShip : FiringShip
             }
             UIManager.Singleton.UpdateHealth();
         }
-
     }
 
     // Flicker when hit
@@ -263,11 +281,6 @@ public class PlayerShip : FiringShip
         }
     }
 
-    private void UpdateInput()
-    {
-        input.UpdateInput(this);
-    }
-
     public void CreateWaveShots()
     {
         waveRandomVal = UnityEngine.Random.value;       // Set the random value
@@ -298,6 +311,8 @@ public class PlayerShip : FiringShip
             }
         }
     }
+
+
 
     #endregion
 }
