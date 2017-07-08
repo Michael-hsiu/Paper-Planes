@@ -38,6 +38,10 @@ public class PoolManager : MonoBehaviour
                 ObjectInstance newObject = new ObjectInstance(Instantiate(prefab) as GameObject);
                 poolDictionary[poolKey].Enqueue(newObject);
                 newObject.SetParent(poolHolder.transform);
+                if (newObject.hasPoolObjectComponent)
+                {
+                    newObject.gameObject.GetComponent<PoolObject>().poolObjHolder = poolHolder;       // All pool objects have ref to their pool
+                }
             }
         }
     }
@@ -78,7 +82,7 @@ public class PoolManager : MonoBehaviour
         public GameObject gameObject;
         Transform transform;
 
-        bool hasPoolObjectComponent;
+        public bool hasPoolObjectComponent;
         PoolObject poolObjectScript;
 
         public ObjectInstance(GameObject objectInstance)

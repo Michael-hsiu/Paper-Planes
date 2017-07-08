@@ -10,6 +10,13 @@ public class BomberBossStageTwo : Ship
     public float rushCollisionDuration = 4.0f;
     public float nextAttackTime;
     public bool rushedIntoPlayer = false;
+
+    [Header("SHARED_BY_STATES")]
+    public float initialSlingshotRotationDelay = 1.0f;
+    public float secondSlingshotRotationDelay = 1.0f;
+    public float rushAttackChargeDelay = 2.0f;
+    public float rushAttackDuration = 3.0f;
+
     public GameObject jointContainer;
     public SphereCollider collisionCollider;              // Used for RUSH_ATTACK and SLINGSHOT_ATTACK
 
@@ -67,7 +74,6 @@ public class BomberBossStageTwo : Ship
     {
 
         Move();
-
         if (Time.time > nextAttackTime)
         {
             //Debug.Log(Time.time);
@@ -79,6 +85,21 @@ public class BomberBossStageTwo : Ship
     public void Attack()
     {
         ((BomberBossStageTwoFS)fireState).UseAttack();
+    }
+
+    public override void Kill()
+    {
+        // Graphics
+        Instantiate(explosion, transform.position, transform.rotation);
+
+        // Powerup spawn chance
+        float randomVal = Random.value;
+        if (randomVal <= 1f)
+        {
+            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(transform.position);
+        }
+        // Kill logic
+        base.Kill();
     }
 
     // Tells MS to use appropriate movement
@@ -102,13 +123,12 @@ public class BomberBossStageTwo : Ship
     void OnTriggerEnter(Collider other)
     {
 
-        //if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
-        //{
+        if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
+        {
+            other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
+            Damage(GameManager.Singleton.playerDamage);         // We lost health
+        }
 
-        //    other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
-        //    Damage(GameManager.Singleton.playerDamage);         // We lost health
-
-        //}
         //else if (other.gameObject.CompareTag(Constants.PlayerTag))
         //{
         //    if (!rushedIntoPlayer && jointContainer != null)

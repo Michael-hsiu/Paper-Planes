@@ -7,9 +7,7 @@ using System;
 [SelectionBase]
 public class BomberShip : Ship
 {
-
     #region Variables
-
     [Header("BOMBER_SHIP")]
     public int explosionDamage = 50;
     public float explosionDelay = 3.0f;
@@ -21,20 +19,20 @@ public class BomberShip : Ship
     public bool canExplode = true;
     public bool isCore = false;
     public bool isSlingShotBomber = false;
+    public bool inSlingChargeMode = false;
     public BomberBoss bomberBoss;
 
-    private Rigidbody rb;
+    private Rigidbody rigidBody;
     #endregion
 
     #region Unity Life Cycle
     protected override void Start()
     {
-
         // Call our overridden initalization method
         //Initialize ();
         base.Start();
 
-        rb = GetComponent<Rigidbody>(); // For use in adjusting velocity
+        rigidBody = GetComponent<Rigidbody>(); // For use in adjusting velocity
         enemyType = EnemyType.Bomber;
 
         // Reset values from defaultValues scrObj
@@ -49,7 +47,13 @@ public class BomberShip : Ship
         moveState = GetComponent<IMoveState>();
         moveState.OnObjectReuse();
         //fireState = GetComponent<IFireState>();
-
+    }
+    public override void DestroyForReuse()
+    {
+        //transform.parent = poolObjHolder.transform;       // Move back to pool object container
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
+        base.DestroyForReuse();
     }
 
     // This is called everytime this prefab is reused
@@ -72,7 +76,6 @@ public class BomberShip : Ship
     #region Game Logic
     public override void Kill()
     {
-
         // Graphics
         Instantiate(explosion, transform.position, transform.rotation);
         float randomVal = UnityEngine.Random.value;
@@ -91,15 +94,17 @@ public class BomberShip : Ship
                 bomberBoss.ActivateStageTwo();
             }
         }
+        else if (isSlingShotBomber)
+        {
+            inSlingChargeMode = true;       // Used to keep slingshot bomber attached to boss when spinning
+        }
         base.Kill();        // Bare-bones destroyForReuse()
-
     }
 
     public override void Move()
     {
         moveState.UpdateState();
     }
-
 
     // For shots
     protected void OnTriggerEnter(Collider other)

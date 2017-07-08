@@ -10,7 +10,11 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
     public float endTime;
     //public float slingshotAttackDuration;
 
+    [Header("RUSH_ATTACK")]
+    public bool rushAttackActive = false;
+
     [Header("SLINGSHOT_ATTACK_DATA")]
+    public int bombersRemainingToLaunch;
     public bool slingShotAttackActive = false;
     public int numMobsToSpawn = 8;
     public float bomberSpawnRadius = 7.0f;
@@ -18,8 +22,8 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
     //public float currentRotationFactor;
 
     // Rotation delays
-    public float initialRotationDelay = 2.0f;
-    public float secondRotationDelay = 1.0f;
+    //public float initialRotationDelay = 2.0f;
+    //public float secondRotationDelay = 1.0f;
     public float rotEndTime;
 
     public float slingShotForce = 700.0f;   // Force of slingshots fired
@@ -77,7 +81,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal <= 1f)
+        if (randomVal <= 0.5f)
         {
             // Trigger the SLINGSHOT attack
             slingShotAttackActive = true;
@@ -88,6 +92,8 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
         else
         {
             // Trigger the RUSH attack
+            rushAttackActive = true;
+            attackStatus = AttackStatus.BOMBER_BOSS_RUSH_ATTACK;
         }
     }
 
@@ -95,6 +101,29 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
     public void SetAttackEndTime(float attackEndTime)
     {
         bomberBossStageTwo.nextAttackTime = attackEndTime + Random.Range(3.0f, 4.0f);
+    }
+
+    // This routien is for BOMBER_BOSS_RUSH_ATTACK
+    IEnumerator RushAttack()
+    {
+        while (true)
+        {
+            while (rushAttackActive)
+            {
+                // Charge the rush attack (rotate)
+                // Rush forward, stopping if we hit the player. Only use this attack if 
+                // player is certain distance away.
+
+                endTime = Time.time + bomberBossStageTwo.rushAttackChargeDelay + bomberBossStageTwo.rushAttackDuration;
+                SetAttackEndTime(endTime);      // So that Boss script won't launch any more attacks
+                bomberBossStageTwo.ActivateMovementState(endTime, Direction.BOMBER_BOSS_RUSH_MOVEMENT);
+
+                // Control given to MS (rotation)
+                yield return new WaitForSeconds(bomberBossStageTwo.rushAttackChargeDelay + bomberBossStageTwo.rushAttackDuration);
+
+                rushAttackActive = false;
+            }
+        }
     }
 
     // This routine is for BOMBER_BOSS_SLINGSHOT_MOVEMENT
@@ -113,13 +142,13 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
                 Debug.Log("SLINGING WHILE");
                 // 2s initial in-place rotation, 1s in-place rot /w bombers, 
                 // 4s before 1st launch, 'slingShotDelay' btwn ea. launch for _ bombers
-                endTime = Time.time + initialRotationDelay + secondRotationDelay + slingShotDelay * bomberSpawnPointsUnordered.Count + 15.0f;
+                endTime = Time.time + bomberBossStageTwo.initialSlingshotRotationDelay + bomberBossStageTwo.secondSlingshotRotationDelay + slingShotDelay * bomberSpawnPointsUnordered.Count + 15.0f;
                 SetAttackEndTime(endTime);      // So that Boss script won't launch any more attacks
                 //Debug.Break();
                 bomberBossStageTwo.ActivateMovementState(endTime, Direction.BOMBER_BOSS_SLINGSHOT_MOVEMENT);
 
                 // MS takes over, just rotating in place
-                yield return new WaitForSeconds(initialRotationDelay);
+                yield return new WaitForSeconds(bomberBossStageTwo.initialSlingshotRotationDelay);
 
                 // Clear the remaining bombers from last prefab use
                 List<GameObject> remainingBombers = Utils.GetChildren(spawnedMobsContainer);
@@ -146,6 +175,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
                 // Move each bomber spawn point to correct place
                 float angle = 0f;
                 int spawnCounter = numMobsToSpawn;
+                bool calcAngles = false;
                 for (int i = 0; i < bomberSpawnPointsUnordered.Count; i++)
                 {
                     //foreach (GameObject spawnPoint in bomberSpawnPointsUnordered)
@@ -174,14 +204,14 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
 
                 // Wait to come to a stop first before spawning
                 // [MS] Spin for a certain duration, with rotation speed constant
-                yield return new WaitForSeconds(secondRotationDelay);
+                yield return new WaitForSeconds(bomberBossStageTwo.secondSlingshotRotationDelay);
 
                 // [MS] now takes over, increases to max speed
                 // FS now controls slinging
                 float accelStartTime = Time.time + 4.0f;
 
                 int spawnIndex = 0;
-                int bombersRemainingToLaunch = bomberSpawnPointsOrdered.Count;
+                bombersRemainingToLaunch = bomberSpawnPointsOrdered.Count;
 
                 // For the first launch
                 targetDirection = (GameManager.Singleton.playerShip.transform.position - transform.position).normalized;
@@ -190,23 +220,29 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
 
                 // Keep slinging until all bombers are gone!
                 bool continueLaunching = true;
-                while (bombersRemainingToLaunch != 0)
+                while (continueLaunching)
                 {
                     // Choose correct mob to launch from ordered list
+                    // Check if pick multiple times, if so means that the one that was skipped over was destroyed/exploded
                     while (bomberToSlingshot == null || !bomberToSlingshot.gameObject.activeSelf && continueLaunching)
                     {
-                        GameObject activeSpawnPoint = bomberSpawnPointsOrdered[spawnIndex];
-                        bomberToSlingshot = ringBomberDictionary[activeSpawnPoint];
-                        spawnIndex += 1;
                         if (spawnIndex == bomberSpawnPointsOrdered.Count)
                         {
                             continueLaunching = false;
                         }
+                        if (!continueLaunching)
+                        {
+                            //Debug.Break();
+                            break;
+                        }
+                        GameObject activeSpawnPoint = bomberSpawnPointsOrdered[spawnIndex];
+                        bomberToSlingshot = ringBomberDictionary[activeSpawnPoint];
+                        spawnIndex += 1;
                         //Debug.Break();
                     }
-
                     if (!continueLaunching)
                     {
+                        //Debug.Break();
                         break;
                     }
 
@@ -218,38 +254,51 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
                         targetDirection *= bomberBossStageTwo.collisionCollider.radius;     // Scale to be on the radius
                         slingShotPosition = transform.position + targetDirection;    // This is the pt on the perimeter of collider
 
+                        continueLaunching = true;
                         // Just-in-case get a working bomber
                         while (bomberToSlingshot == null || !bomberToSlingshot.gameObject.activeSelf && continueLaunching)
                         {
-                            GameObject activeSpawnPoint = bomberSpawnPointsOrdered[spawnIndex];
-                            bomberToSlingshot = ringBomberDictionary[activeSpawnPoint];
-                            spawnIndex += 1;
                             if (spawnIndex == bomberSpawnPointsOrdered.Count)
                             {
                                 continueLaunching = false;
                             }
+                            if (spawnIndex == bomberSpawnPointsOrdered.Count)
+                            {
+                                continueLaunching = false;
+                            }
+                            if (!continueLaunching)
+                            {
+                                //Debug.Break();
+                                break;
+                            }
+                            GameObject activeSpawnPoint = bomberSpawnPointsOrdered[spawnIndex];
+                            bomberToSlingshot = ringBomberDictionary[activeSpawnPoint];
+                            spawnIndex += 1;
                             //Debug.Break();
                         }
-
                         if (!continueLaunching)
                         {
+                            //Debug.Break();
                             break;
                         }
+
                         // Fire at target position
                         bomberToSlingshot.GetComponent<Rigidbody>().AddForce(targetDirection.normalized * slingShotForce, ForceMode.Impulse);
+                        bomberToSlingshot.GetComponent<BomberShip>().inSlingChargeMode = false;     // Can now detach from ring and pursue player
                         accelStartTime = Time.time + slingShotDelay;    // Delay until the next time we can slingshot a mob
 
                         bomberToSlingshot.transform.parent = null;  // De-parent from container
                         bomberToSlingshot = null;
-                        bombersRemainingToLaunch -= 1;
+                        //bombersRemainingToLaunch -= 1;
                         // Launched all our bombers (#s tracked manually)
-                        if (bombersRemainingToLaunch == 0)
-                        {
-                            break;
-                        }
-
-                        accelStartTime = Time.time + slingShotDelay;    // Delay until the next time we can slingshot a mob
-                                                                        //Debug.Break();
+                        //if (bombersRemainingToLaunch == 0)
+                        //{
+                        //    break;
+                        //}
+                        //if (!continueLaunching)
+                        //{
+                        //    break;
+                        //}
                     }
                     yield return null;
                 }

@@ -32,8 +32,8 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
     public float rotationFactorInterval = 5.0f;     // How much we increase the rotation speed by
     public float maxRotationSpeed = 20.0f;
 
-    public float initialRotationDelay = 2.0f;
-    public float secondRotationDelay = 1.0f;
+    //public float initialRotationDelay = 2.0f;
+    //public float secondRotationDelay = 1.0f;
     public bool rotationSpeedIncreased = false;
     public float currentRotationFactor;
     public Rigidbody rushCollisionRigidBody;
@@ -50,18 +50,6 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
     [Header("SLINGSHOT_ATTACK_DATA")]
     public bool slingShotAttackActive = false;
     public GameObject spawnedMobsContainer;
-
-    //public float slingShotForce = 700.0f;   // Force of slingshots fired
-    //public float slingShotDelay = 2.0f;     // Delay btwn slingshots fired
-    //public float slingShotErrorRange = 10.0f;   // The error distance within which slingshots are fired
-    //public Vector3 targetDirection;
-    //public Vector3 slingShotPosition;
-    //public GameObject slingShotBomberShip;   // This is the prefab we spawn
-    //public List<PoolObject> bombersSpawned = new List<PoolObject>();
-    //public Queue<PoolObject> bombersSpawnedQueue = new Queue<PoolObject>();
-    //public List<GameObject> bomberSpawnPointsUnordered = new List<GameObject>();        // To move to correct angle / pos
-    //public List<GameObject> bomberSpawnPointsOrdered = new List<GameObject>();          // The actual order we fire bombers
-
     public GameObject bomberToSlingshot;           // Currently active bomber to slingshot
     IEnumerator slingShotMovementRoutine;
 
@@ -93,7 +81,11 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
     {
         if (newDirection == Direction.BOMBER_BOSS_SLINGSHOT_MOVEMENT)
         {
-            ActivateSlingShotMovement(endTime);
+            ActivateSlingShotMovement();
+        }
+        else if (newDirection == Direction.BOMBER_BOSS_RUSH_MOVEMENT)
+        {
+            ActivateRushMovement();
         }
     }
 
@@ -103,9 +95,28 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
         {
             DeactivateSlingShotMovement();
         }
+        else if (direction == Direction.BOMBER_BOSS_RUSH_MOVEMENT)
+        {
+            DeactivateMovementState();
+        }
     }
 
-    public void ActivateSlingShotMovement(float endTime)
+    public void ActivateRushMovement()
+    {
+        direction = Direction.BOMBER_BOSS_RUSH_MOVEMENT;
+        rushAttackMovementActive = true;
+        rushAttackMovementRoutine = RushAttackMovement();
+        StartCoroutine(rushAttackMovementRoutine);
+    }
+
+    public void DeactivateRushMovement()
+    {
+        direction = Direction.PLAYER_DETECTED;
+        rushAttackMovementActive = false;
+        rushAttackMovementRoutine = null;
+    }
+
+    public void ActivateSlingShotMovement()
     {
         direction = Direction.BOMBER_BOSS_SLINGSHOT_MOVEMENT;
         slingShotAttackActive = true;
@@ -127,7 +138,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
     {
         // Wait to come to a stop first before spawning
         // Spin for a certain duration, with rotation speed constant
-        rotEndTime = Time.time + initialRotationDelay;
+        rotEndTime = Time.time + bomberBossStageTwo.initialSlingshotRotationDelay;
         while (Time.time < rotEndTime)
         {
             // Rotate the center sprite
@@ -139,7 +150,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
 
         // Now FS spawns bombers
         // Spin for a certain duration, with rotation speed constant
-        rotEndTime = Time.time + secondRotationDelay;
+        rotEndTime = Time.time + bomberBossStageTwo.secondSlingshotRotationDelay;
         while (Time.time < rotEndTime)
         {
             // Rotate the center sprite
@@ -186,25 +197,38 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
         {
             if (rushAttackMovementActive)
             {
-
                 // Start rotating faster, getting ready to rush to player. Eye should move, colors should change.
-                rotationSpeedIncreased = true;
-                yield return new WaitForSeconds(rushAttackChargeTime * 2 / 3);
-                directionToPlayer = (bomberBossStageTwo.target.transform.position - bomberBossStageTwo.transform.position).normalized;
-                yield return new WaitForSeconds(rushAttackChargeTime * 1 / 3);
+                float rushRotEndTime = Time.time + bomberBossStageTwo.rushAttackChargeDelay;
+                while (Time.time < rushRotEndTime)
+                {
+                    newRotationAngle = Vector3.forward * currentRotationFactor * Time.deltaTime;
+                    rotatingGearSprite.transform.Rotate(newRotationAngle);
+                    ringSprite.transform.Rotate(-newRotationAngle);
 
-                rotationSpeedIncreased = false;
+                    // Rotate ring of other bombers the other way
+                    newRotationAngle *= -1;
+                    spawnedMobsContainer.transform.Rotate(newRotationAngle);
+
+                    // Speed up rotation
+                    if (currentRotationFactor < maxRotationSpeed)
+                    {
+                        // Increase by our interval, or as much as possible under the max
+                        float rotationFactorDiff = maxRotationSpeed - currentRotationFactor;
+                        currentRotationFactor += Mathf.Min(rotationFactorInterval, rotationFactorDiff);
+                        //Debug.Break();
+                    }
+                    yield return null;
+                }
+                currentRotationFactor = startingRotationFactor;
 
                 // Rush to player
                 // Collisions will knock player back and knock powerups out of them
+                directionToPlayer = (bomberBossStageTwo.target.transform.position - bomberBossStageTwo.transform.position).normalized;
                 bomberBossStageTwo.GetComponent<Rigidbody>().AddForce(directionToPlayer * thrustFactor, ForceMode.Impulse);     // Propel boss forward
-
             }
             yield return null;
         }
     }
-
-
 
     IEnumerator StartRotating()
     {
@@ -272,8 +296,8 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
             Vector3 dist = (bomberBossStageTwo.target.transform.position - bomberBossStageTwo.transform.position).normalized;   // Find unit vector difference between target and this
 
             float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
-            //Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
-            //bomberBossStageTwo.transform.rotation = Quaternion.RotateTowards(bomberBossStageTwo.transform.rotation, desiredRotation, bomberBossStageTwo.rotationSpeed * Time.deltaTime);    // Rotate the enemy
+                                                                                //Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+                                                                                //bomberBossStageTwo.transform.rotation = Quaternion.RotateTowards(bomberBossStageTwo.transform.rotation, desiredRotation, bomberBossStageTwo.rotationSpeed * Time.deltaTime);    // Rotate the enemy
 
             bomberBossStageTwo.transform.position = Vector2.MoveTowards(bomberBossStageTwo.transform.position, bomberBossStageTwo.target.transform.position, movementSpeed * Time.deltaTime);
 

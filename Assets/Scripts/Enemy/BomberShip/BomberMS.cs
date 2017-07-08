@@ -6,6 +6,8 @@ public class BomberMS : MonoBehaviour, IMoveState
 {
 
     public Direction direction;
+    public float destroyDelay = 6.0f;
+    IEnumerator destroyRoutine;
     public Direction Direction
     {
         get
@@ -17,11 +19,11 @@ public class BomberMS : MonoBehaviour, IMoveState
             direction = value;
         }
     }
-    public BomberShip bs;
+    public BomberShip bomberShip;
 
     void Start()
     {
-        bs = GetComponent<BomberShip>();
+        bomberShip = GetComponent<BomberShip>();
 
     }
 
@@ -31,63 +33,65 @@ public class BomberMS : MonoBehaviour, IMoveState
 
     }
 
-    public void EnterState()
-    {
-
-    }
-
-    public void ExitState()
-    {
-
-    }
-
     public void UpdateState()
     {
         MoveToPlayer();
     }
 
-
+    IEnumerator DestroyAfterDuration()
+    {
+        yield return new WaitForSeconds(destroyDelay);
+        bomberShip.DestroyForReuse();
+    }
 
     public void MoveToPlayer()
     {
 
-        float movementSpeedCopy = bs.speed;
-        if (bs.isExploding && bs.target != null)
+        float movementSpeedCopy = bomberShip.speed;
+        // Trigger different movement when exploding
+        if (bomberShip.isExploding && bomberShip.target != null)
         {
-
-            transform.Rotate(Vector3.forward * bs.rotationFactor * Time.deltaTime); // Rotate the enemy MUCH FASTER; needs adjustment
-            bs.rotationFactor += 5.0f;      // Could maybe use lerp for incrementing exponentially
+            transform.Rotate(Vector3.forward * bomberShip.rotationFactor * Time.deltaTime); // Rotate the enemy MUCH FASTER; needs adjustment
+            bomberShip.rotationFactor += 5.0f;      // Could maybe use lerp for incrementing exponentially
 
             // If co-routine not running
-            if (!bs.explosionActive)
+            if (!bomberShip.explosionActive)
             {
                 //Debug.Log ("STARTED COROUTINE");
-                bs.StartExploding();        // Alert bomber ship to start exploding
+                if (destroyRoutine != null)
+                {
+                    StopCoroutine(destroyRoutine);
+                    destroyRoutine = null;
+                }
+                bomberShip.StartExploding();        // Alert bomber ship to start exploding
             }
-            if (bs.isSlingShotBomber)
+            if (bomberShip.isSlingShotBomber && !bomberShip.inSlingChargeMode)
             {
-                bs.speed = bs.explodingMoveSpeed;   // Generalize?
-                //Debug.Break();
+                bomberShip.speed = bomberShip.explodingMoveSpeed;   // Generalize?
             }
-            //return;     // Break out of method
-
+        }
+        // Destroy after it's been out of map for awhile
+        if (!bomberShip.inSlingChargeMode && destroyRoutine == null)
+        {
+            destroyRoutine = DestroyAfterDuration();
+            StartCoroutine(destroyRoutine);
         }
         if (GameManager.Singleton.playerShip.gameObject.activeInHierarchy)
         {
 
             // Enemy ship turns to face player
-            Vector3 dist = bs.target.transform.position - transform.position;   // Find vector difference between target and this
+            Vector3 dist = bomberShip.target.transform.position - transform.position;   // Find vector difference between target and this
             dist.Normalize();       // Get unit vector
 
             float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
             Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
 
-            transform.Rotate(Vector3.forward * bs.rotationFactor * Time.deltaTime); // Enemy normally rotates in circle
-            transform.position = Vector2.MoveTowards(transform.position, bs.target.transform.position, Time.deltaTime * bs.speed);
+            transform.Rotate(Vector3.forward * bomberShip.rotationFactor * Time.deltaTime); // Enemy normally rotates in circle
+            transform.position = Vector2.MoveTowards(transform.position, bomberShip.target.transform.position, Time.deltaTime * bomberShip.speed);
             //Debug.Break();
 
         }
-        bs.speed = movementSpeedCopy;
+        bomberShip.speed = movementSpeedCopy;
     }
 
     public void MoveBackwards(Ship s)

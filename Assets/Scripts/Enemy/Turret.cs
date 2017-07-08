@@ -95,7 +95,7 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
             burstFireRoutine = null;
         }
         Start();
-        Debug.Break();
+        //Debug.Break();
         // Reset start color? -color seems to freeze on last flicker
         // The only change that ever occurs is for alpha
         if (sprite != null)
