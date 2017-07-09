@@ -7,10 +7,6 @@ using System;
 
 public class UIManager : MonoBehaviour
 {
-
-
-    /************************ [VARIABLES & PROPERTIES] ************************/
-
     public Text scoreText;
     public Text scoreGoalText;
     public Text levelText;
@@ -150,8 +146,6 @@ public class UIManager : MonoBehaviour
             {
                 newScale = new Vector3(0f, scaleY, 1);
             }
-
-
             currLerpTime += Time.deltaTime;
             lerpRatio = currLerpTime / workingLerpInterval;
             //Debug.Log("INSIDE WHILE LOOP");

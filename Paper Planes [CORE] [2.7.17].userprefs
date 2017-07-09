@@ -1,14 +1,8 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/UIManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoMS.cs" Line="130" Column="30" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoFS.cs" Line="211" Column="54" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="156" Column="1" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="120" Column="5" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="57" Column="11" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="78" Column="10" />
-      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="7" Column="36" />
-      <File FileName="Assets/Scripts/General/PoolManager.cs" Line="35" Column="123" />
+      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="15" Column="28" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="9" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

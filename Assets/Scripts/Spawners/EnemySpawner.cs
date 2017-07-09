@@ -211,7 +211,13 @@ public class EnemySpawner : MonoBehaviour
 
                 //Debug.Log("ENEMY TYPE: " + enemyType);
                 // Now spawn the enemy
-                PoolManager.Instance.ReuseObject(enemyShip, spawnLoc, Quaternion.identity);
+                PoolObject poolObject = PoolManager.Instance.ReuseObjectRef(enemyShip, spawnLoc, Quaternion.identity);
+
+                // Orient the enemy towards player
+                Vector3 dist = (GameManager.Singleton.playerShip.transform.position - poolObject.transform.position).normalized;    // Find vector difference between target and this
+                float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+                Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+                poolObject.transform.rotation = desiredRotation;
 
                 // Wait a bit before spawning next enemy.
                 // We COULD spawn multiple at a time / formations!

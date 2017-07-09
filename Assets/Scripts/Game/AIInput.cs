@@ -9,7 +9,28 @@ public class AIInput : MonoBehaviour, InputComponent
 
     public bool controlsEnabled = false;
     public float disableTime;           // The amount of time that player controls are disabled when hit by EMP Wave
-                                        //public float speed = 5.0f;
+    public float speed = 10.0f;
+    public float rotationSpeed = 10.0f;
+    public float rotationDetectInterval = 0.3f;
+
+    [Header("MOBILE_CONTROLS_AND_LERP")]
+    public float lerpStartTime;
+    public float lerpRatio;
+    public float currLerpTime;
+    public float rotationEndTime;
+    public Quaternion playerStartRotation;
+    public Quaternion desiredRotation;
+    float zAngle;
+
+    [Header("FIRING_RIG_LERP")]
+    public float rigLerpStartTime;
+    public float rigLerpRatio;
+    public float rigCurrLerpTime;
+    public float rigRotationEndTime;
+    public Quaternion rigStartRotation;
+    public Quaternion rigDesiredRotation;
+
+    //public float speed = 5.0f;
     public Vector2 savedVelocity;
     public Vector2 lastDashVelocity;    // For if we get hit by EMP while dashing, we keep velocity without losing full control
                                         //public DashState dashState;		// Stores current dash state
@@ -104,17 +125,33 @@ public class AIInput : MonoBehaviour, InputComponent
             shipRotateDir.z = vert;
             if (shipRotateDir != Vector3.zero)
             {
-                float zAngle = (Mathf.Atan2(shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
-                Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+                if (Time.time > rotationEndTime)
+                {
+                    playerStartRotation = player.transform.rotation;    // Cache start rotation
+                    Vector3 playerRotEuler = playerStartRotation.eulerAngles;
+                    playerRotEuler.x = 0f;
+                    playerRotEuler.y = 0f;
+                    playerStartRotation = Quaternion.Euler(playerRotEuler);
+
+                    zAngle = (Mathf.Atan2(shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+                    desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+                    rotationEndTime = Time.time + rotationDetectInterval;   // Schedule next rotation check
+                    lerpStartTime = Time.time;
+                    currLerpTime = 0f;
+                    //Debug.Break();
+                }
+                currLerpTime += Time.deltaTime;
+                lerpRatio = currLerpTime / rotationDetectInterval;
+                player.transform.rotation = Quaternion.Slerp(playerStartRotation, desiredRotation, lerpRatio);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
+                //Debug.Break();
 
                 if (axisInput)
                 {
-                    //Rotate to face joystick direction
 
-                    player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, desiredRotation, 80f);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
+                    // Rotate to face joystick direction (rotateTowards behaves oddly b/c every frame, we get new start/end rotations)
+                    //player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
                     //player.transform.rotation = desiredRotation;        // Works for Mobile, not Mac (works if already collected firingPowerup)
                     //player.transform.rotation = Quaternion.LookRotation(desiredRotation.eulerAngles);
-
 
                     // Move in new direction we're facing
                     player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
@@ -141,15 +178,16 @@ public class AIInput : MonoBehaviour, InputComponent
                 rigRotateDir.z = yInput;
                 if (rigRotateDir != Vector3.zero)
                 {
-
                     //Rotate to face joystick direction
-                    float zAngle = (Mathf.Atan2(rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
-                    Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+                    zAngle = (Mathf.Atan2(rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+                    desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
                     player.firingRig.transform.rotation = desiredRotation;
-
                 }
             }
 
+            Vector3 playerPos = player.transform.position;
+            playerPos.z = 0f;
+            player.transform.position = playerPos;      // Weird error where mobile controls / wall collisions cause z-coordinate of player to change
             // Check if our speed cap is on (off if we're dashing!!!)
             if (GameManager.Singleton.speedCapped)
             {
