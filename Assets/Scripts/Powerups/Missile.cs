@@ -118,8 +118,8 @@ public class Missile : PoolObject
         // Get a slight movement boost towards target
         // Some variance of angles
         Vector3 targetDirection = (target.transform.position - transform.position).normalized;
-        targetDirection.x += Random.Range(-10.0f, 10.0f);
-        targetDirection.y += Random.Range(-10.0f, 10.0f);
+        targetDirection.x += Random.Range(-15.0f, 15.0f);
+        targetDirection.y += Random.Range(-15.0f, 15.0f);
         GetComponent<Rigidbody>().AddForce(targetDirection * missileLaunchForce, ForceMode.Impulse);
 
         seekingTarget = false;      // Bool flag
