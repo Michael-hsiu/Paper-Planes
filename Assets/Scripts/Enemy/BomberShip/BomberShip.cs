@@ -33,6 +33,11 @@ public class BomberShip : Ship
         base.Start();
 
         rigidBody = GetComponent<Rigidbody>(); // For use in adjusting velocity
+        if (rigidBody != null)
+        {
+            rigidBody.velocity = Vector3.zero;
+            rigidBody.angularVelocity = Vector3.zero;
+        }
         enemyType = EnemyType.Bomber;
 
         // Reset values from defaultValues scrObj
@@ -51,8 +56,7 @@ public class BomberShip : Ship
     public override void DestroyForReuse()
     {
         //transform.parent = poolObjHolder.transform;       // Move back to pool object container
-        rigidBody.velocity = Vector3.zero;
-        rigidBody.angularVelocity = Vector3.zero;
+
         base.DestroyForReuse();
     }
 

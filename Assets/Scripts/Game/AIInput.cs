@@ -20,7 +20,7 @@ public class AIInput : MonoBehaviour, InputComponent
     public float rotationEndTime;
     public Quaternion playerStartRotation;
     public Quaternion desiredRotation;
-    float zAngle;
+    float zAnglePlayer;
 
     [Header("FIRING_RIG_LERP")]
     public float rigLerpStartTime;
@@ -29,6 +29,7 @@ public class AIInput : MonoBehaviour, InputComponent
     public float rigRotationEndTime;
     public Quaternion rigStartRotation;
     public Quaternion rigDesiredRotation;
+    float zAngleFiringRig;
 
     //public float speed = 5.0f;
     public Vector2 savedVelocity;
@@ -127,14 +128,14 @@ public class AIInput : MonoBehaviour, InputComponent
             {
                 if (Time.time > rotationEndTime)
                 {
-                    playerStartRotation = player.transform.rotation;    // Cache start rotation
-                    Vector3 playerRotEuler = playerStartRotation.eulerAngles;
+                    Quaternion rawPlayerRotation = player.transform.rotation;    // Cache start rotation
+                    Vector3 playerRotEuler = rawPlayerRotation.eulerAngles;
                     playerRotEuler.x = 0f;
                     playerRotEuler.y = 0f;
                     playerStartRotation = Quaternion.Euler(playerRotEuler);
 
-                    zAngle = (Mathf.Atan2(shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
-                    desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+                    zAnglePlayer = (Mathf.Atan2(shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+                    desiredRotation = Quaternion.Euler(0, 0, zAnglePlayer);        // Store rotation as an Euler, then Quaternion
                     rotationEndTime = Time.time + rotationDetectInterval;   // Schedule next rotation check
                     lerpStartTime = Time.time;
                     currLerpTime = 0f;
@@ -143,7 +144,7 @@ public class AIInput : MonoBehaviour, InputComponent
                 currLerpTime += Time.deltaTime;
                 lerpRatio = currLerpTime / rotationDetectInterval;
                 player.transform.rotation = Quaternion.Slerp(playerStartRotation, desiredRotation, lerpRatio);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
-                //Debug.Break();
+                                                                                                                   //Debug.Break();
 
                 if (axisInput)
                 {
@@ -154,14 +155,16 @@ public class AIInput : MonoBehaviour, InputComponent
                     //player.transform.rotation = Quaternion.LookRotation(desiredRotation.eulerAngles);
 
                     // Move in new direction we're facing
-                    player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
-                }
-
-                // Burst rush rotate only
-                if (GameManager.Singleton.isBurstRushing && GameManager.Singleton.turnInput)
-                {
-                    // Also change rotation of overall player if it's active
-                    player.transform.rotation = desiredRotation;
+                    // Burst rush rotate only
+                    if (GameManager.Singleton.isBurstRushing && GameManager.Singleton.turnInput)
+                    {
+                        // Also change rotation of overall player if it's active
+                        //player.transform.rotation = desiredRotation;
+                    }
+                    else
+                    {
+                        player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
+                    }
                 }
             }
 
@@ -170,25 +173,42 @@ public class AIInput : MonoBehaviour, InputComponent
             {
                 float xInput = CrossPlatformInputManager.GetAxis("Mouse X");
                 float yInput = CrossPlatformInputManager.GetAxis("Mouse Y");
-                /*Debug.Log ("xInput: " + xInput);
-            Debug.Log ("yInput: " + yInput);*/
 
                 Vector3 rigRotateDir = Vector3.zero;
                 rigRotateDir.x = xInput;
                 rigRotateDir.z = yInput;
                 if (rigRotateDir != Vector3.zero)
                 {
+                    if (Time.time > rigRotationEndTime)
+                    {
+                        Quaternion rawFiringRigRotation = player.firingRig.transform.rotation;    // Cache start rotation
+                        Vector3 firingRigRotEuler = rawFiringRigRotation.eulerAngles;
+                        firingRigRotEuler.x = 0f;       // Remove non z-axis rot
+                        firingRigRotEuler.y = 0f;
+                        rigStartRotation = Quaternion.Euler(firingRigRotEuler);
+
+                        zAngleFiringRig = (Mathf.Atan2(rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+                        rigDesiredRotation = Quaternion.Euler(0, 0, zAngleFiringRig);        // Store rotation as an Euler, then Quaternion
+                        rigRotationEndTime = Time.time + rotationDetectInterval;             // Schedule next rotation check
+                        rigLerpStartTime = Time.time;
+                        rigCurrLerpTime = 0f;
+                    }
+                    rigCurrLerpTime += Time.deltaTime;
+                    rigLerpRatio = rigCurrLerpTime / rotationDetectInterval;
+                    player.firingRig.transform.rotation = Quaternion.Slerp(rigStartRotation, rigDesiredRotation, rigLerpRatio);
+
+                    // Works for PlayerShotSpawn rotations for Mobile, feels smoother
+                    //Debug.Break();
                     //Rotate to face joystick direction
-                    zAngle = (Mathf.Atan2(rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
-                    desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
-                    player.firingRig.transform.rotation = desiredRotation;
+                    //zAngle = (Mathf.Atan2(rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+                    //desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+                    //player.firingRig.transform.rotation = desiredRotation;
                 }
             }
-
             Vector3 playerPos = player.transform.position;
             playerPos.z = 0f;
             player.transform.position = playerPos;      // Weird error where mobile controls / wall collisions cause z-coordinate of player to change
-            // Check if our speed cap is on (off if we're dashing!!!)
+                                                        // Check if our speed cap is on (off if we're dashing!!!)
             if (GameManager.Singleton.speedCapped)
             {
                 // Limit player's maximum velocity
@@ -248,9 +268,6 @@ public class AIInput : MonoBehaviour, InputComponent
         yield return new WaitForSeconds(givenDisableTime);
         controlsEnabled = true;
     }
-
-
-
 
     // Dash powerup for player
     public void Dash(PlayerShip player)
