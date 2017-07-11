@@ -12,6 +12,7 @@ public class Missile : PoolObject
     public GameObject explosion;
     public GameObject target;
     //public int damage = 1;					// Damage vals now stored in ScrObj data container
+    public float missilePushForce = 5.0f;
     public float missileLaunchForce = 10.0f;
     public float damageRange = 10.0f;
     public float rotationSpeed = 90.0f;
@@ -118,8 +119,8 @@ public class Missile : PoolObject
         // Get a slight movement boost towards target
         // Some variance of angles
         Vector3 targetDirection = (target.transform.position - transform.position).normalized;
-        targetDirection.x += Random.Range(-15.0f, 15.0f);
-        targetDirection.y += Random.Range(-15.0f, 15.0f);
+        //3targetDirection.x += Random.Range(-15.0f, 15.0f);
+        //targetDirection.y += Random.Range(-15.0f, 15.0f);
         GetComponent<Rigidbody>().AddForce(targetDirection * missileLaunchForce, ForceMode.Impulse);
 
         seekingTarget = false;      // Bool flag
@@ -149,6 +150,7 @@ public class Missile : PoolObject
         {   // Already found target
 
             // Code for fixed rotation around z-axis https://forum.unity3d.com/threads/solved-confused-by-slerp-lerp.323462/
+            //Vector3 targetRotation = 
             Quaternion newRotation = Quaternion.LookRotation(transform.position - target.transform.position, Vector3.forward);
             newRotation.x = 0;
             newRotation.y = 0;
@@ -157,7 +159,10 @@ public class Missile : PoolObject
             //transform.rotation = Quaternion.RotateTowards (transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
             //transform.rotation = Quaternion.RotateTowards (Quaternion.Euler(0, 0, tempZ), desiredRotation, rotationSpeed * Time.deltaTime);	// Rotate the enemy
 
-            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, Time.deltaTime * speed);        // Move towards the enemy
+            // Push missile towards target using force
+            //Vector3 playerDirection = (target.transform.position - transform.position).normalized;
+            //GetComponent<Rigidbody>().AddForce(playerDirection * missilePushForce);
+            transform.position = Vector2.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);        // Move towards the enemy
         }
     }
 

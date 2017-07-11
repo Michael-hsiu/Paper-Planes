@@ -54,9 +54,11 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
         bomberBossStageTwo = GetComponent<BomberBossStageTwo>();
 
         slingshotAttackRoutine = SlingShotAttack();
+        rushAttackRoutine = RushAttack();
         //rushAttackRoutine = BulletHellAttack();
 
         StartCoroutine(slingshotAttackRoutine);
+        StartCoroutine(rushAttackRoutine);
         //StartCoroutine(rushAttackRoutine);
     }
 
@@ -67,7 +69,10 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
         StopAllCoroutines();
 
         slingshotAttackRoutine = SlingShotAttack();
+        rushAttackRoutine = RushAttack();
+
         StartCoroutine(slingshotAttackRoutine);
+        StartCoroutine(rushAttackRoutine);
     }
 
 
@@ -81,7 +86,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal <= 0.5f)
+        if (randomVal <= 0f)
         {
             // Trigger the SLINGSHOT attack
             slingShotAttackActive = true;
@@ -113,8 +118,8 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
                 // Charge the rush attack (rotate)
                 // Rush forward, stopping if we hit the player. Only use this attack if 
                 // player is certain distance away.
-
-                endTime = Time.time + bomberBossStageTwo.rushAttackChargeDelay + bomberBossStageTwo.rushAttackDuration;
+                //Debug.Break();
+                endTime = Time.time + bomberBossStageTwo.rushAttackChargeDelay + bomberBossStageTwo.rushAttackDuration + 2.0f;
                 SetAttackEndTime(endTime);      // So that Boss script won't launch any more attacks
                 bomberBossStageTwo.ActivateMovementState(endTime, Direction.BOMBER_BOSS_RUSH_MOVEMENT);
 
@@ -123,6 +128,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
 
                 rushAttackActive = false;
             }
+            yield return null;
         }
     }
 

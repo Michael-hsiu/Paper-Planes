@@ -11,6 +11,9 @@ public class BomberBossStageTwo : Ship
     public float nextAttackTime;
     public bool rushedIntoPlayer = false;
 
+    [Header("RUSH_ATTACK")]
+    public GameObject powerupFab;
+
     [Header("SHARED_BY_STATES")]
     public float initialSlingshotRotationDelay = 1.0f;
     public float secondSlingshotRotationDelay = 1.0f;
@@ -129,47 +132,80 @@ public class BomberBossStageTwo : Ship
             Damage(GameManager.Singleton.playerDamage);         // We lost health
         }
 
-        //else if (other.gameObject.CompareTag(Constants.PlayerTag))
-        //{
-        //    if (!rushedIntoPlayer && jointContainer != null)
-        //    {
-        //        //jointContainer.transform.position = collisionCollider.ClosestPointOnBounds(other.transform.position);     // This may not work due to 3D colliders
-        //        //jointContainer.transform.position = other.transform.position;
-        //        Vector3 newPosition = collisionCollider.ClosestPoint(other.transform.position);
-        //        newPosition.z = 0f;
-        //        jointContainer.transform.position = newPosition;     // This may not work due to 3D colliders
-        //        //Debug.Break();
+        else if (other.gameObject.CompareTag(Constants.PlayerTag))
+        {
+            Debug.Log(((BomberBossStageTwoMS)moveState).direction);
+            //Debug.Break();
+            if (((BomberBossStageTwoMS)moveState).direction == Direction.BOMBER_BOSS_RUSH_MOVEMENT)
+            {
+                //GetComponent<Rigidbody>().velocity = Vector3.zero;
+                //Vector3 playerDir = (other.transform.position - transform.position).normalized;
+                //other.GetComponent<PlayerShip>().GetComponent<Rigidbody>().AddForce(playerDir * 200f, ForceMode.Impulse);
+                //other.GetComponent<PlayerShip>().GetComponent<Rigidbody>().AddTorque(other.transform.up * 2000f, ForceMode.Impulse);
 
-        //        rushedIntoPlayerRoutine = RushedIntoPlayer(other.gameObject.GetComponent<PlayerShip>());
-        //        StartCoroutine(rushedIntoPlayerRoutine);
-        //    }
-        //}
+                //Debug.Break();
+
+                // OLD sticky joint logic
+                //jointContainer.transform.position = collisionCollider.ClosestPointOnBounds(other.transform.position);     // This may not work due to 3D colliders
+                //jointContainer.transform.position = other.transform.position;
+                //Vector3 newPosition = collisionCollider.ClosestPoint(other.transform.position);
+                //newPosition.z = 0f;
+                //jointContainer.transform.position = newPosition;     // This may not work due to 3D colliders
+                //Debug.Break();
+                if (!rushedIntoPlayer)
+                {
+                    rushedIntoPlayerRoutine = RushedIntoPlayer(other.gameObject.GetComponent<PlayerShip>());
+                    StartCoroutine(rushedIntoPlayerRoutine);
+                }
+            }
+        }
     }
 
     // Called when a RUSH_ATK brings us in collision w/ player
-    //IEnumerator RushedIntoPlayer(PlayerShip playerShip)
-    //{
+    IEnumerator RushedIntoPlayer(PlayerShip playerShip)
+    {
+        rushedIntoPlayer = true;
 
-    //    rushedIntoPlayer = true;
+        // Stick the player and this object together temporarily
+        //var connectionJoint = jointContainer.AddComponent<FixedJoint>();
+        //connectionJoint.connectedBody = playerShip.GetComponent<Rigidbody>();
 
-    //    // Stick the player and this object together temporarily
-    //    var connectionJoint = jointContainer.AddComponent<FixedJoint>();
-    //    connectionJoint.connectedBody = playerShip.GetComponent<Rigidbody>();
+        GameManager.Singleton.axisInput = false;                            // So we can't move while charging
+        GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
 
-    //    GameManager.Singleton.axisInput = false;                            // So we can't move while charging
-    //    GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
+        playerShip.sprite.material.color = Color.red;
+        playerShip.GetComponent<Collider>().enabled = false;
 
-    //    playerShip.sprite.material.color = Color.red;
-    //    yield return new WaitForSeconds(rushCollisionDuration);
-    //    playerShip.sprite.material.color = Color.white;
+        GameObject powerup = PoolManager.Instance.ReuseObjectRef(powerupFab, playerShip.transform.position, Quaternion.identity).gameObject;
+        Powerup powerupData = powerup.GetComponent<Powerup>();
+        powerupData.enabled = false;
+        Quaternion desiredRotation = Quaternion.Euler(0, 0, 45f);        // Store rotation as an Euler, then Quaternion
 
-    //    //Debug.Break();
-    //    Destroy(connectionJoint);
-    //    GameManager.Singleton.axisInput = true;     // Re-enable movement
-    //    GameManager.Singleton.turnInput = true;
+        Vector3 playerDir = (playerShip.transform.position - transform.position).normalized;
+        powerup.GetComponent<Rigidbody>().AddForce(playerDir * 10f, ForceMode.Impulse);
+        powerup.GetComponent<Rigidbody>().AddTorque(playerShip.transform.up * 10f, ForceMode.Impulse);
 
-    //    rushedIntoPlayer = false;
-    //}
+        Vector3 displacement = (playerShip.transform.position - transform.position).normalized * GetComponent<SphereCollider>().radius;
+        float endTime = Time.time + rushCollisionDuration;
+        while (Time.time < endTime)
+        {
+            playerShip.transform.position = transform.position + displacement;
+            yield return null;
+        }
+        playerShip.GetComponent<Collider>().enabled = true;
 
+        //Debug.Break();
+        //yield return new WaitForSeconds(rushCollisionDuration);
+        powerupData.enabled = true;
+        playerShip.sprite.material.color = Color.white;
+
+        //Debug.Break();
+        //Destroy(connectionJoint);
+        GameManager.Singleton.axisInput = true;     // Re-enable movement
+        GameManager.Singleton.turnInput = true;
+
+        yield return new WaitForSeconds(1.5f);
+        rushedIntoPlayer = false;
+    }
     #endregion
 }

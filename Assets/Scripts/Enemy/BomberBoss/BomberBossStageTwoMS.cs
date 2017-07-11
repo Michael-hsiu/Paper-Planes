@@ -79,12 +79,14 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
 
     public void ActivateMovementState(float endTime, Direction newDirection)
     {
+        //Debug.Break();
         if (newDirection == Direction.BOMBER_BOSS_SLINGSHOT_MOVEMENT)
         {
             ActivateSlingShotMovement();
         }
         else if (newDirection == Direction.BOMBER_BOSS_RUSH_MOVEMENT)
         {
+            //Debug.Break();
             ActivateRushMovement();
         }
     }
@@ -103,6 +105,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
 
     public void ActivateRushMovement()
     {
+        //Debug.Break();
         direction = Direction.BOMBER_BOSS_RUSH_MOVEMENT;
         rushAttackMovementActive = true;
         rushAttackMovementRoutine = RushAttackMovement();
@@ -197,6 +200,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
         {
             if (rushAttackMovementActive)
             {
+                //Debug.Break();
                 // Start rotating faster, getting ready to rush to player. Eye should move, colors should change.
                 float rushRotEndTime = Time.time + bomberBossStageTwo.rushAttackChargeDelay;
                 while (Time.time < rushRotEndTime)
@@ -219,12 +223,15 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
                     }
                     yield return null;
                 }
-                currentRotationFactor = startingRotationFactor;
 
                 // Rush to player
                 // Collisions will knock player back and knock powerups out of them
                 directionToPlayer = (bomberBossStageTwo.target.transform.position - bomberBossStageTwo.transform.position).normalized;
                 bomberBossStageTwo.GetComponent<Rigidbody>().AddForce(directionToPlayer * thrustFactor, ForceMode.Impulse);     // Propel boss forward
+                currentRotationFactor = startingRotationFactor;
+
+                yield return new WaitForSeconds(2.0f);      // To give time for rush
+                rushAttackMovementActive = false;
             }
             yield return null;
         }
