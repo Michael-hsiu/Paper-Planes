@@ -12,7 +12,10 @@ public class BomberBossStageTwo : Ship
     public bool rushedIntoPlayer = false;
 
     [Header("RUSH_ATTACK")]
-    public GameObject powerupFab;
+    public int rushDamage = 30;
+    public GameObject powerupFab;       // Currently just for Firing Powerup
+    public Queue<Powerup> launchedPowerups = new Queue<Powerup>();     // Keep track of launched powerups
+    public float powerupLaunchForce = 10.0f;
 
     [Header("SHARED_BY_STATES")]
     public float initialSlingshotRotationDelay = 1.0f;
@@ -68,6 +71,14 @@ public class BomberBossStageTwo : Ship
         //Debug.Break();
     }
 
+    public override void DestroyForReuse()
+    {
+        if (rushedIntoPlayerRoutine != null)
+        {
+            StopCoroutine(rushedIntoPlayerRoutine);     // So we can move again and aren't pinned programmatically to boss pos
+        }
+        base.DestroyForReuse();
+    }
     public override void Move()
     {
         moveState.UpdateState();
@@ -136,7 +147,7 @@ public class BomberBossStageTwo : Ship
         {
             Debug.Log(((BomberBossStageTwoMS)moveState).direction);
             //Debug.Break();
-            if (((BomberBossStageTwoMS)moveState).direction == Direction.BOMBER_BOSS_RUSH_MOVEMENT)
+            if (((BomberBossStageTwoMS)moveState).direction == Direction.BOMBER_BOSS_RUSH_FORWARDS_MOVEMENT)
             {
                 //GetComponent<Rigidbody>().velocity = Vector3.zero;
                 //Vector3 playerDir = (other.transform.position - transform.position).normalized;
@@ -165,7 +176,7 @@ public class BomberBossStageTwo : Ship
     IEnumerator RushedIntoPlayer(PlayerShip playerShip)
     {
         rushedIntoPlayer = true;
-
+        playerShip.Damage(rushDamage);      // Damage the player
         // Stick the player and this object together temporarily
         //var connectionJoint = jointContainer.AddComponent<FixedJoint>();
         //connectionJoint.connectedBody = playerShip.GetComponent<Rigidbody>();
@@ -176,15 +187,33 @@ public class BomberBossStageTwo : Ship
         playerShip.sprite.material.color = Color.red;
         playerShip.GetComponent<Collider>().enabled = false;
 
-        GameObject powerup = PoolManager.Instance.ReuseObjectRef(powerupFab, playerShip.transform.position, Quaternion.identity).gameObject;
-        Powerup powerupData = powerup.GetComponent<Powerup>();
-        powerupData.enabled = false;
-        Quaternion desiredRotation = Quaternion.Euler(0, 0, 45f);        // Store rotation as an Euler, then Quaternion
-
         Vector3 playerDir = (playerShip.transform.position - transform.position).normalized;
-        powerup.GetComponent<Rigidbody>().AddForce(playerDir * 10f, ForceMode.Impulse);
-        powerup.GetComponent<Rigidbody>().AddTorque(playerShip.transform.up * 10f, ForceMode.Impulse);
 
+        // Remove all firing powerups from player, and represent them as powerups getting knocked out of player at random angles
+        while (playerShip.firingPowerupEnabled)
+        {
+            playerShip.DeactivateFiringPowerup();
+
+            if (playerShip.firingPowerupEnabled)
+            {
+                GameObject powerup = PoolManager.Instance.ReuseObjectRef(powerupFab, playerShip.transform.position + playerDir * 3f, Quaternion.identity).gameObject;
+                Powerup powerupData = powerup.GetComponent<Powerup>();
+                launchedPowerups.Enqueue(powerupData);
+                powerupData.enabled = false;        // Can't be picked up by player, merely there for visual effect
+
+                // Generate random angle and knockback the powerup fab
+                float randomAngle = Random.Range(-75.0f, 75.0f);
+                Quaternion desiredRotation = Quaternion.Euler(0, 0, randomAngle);        // Store rotation as an Euler, then Quaternion
+
+                Vector3 launchDirection = desiredRotation * playerDir;
+                powerup.GetComponent<Rigidbody>().AddForce(launchDirection * powerupLaunchForce, ForceMode.Impulse);
+                powerup.GetComponent<Rigidbody>().AddTorque(playerShip.transform.up * 10f, ForceMode.Impulse);
+            }
+
+            yield return null;
+        }
+        Debug.Log("QUEUE LENGTH: " + launchedPowerups.Count);
+        //Debug.Break();
         Vector3 displacement = (playerShip.transform.position - transform.position).normalized * GetComponent<SphereCollider>().radius;
         float endTime = Time.time + rushCollisionDuration;
         while (Time.time < endTime)
@@ -196,7 +225,11 @@ public class BomberBossStageTwo : Ship
 
         //Debug.Break();
         //yield return new WaitForSeconds(rushCollisionDuration);
-        powerupData.enabled = true;
+        while (launchedPowerups.Count > 0)
+        {
+            launchedPowerups.Dequeue().GetComponent<Powerup>().enabled = true;
+            yield return null;
+        }
         playerShip.sprite.material.color = Color.white;
 
         //Debug.Break();
@@ -204,7 +237,7 @@ public class BomberBossStageTwo : Ship
         GameManager.Singleton.axisInput = true;     // Re-enable movement
         GameManager.Singleton.turnInput = true;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         rushedIntoPlayer = false;
     }
     #endregion

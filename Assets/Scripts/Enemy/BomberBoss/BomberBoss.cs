@@ -30,6 +30,7 @@ public class BomberBoss : Ship, IEnemy
     public List<ShipSpawn> shipSpawns = new List<ShipSpawn>();
     public List<BomberShip> bomberCores = new List<BomberShip>();   // STAGE 1: the parts that are damageable
     public int numCoresAlive;
+    public GameObject bomberCore;       // The damageable parts for STAGE 1
     public GameObject stageOneDeathExplosion;
     IEnumerator spawnBombersRoutine;
 
@@ -71,19 +72,33 @@ public class BomberBoss : Ship, IEnemy
         moveState = GetComponent<IMoveState>();
         fireState = GetComponent<IFireState>();
 
-        numCoresAlive = bomberCores.Count;   // # of spawning cores
+        numCoresAlive = shipSpawns.Count;   // # of spawning cores
         spawnBombersRoutine = SpawnBombers();
         StartCoroutine(spawnBombersRoutine);
+
+        //Debug.Break();
         //nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
     }
 
     // This is called everytime this prefab is reused
     public override void OnObjectReuse()
     {
-
-        StopAllCoroutines();
-        moveState = GetComponent<IMoveState>();
-        fireState = GetComponent<IFireState>();
+        if (spawnBombersRoutine != null)
+        {
+            StopCoroutine(spawnBombersRoutine);
+        }
+        Start();
+        // Spawn the Core Bombers - no nested prefabs :(
+        foreach (ShipSpawn shipSpawn in shipSpawns)
+        {
+            Debug.Log(shipSpawn.transform.localPosition);
+            BomberShip bomberShipFab = (BomberShip)(PoolManager.Instance.ReuseObjectRef(bomberCore, shipSpawn.gameObject.transform.position, Quaternion.identity));
+            bomberShipFab.bomberBoss = this;
+            Debug.Break();
+        }
+        //StopAllCoroutines();
+        //moveState = GetComponent<IMoveState>();
+        //fireState = GetComponent<IFireState>();
 
         moveState.OnObjectReuse();
         fireState.OnObjectReuse();
@@ -95,24 +110,13 @@ public class BomberBoss : Ship, IEnemy
 
     protected override void Update()
     {
-
         Move();
-
-        //if (Time.time > nextAttackTime)
-        //{
-        //    Attack();
-        //}
     }
 
     public override void Move()
     {
         moveState.UpdateState();
     }
-
-    //public void Attack()
-    //{
-    //    ((BomberBossFS)fireState).UseAttack();
-    //}
 
     // Routine for spawning bombers
     IEnumerator SpawnBombers()
@@ -155,50 +159,6 @@ public class BomberBoss : Ship, IEnemy
         Kill();
         Debug.Log("STAGE TWO SPAWNED");
         //Debug.Break();
-
-        /*OLD LOGIC*/
-        //// Destroy the middle core
-        ////centerGear.SetActive(false);
-        ////Instantiate(stageOneDeathExplosion, centerGear.transform.position, Quaternion.identity);
-        ////Debug.Break();
-
-        //// Spawn the 3 mini-bosses, administer their setup logic
-        //// They are each their own prefab, save positions/rotations as of sprites
-
-        //topGearDefaultValues.spriteInitialRotation = topGear.transform.localRotation;
-        //leftGearDefaultValues.spriteInitialRotation = lowerLeftGear.transform.rotation;
-        //rightGearDefaultValues.spriteInitialRotation = lowerRightGear.transform.rotation;
-
-        //// Spawn at position of miniboss container, at rotation of miniboss sprite (child)
-        //// We set rotation of sprites within the Start method of each miniboss, accessed thru scrObj
-        //PoolObject topGearRef = PoolManager.Instance.ReuseObjectRef(topGearStageTwoBoss, topGear.transform.position, Quaternion.identity);
-        //PoolObject leftGearRef = PoolManager.Instance.ReuseObjectRef(leftGearStageTwoBoss, lowerLeftGear.transform.position, Quaternion.identity);
-        //PoolObject rightGearRef = PoolManager.Instance.ReuseObjectRef(rightGearStageTwoBoss, lowerRightGear.transform.position, Quaternion.identity);
-
-        //((BomberMiniBoss)topGearRef).bomberBoss = this;
-        //((BomberMiniBoss)leftGearRef).bomberBoss = this;
-        //((BomberMiniBoss)rightGearRef).bomberBoss = this;
-
-        //// Use forces to push gears away from center
-        ////Vector3 topGearDiff = (topGearRef.transform.position - centerGear.transform.position).normalized;
-        ////Vector3 leftGearDiff = (leftGearRef.transform.position - centerGear.transform.position).normalized;
-        ////Vector3 rightGearDiff = (rightGearRef.transform.position - centerGear.transform.position).normalized;
-
-        ////topGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-topGearDiff * stageOneExplosionForce);
-        ////leftGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-leftGearDiff * stageOneExplosionForce);
-        ////rightGearRef.gameObject.GetComponent<Rigidbody>().AddForce(-rightGearDiff * stageOneExplosionForce);
-
-        //// Move all gears into the middle, expand middle gear
-        //Vector3 topGearDiff = (topGearRef.transform.position - centerGear.transform.position).normalized;
-        //Vector3 leftGearDiff = (leftGearRef.transform.position - centerGear.transform.position).normalized;
-        //Vector3 rightGearDiff = (rightGearRef.transform.position - centerGear.transform.position).normalized;
-
-        //rightGearRef.gameObject.GetComponent<BomberMiniBossMS>().slingShotAttackActive = true;
-
-
-        //// Normal kill logic, point distribution
-        //Kill();
-        ////Debug.Break();
     }
 
     // Tells MS to use appropriate movement
@@ -218,10 +178,8 @@ public class BomberBoss : Ship, IEnemy
 
         if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
         {
-
             other.gameObject.GetComponent<PoolObject>().DestroyForReuse();      // Destroy the shot that hit us
             Damage(GameManager.Singleton.playerDamage);         // We lost health
-
         }
     }
 

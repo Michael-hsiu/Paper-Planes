@@ -84,7 +84,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
         {
             ActivateSlingShotMovement();
         }
-        else if (newDirection == Direction.BOMBER_BOSS_RUSH_MOVEMENT)
+        else if (newDirection == Direction.BOMBER_BOSS_RUSH_CHARGE_MOVEMENT)
         {
             //Debug.Break();
             ActivateRushMovement();
@@ -97,7 +97,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
         {
             DeactivateSlingShotMovement();
         }
-        else if (direction == Direction.BOMBER_BOSS_RUSH_MOVEMENT)
+        else if (direction == Direction.BOMBER_BOSS_RUSH_FORWARDS_MOVEMENT)
         {
             DeactivateMovementState();
         }
@@ -106,7 +106,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
     public void ActivateRushMovement()
     {
         //Debug.Break();
-        direction = Direction.BOMBER_BOSS_RUSH_MOVEMENT;
+        direction = Direction.BOMBER_BOSS_RUSH_CHARGE_MOVEMENT;
         rushAttackMovementActive = true;
         rushAttackMovementRoutine = RushAttackMovement();
         StartCoroutine(rushAttackMovementRoutine);
@@ -223,7 +223,7 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
                     }
                     yield return null;
                 }
-
+                direction = Direction.BOMBER_BOSS_RUSH_FORWARDS_MOVEMENT;       // So we can sticky the player
                 // Rush to player
                 // Collisions will knock player back and knock powerups out of them
                 directionToPlayer = (bomberBossStageTwo.target.transform.position - bomberBossStageTwo.transform.position).normalized;

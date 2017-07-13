@@ -56,7 +56,8 @@ public class BomberShip : Ship
     public override void DestroyForReuse()
     {
         //transform.parent = poolObjHolder.transform;       // Move back to pool object container
-
+        //Debug.Log(name);
+        //Debug.Break();
         base.DestroyForReuse();
     }
 
@@ -92,6 +93,7 @@ public class BomberShip : Ship
         // CORE logic is only for BomberBoss-utilized Bombers
         if (isCore)
         {
+            Debug.Break();
             bomberBoss.numCoresAlive -= 1;
             if (bomberBoss.numCoresAlive == 0)
             {
@@ -102,6 +104,7 @@ public class BomberShip : Ship
         {
             inSlingChargeMode = true;       // Used to keep slingshot bomber attached to boss when spinning
         }
+        Debug.Break();
         base.Kill();        // Bare-bones destroyForReuse()
     }
 
@@ -181,7 +184,7 @@ public class BomberShip : Ship
 
         // Set this to have only one co-routine running
         explosionActive = true;
-
+        //Debug.Log(name + "EXPLODING");
         // The following 2 'color's are different! The first one, changing material color, is what we want!
         sprite.material.color = Color.red;        // This will show a change in the material color
         //GetComponentInChildren<SpriteRenderer>().color = Color.red;     // This will show a change in color field of Sprite Renderer, which isn't what we want in this case

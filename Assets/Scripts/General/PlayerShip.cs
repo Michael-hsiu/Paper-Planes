@@ -27,6 +27,7 @@ public class PlayerShip : FiringShip
     public float dashDuration = 5f;
     public bool rushStarted = false;
     public bool canBeDamaged = true;
+    public bool firingPowerupEnabled = false;
 
     [Header("WAVE_SHOT DEPENDENCIES")]
     // Wave shot dependencies
@@ -174,7 +175,7 @@ public class PlayerShip : FiringShip
         }
 
         // Then remove old powerup (if not LEVEL_ONE)...
-        if (activeShotSpawnContainer.firingPowerupID != PlayerShip.Weapons.LEVEL_ONE)
+        if (activeShotSpawnContainer.firingPowerupID > PlayerShip.Weapons.LEVEL_ONE)
         {
             shotSpawnStack.Pop();
         }
@@ -184,15 +185,31 @@ public class PlayerShip : FiringShip
         nowActiveshotSpawnContainer.activePowerup = invokingPowerup;        // In case we want to cancel the Invoke
         shotSpawnStack.Push(nowActiveshotSpawnContainer);
         activeShotSpawnContainer = nowActiveshotSpawnContainer;     // Record the powerup so we can deactivate its CancelInvoke call as needed
+        if (!firingPowerupEnabled)
+        {
+            firingPowerupEnabled = true;
+        }
     }
 
     public void DeactivateFiringPowerup()
     {
-        if (activeShotSpawnContainer.firingPowerupID != PlayerShip.Weapons.LEVEL_ONE)
+        if (activeShotSpawnContainer.firingPowerupID > Weapons.LEVEL_ONE)
         {
             ShotSpawnContainer oldContainer = shotSpawnStack.Pop();
-            activeShotSpawnContainer = shotSpawnDictionary[Weapons.LEVEL_ONE];
+            activeShotSpawnContainer = shotSpawnDictionary[activeShotSpawnContainer.firingPowerupID - 1];
+            shotSpawnStack.Push(activeShotSpawnContainer);
+            // Only default shotspawn is in the stack
+            if (shotSpawnStack.Count == 1)
+            {
+                firingPowerupEnabled = false;
+            }
             Debug.Log(String.Format(oldContainer.firingPowerupID + " FIRING POWERUP DEACTIVATED AT ENDTIME: {0}", Time.time));
+        }
+        else
+        {
+            firingPowerupEnabled = false;
+            Debug.Log(activeShotSpawnContainer.firingPowerupID);
+            //Debug.Break();
         }
     }
 

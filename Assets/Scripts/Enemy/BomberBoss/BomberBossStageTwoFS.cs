@@ -121,7 +121,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
                 //Debug.Break();
                 endTime = Time.time + bomberBossStageTwo.rushAttackChargeDelay + bomberBossStageTwo.rushAttackDuration + 2.0f;
                 SetAttackEndTime(endTime);      // So that Boss script won't launch any more attacks
-                bomberBossStageTwo.ActivateMovementState(endTime, Direction.BOMBER_BOSS_RUSH_MOVEMENT);
+                bomberBossStageTwo.ActivateMovementState(endTime, Direction.BOMBER_BOSS_RUSH_CHARGE_MOVEMENT);
 
                 // Control given to MS (rotation)
                 yield return new WaitForSeconds(bomberBossStageTwo.rushAttackChargeDelay + bomberBossStageTwo.rushAttackDuration);
