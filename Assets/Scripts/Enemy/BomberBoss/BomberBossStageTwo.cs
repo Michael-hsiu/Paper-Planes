@@ -84,6 +84,8 @@ public class BomberBossStageTwo : Ship
             GameManager.Singleton.axisInput = true;     // Re-enable movement
             GameManager.Singleton.turnInput = true;
             rushedIntoPlayer = false;
+
+            Debug.Break();
         }
         base.DestroyForReuse();
     }
@@ -172,6 +174,12 @@ public class BomberBossStageTwo : Ship
                 //Debug.Break();
                 if (!rushedIntoPlayer)
                 {
+                    if (rushedIntoPlayerRoutine != null)
+                    {
+                        StopCoroutine(rushedIntoPlayerRoutine);
+                    }
+                    rushedIntoPlayerRoutine = null;
+                    rushedIntoPlayer = true;
                     rushedIntoPlayerRoutine = RushedIntoPlayer(other.gameObject.GetComponent<PlayerShip>());
                     StartCoroutine(rushedIntoPlayerRoutine);
                 }
@@ -191,8 +199,8 @@ public class BomberBossStageTwo : Ship
         //GameManager.Singleton.axisInput = false;                            // So we can't move while charging
         //GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
 
-        playerShip.sprite.material.color = Color.red;
         playerShip.GetComponent<Collider>().enabled = false;
+        playerShip.sprite.material.color = Color.red;
 
         Vector3 playerDir = (playerShip.transform.position - transform.position).normalized;
 
@@ -216,7 +224,6 @@ public class BomberBossStageTwo : Ship
                 powerup.GetComponent<Rigidbody>().AddForce(launchDirection * powerupLaunchForce, ForceMode.Impulse);
                 powerup.GetComponent<Rigidbody>().AddTorque(playerShip.transform.up * 10f, ForceMode.Impulse);
             }
-
             yield return null;
         }
         Debug.Log("QUEUE LENGTH: " + launchedPowerups.Count);
@@ -225,10 +232,12 @@ public class BomberBossStageTwo : Ship
 
         // Disable controls and programatically push player along
         InputManager.Singleton.GetInputComponent().DisableControls(rushCollisionDuration);
+
         float endTime = Time.time + rushCollisionDuration;
         while (Time.time < endTime)
         {
             playerShip.transform.position = transform.position + displacement;
+            playerShip.sprite.material.color = Color.red;
             yield return null;
         }
         playerShip.GetComponent<Collider>().enabled = true;
@@ -240,14 +249,15 @@ public class BomberBossStageTwo : Ship
             launchedPowerups.Dequeue().GetComponent<Powerup>().enabled = true;
             yield return null;
         }
-        playerShip.sprite.material.color = Color.white;
 
         //Debug.Break();
         //Destroy(connectionJoint);
         //GameManager.Singleton.axisInput = true;     // Re-enable movement
         //GameManager.Singleton.turnInput = true;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.15f);
+        playerShip.sprite.material.color = Color.white;
+
         rushedIntoPlayer = false;
     }
     #endregion
