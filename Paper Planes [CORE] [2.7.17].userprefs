@@ -1,15 +1,14 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/GamePoolManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/Ship.cs">
     <Files>
-      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="7" Column="14" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="149" Column="44" />
-      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="18" Column="5" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="219" Column="13" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoFS.cs" Line="165" Column="55" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoMS.cs" Line="74" Column="52" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="239" Column="9" />
       <File FileName="Assets/Prefabs/Powerups/FiringPowerup.cs" Line="63" Column="16" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/EMPWaveShot.cs" Line="61" Column="71" />
-      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="138" Column="55" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="5" Column="16" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="166" Column="23" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="76" Column="101" />
+      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="55" Column="10" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="67" Column="28" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="56" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

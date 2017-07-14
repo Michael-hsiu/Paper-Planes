@@ -237,14 +237,18 @@ public class UIManager : MonoBehaviour
     public void OnLevelStartUpdateUI()
     {
 
-        // Can we dynamically pass in params to event subscribers?
-        levelGoalRoutine = IncreaseLevelRoutine(GameManager.Singleton.currLevel);
-
         shopButton.SetActive(false);
         startGameButton.gameObject.SetActive(false);
         scoreGoalText.text = GameManager.Singleton.scoreBoundaries[GameManager.Singleton.currLevel].ToString();
 
-        //StopAllCoroutines ();
+        // Can we dynamically pass in params to event subscribers?
+        if (levelGoalRoutine != null)
+        {
+            StopCoroutine(levelGoalRoutine);
+            levelGoalRoutine = null;
+            levelGoalText.gameObject.SetActive(false);      // Hide the text
+        }
+        levelGoalRoutine = IncreaseLevelRoutine(GameManager.Singleton.currLevel);
         StartCoroutine(levelGoalRoutine);
     }
 
@@ -252,39 +256,42 @@ public class UIManager : MonoBehaviour
     IEnumerator IncreaseLevelRoutine(int currLevel)
     {
 
-        if (currLevel == 0)
-        {
+        //if (currLevel == 0)
+        //{
 
-            String goalText = "Ready...begin!!!";
-            levelGoalText.gameObject.SetActive(true);
-            levelGoalText.text = goalText;
-            yield return new WaitForSeconds(1.5f);  // Show the level goal text on screen
-            levelGoalText.gameObject.SetActive(false);      // Hide the text
+        //    String goalText = "Ready...begin!!!";
+        //    levelGoalText.gameObject.SetActive(true);
+        //    levelGoalText.text = goalText;
+        //    yield return new WaitForSeconds(1.5f);  // Show the level goal text on screen
+        //    levelGoalText.gameObject.SetActive(false);      // Hide the text
 
-        }
-        else
-        {
+        //}
+        //else
+        //{
 
-            String goalText = "WARNING: Difficulty increased!!!";
-            levelGoalText.gameObject.SetActive(true);
-            levelGoalText.text = goalText;
-            yield return new WaitForSeconds(0.7f);  // Show the level goal text on screen
+        //String goalText = "WARNING: Difficulty increased!!!";
+        // scoreBoundaries list is zero-indexed (1st level is index 0)
+        String goalText = "WAVE " + (GameManager.Singleton.currLevel + 1) + ": BEGIN!";
+        levelGoalText.gameObject.SetActive(true);
+        levelGoalText.text = goalText;
+        yield return new WaitForSeconds(1.5f);  // Show the level goal text on screen
 
-            // Blink on and off
-            levelGoalText.gameObject.SetActive(false);      // Hide the text
-            yield return new WaitForSeconds(0.3f);  // Show the level goal text on screen
+        // Blink on and off
+        //levelGoalText.gameObject.SetActive(false);      // Hide the text
+        //yield return new WaitForSeconds(0.3f);  // Show the level goal text on screen
 
-            levelGoalText.gameObject.SetActive(true);
-            yield return new WaitForSeconds(0.7f);  // Show the level goal text on screen
+        //levelGoalText.gameObject.SetActive(true);
+        //yield return new WaitForSeconds(0.7f);  // Show the level goal text on screen
 
-            levelGoalText.gameObject.SetActive(false);      // Hide the text
-            yield return new WaitForSeconds(0.3f);  // Show the level goal text on screen
+        //levelGoalText.gameObject.SetActive(false);      // Hide the text
+        //yield return new WaitForSeconds(0.3f);  // Show the level goal text on screen
 
-            levelGoalText.gameObject.SetActive(true);
-            yield return new WaitForSeconds(0.7f);  // Show the level goal text on screen
+        //levelGoalText.gameObject.SetActive(true);
+        //yield return new WaitForSeconds(0.7f);  // Show the level goal text on screen
 
-            levelGoalText.gameObject.SetActive(false);      // Hide the text
-        }
+        levelGoalText.gameObject.SetActive(false);      // Hide the text
+        levelGoalRoutine = null;
+        //}
     }
 
 

@@ -64,16 +64,16 @@ public class BomberShip : Ship
     // This is called everytime this prefab is reused
     public override void OnObjectReuse()
     {
-        StopAllCoroutines();
+        //StopAllCoroutines();
         Start();
 
-        //if (sprite != null)
-        //{
-        Color resetColor = startColor;
-        resetColor.a = 1f;
-        sprite.material.color = resetColor;
-        Debug.Log("BOMBER SPRITE RESET!");
-        //}
+        if (sprite != null)
+        {
+            Color resetColor = startColor;
+            resetColor.a = 1f;
+            sprite.material.color = resetColor;
+            Debug.Log("BOMBER SPRITE RESET!");
+        }
     }
 
     #endregion

@@ -163,6 +163,7 @@ public class GameManager : MonoBehaviour
         playerScore = 0;
 
         // Reset level logic
+        currLevel = 0;
         targetScore = scoreBoundaries[0];
         levelActive = true;
 

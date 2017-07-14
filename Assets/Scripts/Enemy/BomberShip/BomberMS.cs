@@ -40,8 +40,8 @@ public class BomberMS : MonoBehaviour, IMoveState
 
     IEnumerator DestroyAfterDuration()
     {
-        //Debug.Log("HALTING");
-        //Debug.Break();
+        Debug.Log("HALTING");
+        Debug.Break();
         yield return new WaitForSeconds(destroyDelay);
         bomberShip.DestroyForReuse();
     }
@@ -73,7 +73,7 @@ public class BomberMS : MonoBehaviour, IMoveState
             }
         }
         // Destroy after it's been out of map for awhile
-        if (!bomberShip.inSlingChargeMode && !bomberShip.isCore && destroyRoutine == null)
+        if (!bomberShip.inSlingChargeMode && bomberShip.isSlingShotBomber && destroyRoutine == null)
         {
             destroyRoutine = DestroyAfterDuration();
             StartCoroutine(destroyRoutine);

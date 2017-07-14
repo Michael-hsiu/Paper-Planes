@@ -123,6 +123,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
         GameManager.Singleton.UpdateScore(enemyPoints); // Add new score in GameManager
         UIManager.Singleton.UpdateScore();  // Update score in UI
 
+        hitFlickerRoutine = null;
         //Debug.Log("RANGED SHIP KILLED! Obtained: " + enemyPoints + "points!");
         //}
         //Instantiate(explosion, transform.position, transform.rotation);
