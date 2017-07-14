@@ -49,7 +49,7 @@ public class AIInput : MonoBehaviour, InputComponent
         if (controlsEnabled)
         {
             // Auto-fire
-            if (Time.time > player.nextFire && !GameManager.Singleton.isBurstRushing && !player.dashStarted)
+            if (Time.time > player.nextFire && !GameManager.Singleton.isBurstRushCharging && !GameManager.Singleton.isBurstRushing && !player.dashStarted)
             {
                 player.Fire();
             }
@@ -126,45 +126,45 @@ public class AIInput : MonoBehaviour, InputComponent
             shipRotateDir.z = vert;
             if (shipRotateDir != Vector3.zero)
             {
-                if (Time.time > rotationEndTime)
+                // Only turn if no abnormal status OR is burst rush charging
+                if (axisInput || GameManager.Singleton.isBurstRushCharging)
                 {
-                    Quaternion rawPlayerRotation = player.transform.rotation;    // Cache start rotation
-                    Vector3 playerRotEuler = rawPlayerRotation.eulerAngles;
-                    playerRotEuler.x = 0f;
-                    playerRotEuler.y = 0f;
-                    playerStartRotation = Quaternion.Euler(playerRotEuler);
+                    if (Time.time > rotationEndTime)
+                    {
+                        Quaternion rawPlayerRotation = player.transform.rotation;    // Cache start rotation
+                        Vector3 playerRotEuler = rawPlayerRotation.eulerAngles;
+                        playerRotEuler.x = 0f;
+                        playerRotEuler.y = 0f;
+                        playerStartRotation = Quaternion.Euler(playerRotEuler);
 
-                    zAnglePlayer = (Mathf.Atan2(shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
-                    desiredRotation = Quaternion.Euler(0, 0, zAnglePlayer);        // Store rotation as an Euler, then Quaternion
-                    rotationEndTime = Time.time + rotationDetectInterval;   // Schedule next rotation check
-                    lerpStartTime = Time.time;
-                    currLerpTime = 0f;
-                    //Debug.Break();
-                }
-                currLerpTime += Time.deltaTime;
-                lerpRatio = currLerpTime / rotationDetectInterval;
-                player.transform.rotation = Quaternion.Slerp(playerStartRotation, desiredRotation, lerpRatio);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
-                                                                                                                   //Debug.Break();
-
-                if (axisInput)
-                {
+                        zAnglePlayer = (Mathf.Atan2(shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+                        desiredRotation = Quaternion.Euler(0, 0, zAnglePlayer);        // Store rotation as an Euler, then Quaternion
+                        rotationEndTime = Time.time + rotationDetectInterval;   // Schedule next rotation check
+                        lerpStartTime = Time.time;
+                        currLerpTime = 0f;
+                        //Debug.Break();
+                    }
+                    currLerpTime += Time.deltaTime;
+                    lerpRatio = currLerpTime / rotationDetectInterval;
+                    player.transform.rotation = Quaternion.Slerp(playerStartRotation, desiredRotation, lerpRatio);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
 
                     // Rotate to face joystick direction (rotateTowards behaves oddly b/c every frame, we get new start/end rotations)
                     //player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
                     //player.transform.rotation = desiredRotation;        // Works for Mobile, not Mac (works if already collected firingPowerup)
                     //player.transform.rotation = Quaternion.LookRotation(desiredRotation.eulerAngles);
 
-                    // Move in new direction we're facing
-                    // Burst rush rotate only
-                    if (GameManager.Singleton.isBurstRushing && GameManager.Singleton.turnInput)
-                    {
-                        // Also change rotation of overall player if it's active
-                        //player.transform.rotation = desiredRotation;
-                    }
-                    else
-                    {
-                        player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
-                    }
+                }
+                // Move in new direction we're facing
+                // Burst rush rotate only
+                // This part is for adding forward force
+                if (GameManager.Singleton.isBurstRushing && GameManager.Singleton.turnInput)
+                {
+                    // No rotation change
+                    //Debug.Break();
+                }
+                else if (!GameManager.Singleton.isBurstRushCharging && !GameManager.Singleton.isBurstRushing)
+                {
+                    player.GetComponent<Rigidbody>().AddForce(player.transform.up * player.speed);
                 }
             }
 

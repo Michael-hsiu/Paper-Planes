@@ -31,7 +31,10 @@ public class GameManager : MonoBehaviour
     public bool turnInput = true;
     public bool speedCapped = true;
     public bool isDashing = false;
-    public bool isBurstRushing = false;     // Prevents multiple burst rushes
+
+    public bool isBurstRushCharging = false;     // Prevents multiple burst rushes
+    public bool isBurstRushing = false;
+
     public bool onDashCooldown = false;
     public int numDashes = 99;
 

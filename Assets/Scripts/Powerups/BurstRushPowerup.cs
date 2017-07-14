@@ -43,7 +43,7 @@ public class BurstRushPowerup : PoolObject
     void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.CompareTag(Constants.PlayerTag) && !GameManager.Singleton.isBurstRushing)
+        if (other.gameObject.CompareTag(Constants.PlayerTag) && !GameManager.Singleton.isBurstRushCharging && !GameManager.Singleton.isBurstRushing)
         {
             // Do weapons logic; spawn things
 
@@ -84,7 +84,7 @@ public class BurstRushPowerup : PoolObject
     {
 
         player.rushStarted = true;          // Player cannot use other powerups
-        GameManager.Singleton.isBurstRushing = true;
+        GameManager.Singleton.isBurstRushCharging = true;
         GameManager.Singleton.playerShip.canBeDamaged = false;
         //Debug.Break ();
 
@@ -102,7 +102,7 @@ public class BurstRushPowerup : PoolObject
 
         // Begin Phase II - rush stage.
         isCharging = false;
-
+        GameManager.Singleton.isBurstRushCharging = false;
         rushRoutine = StartRush();
         StartCoroutine(rushRoutine);
 
@@ -111,10 +111,12 @@ public class BurstRushPowerup : PoolObject
 
     IEnumerator StartRush()
     {
+        GameManager.Singleton.isBurstRushing = true;
 
         GameManager.Singleton.speedCapped = false;
         GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
         BurstRushManager.Instance.burstRushColliders.SetActive(true);
+
 
         player.GetComponent<Rigidbody>().AddForce(player.transform.up * thrust, ForceMode.Impulse);     // Propel player forward
 
@@ -133,14 +135,15 @@ public class BurstRushPowerup : PoolObject
         rushRoutine = null;
         player.rushStarted = false;     // Allow player to now use other powerups
         GameManager.Singleton.speedCapped = true;
-        GameManager.Singleton.axisInput = true;     // Re-enable movement
-        GameManager.Singleton.turnInput = true;
 
-        GameManager.Singleton.isBurstRushing = false;
+
 
         // Player cannot be hit during or for a little after a rush
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         GameManager.Singleton.playerShip.canBeDamaged = true;
+        GameManager.Singleton.axisInput = true;     // Re-enable movement
+        GameManager.Singleton.turnInput = true;
+        GameManager.Singleton.isBurstRushing = false;
 
         //player.GetComponent<Collider>().enabled = true;
 
