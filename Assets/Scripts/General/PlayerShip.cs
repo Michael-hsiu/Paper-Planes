@@ -17,7 +17,6 @@ public class PlayerShip : FiringShip
     };
 
     #region Variables
-
     [Header("POWERUPS")]
     public int numShots = 0;
     public bool dashStarted = false;

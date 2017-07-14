@@ -10,11 +10,11 @@ public class ShipSpawn : MonoBehaviour
 
     void Start()
     {
-        spawnLocation = transform.position;
+        //spawnLocation = transform.position;
     }
 
     public void Spawn()
     {
-        PoolManager.Instance.ReuseObject(shipToSpawn, spawnLocation, Quaternion.identity);
+        PoolManager.Instance.ReuseObject(shipToSpawn, transform.position, Quaternion.identity);
     }
 }

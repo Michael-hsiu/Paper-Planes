@@ -29,6 +29,7 @@ public class BomberBoss : Ship, IEnemy
     public float stageOneExplosionForce = 1000.0f;
     public List<ShipSpawn> shipSpawns = new List<ShipSpawn>();
     public List<BomberShip> bomberCores = new List<BomberShip>();   // STAGE 1: the parts that are damageable
+    private Queue<PoolObject> spawnedCores = new Queue<PoolObject>();   // Hold refs to destroy on reset
     public int numCoresAlive;
     public GameObject bomberCore;       // The damageable parts for STAGE 1
     public GameObject stageOneDeathExplosion;
@@ -64,7 +65,6 @@ public class BomberBoss : Ship, IEnemy
 
 
     #region Unity Life Cycle
-
     protected override void Start()
     {
 
@@ -76,6 +76,22 @@ public class BomberBoss : Ship, IEnemy
         spawnBombersRoutine = SpawnBombers();
         StartCoroutine(spawnBombersRoutine);
 
+        // Remove any core bombers still alive, then populate
+        while (spawnedCores.Count > 0)
+        {
+            PoolObject corePoolObj = spawnedCores.Dequeue();
+            if (corePoolObj.gameObject.activeInHierarchy)
+            {
+                corePoolObj.DestroyForReuse();
+            }
+        }
+        foreach (ShipSpawn shipSpawn in shipSpawns)
+        {
+            Debug.Log(shipSpawn.transform.localPosition);
+            BomberShip bomberShipFab = (BomberShip)(PoolManager.Instance.ReuseObjectRef(bomberCore, shipSpawn.gameObject.transform.position, Quaternion.identity));
+            spawnedCores.Enqueue(bomberShipFab);    // Enqueue for later destruction
+            bomberShipFab.bomberBoss = this;
+        }
         //Debug.Break();
         //nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
     }
@@ -89,13 +105,8 @@ public class BomberBoss : Ship, IEnemy
         }
         Start();
         // Spawn the Core Bombers - no nested prefabs :(
-        foreach (ShipSpawn shipSpawn in shipSpawns)
-        {
-            Debug.Log(shipSpawn.transform.localPosition);
-            BomberShip bomberShipFab = (BomberShip)(PoolManager.Instance.ReuseObjectRef(bomberCore, shipSpawn.gameObject.transform.position, Quaternion.identity));
-            bomberShipFab.bomberBoss = this;
-            Debug.Break();
-        }
+
+        //Debug.Break();
         //StopAllCoroutines();
         //moveState = GetComponent<IMoveState>();
         //fireState = GetComponent<IFireState>();

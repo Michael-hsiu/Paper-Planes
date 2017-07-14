@@ -93,7 +93,7 @@ public class BomberShip : Ship
         // CORE logic is only for BomberBoss-utilized Bombers
         if (isCore)
         {
-            Debug.Break();
+            //Debug.Break();
             bomberBoss.numCoresAlive -= 1;
             if (bomberBoss.numCoresAlive == 0)
             {
@@ -104,7 +104,7 @@ public class BomberShip : Ship
         {
             inSlingChargeMode = true;       // Used to keep slingshot bomber attached to boss when spinning
         }
-        Debug.Break();
+        //Debug.Break();
         base.Kill();        // Bare-bones destroyForReuse()
     }
 

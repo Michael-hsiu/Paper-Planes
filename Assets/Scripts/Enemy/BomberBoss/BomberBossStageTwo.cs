@@ -76,6 +76,14 @@ public class BomberBossStageTwo : Ship
         if (rushedIntoPlayerRoutine != null)
         {
             StopCoroutine(rushedIntoPlayerRoutine);     // So we can move again and aren't pinned programmatically to boss pos
+            rushedIntoPlayerRoutine = null;
+
+            // Just in case rush coroutine was interrupted
+            GameManager.Singleton.playerShip.sprite.material.color = Color.white;
+            GameManager.Singleton.playerShip.GetComponent<Collider>().enabled = true;
+            GameManager.Singleton.axisInput = true;     // Re-enable movement
+            GameManager.Singleton.turnInput = true;
+            rushedIntoPlayer = false;
         }
         base.DestroyForReuse();
     }
@@ -86,7 +94,6 @@ public class BomberBossStageTwo : Ship
 
     protected override void Update()
     {
-
         Move();
         if (Time.time > nextAttackTime)
         {
@@ -181,8 +188,8 @@ public class BomberBossStageTwo : Ship
         //var connectionJoint = jointContainer.AddComponent<FixedJoint>();
         //connectionJoint.connectedBody = playerShip.GetComponent<Rigidbody>();
 
-        GameManager.Singleton.axisInput = false;                            // So we can't move while charging
-        GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
+        //GameManager.Singleton.axisInput = false;                            // So we can't move while charging
+        //GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
 
         playerShip.sprite.material.color = Color.red;
         playerShip.GetComponent<Collider>().enabled = false;
@@ -215,6 +222,9 @@ public class BomberBossStageTwo : Ship
         Debug.Log("QUEUE LENGTH: " + launchedPowerups.Count);
         //Debug.Break();
         Vector3 displacement = (playerShip.transform.position - transform.position).normalized * GetComponent<SphereCollider>().radius;
+
+        // Disable controls and programatically push player along
+        InputManager.Singleton.GetInputComponent().DisableControls(rushCollisionDuration);
         float endTime = Time.time + rushCollisionDuration;
         while (Time.time < endTime)
         {
@@ -234,8 +244,8 @@ public class BomberBossStageTwo : Ship
 
         //Debug.Break();
         //Destroy(connectionJoint);
-        GameManager.Singleton.axisInput = true;     // Re-enable movement
-        GameManager.Singleton.turnInput = true;
+        //GameManager.Singleton.axisInput = true;     // Re-enable movement
+        //GameManager.Singleton.turnInput = true;
 
         yield return new WaitForSeconds(0.5f);
         rushedIntoPlayer = false;
