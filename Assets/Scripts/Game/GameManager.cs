@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
         playerHealth = playerMaxHealth;
         playerShip.sprite.material.color = startColor;
         playerScore = 0;
-
+        UIManager.Singleton.UpdateScore();
         // Reset level logic
         currLevel = 0;
         targetScore = scoreBoundaries[0];

@@ -166,7 +166,10 @@ public class SniperBossFS : MonoBehaviour, IFireState
 
                 foreach (BulletHellShotSpawn bulletHellShotSpawn in bulletHellShotSpawns)
                 {
-                    bulletHellShotSpawn.UseBulletHellAttack(endTime);
+                    if (bulletHellShotSpawn.gameObject.activeInHierarchy)
+                    {
+                        bulletHellShotSpawn.UseBulletHellAttack(endTime);
+                    }
                 }
 
                 // Wait until end time

@@ -1,18 +1,11 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Utility/HealthPickup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Scripts [old]/Enemy [old]/Distance Type/EnemyManagerRangedType.cs">
     <Files>
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="239" Column="9" />
-      <File FileName="Assets/Prefabs/Powerups/FiringPowerup.cs" Line="63" Column="16" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="5" Column="16" />
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="35" Column="36" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberMS.cs" Line="76" Column="101" />
-      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="55" Column="10" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="67" Column="28" />
-      <File FileName="Assets/Scripts/General/Ship.cs" Line="77" Column="32" />
-      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="79" Column="13" />
-      <File FileName="Assets/Scripts/Powerups/BurstRushPowerup.cs" Line="87" Column="50" />
-      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="18" Column="5" />
-      <File FileName="Assets/Scripts/Utility/HealthPickup.cs" Line="18" Column="26" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="170" Column="28" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="369" Column="28" />
+      <File FileName="Assets/Scripts/Scripts [old]/Enemy [old]/Distance Type/EnemyManagerRangedType.cs" Line="28" Column="25" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="124" Column="29" />
+      <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="177" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
