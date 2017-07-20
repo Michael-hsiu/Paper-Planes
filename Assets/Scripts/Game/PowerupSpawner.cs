@@ -5,6 +5,9 @@ using UnityEngine;
 public class PowerupSpawner : MonoBehaviour
 {
 
+    public float xBound;
+    public float yBound;
+
     public float xBoundLeft;
     public float xBoundRight;
     public float yBoundLeft;
@@ -17,8 +20,10 @@ public class PowerupSpawner : MonoBehaviour
     public IEnumerator powerupSpawnRoutine;
     public IEnumerator cr2;
 
+    public List<Collider> mapColliders = new List<Collider>();     // Reference to GameManager list
     public List<GameObject> powerups = new List<GameObject>();
     public List<GameObject> enemyShips = new List<GameObject>();
+
 
     private static PowerupSpawner singleton;
     public static PowerupSpawner Singleton
@@ -82,6 +87,8 @@ public class PowerupSpawner : MonoBehaviour
 
     IEnumerator StartSpawningPowerups()
     {
+        mapColliders = GameManager.Singleton.mapColliders;  // Ref to map colliders
+        int colliderCountEndIndex = mapColliders.Count - 1;
         // Keep true while in current round
         while (true)
         {
@@ -94,7 +101,13 @@ public class PowerupSpawner : MonoBehaviour
                 //yield return new WaitForSeconds (spawnDelay);
 
                 // Spawn a random powerup at a random location within bounds of collider
-                Vector3 spawnLoc = new Vector3(Random.Range(xBoundLeft, xBoundRight), Random.Range(yBoundLeft, yBoundRight), 0);
+                int colliderIndex = Random.Range(0, colliderCountEndIndex);
+                Vector3 boxSize = ((BoxCollider)mapColliders[colliderIndex]).size;
+                xBound = boxSize.x / 2;
+                yBound = boxSize.y / 2;
+
+                Vector3 spawnLoc = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
+                //Vector3 spawnLoc = new Vector3(Random.Range(xBoundLeft, xBoundRight), Random.Range(yBoundLeft, yBoundRight), 0);
                 PoolManager.Instance.ReuseObject(powerups[Random.Range(0, powerups.Count)], spawnLoc, Quaternion.identity);
                 //Debug.Log ("POWERUP SPAWNED!");
                 yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));

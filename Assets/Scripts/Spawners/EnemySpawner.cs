@@ -11,6 +11,7 @@ public class EnemySpawner : MonoBehaviour
     public bool spawnEnabled = false;
     public int currLevel = 0;       // This is used from EnemySpawner. Enemies UP TO this index are allowed to be spawned. Reflects same-named value from GameManager.
     public bool bossSpawnEnabled = false;
+    public List<Collider> mapColliders = new List<Collider>();     // Reference to GameManager list
 
     // The maximum of each enemy we can have alive at a time. MAY be subject to change as level increases.
     [Header("MAX_ENEMY_COUNTS")]
@@ -42,9 +43,9 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
-        Vector3 boxSize = GetComponent<BoxCollider>().size;
-        xBound = boxSize.x / 2;
-        yBound = boxSize.y / 2;
+        //Vector3 boxSize = GetComponent<BoxCollider>().size;
+        //xBound = boxSize.x / 2;
+        //yBound = boxSize.y / 2;
 
         enemySpawnRoutine = StartSpawningEnemies();
         StartCoroutine(enemySpawnRoutine);
@@ -114,7 +115,8 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator StartSpawningEnemies()
     {
-
+        mapColliders = GameManager.Singleton.mapColliders;  // Ref to map colliders
+        int colliderCountEndIndex = mapColliders.Count - 1;
         while (true)
         {
             // Wait for a bit before we check to see if spawns are enabled (naive level restart logic)
@@ -124,6 +126,13 @@ public class EnemySpawner : MonoBehaviour
             {
                 // [TEST] spawn ships.
                 // Spawn within map range.
+                int colliderIndex = Random.Range(0, colliderCountEndIndex);
+                BoxCollider targetCollider = (BoxCollider)mapColliders[colliderIndex];
+                Vector3 boxSize = targetCollider.size;
+                Vector3 rotatedBoxSize = targetCollider.gameObject.transform.rotation * boxSize;
+                xBound = rotatedBoxSize.x / 2;
+                yBound = rotatedBoxSize.y / 2;
+
                 Vector3 spawnLoc = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
 
                 // Spawn UP TO current level progression.

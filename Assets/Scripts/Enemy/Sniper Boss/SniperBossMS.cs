@@ -54,11 +54,11 @@ public class SniperBossMS : MonoBehaviour, IMoveState
         stealthColor = bossOriginalColor;
         stealthColor.a = 0.5f;
 
-        mapCollider = GameManager.Singleton.mapCollider;
-        Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
+        //mapCollider = GameManager.Singleton.mapCollider;
+        //Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
 
-        xBound = boxSize.x / 2;
-        yBound = boxSize.y / 2;
+        //xBound = boxSize.x / 2;
+        //yBound = boxSize.y / 2;
 
         // This need to be settled for OnEnable; use PoolObject override methods
         //laserRoutine = LaserMovement();

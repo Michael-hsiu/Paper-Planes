@@ -48,7 +48,8 @@ public class GameManager : MonoBehaviour
     public int dualFireLevel = 0;
     public int triFireLevel = 0;
 
-    public Collider mapCollider;
+    //public Collider mapCollider;
+    public List<Collider> mapColliders = new List<Collider>();     // Assign in inspector
 
     // Powerup logic
     public Queue<BurstRushPowerup> rushes = new Queue<BurstRushPowerup>();
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
         enemySpawner = GetComponent<EnemySpawner>();
         powerupSpawner = GetComponent<PowerupSpawner>();
         movingSpawnManager = GetComponent<MovingSpawnManager>();
-        mapCollider = GetComponent<BoxCollider>();
+        //mapCollider = GetComponent<BoxCollider>();
 
         // Now populate powerups / purchasables with PlayerPrefs. 0=default/start level of each powerup.
         homingMissileLevel = PlayerPrefs.GetInt(Constants.homingMissileLevel, 0);

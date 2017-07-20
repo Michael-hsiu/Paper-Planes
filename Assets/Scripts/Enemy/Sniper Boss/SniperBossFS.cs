@@ -63,11 +63,11 @@ public class SniperBossFS : MonoBehaviour, IFireState
 
     void Start()
     {
-        mapCollider = GameManager.Singleton.mapCollider;
-        Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
+        //mapCollider = GameManager.Singleton.mapCollider;
+        //Vector3 boxSize = mapCollider.GetComponent<BoxCollider>().size;
 
-        xBound = boxSize.x / 2;
-        yBound = boxSize.y / 2;
+        //xBound = boxSize.x / 2;
+        //yBound = boxSize.y / 2;
     }
 
     // This will be called from the SniperBoss's overridden OnObjectReuse() method
