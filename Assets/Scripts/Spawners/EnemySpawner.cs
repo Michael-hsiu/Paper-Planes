@@ -126,14 +126,54 @@ public class EnemySpawner : MonoBehaviour
             {
                 // [TEST] spawn ships.
                 // Spawn within map range.
+                // First, choose a collider
                 int colliderIndex = Random.Range(0, colliderCountEndIndex);
                 BoxCollider targetCollider = (BoxCollider)mapColliders[colliderIndex];
-                Vector3 boxSize = targetCollider.size;
-                Vector3 rotatedBoxSize = targetCollider.gameObject.transform.rotation * boxSize;
-                xBound = rotatedBoxSize.x / 2;
-                yBound = rotatedBoxSize.y / 2;
 
-                Vector3 spawnLoc = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
+                // Then, rotate and scale collider dimension vector
+                Debug.Log(targetCollider.size);
+                Debug.Log(GameManager.Singleton.playerStartPosition);
+                Vector3 playerOrigin = GameManager.Singleton.playerStartPosition;
+                Vector3 boxSize = targetCollider.size / 2;
+
+                // Set bounds
+                float xBoundLeft = playerOrigin.x - boxSize.x;
+                float xBoundRight = playerOrigin.x + boxSize.x;
+                float yBoundUp = playerOrigin.y + boxSize.y;
+                float yBoundDown = playerOrigin.y - boxSize.y;
+
+
+                //Vector3 rightBound = playerOrigin + boxSize;
+                //Debug.DrawLine(playerOrigin, rightBound, Color.red);
+                //Debug.Break();
+
+                //Debug.Log("BOXSIZE: " + boxSize);
+
+                //Debug.DrawLine(Vector3.zero, targetCollider.size, Color.red);
+                //Debug.DrawLine(GameManager.Singleton.playerStartPosition, GameManager.Singleton.playerStartPosition + boxSize, Color.red);
+                //Debug.DrawRay(GameManager.Singleton.playerStartPosition, boxSize, Color.red);
+
+                //Vector3 boxSizeRot = targetCollider.transform.rotation.eulerAngles;
+                //boxSizeRot.x = 0f;
+                //boxSizeRot.y = 0f;
+
+                //Vector3 rotatedBoxSize = boxSize;
+                ////Vector3 rotatedBoxSize = Quaternion.Euler(boxSizeRot) * boxSize;
+                ////Vector3 rotatedBoxSize = Quaternion.identity * boxSize;
+                ////Vector3 rotatedBoxSize = targetCollider.gameObject.transform.rotation * boxSize;
+
+                //rotatedBoxSize.x = rotatedBoxSize.x * Random.Range(0f, 1f);
+                //if (Random.Range(0f, 1f) > 0.5f)
+                //{
+                //    rotatedBoxSize.x = rotatedBoxSize.x * -1;
+                //}
+                //rotatedBoxSize.y = rotatedBoxSize.y * Random.Range(0f, 1f);
+                //if (Random.Range(0f, 1f) > 0.5f)
+                //{
+                //    rotatedBoxSize.y *= rotatedBoxSize.y * -1;
+                //}
+
+                //Vector3 spawnLoc = rotatedBoxSize;
 
                 // Spawn UP TO current level progression.
                 // Use / remove from DICT when MAX_CAP reached. Then remove / reset upon level reset or when enough of the enemy eliminated.
@@ -220,7 +260,7 @@ public class EnemySpawner : MonoBehaviour
 
                 //Debug.Log("ENEMY TYPE: " + enemyType);
                 // Now spawn the enemy
-                PoolObject poolObject = PoolManager.Instance.ReuseObjectRef(enemyShip, spawnLoc, Quaternion.identity);
+                PoolObject poolObject = PoolManager.Instance.ReuseObjectRef(enemyShip, new Vector3(Random.Range(xBoundLeft, xBoundRight), Random.Range(yBoundDown, yBoundUp), 0f), Quaternion.identity);
 
                 // Orient the enemy towards player
                 Vector3 dist = (GameManager.Singleton.playerShip.transform.position - poolObject.transform.position).normalized;    // Find vector difference between target and this
