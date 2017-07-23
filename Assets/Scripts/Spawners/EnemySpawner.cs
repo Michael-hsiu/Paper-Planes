@@ -122,14 +122,14 @@ public class EnemySpawner : MonoBehaviour
         {
             // Wait for a bit before we check to see if spawns are enabled (naive level restart logic)
             yield return new WaitForSeconds(2.0f);
-
+            List<float> possibleSpawnAngles = new List<float>() { 90f, -30f, 30f };
             while (spawnEnabled)
             {
                 // [TEST] spawn ships.
                 // Spawn within map range.
                 // First, choose a collider
-                //int colliderIndex = Random.Range(0, colliderCountEndIndex);
-                int colliderIndex = 0;
+                int colliderIndex = Random.Range(0, colliderCountEndIndex);
+                //int colliderIndex = 0;
                 BoxCollider targetCollider = (BoxCollider)mapColliders[colliderIndex];
 
 
@@ -153,73 +153,35 @@ public class EnemySpawner : MonoBehaviour
                 rawHeight.y = rawHeight.y + mapCentre.transform.position.y;
 
                 // Rotation logic
-                Vector3 rotateDir = rawWidth - new Vector3(mapCentre.transform.position.x, 0, 0);
-                rotateDir = Quaternion.Euler(new Vector3(0, 0, 90f)) * rotateDir;
-                Debug.Log("ROTATE_WIDTH: " + rotateDir);
-                rawWidth.x = rotateDir.x + mapCentre.transform.position.x;
+                //float randomRotation = Random.Range(0f, 360f);
+                float randomRotation = possibleSpawnAngles[colliderIndex];
+                //Vector3 randomRotVector = targetCollider.transform.localEulerAngles;
+                //Debug.Log("RANDOMROT: " + randomRotVector);
+                //float randomRotation = randomRotVector.z;
+                Vector3 rotateDirWidth = rawWidth - new Vector3(mapCentre.transform.position.x, 0, 0);
+                rotateDirWidth = Quaternion.Euler(new Vector3(0, 0, randomRotation)) * rotateDirWidth;
+                Debug.Log("ROTATE_WIDTH: " + rotateDirWidth);
+                // This is making width become height! Just scale every value?
+                //rawWidth.x = rotateDir.x + mapCentre.transform.position.x;
 
-                rotateDir = rawHeight - new Vector3(0, mapCentre.transform.position.y, 0);
-                rotateDir = Quaternion.Euler(new Vector3(0, 0, 90f)) * rotateDir;
-                rawHeight.y = rotateDir.y + mapCentre.transform.position.y;
+                Vector3 rotateDirHeight = rawHeight - new Vector3(0, mapCentre.transform.position.y, 0);
+                rotateDirHeight = Quaternion.Euler(new Vector3(0, 0, randomRotation)) * rotateDirHeight;
 
-                //var dir: Vector3 = point - pivot; // get point direction relative to pivot
-                //dir = Quaternion.Euler(angles) * dir; // rotate it
-                //point = dir + pivot; // calculate rotated point
-
-
-                //Quaternion adjustRot = targetCollider.transform.localRotation;        // Store rotation as an Euler, then Quaternion
-                //Debug.Log("ROTANGLE: " + targetCollider.gameObject.transform.rotation.eulerAngles);
-                //Quaternion adjustRot = Quaternion.AngleAxis(targetCollider.transform.localRotation.eulerAngles.z, mapCentre.transform.forward);        // Store rotation as an Euler, then Quaternion
-
-                //rawWidth = adjustRot * rawWidth;
-                //rawHeight = adjustRot * rawHeight;
-
-                //rawWidth = Quaternion.AngleAxis(90f, mapCentre.transform.forward) * rawWidth;
-                //rawHeight = Quaternion.AngleAxis(90f, mapCentre.transform.forward) * rawHeight;
-                Debug.Log("ROTATED WIDTH: " + rawWidth);
-                Debug.Log("ROTATED HEIGHT: " + rawHeight);
-
-                //Vector3 widthVector = new Vector3(targetCollider.size.x / 2, 0, 0);
-                //Vector3 heightVector = new Vector3(0, targetCollider.size.y / 2, 0);
-                //Debug.Log("OLD WIDTH: " + widthVector);
-
-                //widthVector = targetCollider.transform.rotation * (widthVector + mapCentre.transform.position);
-                //Debug.Log("WIDTH VEcTOR: " + widthVector);
-                //heightVector = heightVector + mapCentre.transform.position;
-                //Debug.Log("HEIGHT VEcTOR: " + heightVector);
-
-                //widthVector = mapCentre.transform.InverseTransformDirection(widthVector);
-
-                //widthVector += mapCentre.transform.position;
-
-                //heightVector = mapCentre.transform.InverseTransformDirection(heightVector);
-                //heightVector += mapCentre.transform.position;
-                //Vector3 newWidthAgain = transform.InverseTransformDirection(widthVector - mapCentre.transform.position);
-                //IVE: " + relative);
-                //widthVector = targetCollider.transform.rotation * widthVector;
-                //heightVector = targetCollider.transform.rotation * heightVector;
-
-                // Now have origin at mapCentre
-                //widthVector -= mapCentre.transform.position;
-                //widthVector = mapCentre.transform.InverseTransformDirection(widthVector);
-                //h = mapCentre.transform.InverseTransformDirection(widthVector);
-
-                //Debug.DrawLine(Vector3.zero, widthVector);
-                //Debug.Log("NEW WIDTH: " + newWidthAgain);
-                //heightVector = mapCentre.transform.InverseTransformDirection(heightVector);
-
-                //widthVector *= Random.Range(0.01f, 1f);
-                //heightVector *= Random.Range(0.01f, 1f);
+                rotateDirWidth *= Random.Range(0.1f, 1f);
+                rotateDirHeight *= Random.Range(0.1f, 1f);
 
                 //// Possible sign flips
-                //if (Random.Range(0f, 1f) > 0.5f)
-                //{
-                //    widthVector *= -1;
-                //}
-                //if (Random.Range(0f, 1f) > 0.5f)
-                //{
-                //    heightVector *= -1;
-                //}
+                if (Random.Range(0f, 1f) > 0.5f)
+                {
+                    rotateDirWidth *= -1;
+                }
+                if (Random.Range(0f, 1f) > 0.5f)
+                {
+                    rotateDirHeight *= -1;
+                }
+                // Sum up hori and vert components, and shift center to mapCentre as the origin
+                Vector3 totalVector = rotateDirWidth + rotateDirHeight + mapCentre.transform.position;
+
 
                 // Spawn UP TO current level progression.
                 // Use / remove from DICT when MAX_CAP reached. Then remove / reset upon level reset or when enough of the enemy eliminated.
@@ -306,9 +268,9 @@ public class EnemySpawner : MonoBehaviour
 
                 //Debug.Log("ENEMY TYPE: " + enemyType);
                 // Now spawn the enemy
-                Vector3 spawnLocation = new Vector3(rawWidth.x, rawHeight.y, 0f);
+                //Vector3 spawnLocation = new Vector3(rawWidth.x, rawHeight.y, 0f);
 
-                PoolObject poolObject = PoolManager.Instance.ReuseObjectRef(enemyShip, spawnLocation, Quaternion.identity);
+                PoolObject poolObject = PoolManager.Instance.ReuseObjectRef(enemyShip, totalVector, Quaternion.identity);
 
                 // Orient the enemy towards player
                 Vector3 dist = (GameManager.Singleton.playerShip.transform.position - poolObject.transform.position).normalized;    // Find vector difference between target and this
