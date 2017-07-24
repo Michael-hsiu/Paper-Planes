@@ -12,8 +12,11 @@ public class PowerupSpawner : MonoBehaviour
     public float xBoundRight;
     public float yBoundLeft;
     public float yBoundRight;
+    public GameObject mapCentre;
 
-    public float spawnDelay = 5.0f;
+    public float spawnDelayLowerBound = 5.0f;
+    public float spawnDelayUpperBound = 5.0f;
+
     public bool spawnEnabled = false;
     public int numPowerupsSpawned = 0;
 
@@ -92,25 +95,61 @@ public class PowerupSpawner : MonoBehaviour
         // Keep true while in current round
         while (true)
         {
-            // Wait for a bit before we check to see if powerups are enabled (naive level restart logic)
+            // Wait for a bit before we check to see if spawns are enabled (naive level restart logic)
             yield return new WaitForSeconds(2.0f);
-
+            List<float> possibleSpawnAngles = new List<float>() { 90f, -30f, 30f };
             // Spawn a fixed # of powerups at the beginning of every lvl
             while (/*numPowerupsSpawned <= 5 &&*/ spawnEnabled)
             {
-                //yield return new WaitForSeconds (spawnDelay);
-
-                // Spawn a random powerup at a random location within bounds of collider
                 int colliderIndex = Random.Range(0, colliderCountEndIndex);
-                Vector3 boxSize = ((BoxCollider)mapColliders[colliderIndex]).size;
-                xBound = boxSize.x / 2;
-                yBound = boxSize.y / 2;
+                //int colliderIndex = 0;
+                BoxCollider targetCollider = (BoxCollider)mapColliders[colliderIndex];
 
-                Vector3 spawnLoc = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
+
+                // Convert collider size vector to local space, then store it.
+                // Scale these vectors, flip sign
+
+                // Convert collider local space dimensions to world space
+                Vector3 rawWidth = mapCentre.transform.TransformDirection(new Vector3(targetCollider.size.x / 2, 0, 0));
+                Vector3 rawHeight = mapCentre.transform.TransformDirection(new Vector3(0, targetCollider.size.y / 2, 0));
+
+                Debug.Log("RAW WIDTH: " + rawWidth);
+                Debug.Log("RAW HEIGHT: " + rawHeight);
+
+                rawWidth.x = rawWidth.x + mapCentre.transform.position.x;
+                rawHeight.y = rawHeight.y + mapCentre.transform.position.y;
+
+                // Rotation logic
+                float randomRotation = possibleSpawnAngles[colliderIndex];
+                Vector3 rotateDirWidth = rawWidth - new Vector3(mapCentre.transform.position.x, 0, 0);
+                rotateDirWidth = Quaternion.Euler(new Vector3(0, 0, randomRotation)) * rotateDirWidth;
+                Debug.Log("ROTATE_WIDTH: " + rotateDirWidth);
+                // This is making width become height! Just scale every value?
+                //rawWidth.x = rotateDir.x + mapCentre.transform.position.x;
+
+                Vector3 rotateDirHeight = rawHeight - new Vector3(0, mapCentre.transform.position.y, 0);
+                rotateDirHeight = Quaternion.Euler(new Vector3(0, 0, randomRotation)) * rotateDirHeight;
+
+                rotateDirWidth *= Random.Range(0.1f, 1f);
+                rotateDirHeight *= Random.Range(0.1f, 1f);
+
+                //// Possible sign flips
+                if (Random.Range(0f, 1f) > 0.5f)
+                {
+                    rotateDirWidth *= -1;
+                }
+                if (Random.Range(0f, 1f) > 0.5f)
+                {
+                    rotateDirHeight *= -1;
+                }
+                // Sum up hori and vert components, and shift center to mapCentre as the origin
+                Vector3 totalVector = rotateDirWidth + rotateDirHeight + mapCentre.transform.position;
+
+                //Vector3 spawnLoc = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
                 //Vector3 spawnLoc = new Vector3(Random.Range(xBoundLeft, xBoundRight), Random.Range(yBoundLeft, yBoundRight), 0);
-                PoolManager.Instance.ReuseObject(powerups[Random.Range(0, powerups.Count)], spawnLoc, Quaternion.identity);
+                PoolManager.Instance.ReuseObject(powerups[Random.Range(0, powerups.Count)], totalVector, Quaternion.identity);
                 //Debug.Log ("POWERUP SPAWNED!");
-                yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
+                yield return new WaitForSeconds(Random.Range(spawnDelayLowerBound, spawnDelayUpperBound));
                 //numPowerupsSpawned += 1;
                 //Instantiate (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
             }

@@ -7,6 +7,15 @@ using System;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("SCORE_UI")]
+    public float scoreAnimationDuration = 2.0f;
+    public float currScoreLerpTime = 0f;
+    public float lerpEndTime;
+    public float scoreLerpRatio;
+    public bool isUpdatingScore = false;
+    public int startDisplayedScore = 0;     // Lerp start point
+    public int displayedChangingScore = 0;     // Currently lerping score that is displayed
+
     public Text scoreText;
     public Text scoreGoalText;
     public Text levelText;
@@ -45,6 +54,42 @@ public class UIManager : MonoBehaviour
     public int targetEndHealth;
     public int peekValue;
     public int currentMin;
+
+
+    void Update()
+    {
+        UpdateScore();
+    }
+
+    // Ref: http://answers.unity3d.com/questions/934659/c-adding-and-counting-up-scores-with-mathflerp.html
+    public void UpdateScore()
+    {
+        // Lerp to target score
+        if (!isUpdatingScore)
+        {
+            isUpdatingScore = true;
+            currScoreLerpTime = 0f;
+        }
+
+        // Continue lerping even if end score continues, lerp will automatically compensate
+        currScoreLerpTime += Time.deltaTime;
+        lerpRatio = currScoreLerpTime / scoreAnimationDuration;
+
+        // Lerp only if ratio is valid and there has been a score increase
+        if (/*lerpRatio <= 1f && */ displayedChangingScore < GameManager.Singleton.playerScore)
+        {
+            displayedChangingScore = (int)Mathf.Lerp(startDisplayedScore, GameManager.Singleton.playerScore, lerpRatio);
+            Debug.Log(string.Format("DISPLAYED: {0}, START:D {1}", displayedChangingScore, startDisplayedScore));
+            //Debug.Break();
+            scoreText.text = displayedChangingScore.ToString();
+        }
+        else
+        {
+            startDisplayedScore = GameManager.Singleton.playerScore;
+            Debug.Log("START_DISPLAY_SCORE: " + startDisplayedScore);
+            isUpdatingScore = false;
+        }
+    }
 
     public void UpdateHealth()
     {
@@ -236,6 +281,9 @@ public class UIManager : MonoBehaviour
     // goal=enemiesToKill
     public void OnLevelStartUpdateUI()
     {
+        // Reset cached scores from last game (this currently occurs during waves, so messes up score lerp)
+        //startDisplayedScore = -1;     // Lerp start point
+        //displayedChangingScore = -1;     // Currently lerping score that is displayed
 
         shopButton.SetActive(false);
         startGameButton.gameObject.SetActive(false);
@@ -294,7 +342,6 @@ public class UIManager : MonoBehaviour
         //}
     }
 
-
     public void EndLevel(int level)
     {
         DisplayVictoryScreen();                                 // Opens the Victory Screen and the only current way of progressing to next level.
@@ -303,6 +350,10 @@ public class UIManager : MonoBehaviour
 
     public void RestartLevel()
     {
+        // Restart
+        startDisplayedScore = 0;     // Lerp start point
+        displayedChangingScore = 0;     // Currently lerping score that is displayed
+
         DisableFailureScreen();
         DisableContinueScreen();
         ResetHealthBar();
@@ -364,11 +415,6 @@ public class UIManager : MonoBehaviour
             }
             return singleton;
         }
-    }
-
-    public void UpdateScore()
-    {
-        scoreText.text = GameManager.Singleton.playerScore.ToString();
     }
 
     public void UpdateDashText(int dashes)

@@ -140,24 +140,14 @@ public class EnemySpawner : MonoBehaviour
                 Vector3 rawWidth = mapCentre.transform.TransformDirection(new Vector3(targetCollider.size.x / 2, 0, 0));
                 Vector3 rawHeight = mapCentre.transform.TransformDirection(new Vector3(0, targetCollider.size.y / 2, 0));
 
-                //rawWidth = Quaternion.AngleAxis(45f, Vector3.forward) * rawWidth;
-                //rawHeight = Quaternion.AngleAxis(45f, Vector3.forward) * rawHeight;
-
                 Debug.Log("RAW WIDTH: " + rawWidth);
                 Debug.Log("RAW HEIGHT: " + rawHeight);
-                //rawWidthHeight.x = rawWidthHeight.x * Random.Range(0.01f, 1f);
-                //rawWidthHeight.y = rawWidthHeight.y * Random.Range(0.01f, 1f);
-                //rawWidth.x = rawWidth.x * -1;
 
                 rawWidth.x = rawWidth.x + mapCentre.transform.position.x;
                 rawHeight.y = rawHeight.y + mapCentre.transform.position.y;
 
                 // Rotation logic
-                //float randomRotation = Random.Range(0f, 360f);
                 float randomRotation = possibleSpawnAngles[colliderIndex];
-                //Vector3 randomRotVector = targetCollider.transform.localEulerAngles;
-                //Debug.Log("RANDOMROT: " + randomRotVector);
-                //float randomRotation = randomRotVector.z;
                 Vector3 rotateDirWidth = rawWidth - new Vector3(mapCentre.transform.position.x, 0, 0);
                 rotateDirWidth = Quaternion.Euler(new Vector3(0, 0, randomRotation)) * rotateDirWidth;
                 Debug.Log("ROTATE_WIDTH: " + rotateDirWidth);
