@@ -79,14 +79,14 @@ public class UIManager : MonoBehaviour
         if (/*lerpRatio <= 1f && */ displayedChangingScore < GameManager.Singleton.playerScore)
         {
             displayedChangingScore = (int)Mathf.Lerp(startDisplayedScore, GameManager.Singleton.playerScore, lerpRatio);
-            Debug.Log(string.Format("DISPLAYED: {0}, START:D {1}", displayedChangingScore, startDisplayedScore));
+            //Debug.Log(string.Format("DISPLAYED: {0}, START:D {1}", displayedChangingScore, startDisplayedScore));
             //Debug.Break();
             scoreText.text = displayedChangingScore.ToString();
         }
         else
         {
             startDisplayedScore = GameManager.Singleton.playerScore;
-            Debug.Log("START_DISPLAY_SCORE: " + startDisplayedScore);
+            //Debug.Log("START_DISPLAY_SCORE: " + startDisplayedScore);
             isUpdatingScore = false;
         }
     }

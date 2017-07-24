@@ -85,7 +85,7 @@ public class BomberBossStageTwo : Ship
             GameManager.Singleton.turnInput = true;
             rushedIntoPlayer = false;
 
-            Debug.Break();
+            //Debug.Break();
         }
         base.DestroyForReuse();
     }
