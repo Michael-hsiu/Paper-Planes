@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     public int numDashes = 99;
 
     // The following logic needs to be populated by PlayerPrefs
+    public int powerupUnlockedLevel = 0;
     public int homingMissileLevel = 0;
     public int burstRushLevel = 0;
     public int dashLevel = 0;
@@ -70,7 +71,8 @@ public class GameManager : MonoBehaviour
     // REVISED logic for endless level progression.
     // Uses player score and elapsed time to make decisions on what to spawn.
     public int currLevel = 0;       // This is used from EnemySpawner. Enemies UP TO this index are allowed to be spawned.
-    public List<int> scoreBoundaries = new List<int>();     // Stores information about how many points needed to reach next level
+    public List<int> enemyScoreBoundaries = new List<int>();     // Stores information about how many points needed to reach next level of enemy
+    public List<int> powerupScoreBoundaries = new List<int>();     // Stores information about how many points needed to reach next level of powerup
 
 
     void Awake()
@@ -122,13 +124,13 @@ public class GameManager : MonoBehaviour
     // This is the PUBLISHER for events that fire on level starts.
     public void OnLevelStart(int currLevel)
     {
-        currLevel = Math.Min(currLevel, scoreBoundaries.Count - 1);
+        currLevel = Math.Min(currLevel, enemyScoreBoundaries.Count - 1);
         //Debug.Log("SCOREBOUNDARIES COUNT: " + scoreBoundaries.Count);
-        targetScore = scoreBoundaries[currLevel];
+        targetScore = enemyScoreBoundaries[currLevel];
         levelActive = true;
 
         // Announce to subscribers
-        if (currLevel != scoreBoundaries.Count - 1)
+        if (currLevel != enemyScoreBoundaries.Count - 1)
         {
             if (StartLevelEvent != null)
             {
@@ -160,6 +162,7 @@ public class GameManager : MonoBehaviour
         Utils.DisablePowerups();
         enemySpawner.RestartLevel();
 
+
         playerShip.gameObject.SetActive(true);
         playerShip.ResetPlayer();       // Reset internals: position, rotation, rigidbody
         playerHealth = playerMaxHealth;
@@ -168,7 +171,7 @@ public class GameManager : MonoBehaviour
         UIManager.Singleton.UpdateScore();
         // Reset level logic
         currLevel = 0;
-        targetScore = scoreBoundaries[0];
+        targetScore = enemyScoreBoundaries[0];
         levelActive = true;
 
         OnLevelStart(currLevel);
@@ -186,7 +189,7 @@ public class GameManager : MonoBehaviour
     /* END StartLevelEvent subscriber list. */
 
     // THIS is the new way of increasing level difficulty over time.
-    public void OnLevelIncrease()
+    public void OnEnemyLevelIncrease()
     {
         // Increase the number of total enemies that can be spawned, as well as other logic.
         enemySpawner.IncreaseLevel();
@@ -196,13 +199,29 @@ public class GameManager : MonoBehaviour
         OnLevelStart(currLevel);
     }
 
+    // THIS is the new way of allowing more powerup types to spawn.
+    public void OnPowerupLevelIncrease()
+    {
+        if (powerupUnlockedLevel < powerupScoreBoundaries.Count)
+        {
+            powerupSpawner.IncreaseLevel();
+            powerupUnlockedLevel += 1;
+        }
+    }
+
     // Called every time an enemy is defeated
     public void RecordEnemyKilled(EnemyType enemyType)
     {
         enemySpawner.RecordKill(enemyType);
-        if (playerScore > scoreBoundaries[Math.Min(currLevel, scoreBoundaries.Count - 1)])
+        // Unlock stronger enemies
+        if (playerScore >= enemyScoreBoundaries[Math.Min(currLevel, enemyScoreBoundaries.Count - 1)])
         {
-            OnLevelIncrease();
+            OnEnemyLevelIncrease();
+        }
+        // Unlock additional powerups
+        if (playerScore >= powerupScoreBoundaries[Math.Min(powerupUnlockedLevel, powerupScoreBoundaries.Count - 1)])
+        {
+            OnPowerupLevelIncrease();
         }
     }
 

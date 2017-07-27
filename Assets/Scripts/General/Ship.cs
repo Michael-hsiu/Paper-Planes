@@ -11,6 +11,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     public EnemyScriptableObject defaultValues;
     public GameObject target;
     public GameObject explosion;
+    public GameObject scoreText;    // Prefab for score_text
     public float moveFactor;
     public float speed = 1.0f;
     public float rotationSpeed = 90.0f;

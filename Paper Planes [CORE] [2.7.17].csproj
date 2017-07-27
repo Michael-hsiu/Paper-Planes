@@ -133,8 +133,9 @@
     <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenScrObj.cs" />
     <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenSizeScrObj.cs" />
     <Compile Include="Assets\Prefabs\Powerups\UpgradableScriptableObject.cs" />
-    <Compile Include="Assets\Prefabs\Shop UI\ShopSlot.cs" />
-    <Compile Include="Assets\Prefabs\Shop UI\UpgradesListPanel.cs" />
+    <Compile Include="Assets\Prefabs\UI\ScoreText.cs" />
+    <Compile Include="Assets\Prefabs\UI\ShopSlot.cs" />
+    <Compile Include="Assets\Prefabs\UI\UpgradesListPanel.cs" />
     <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
     <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBoss.cs" />

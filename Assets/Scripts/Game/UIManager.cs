@@ -287,7 +287,7 @@ public class UIManager : MonoBehaviour
 
         shopButton.SetActive(false);
         startGameButton.gameObject.SetActive(false);
-        scoreGoalText.text = GameManager.Singleton.scoreBoundaries[GameManager.Singleton.currLevel].ToString();
+        scoreGoalText.text = GameManager.Singleton.enemyScoreBoundaries[GameManager.Singleton.currLevel].ToString();
 
         // Can we dynamically pass in params to event subscribers?
         if (levelGoalRoutine != null)

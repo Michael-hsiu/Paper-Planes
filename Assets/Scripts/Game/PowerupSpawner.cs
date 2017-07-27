@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PowerupSpawner : MonoBehaviour
 {
+    [Header("SPAWNING_LOGIC")]
+    public int initialStartIndex = 0;   // Powerups up to and including this index can be spawned in beginning, rest must be unlocked by gaining points
+    public int currLevelIndex;
+    public bool levelWasIncreasedOnce = false;
 
     public float xBound;
     public float yBound;
@@ -24,7 +28,7 @@ public class PowerupSpawner : MonoBehaviour
     public IEnumerator cr2;
 
     public List<Collider> mapColliders = new List<Collider>();     // Reference to GameManager list
-    public List<GameObject> powerups = new List<GameObject>();
+    public List<GameObject> powerupsList = new List<GameObject>();
     public List<GameObject> enemyShips = new List<GameObject>();
 
 
@@ -53,6 +57,7 @@ public class PowerupSpawner : MonoBehaviour
             DestroyImmediate(this);
         }
         // Set variables
+        currLevelIndex = initialStartIndex;     // Start off only allowing certain powerups to be used
         Vector3 boxSize = GetComponent<BoxCollider>().size;
 
         xBoundLeft = gameObject.transform.position.x - (boxSize.x / 2);
@@ -85,7 +90,7 @@ public class PowerupSpawner : MonoBehaviour
     // Called from ENEMY KILL
     public void SpawnPowerupDrop(Vector3 pos)
     {
-        PoolManager.Instance.ReuseObject(powerups[Random.Range(0, powerups.Count)], pos, Quaternion.identity);
+        PoolManager.Instance.ReuseObject(powerupsList[Random.Range(0, powerupsList.Count)], pos, Quaternion.identity);
     }
 
     IEnumerator StartSpawningPowerups()
@@ -147,7 +152,9 @@ public class PowerupSpawner : MonoBehaviour
 
                 //Vector3 spawnLoc = new Vector3(Random.Range(-xBound, xBound), Random.Range(-yBound, yBound), 0);
                 //Vector3 spawnLoc = new Vector3(Random.Range(xBoundLeft, xBoundRight), Random.Range(yBoundLeft, yBoundRight), 0);
-                PoolManager.Instance.ReuseObject(powerups[Random.Range(0, powerups.Count)], totalVector, Quaternion.identity);
+
+                // Actual powerup spawning logic
+                PoolManager.Instance.ReuseObject(powerupsList[Random.Range(0, currLevelIndex + 1)], totalVector, Quaternion.identity);
                 //Debug.Log ("POWERUP SPAWNED!");
                 yield return new WaitForSeconds(Random.Range(spawnDelayLowerBound, spawnDelayUpperBound));
                 //numPowerupsSpawned += 1;
@@ -160,5 +167,23 @@ public class PowerupSpawner : MonoBehaviour
         }
     }
 
+    public void IncreaseLevel()
+    {
+        // Unlocks additional powerups
+        if (currLevelIndex < powerupsList.Count - 1)
+        {
+            currLevelIndex += 1;
+            Debug.Break();
+            //Debug.Log("POWERUP LEVEL INCREASED!");
+        }
+    }
 
+    public void RestartLevel()
+    {
+        currLevelIndex = initialStartIndex;     // Reset valid powerups
+
+        StopCoroutine(powerupSpawnRoutine);
+        powerupSpawnRoutine = StartSpawningPowerups();
+        StartCoroutine(powerupSpawnRoutine);
+    }
 }

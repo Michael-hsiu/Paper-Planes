@@ -8,6 +8,7 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
     #region Variables
     public EnemyType enemyType = EnemyType.Turret;
+    public GameObject scoreText;    // Prefab for score_text
 
     public GameObject target;
     public bool isMarked = false;
