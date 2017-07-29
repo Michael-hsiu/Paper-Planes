@@ -173,7 +173,7 @@ public class PowerupSpawner : MonoBehaviour
         if (currLevelIndex < powerupsList.Count - 1)
         {
             currLevelIndex += 1;
-            Debug.Break();
+            //Debug.Break();
             //Debug.Log("POWERUP LEVEL INCREASED!");
         }
     }

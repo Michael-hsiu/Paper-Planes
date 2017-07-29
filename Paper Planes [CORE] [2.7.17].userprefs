@@ -1,17 +1,15 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Turret.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefabs/UI/ScoreText.cs">
     <Files>
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="152" Column="22" />
       <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="176" Column="29" />
-      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="84" Column="6" />
+      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="113" Column="22" />
       <File FileName="Assets/Scripts/Enemy/PawnShip/PawnMS.cs" Line="59" Column="13" />
       <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="131" Column="54" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="290" Column="71" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="105" Column="10" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="79" Column="62" />
-      <File FileName="Assets/Prefabs/UI/ScoreText.cs" Line="29" Column="17" />
-      <File FileName="Assets/Scripts/General/Ship.cs" Line="14" Column="61" />
-      <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="13" Column="5" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="98" Column="16" />
+      <File FileName="Assets/Prefabs/UI/ScoreText.cs" Line="80" Column="9" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="120" Column="67" />
+      <File FileName="Assets/Scripts/Enemy/RangedShip/RangedShip.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

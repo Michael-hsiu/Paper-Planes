@@ -116,15 +116,20 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     {
         //Destroy (transform.gameObject);		// Destroy our gameobject
         //transform.gameObject.SetActive(false);	// "Destroy" our gameobject
-        DestroyForReuse();
-        // Score updates
-        //if (GameManager.Singleton.levelActive) {
         sprite.material.color = startColor;
         GameManager.Singleton.RecordEnemyKilled(enemyType); // REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
         GameManager.Singleton.UpdateScore(enemyPoints); // Add new score in GameManager
         UIManager.Singleton.UpdateScore();  // Update score in UI
-
         hitFlickerRoutine = null;
+
+        GameObject scoreTextInstance = Instantiate(scoreText, transform.position, Quaternion.identity);
+        scoreTextInstance.GetComponent<ScoreText>().OnObjectReuse(gameObject);  // Pass ourselves in as a target position
+
+        DestroyForReuse();
+        // Score updates
+        //if (GameManager.Singleton.levelActive) {
+
+
         //Debug.Log("RANGED SHIP KILLED! Obtained: " + enemyPoints + "points!");
         //}
         //Instantiate(explosion, transform.position, transform.rotation);

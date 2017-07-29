@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     public int startDisplayedScore = 0;     // Lerp start point
     public int displayedChangingScore = 0;     // Currently lerping score that is displayed
 
+    public Canvas uiCanvas;     // Where all UI elements are rendered
     public Text scoreText;
     public Text scoreGoalText;
     public Text levelText;
