@@ -41,7 +41,7 @@ public class BomberMS : MonoBehaviour, IMoveState
     IEnumerator DestroyAfterDuration()
     {
         Debug.Log("HALTING");
-        Debug.Break();
+        //Debug.Break();
         yield return new WaitForSeconds(destroyDelay);
         bomberShip.DestroyForReuse();
     }

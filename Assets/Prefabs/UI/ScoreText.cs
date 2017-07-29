@@ -57,13 +57,14 @@ public class ScoreText : MonoBehaviour
         //isInitializing = false;
     }
 
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.V))
-        {
-            OnObjectReuse(gameObject);
-        }
-    }
+    //void Update()
+    //{
+    //    if (Input.GetKey(KeyCode.V))
+    //    {
+    //        OnObjectReuse(gameObject);
+    //    }
+    //}
+
     // Need to make this pool-able
     public void OnObjectReuse(GameObject target)
     {
