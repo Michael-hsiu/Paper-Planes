@@ -93,7 +93,17 @@ public class ScoreText : MonoBehaviour
         {
             pointsToDisplay = shipComponent.enemyPoints;
         }
-        scoreText.text = pointsToDisplay.ToString();
+        if (pointsToDisplay > 0)
+        {
+            // Score multiplier
+            pointsToDisplay *= GameManager.Singleton.scoreMultiplier;
+            scoreText.text = pointsToDisplay.ToString();
+        }
+        else
+        {
+            // To handle Pawn collision case
+            scoreText.text = string.Empty;
+        }
         transform.position = target.transform.position;
         //transform.SetParent(uiCanvas.transform);
         //viewportPosition = Camera.main.WorldToScreenPoint(target.transform.position);

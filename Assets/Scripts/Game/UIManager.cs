@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     public int displayedChangingScore = 0;     // Currently lerping score that is displayed
 
     public Canvas uiCanvas;     // Where all UI elements are rendered
+    public Text scoreMultiplierText;    // Score multiplier
     public Text scoreText;
     public Text scoreGoalText;
     public Text levelText;
@@ -60,6 +61,19 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         UpdateScore();
+    }
+
+    public void UpdateScoreMultiplier()
+    {
+        int scoreMultiplier = GameManager.Singleton.scoreMultiplier;
+        if (scoreMultiplier > 1)
+        {
+            scoreMultiplierText.text = "x" + scoreMultiplier;
+        }
+        else
+        {
+            scoreMultiplierText.text = string.Empty;
+        }
     }
 
     // Ref: http://answers.unity3d.com/questions/934659/c-adding-and-counting-up-scores-with-mathflerp.html
@@ -264,6 +278,8 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        scoreMultiplierText.text = string.Empty;
+
         // Get original height of health bar
         scaleY = healthBar.rectTransform.localScale.y;
         // Since inspector values are not processed yet

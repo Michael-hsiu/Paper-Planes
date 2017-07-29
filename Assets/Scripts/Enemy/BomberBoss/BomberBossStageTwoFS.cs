@@ -86,7 +86,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal <= 0f)
+        if (randomVal <= 0.7f)
         {
             // Trigger the SLINGSHOT attack
             slingShotAttackActive = true;
