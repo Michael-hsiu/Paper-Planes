@@ -29,8 +29,8 @@ public class GamePoolManager : MonoBehaviour
     public GameObject enemyBulletHellShot;
 
 
-    [Header("Powerups")] // Player powerups / related items
-                         //public GameObject dualShotPowerup;
+    [Header("POWERUP_PREFABS")] // Player powerups / related items
+                                //public GameObject dualShotPowerup;
     public GameObject firingPowerup;
     public GameObject waveShotPowerup;
     public GameObject burstRushPowerup;
@@ -43,7 +43,7 @@ public class GamePoolManager : MonoBehaviour
     public GameObject healthPack;
 
 
-    [Header("Powerup Helper Objects")]
+    [Header("POWERUP_HELPER_PREFABS")]
     public GameObject tripMines;
     public GameObject shurikenObj;
     public GameObject waveShot;
@@ -53,16 +53,35 @@ public class GamePoolManager : MonoBehaviour
     public GameObject empWaveShot;
     public GameObject teleMarker;
 
-    [Header("Enemies")] // Enemy prefabs
-    public GameObject pawnShip;
-    public GameObject rangedShip;
-    public GameObject mediShip;
-    public GameObject turret;
-    public GameObject dropShip;
-    public GameObject assassinShip;
-    public GameObject bomberShip;
-    public GameObject missileBoss;
-    public GameObject sniperBoss;
+    [Header("ENEMY_PREFABS")] // Enemy prefabs
+    public GameObject pawnShipLvl1;
+    public GameObject pawnShipLvl2;
+    public GameObject pawnShipLvl3;
+
+    public GameObject rangedShipLvl1;
+    public GameObject rangedShipLvl2;
+    public GameObject rangedShipLvl3;
+
+    public GameObject mediShipLvl1;
+    public GameObject mediShipLvl2;
+    public GameObject mediShipLvl3;
+
+    public GameObject turretLvl1;
+    public GameObject turretLvl2;
+    public GameObject turretLvl3;
+
+    public GameObject dropShipLvl1;
+    public GameObject dropShipLvl2;
+    public GameObject dropShipLvl3;
+
+    public GameObject assassinShipLvl1;
+    public GameObject bomberShipLvl1;
+    public GameObject bomberShipLvl2;
+    public GameObject bomberShipLvl3;
+
+
+    public GameObject missileBossLvl1;
+    public GameObject sniperBossLvl1;
     public GameObject bomberBossStageOne;
     public GameObject bomberBossStageTwo;
     public GameObject bomberCore;
@@ -73,6 +92,10 @@ public class GamePoolManager : MonoBehaviour
     public GameObject slingShotBomber;
 
     public GameObject rangedTest;
+
+    [Header("TEXT_PREFABS")]
+    public GameObject scoreText;
+    public GameObject bossScoreText;
 
     //[Header("Spawners")] // Spawner prefabs
     //public GameObject movingSpawn;
@@ -124,31 +147,38 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(teleMarker, 10);
 
         // Enemies
-        PoolManager.Instance.CreatePool(pawnShip, 300);
-        PoolManager.Instance.CreatePool(rangedShip, 300);
-        PoolManager.Instance.CreatePool(bomberShip, 300);
-        PoolManager.Instance.CreatePool(mediShip, 100);
-        PoolManager.Instance.CreatePool(turret, 100);
-        PoolManager.Instance.CreatePool(dropShip, 100);
-        PoolManager.Instance.CreatePool(assassinShip, 100);
-        PoolManager.Instance.CreatePool(missileBoss, 2);
-        PoolManager.Instance.CreatePool(sniperBoss, 2);
+        PoolManager.Instance.CreatePool(pawnShipLvl1, 300);
+        PoolManager.Instance.CreatePool(pawnShipLvl2, 300);
+        PoolManager.Instance.CreatePool(pawnShipLvl3, 300);
+
+        PoolManager.Instance.CreatePool(rangedShipLvl1, 300);
+        PoolManager.Instance.CreatePool(rangedShipLvl2, 300);
+        PoolManager.Instance.CreatePool(rangedShipLvl3, 300);
+
+        PoolManager.Instance.CreatePool(bomberShipLvl1, 300);
+        PoolManager.Instance.CreatePool(bomberShipLvl2, 300);
+        PoolManager.Instance.CreatePool(bomberShipLvl3, 300);
+
+        PoolManager.Instance.CreatePool(mediShipLvl1, 100);
+        PoolManager.Instance.CreatePool(turretLvl1, 100);
+        PoolManager.Instance.CreatePool(dropShipLvl1, 100);
+        PoolManager.Instance.CreatePool(assassinShipLvl1, 100);
+        PoolManager.Instance.CreatePool(missileBossLvl1, 2);
+        PoolManager.Instance.CreatePool(sniperBossLvl1, 2);
         PoolManager.Instance.CreatePool(bomberBossStageOne, 15);
         PoolManager.Instance.CreatePool(bomberBossStageTwo, 2);
         PoolManager.Instance.CreatePool(bomberCore, 30);
         PoolManager.Instance.CreatePool(slingShotBomber, 15);
 
-
+        // Text prefabs
+        PoolManager.Instance.CreatePool(scoreText, 5);
+        PoolManager.Instance.CreatePool(bossScoreText, 5);
 
         //PoolManager.Instance.CreatePool(topGearStageTwoBoss, 5);
         //PoolManager.Instance.CreatePool(leftGearStageTwoBoss, 5);
         //PoolManager.Instance.CreatePool(rightGearStageTwoBoss, 5);
         // Spawners
         //PoolManager.Instance.CreatePool (movingSpawn, 20);
-
-
-
-
 
     }
 }

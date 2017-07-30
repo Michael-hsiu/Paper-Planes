@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 // Need to pool this and give enemy scripts access to it
 // Canvas positioning reference: http://answers.unity3d.com/questions/799616/unity-46-beta-19-how-to-convert-from-world-space-t.html
-public class ScoreText : MonoBehaviour
+public class ScoreText : PoolObject
 {
     //public Text scoreText;
     public TextMesh scoreText;
@@ -66,8 +66,19 @@ public class ScoreText : MonoBehaviour
     //}
 
     // Need to make this pool-able
+
     public void OnObjectReuse(GameObject target)
     {
+        if (displayScoreRoutine != null)
+        {
+            StopCoroutine(displayScoreRoutine);
+            displayScoreRoutine = null;
+        }
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
         onObjectReuseRoutine = OnObjectReuseRoutine(target);
         StartCoroutine(onObjectReuseRoutine);
     }

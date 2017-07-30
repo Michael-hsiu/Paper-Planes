@@ -122,8 +122,9 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
         UIManager.Singleton.UpdateScore();  // Update score in UI
         hitFlickerRoutine = null;
 
-        GameObject scoreTextInstance = Instantiate(scoreText, transform.position, Quaternion.identity);
-        scoreTextInstance.GetComponent<ScoreText>().OnObjectReuse(gameObject);  // Pass ourselves in as a target position
+        //GameObject scoreTextInstance = Instantiate(scoreText, transform.position, Quaternion.identity);
+        PoolObject scoreTextInstance = PoolManager.Instance.ReuseObjectRef(scoreText, transform.position, Quaternion.identity);
+        scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReuse(gameObject);  // Pass ourselves in as a target position
 
         DestroyForReuse();
         // Score updates

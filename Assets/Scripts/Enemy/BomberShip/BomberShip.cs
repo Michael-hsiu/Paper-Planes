@@ -81,14 +81,6 @@ public class BomberShip : Ship
     #region Game Logic
     public override void Kill()
     {
-        // Graphics
-        Instantiate(explosion, transform.position, transform.rotation);
-        float randomVal = UnityEngine.Random.value;
-        if (randomVal <= 0.3f)
-        {
-            GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(transform.position);
-        }
-
         // Kill logic
         // CORE logic is only for BomberBoss-utilized Bombers
         if (isCore)
@@ -104,8 +96,25 @@ public class BomberShip : Ship
         {
             inSlingChargeMode = true;       // Used to keep slingshot bomber attached to boss when spinning
         }
-        //Debug.Break();
-        base.Kill();        // Bare-bones destroyForReuse()
+
+        Instantiate(explosion, transform.position, transform.rotation);
+        if (!explosionActive)
+        {
+            float randomVal = UnityEngine.Random.value;
+            if (randomVal <= 0.3f)
+            {
+                GameManager.Singleton.powerupSpawner.SpawnPowerupDrop(transform.position);
+            }
+            base.Kill();        // Bare-bones destroyForReuse()
+        }
+        else
+        {
+            // Handles self-death by explosion case
+            sprite.material.color = startColor;
+            hitFlickerRoutine = null;
+
+            DestroyForReuse();
+        }
     }
 
     public override void Move()

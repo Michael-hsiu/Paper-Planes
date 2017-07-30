@@ -94,19 +94,19 @@ public class MovingSpawn : PoolObject {
 
 				GameObject prefabRef = null;
 				if (randType == EnemyType.Pawn) {
-					prefabRef = GamePoolManager.Singleton.pawnShip;
+					prefabRef = GamePoolManager.Singleton.pawnShipLvl1;
 				} else if (randType == EnemyType.Ranged) {
-					prefabRef = GamePoolManager.Singleton.rangedShip;
+					prefabRef = GamePoolManager.Singleton.rangedShipLvl1;
 				} else if (randType == EnemyType.Medic) {
-					prefabRef = GamePoolManager.Singleton.mediShip;
+					prefabRef = GamePoolManager.Singleton.mediShipLvl1;
 				} else if (randType == EnemyType.Turret) {
-					prefabRef = GamePoolManager.Singleton.turret;
+					prefabRef = GamePoolManager.Singleton.turretLvl1;
 				} else if (randType == EnemyType.DropShip) {
-					prefabRef = GamePoolManager.Singleton.dropShip;
+					prefabRef = GamePoolManager.Singleton.dropShipLvl1;
 				} else if (randType == EnemyType.Assassin) {
-					prefabRef = GamePoolManager.Singleton.assassinShip;
+					prefabRef = GamePoolManager.Singleton.assassinShipLvl1;
 				} else if (randType == EnemyType.Bomber) {
-					prefabRef = GamePoolManager.Singleton.bomberShip;
+					prefabRef = GamePoolManager.Singleton.bomberShipLvl1;
 				}
 					
 				//Debug.Log ("PREFABREF: " + prefabRef == null);
