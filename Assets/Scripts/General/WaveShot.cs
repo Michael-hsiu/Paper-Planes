@@ -153,7 +153,7 @@ public class WaveShot : PoolObject, IMovement
             currColor.a = Mathf.Lerp(1f, 0f, fadeLerpRatio);
             sprite.material.color = currColor;
 
-            Debug.Log("WAVESHOT ALPHA: " + currColor.a);
+            //Debug.Log("WAVESHOT ALPHA: " + currColor.a);
             fadeLerpRatio += (Time.deltaTime / fadeLerpDuration);
             yield return null;
         }

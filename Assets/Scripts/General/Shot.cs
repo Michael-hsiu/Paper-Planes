@@ -1,65 +1,158 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Shot : PoolObject, IMovement {
+public class Shot : PoolObject, IMovement
+{
 
-	/** INSTANCE VARS */
+    /** INSTANCE VARS */
 
-	[Header("References")]
-	public GameObject shotSpawn;
-	public int shotDamage = 10;
-	public float speed = 1.0f;
-	public float speedMultiplier = 1.0f;
-	public float lifeTime = 3.0f;
+    [Header("References")]
+    public GameObject shotSpawn;
+    public int shotDamage = 10;
+    public float speed = 1.0f;
+    public float speedMultiplier = 1.0f;
+    public float lifeTime = 3.0f;
+    public float endTime;
 
-	private Rigidbody rb;
+    [Header("FADE_LERP_LOGIC")]
+    public float fadeLerpDuration = 1.0f;
+    public float fadeLerpRatio;
+    public float currFadeLerpTime;
 
-	/** INTERFACE METHODS */
+    [Header("RENDERER/FLICKER_DATA")]
+    public Color startColor;
+    public Renderer sprite;
+    public float flickerTime = 0.05f;
 
-	public override void OnObjectReuse() {
-		GetComponent<Rigidbody> ().velocity = Vector3.zero;		// Reset velocity
-	}
+    Rigidbody rigidBody;
+    IEnumerator destroyAfterLifetimeRoutine;
+    IEnumerator fadeRoutine;
 
-	public void Move() {
-		rb.velocity = transform.up * speed * speedMultiplier * Time.deltaTime;		// Propel shot forward
-	}
+    /** INTERFACE METHODS */
+
+    public override void OnObjectReuse()
+    {
+        if (sprite != null)
+        {
+            Color rawStartColor = sprite.material.color;
+            rawStartColor.a = 1f;
+            startColor = rawStartColor;
+            sprite.material.color = startColor;
+            //Debug.Break();
+        }
+    }
+
+    // Activate shot countdown when object is enabled
+    void OnEnable()
+    {
+        rigidBody.velocity = Vector3.zero;      // Reset velocity=
+        if (sprite == null)
+        {
+            try
+            {
+                sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
+            }
+            catch (Exception exception)
+            {
+                Debug.Log("NO SPRITE FOR SHOT!");
+            }
+        }
+        try
+        {
+            Color rawStartColor = sprite.material.color;
+            rawStartColor.a = 1f;
+            startColor = rawStartColor;
+        }
+        catch (Exception exception)
+        {
+            Debug.Log("STILL NO SPRITE FOR SHOT!");
+        }
 
 
-	/** UNITY CALLBACKS */
+        if (destroyAfterLifetimeRoutine != null)
+        {
+            StopCoroutine(destroyAfterLifetimeRoutine);
+            destroyAfterLifetimeRoutine = null;
+        }
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+        destroyAfterLifetimeRoutine = DestroyAfterLifeTime();
+        StartCoroutine(destroyAfterLifetimeRoutine);
+    }
 
-	// Activate shot countdown when object is enabled
-	void OnEnable() {
-        StopAllCoroutines();
-		StartCoroutine (DestroyAfterLifeTime (lifeTime));		// Delay, then "destroy" aka hide
-	}
+    void Awake()
+    {
 
-	protected void Start () {
+        rigidBody = GetComponent<Rigidbody>(); // Find rigidbody
+                                               //shotSpawn = transform.parent.gameObject;		// Initially spawned as child of shotSpawn
+                                               //transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
 
-		rb = GetComponent<Rigidbody> ();	// Find rigidbody
-		//shotSpawn = transform.parent.gameObject;		// Initially spawned as child of shotSpawn
-		//transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
+    }
 
-	}
+    protected void FixedUpdate()
+    {
+        Move(); // Shot starts traveling
+    }
 
-	protected void FixedUpdate() {
-		Move ();	// Shot starts traveling
-	}
+    public void Move()
+    {
+        rigidBody.velocity = transform.up * speed * speedMultiplier * Time.deltaTime;      // Propel shot forward
+    }
 
-	IEnumerator DestroyAfterLifeTime(float lifeTime) {
-		yield return new WaitForSeconds (lifeTime);
-		DestroyForReuse ();		// "Destroy" the shot, place in object pool
-	}
+    //IEnumerator DestroyAfterLifeTime(float lifeTime)
+    //{
+    //    yield return new WaitForSeconds(lifeTime);
+    //    DestroyForReuse();      // "Destroy" the shot, place in object pool
+    //}
 
-	/** PROPERTIES */
-	public int ShotDamage { 
-		get { return shotDamage; } 
-		set { shotDamage = value; } 
-	}
+    IEnumerator DestroyAfterLifeTime()
+    {
+        // Track total lifetime
+        endTime = Time.time + lifeTime;
 
-	public float SpeedMultiplier { 
-		get { return speedMultiplier; } 
-		set { speedMultiplier = value; } 
-	}
+        // Start moving
+        float nonFadeTime = lifeTime - fadeLerpDuration;
+        yield return new WaitForSeconds(nonFadeTime);
+
+        // Start fading
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+        fadeRoutine = FadeRoutine();
+        StartCoroutine(fadeRoutine);
+
+        yield return new WaitForSeconds(fadeLerpDuration);
+
+        // Destroy
+        DestroyForReuse();      // "Destroy" the shot, place in object pool
+
+    }
+
+    IEnumerator FadeRoutine()
+    {
+        fadeLerpRatio = 0.0f;
+        Color initialTextColor = startColor;
+        initialTextColor.a = 1f;
+        sprite.material.color = initialTextColor;
+        //Debug.Break();
+        while (fadeLerpRatio < 1.0f)
+        {
+            // Gradually fade alpha
+            // Maybe add exponential modifier?
+            Color currColor = sprite.material.color;
+            currColor.a = Mathf.Lerp(1f, 0f, fadeLerpRatio);
+            sprite.material.color = currColor;
+
+            fadeLerpRatio += (Time.deltaTime / fadeLerpDuration);
+            yield return null;
+        }
+    }
 
 }
