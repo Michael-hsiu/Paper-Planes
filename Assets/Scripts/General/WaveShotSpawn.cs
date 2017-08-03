@@ -8,25 +8,31 @@ public class WaveShotSpawn : ShotSpawn
     public GameObject waveShot;
     public GameObject straightMissile;
 
+    public float coolDownDuration = 0.3f;
+    public float coolDownEndTime;
     public bool waveShotEnabled = false;
     public int waveShotCounter = 0;
 
     public override void CreateShot(bool isFiringBuffed = false)
     {
-
-        // The parent should be the player or enemy sprite
-        targetRotation = transform.parent.gameObject;
-
-        // Rotate shotSpawn relative to parent Player
-        transform.localRotation = targetRotation.transform.rotation;
-
-        if (gameObject.CompareTag("RightSideSS"))
+        if (Time.time > coolDownEndTime)
         {
-            PoolManager.Instance.ReuseObject(waveShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation) * Quaternion.Euler(0, 0, 90));
-        }
-        else
-        {
-            PoolManager.Instance.ReuseObject(waveShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation) * Quaternion.Euler(0, 0, -90));
+            // The parent should be the player or enemy sprite
+            targetRotation = transform.parent.gameObject;
+
+            // Rotate shotSpawn relative to parent Player
+            transform.localRotation = targetRotation.transform.rotation;
+
+            if (gameObject.CompareTag("RightSideSS"))
+            {
+                PoolManager.Instance.ReuseObject(waveShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation) * Quaternion.Euler(0, 0, 90));
+            }
+            else
+            {
+                PoolManager.Instance.ReuseObject(waveShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation) * Quaternion.Euler(0, 0, -90));
+            }
+            // Register to cooldown
+            coolDownEndTime = Time.time + coolDownDuration;
         }
     }
 
@@ -46,8 +52,6 @@ public class WaveShotSpawn : ShotSpawn
     {
         waveShotEnabled = true;
     }
-
-
     public void DisableWaveShot()
     {
         waveShotEnabled = false;

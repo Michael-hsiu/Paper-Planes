@@ -139,7 +139,7 @@ public class GamePoolManager : MonoBehaviour
         // Powerup helper objs
         PoolManager.Instance.CreatePool(tripMines, 40);
         PoolManager.Instance.CreatePool(shurikenObj, 10);
-        PoolManager.Instance.CreatePool(waveShot, 20);
+        PoolManager.Instance.CreatePool(waveShot, 100);
         PoolManager.Instance.CreatePool(missiles, 100);
         PoolManager.Instance.CreatePool(straightMissiles, 100);
         PoolManager.Instance.CreatePool(playerStraightMissiles, 50);
@@ -159,8 +159,12 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(bomberShipLvl2, 300);
         PoolManager.Instance.CreatePool(bomberShipLvl3, 300);
 
-        PoolManager.Instance.CreatePool(mediShipLvl1, 100);
         PoolManager.Instance.CreatePool(turretLvl1, 100);
+        PoolManager.Instance.CreatePool(turretLvl2, 100);
+        PoolManager.Instance.CreatePool(turretLvl3, 100);
+
+
+        PoolManager.Instance.CreatePool(mediShipLvl1, 100);
         PoolManager.Instance.CreatePool(dropShipLvl1, 100);
         PoolManager.Instance.CreatePool(assassinShipLvl1, 100);
         PoolManager.Instance.CreatePool(missileBossLvl1, 2);

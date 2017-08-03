@@ -174,16 +174,25 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
         Instantiate(explosion, transform.position, transform.rotation);
 
+        DisplayKillScore();            // Displays the score
+        OnKillReset();     // Resets the logic
+    }
+
+    public void OnKillReset()
+    {
+        sprite.material.color = startColor;
+        GameManager.Singleton.RecordEnemyKilled(enemyType); // REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
         GameManager.Singleton.UpdateScore(enemyPoints); // Add new score in GameManager
         UIManager.Singleton.UpdateScore();  // Update score in UI
-
-        //GameObject scoreTextInstance = Instantiate(scoreText, transform.position, Quaternion.identity);
-        PoolObject scoreTextInstance = PoolManager.Instance.ReuseObjectRef(scoreText, transform.position, Quaternion.identity);
-        scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReuse(gameObject);  // Pass ourselves in as a target position
-
-        Debug.Log("TURRET KILLED! Obtained: " + enemyPoints + "points!");
+        hitFlickerRoutine = null;
 
         DestroyForReuse();
+    }
+
+    public void DisplayKillScore()
+    {
+        PoolObject scoreTextInstance = PoolManager.Instance.ReuseObjectRef(scoreText, transform.position, Quaternion.identity);
+        scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReuse(gameObject);  // Pass ourselves in as a target position
     }
 
     public virtual void Fire()

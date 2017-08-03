@@ -110,10 +110,11 @@ public class BomberShip : Ship
         else
         {
             // Handles self-death by explosion case
-            sprite.material.color = startColor;
-            hitFlickerRoutine = null;
+            OnKillReset();
+            //sprite.material.color = startColor;
+            //hitFlickerRoutine = null;
 
-            DestroyForReuse();
+            //DestroyForReuse();
         }
     }
 

@@ -2,78 +2,160 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveShot : PoolObject, IMovement {
+public class WaveShot : PoolObject, IMovement
+{
 
-	/** INSTANCE VARS */
+    [Header("References")]
+    public GameObject shotSpawn;
+    public GameObject debugExplosion;
+    public int waveShotDamage = 30;
+    public float speed = 1.0f;
+    public float speedMultiplier = 1.0f;
+    public float lifeTime = 3.0f;
+    public float endTime;
 
-	[Header("References")]
-	public GameObject shotSpawn;
-	public int shotDamage = 10;
-	public float speed = 1.0f;
-	public float speedMultiplier = 1.0f;
-	public float lifeTime = 3.0f;
+    [Header("FADE_LERP_LOGIC")]
+    public float fadeLerpDuration = 1.0f;
+    public float fadeLerpRatio;
+    public float currFadeLerpTime;
 
-	public GameObject debugExplosion;
+    [Header("RENDERER/FLICKER_DATA")]
+    public Color startColor;
+    public Renderer sprite;
+    public float flickerTime = 0.05f;
 
-	private Rigidbody rb;
+    Rigidbody rigidBody;
+    IEnumerator destroyAfterLifetimeRoutine;
+    IEnumerator fadeRoutine;
 
-	/** INTERFACE METHODS */
+    public override void OnObjectReuse()
+    {
+        if (sprite != null)
+        {
+            Color rawStartColor = sprite.material.color;
+            rawStartColor.a = 1f;
+            startColor = rawStartColor;
+            sprite.material.color = startColor;
+            //Debug.Break();
+        }
+    }
 
-	public override void OnObjectReuse() {
-		GetComponent<Rigidbody> ().velocity = Vector3.zero;		// Reset velocity
-	}
+    void OnEnable()
+    {
+        rigidBody.velocity = Vector3.zero;      // Reset velocity=
+        if (sprite == null)
+        {
+            sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
+        }
+        Color rawStartColor = sprite.material.color;
+        rawStartColor.a = 1f;
+        startColor = rawStartColor;
 
-	public void Move() {
-		rb.velocity = transform.up * speed * speedMultiplier * Time.deltaTime;		// Propel shot forward
-	}
+        if (destroyAfterLifetimeRoutine != null)
+        {
+            StopCoroutine(destroyAfterLifetimeRoutine);
+            destroyAfterLifetimeRoutine = null;
+        }
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+        destroyAfterLifetimeRoutine = DestroyAfterLifeTime();
+        StartCoroutine(destroyAfterLifetimeRoutine);
+    }
 
+    public void Move()
+    {
+        rigidBody.velocity = transform.up * speed * speedMultiplier * Time.deltaTime;      // Propel shot forward
+    }
 
-	/** UNITY CALLBACKS */
+    // Activate shot countdown when object is enabled
+    //void OnEnable()
+    //{
+    //    StartCoroutine(DestroyAfterLifeTime(lifeTime));     // Delay, then "destroy" aka hide
+    //}
 
-	// Activate shot countdown when object is enabled
-	void OnEnable() {
-		StartCoroutine (DestroyAfterLifeTime (lifeTime));		// Delay, then "destroy" aka hide
-	}
+    void Awake()
+    {
+        rigidBody = GetComponent<Rigidbody>();    // Find rigidbody
+    }
+    protected void Start()
+    {
 
-	protected void Start () {
+        if (sprite == null)
+        {
+            sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
+            startColor = sprite.material.color;
+        }
+        //shotSpawn = transform.parent.gameObject;		// Initially spawned as child of shotSpawn
+        //transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
 
-		rb = GetComponent<Rigidbody> ();	// Find rigidbody
-		//shotSpawn = transform.parent.gameObject;		// Initially spawned as child of shotSpawn
-		//transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
+    }
 
-	}
+    protected void FixedUpdate()
+    {
+        Move(); // Shot starts traveling
+    }
 
-	protected void FixedUpdate() {
-		Move ();	// Shot starts traveling
-	}
+    void OnTriggerEnter(Collider other)
+    {
 
-	void OnTriggerEnter(Collider other) {
-		
-		if (other.gameObject.CompareTag(Constants.EnemyTag)) {
-			
-			if (other.gameObject.GetComponent<IDamageable<int>>() != null) {
-				
-				other.gameObject.GetComponent<IDamageable<int>>().Damage (30);
-				Instantiate (debugExplosion, transform.position, Quaternion.identity);		// Visual indication that we hit an enemy
-				Debug.Log ("ENEMY HIT BY WAVE!");
-			}
-		}
-	}
+        if (other.gameObject.CompareTag(Constants.EnemyTag))
+        {
+            IDamageable<int> idamageable = other.gameObject.GetComponent<IDamageable<int>>();
+            if (idamageable != null)
+            {
+                idamageable.Damage(waveShotDamage);
+                Instantiate(debugExplosion, transform.position, Quaternion.identity);       // Visual indication that we hit an enemy
+                Debug.Log("ENEMY HIT BY WAVE!");
+            }
+        }
+    }
 
-	IEnumerator DestroyAfterLifeTime(float lifeTime) {
-		yield return new WaitForSeconds (lifeTime);
-		DestroyForReuse ();		// "Destroy" the shot, place in object pool
-	}
+    IEnumerator DestroyAfterLifeTime()
+    {
+        // Track total lifetime
+        endTime = Time.time + lifeTime;
 
-	/** PROPERTIES */
-	public int ShotDamage { 
-		get { return shotDamage; } 
-		set { shotDamage = value; } 
-	}
+        // Start moving
+        float nonFadeTime = lifeTime - fadeLerpDuration;
+        yield return new WaitForSeconds(nonFadeTime);
 
-	public float SpeedMultiplier { 
-		get { return speedMultiplier; } 
-		set { speedMultiplier = value; } 
-	}
+        // Start fading
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+        fadeRoutine = FadeRoutine();
+        StartCoroutine(fadeRoutine);
 
+        yield return new WaitForSeconds(fadeLerpDuration);
+
+        // Destroy
+        DestroyForReuse();      // "Destroy" the shot, place in object pool
+
+    }
+
+    IEnumerator FadeRoutine()
+    {
+        fadeLerpRatio = 0.0f;
+        Color initialTextColor = startColor;
+        initialTextColor.a = 1f;
+        sprite.material.color = initialTextColor;
+        //Debug.Break();
+        while (fadeLerpRatio < 1.0f)
+        {
+            // Gradually fade alpha
+            // Maybe add exponential modifier?
+            Color currColor = sprite.material.color;
+            currColor.a = Mathf.Lerp(1f, 0f, fadeLerpRatio);
+            sprite.material.color = currColor;
+
+            Debug.Log("WAVESHOT ALPHA: " + currColor.a);
+            fadeLerpRatio += (Time.deltaTime / fadeLerpDuration);
+            yield return null;
+        }
+    }
 }
