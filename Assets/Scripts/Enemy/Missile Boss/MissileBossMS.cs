@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MissileBossMS : MonoBehaviour, IMoveState
 {
@@ -295,11 +296,20 @@ yield return null;
     public void OnDrawGizmos()
     {
         /* ATTACK VISUALIZATION */
-        if (missileBoss.usingSpinAtk)
+        try
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(missileBoss.transform.position, missileBoss.spinAtkRadius);
+            if (missileBoss.usingSpinAtk)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(missileBoss.transform.position, missileBoss.spinAtkRadius);
+            }
         }
+        catch (Exception exception)
+        {
+            Debug.Log("Missile_boss: on_draw_gizmos");
+        }
+
+
     }
 
     private Vector3 SetAngle(Vector3 v, Quaternion wanderAngle)

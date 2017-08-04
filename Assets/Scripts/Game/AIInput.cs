@@ -116,16 +116,36 @@ public class AIInput : MonoBehaviour, InputComponent
 
 
             // MOBILE INPUTS
-
-            // Left joystick (move)
-            float hori = CrossPlatformInputManager.GetAxis("HorizontalJoystick");
-            float vert = CrossPlatformInputManager.GetAxis("VerticalJoystick");
-
-            Vector3 shipRotateDir = Vector3.zero;
-            shipRotateDir.x = hori;
-            shipRotateDir.z = vert;
-            if (shipRotateDir != Vector3.zero)
+            // Old Unity prefab logic was removed; consult old versions for the code
+            // Rotation logic
+            Vector3 rotateInputDirection = virtualJoystickRotate.inputDirection;
+            Vector3 moveInputDirection = virtualJoystickMove.inputDirection;
+            if (rotateInputDirection != Vector3.zero)
             {
+                // Joystick FiringRig Rotation logic
+                if (Time.time > rigRotationEndTime)
+                {
+                    Quaternion rawFiringRigRotation = player.firingRig.transform.rotation;    // Cache start rotation
+                    Vector3 firingRigRotEuler = rawFiringRigRotation.eulerAngles;
+                    firingRigRotEuler.x = 0f;       // Remove non z-axis rot
+                    firingRigRotEuler.y = 0f;
+                    rigStartRotation = Quaternion.Euler(firingRigRotEuler);
+
+                    zAngleFiringRig = (Mathf.Atan2(rotateInputDirection.z, rotateInputDirection.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+                    rigDesiredRotation = Quaternion.Euler(0, 0, zAngleFiringRig);        // Store rotation as an Euler, then Quaternion
+                    rigRotationEndTime = Time.time + rotationDetectInterval;             // Schedule next rotation check
+                    rigLerpStartTime = Time.time;
+                    rigCurrLerpTime = 0f;
+                }
+                rigCurrLerpTime += Time.deltaTime;
+                rigLerpRatio = rigCurrLerpTime / rotationDetectInterval;
+                player.firingRig.transform.rotation = Quaternion.Slerp(rigStartRotation, rigDesiredRotation, rigLerpRatio);
+                Debug.Log("FIRINGRIGANGLES: " + player.firingRig.transform.rotation.eulerAngles);
+            }
+            // Movement logic
+            if (moveInputDirection != Vector3.zero)
+            {
+                // Joystick Rotation logic
                 // Only turn if no abnormal status OR is burst rush charging
                 if (axisInput || GameManager.Singleton.isBurstRushCharging)
                 {
@@ -137,7 +157,7 @@ public class AIInput : MonoBehaviour, InputComponent
                         playerRotEuler.y = 0f;
                         playerStartRotation = Quaternion.Euler(playerRotEuler);
 
-                        zAnglePlayer = (Mathf.Atan2(shipRotateDir.z, shipRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+                        zAnglePlayer = (Mathf.Atan2(moveInputDirection.z, moveInputDirection.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
                         desiredRotation = Quaternion.Euler(0, 0, zAnglePlayer);        // Store rotation as an Euler, then Quaternion
                         rotationEndTime = Time.time + rotationDetectInterval;   // Schedule next rotation check
                         lerpStartTime = Time.time;
@@ -148,12 +168,12 @@ public class AIInput : MonoBehaviour, InputComponent
                     lerpRatio = currLerpTime / rotationDetectInterval;
                     player.transform.rotation = Quaternion.Slerp(playerStartRotation, desiredRotation, lerpRatio);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
 
-                    // Rotate to face joystick direction (rotateTowards behaves oddly b/c every frame, we get new start/end rotations)
-                    //player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);     // Works for PlayerShotSpawn rotations for Mobile, feels smoother
-                    //player.transform.rotation = desiredRotation;        // Works for Mobile, not Mac (works if already collected firingPowerup)
-                    //player.transform.rotation = Quaternion.LookRotation(desiredRotation.eulerAngles);
-
+                    //float zAngle = (Mathf.Atan2(moveInputDirection.z, moveInputDirection.x) * Mathf.Rad2Deg) - 90;   // Angle of rotation around z-axis (pointing upwards)
+                    //Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);       // Store rotation as an Euler, then Quaternion
+                    //player.transform.rotation = desiredRotation;
+                    //player.GetComponent<Rigidbody>().AddRelativeForce(transform.up * player.speed);
                 }
+
                 // Move in new direction we're facing
                 // Burst rush rotate only
                 // This part is for adding forward force
@@ -168,43 +188,7 @@ public class AIInput : MonoBehaviour, InputComponent
                 }
             }
 
-            // Right joystick (rotate + fire)
-            if (turnInput)
-            {
-                float xInput = CrossPlatformInputManager.GetAxis("Mouse X");
-                float yInput = CrossPlatformInputManager.GetAxis("Mouse Y");
-
-                Vector3 rigRotateDir = Vector3.zero;
-                rigRotateDir.x = xInput;
-                rigRotateDir.z = yInput;
-                if (rigRotateDir != Vector3.zero)
-                {
-                    if (Time.time > rigRotationEndTime)
-                    {
-                        Quaternion rawFiringRigRotation = player.firingRig.transform.rotation;    // Cache start rotation
-                        Vector3 firingRigRotEuler = rawFiringRigRotation.eulerAngles;
-                        firingRigRotEuler.x = 0f;       // Remove non z-axis rot
-                        firingRigRotEuler.y = 0f;
-                        rigStartRotation = Quaternion.Euler(firingRigRotEuler);
-
-                        zAngleFiringRig = (Mathf.Atan2(rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
-                        rigDesiredRotation = Quaternion.Euler(0, 0, zAngleFiringRig);        // Store rotation as an Euler, then Quaternion
-                        rigRotationEndTime = Time.time + rotationDetectInterval;             // Schedule next rotation check
-                        rigLerpStartTime = Time.time;
-                        rigCurrLerpTime = 0f;
-                    }
-                    rigCurrLerpTime += Time.deltaTime;
-                    rigLerpRatio = rigCurrLerpTime / rotationDetectInterval;
-                    player.firingRig.transform.rotation = Quaternion.Slerp(rigStartRotation, rigDesiredRotation, rigLerpRatio);
-
-                    // Works for PlayerShotSpawn rotations for Mobile, feels smoother
-                    //Debug.Break();
-                    //Rotate to face joystick direction
-                    //zAngle = (Mathf.Atan2(rigRotateDir.z, rigRotateDir.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
-                    //desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
-                    //player.firingRig.transform.rotation = desiredRotation;
-                }
-            }
+            // Fix player z-position
             Vector3 playerPos = player.transform.position;
             playerPos.z = 0f;
             player.transform.position = playerPos;      // Weird error where mobile controls / wall collisions cause z-coordinate of player to change
@@ -222,7 +206,6 @@ public class AIInput : MonoBehaviour, InputComponent
             }
         }
     }
-
     // Disable player control - activated when hit my EMP wave
     public void DisableControls()
     {
