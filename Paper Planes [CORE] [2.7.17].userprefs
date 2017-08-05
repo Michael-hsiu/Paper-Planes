@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/AIInput.cs">
     <Files>
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="215" Column="32" />
       <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="176" Column="29" />
@@ -14,8 +14,8 @@
       <File FileName="Assets/Scripts/Powerups/StraightMissile.cs" Line="149" Column="1" />
       <File FileName="Assets/Scripts/General/Shot.cs" Line="85" Column="53" />
       <File FileName="Assets/Inputs/VirtualJoystick.cs" Line="51" Column="13" />
-      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="137" Column="67" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" Line="300" Column="9" />
+      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="187" Column="62" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" Line="5" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
