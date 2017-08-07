@@ -6,13 +6,18 @@ public class HealthPickup : PoolObject
 {
 
     public int healthAmnt = 100;
+    public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
+
 
     void OnTriggerEnter(Collider other)
     {
         // Triggers on collision with rigidbody's colliderg
         if (other.gameObject.CompareTag(Constants.PlayerTag) && GameManager.Singleton.playerHealth > 0)
         {
-
+            if (pickupParticlePrefab != null)
+            {
+                Instantiate(pickupParticlePrefab, transform.position, Quaternion.identity);
+            }
             if (GameManager.Singleton.playerHealth < GameManager.Singleton.playerMaxHealth)
             {
                 // Can't add more health than max health

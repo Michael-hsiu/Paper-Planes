@@ -12,6 +12,8 @@ public class TripMineWeapon : PoolObject
     public float explosionForce = 30.0f;
     public List<Mine> mines = new List<Mine>();
     protected bool isVisible;
+    public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
+
     private IEnumerator cr;
     private GameObject player;
 
@@ -33,6 +35,10 @@ public class TripMineWeapon : PoolObject
 
         if (other.gameObject.CompareTag(Constants.PlayerTag))
         {
+            if (pickupParticlePrefab != null)
+            {
+                Instantiate(pickupParticlePrefab, transform.position, Quaternion.identity);
+            }
             // Do weapons logic; spawn things
             SpawnMines();
             HideInScene();

@@ -15,6 +15,8 @@ public class BurstRushPowerup : PoolObject
     public float radius = 2.5f;
     public List<Collider> colliders;
     protected bool isVisible;
+    public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
+
 
     private IEnumerator chargeRoutine;
     private IEnumerator rushRoutine;
@@ -46,13 +48,15 @@ public class BurstRushPowerup : PoolObject
         if (other.gameObject.CompareTag(Constants.PlayerTag) && !GameManager.Singleton.isBurstRushCharging && !GameManager.Singleton.isBurstRushing)
         {
             // Do weapons logic; spawn things
-
-            HideInScene();
+            if (pickupParticlePrefab != null)
+            {
+                Instantiate(pickupParticlePrefab, transform.position, Quaternion.identity);
+            }
             GameManager.Singleton.rushes.Enqueue(this);     // Add a Rush to our count
             UIManager.Singleton.UpdateBurstRushText();
 
             TriggerCharge(player);          // Immediately activate powerup on pickup
-
+            HideInScene();
         }
     }
 

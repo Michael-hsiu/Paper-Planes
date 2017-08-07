@@ -15,7 +15,9 @@ public class Powerup : PoolObject
     public float powerDuration = 3.0f;
     public float endTime;
     public float timeObtained;
+    public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
     protected bool isVisible;
+
     //protected string id = "";
 
     void Start()
@@ -112,6 +114,10 @@ public class Powerup : PoolObject
 				player = other.GetComponent<PlayerShip> ();
 			}*/
             //Debug.Log (other.name);
+            if (pickupParticlePrefab != null)
+            {
+                Instantiate(pickupParticlePrefab, transform.position, Quaternion.identity);
+            }
             ActivatePower();
             HideInScene();
             //Debug.Log ("PICKED UP POWERUP: " + this.id);	// Print message to console
