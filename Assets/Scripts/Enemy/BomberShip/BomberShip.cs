@@ -21,6 +21,7 @@ public class BomberShip : Ship
     public bool isSlingShotBomber = false;
     public bool inSlingChargeMode = false;
     public BomberBoss bomberBoss;
+    public GameObject selfExplosionPrefab;
 
     private Rigidbody rigidBody;
     #endregion
@@ -217,9 +218,8 @@ public class BomberShip : Ship
                 i.Damage(explosionDamage);
             }
         }
-
+        Instantiate(selfExplosionPrefab, transform.position, transform.rotation);  // Explosion effect w/ custom prefab!
         Kill();     // We're dead, so hide this object!
-        Instantiate(explosion, transform.position, transform.rotation); // Explode! 
 
     }
     #endregion
