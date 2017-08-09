@@ -37,7 +37,7 @@ public class TripMineWeapon : PoolObject
         {
             if (pickupParticlePrefab != null)
             {
-                Instantiate(pickupParticlePrefab, transform.position, Quaternion.identity);
+                PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
             }
             // Do weapons logic; spawn things
             SpawnMines();

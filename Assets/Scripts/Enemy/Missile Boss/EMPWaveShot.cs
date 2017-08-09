@@ -16,7 +16,7 @@ public class EMPWaveShot : PoolObject, IMovement
     public float knockbackForce = 3000.0f;
     public float endTime;
 
-    public GameObject debugExplosion;
+    public GameObject playerHitParticle;
 
     [Header("FADE_LERP_LOGIC")]
     public float fadeLerpDuration = 1.0f;
@@ -90,7 +90,6 @@ public class EMPWaveShot : PoolObject, IMovement
         //rigidBody = GetComponent<Rigidbody>();    // Find rigidbody
         //shotSpawn = transform.parent.gameObject;      // Initially spawned as child of shotSpawn
         //transform.parent = shotSpawn.transform;   // Set the shotSpawn as parent for shots
-
     }
 
     protected void FixedUpdate()
@@ -112,6 +111,7 @@ public class EMPWaveShot : PoolObject, IMovement
     IEnumerator EnableEMPEffect()
     {
         InputManager.Singleton.GetInputComponent().DisableControls();      // This has a coroutine underneath that re-enables controls
+        PoolManager.Instance.ReuseObject(playerHitParticle, transform.position, Quaternion.identity);
         DestroyForReuse();
         yield return null;
 

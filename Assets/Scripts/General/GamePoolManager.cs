@@ -25,6 +25,7 @@ public class GamePoolManager : MonoBehaviour
     public GameObject playerTriShot;
     public GameObject playerUltiShot;
     public GameObject enemySingleShot;
+    public GameObject turretSingleShot;
     public GameObject enemyFasterShot;
     public GameObject enemyBulletHellShot;
 
@@ -97,6 +98,26 @@ public class GamePoolManager : MonoBehaviour
     public GameObject scoreText;
     public GameObject bossScoreText;
 
+    [Header("PARTICLE_PREFABS")]
+    public GameObject burstRushRingParticle;
+    public GameObject firingPowerupRingParticle;
+    public GameObject healthPickupRingParticle;
+    public GameObject homingMissileRingParticle;
+    public GameObject scoreMultRingParticle;
+    public GameObject shurikenRingParticle;
+    public GameObject tripMineRingParticle;
+    public GameObject waveShotRingParticle;
+
+    public GameObject burstRushHitParticle;
+    public GameObject homingMissileHitParticle;
+    public GameObject shurikenRingHitParticle;
+    public GameObject tripMineHitParticle;
+    public GameObject waveShotHitParticle;
+    public GameObject playerShotHitParticle;
+    public GameObject empWaveHitParticle;
+    public GameObject bomberExplosionParticle;
+
+
     //[Header("Spawners")] // Spawner prefabs
     //public GameObject movingSpawn;
 
@@ -119,6 +140,7 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(playerTriShot, 50);
         PoolManager.Instance.CreatePool(playerUltiShot, 25);
         PoolManager.Instance.CreatePool(enemySingleShot, 200);
+        PoolManager.Instance.CreatePool(turretSingleShot, 200);
         PoolManager.Instance.CreatePool(enemyFasterShot, 200);
         PoolManager.Instance.CreatePool(enemyBulletHellShot, 100);
 
@@ -175,8 +197,28 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(slingShotBomber, 15);
 
         // Text prefabs
-        PoolManager.Instance.CreatePool(scoreText, 5);
-        PoolManager.Instance.CreatePool(bossScoreText, 5);
+        PoolManager.Instance.CreatePool(scoreText, 100);
+        PoolManager.Instance.CreatePool(bossScoreText, 10);
+
+        // Particle prefabs
+        PoolManager.Instance.CreatePool(burstRushRingParticle, 20);
+        PoolManager.Instance.CreatePool(firingPowerupRingParticle, 20);
+        PoolManager.Instance.CreatePool(healthPickupRingParticle, 20);
+        PoolManager.Instance.CreatePool(homingMissileRingParticle, 20);
+        PoolManager.Instance.CreatePool(scoreMultRingParticle, 20);
+        PoolManager.Instance.CreatePool(shurikenRingParticle, 20);
+        PoolManager.Instance.CreatePool(tripMineRingParticle, 20);
+        PoolManager.Instance.CreatePool(waveShotRingParticle, 20);
+
+
+        PoolManager.Instance.CreatePool(burstRushHitParticle, 20);
+        PoolManager.Instance.CreatePool(homingMissileHitParticle, 20);
+        PoolManager.Instance.CreatePool(shurikenRingHitParticle, 20);
+        PoolManager.Instance.CreatePool(tripMineHitParticle, 20);
+        PoolManager.Instance.CreatePool(waveShotHitParticle, 20);
+        PoolManager.Instance.CreatePool(playerShotHitParticle, 20);
+        PoolManager.Instance.CreatePool(empWaveHitParticle, 20);
+        PoolManager.Instance.CreatePool(bomberExplosionParticle, 20);
 
         //PoolManager.Instance.CreatePool(topGearStageTwoBoss, 5);
         //PoolManager.Instance.CreatePool(leftGearStageTwoBoss, 5);

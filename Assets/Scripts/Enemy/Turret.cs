@@ -172,7 +172,7 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
         //Destroy (transform.gameObject);		// Destroy our gameobject
         //transform.gameObject.SetActive(false);	// "Destroy" our gameobject
 
-        Instantiate(explosion, transform.position, transform.rotation);
+        PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
 
         DisplayKillScore();            // Displays the score
         OnKillReset();     // Resets the logic

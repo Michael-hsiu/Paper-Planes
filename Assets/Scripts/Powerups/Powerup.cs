@@ -116,7 +116,7 @@ public class Powerup : PoolObject
             //Debug.Log (other.name);
             if (pickupParticlePrefab != null)
             {
-                Instantiate(pickupParticlePrefab, transform.position, Quaternion.identity);
+                PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
             }
             ActivatePower();
             HideInScene();

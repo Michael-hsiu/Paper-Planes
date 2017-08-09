@@ -113,7 +113,7 @@ public class BomberBossStageTwo : Ship
     public override void Kill()
     {
         // Graphics
-        Instantiate(explosion, transform.position, transform.rotation);
+        PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
 
         // Powerup spawn chance
         float randomVal = Random.value;

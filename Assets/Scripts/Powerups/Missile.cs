@@ -212,7 +212,7 @@ public class Missile : PoolObject
                         }
                     }
 
-                    Instantiate(explosion, transform.position, Quaternion.identity);
+                    PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
                     //Debug.Log ("MISSILE EXPLODED!");
 
                     DestroyForReuse();      // We explode after one hit

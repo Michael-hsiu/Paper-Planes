@@ -107,7 +107,7 @@ public class StraightMissile : PoolObject
                         ((Ship)other.GetComponent<PlayerShip>()).Damage(missileDmg);
                     }
 
-                    Instantiate(explosion, transform.position, Quaternion.identity);
+                    PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
                     //Debug.Log ("STRAIGHT MISSILE EXPLODED!");
 
                     DestroyForReuse();      // We explode after one hit

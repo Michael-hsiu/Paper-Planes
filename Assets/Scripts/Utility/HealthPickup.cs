@@ -16,7 +16,7 @@ public class HealthPickup : PoolObject
         {
             if (pickupParticlePrefab != null)
             {
-                Instantiate(pickupParticlePrefab, transform.position, Quaternion.identity);
+                PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
             }
             if (GameManager.Singleton.playerHealth < GameManager.Singleton.playerMaxHealth)
             {

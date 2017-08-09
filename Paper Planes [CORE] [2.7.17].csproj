@@ -234,6 +234,7 @@
     <Compile Include="Assets\Scripts\Menu\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Menu\PowerupHolder.cs" />
     <Compile Include="Assets\Scripts\Menu\ShopMenu.cs" />
+    <Compile Include="Assets\Scripts\Particles\DestroyOnEnd.cs" />
     <Compile Include="Assets\Scripts\Powerups\BurstChargeColliders.cs" />
     <Compile Include="Assets\Scripts\Powerups\BurstRushCollider.cs" />
     <Compile Include="Assets\Scripts\Powerups\BurstRushManager.cs" />

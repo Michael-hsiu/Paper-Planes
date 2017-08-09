@@ -77,7 +77,7 @@ public class RangedShip : FiringShip, IEnemy
     public override void Kill()
     {
         // Graphics
-        Instantiate(explosion, transform.position, transform.rotation);
+        PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
         float randomVal = UnityEngine.Random.value;
         if (randomVal <= 0.3f)
         {

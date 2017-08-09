@@ -50,7 +50,7 @@ public class BurstRushPowerup : PoolObject
             // Do weapons logic; spawn things
             if (pickupParticlePrefab != null)
             {
-                Instantiate(pickupParticlePrefab, transform.position, Quaternion.identity);
+                PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
             }
             GameManager.Singleton.rushes.Enqueue(this);     // Add a Rush to our count
             UIManager.Singleton.UpdateBurstRushText();

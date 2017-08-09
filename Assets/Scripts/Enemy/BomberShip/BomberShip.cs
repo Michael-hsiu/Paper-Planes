@@ -98,7 +98,7 @@ public class BomberShip : Ship
             inSlingChargeMode = true;       // Used to keep slingshot bomber attached to boss when spinning
         }
 
-        Instantiate(explosion, transform.position, transform.rotation);
+        PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
         if (!explosionActive)
         {
             float randomVal = UnityEngine.Random.value;
@@ -218,7 +218,7 @@ public class BomberShip : Ship
                 i.Damage(explosionDamage);
             }
         }
-        Instantiate(selfExplosionPrefab, transform.position, transform.rotation);  // Explosion effect w/ custom prefab!
+        PoolManager.Instance.ReuseObject(selfExplosionPrefab, transform.position, transform.rotation);  // Explosion effect w/ custom prefab!
         Kill();     // We're dead, so hide this object!
 
     }
