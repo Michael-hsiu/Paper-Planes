@@ -153,6 +153,8 @@ public class GameManager : MonoBehaviour
         levelActive = false;
 
         enemySpawner.EndLevel();
+        powerupSpawner.EndLevel();
+
         mainCamera.GetComponent<CameraController>().StartScoreUICameraAnimation();
         UIManager.Singleton.DisplayGameOverScreen();
         //Debug.LogError("PLAYER DIED!");
@@ -165,8 +167,8 @@ public class GameManager : MonoBehaviour
         // Clean up the level
         // TODO: player's powerups, health, stats need to be reset. Or use events? Are they misleading?
         UIManager.Singleton.RestartLevel();     // // Clean up UI
-        Utils.KillAllEnemies();
-        Utils.DisablePowerups();
+        //Utils.KillAllEnemies();
+        //Utils.DisablePowerups();
         enemySpawner.RestartLevel();
 
 

@@ -28,6 +28,7 @@ public class ShurikenPowerup : Powerup
             // Do weapons logic; spawn things
             if (pickupParticlePrefab != null)
             {
+                GameManager.Singleton.numPowerupsCollected += 1;
                 PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
             }
             SpawnShuriken();

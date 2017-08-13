@@ -20,6 +20,8 @@ public class HealthPickup : PoolObject
             }
             if (GameManager.Singleton.playerHealth < GameManager.Singleton.playerMaxHealth)
             {
+                GameManager.Singleton.numPowerupsCollected += 1;
+
                 // Can't add more health than max health
                 int healthToAdd = Mathf.Min(healthAmnt, GameManager.Singleton.playerMaxHealth - GameManager.Singleton.playerHealth);
                 Debug.Log("HEALTH TO ADD: " + healthToAdd);

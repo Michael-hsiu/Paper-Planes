@@ -178,8 +178,14 @@ public class PowerupSpawner : MonoBehaviour
         }
     }
 
+    public void EndLevel()
+    {
+        spawnEnabled = false;
+    }
+
     public void RestartLevel()
     {
+        spawnEnabled = true;
         currLevelIndex = initialStartIndex;     // Reset valid powerups
 
         StopCoroutine(powerupSpawnRoutine);

@@ -9,6 +9,7 @@ public class FiringPowerup : Powerup
     // Check active firing powerup. If normal, add 1. If enhanced already, add 1 and extend the time.
     public override void ActivatePower()
     {
+        GameManager.Singleton.numPowerupsCollected += 1;
 
         timeObtained = Time.time;                   // Record time powerup was obtained
 

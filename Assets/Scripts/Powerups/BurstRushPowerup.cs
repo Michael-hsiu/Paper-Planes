@@ -39,6 +39,7 @@ public class BurstRushPowerup : PoolObject
 
     void ActivateWeapon(string id)
     {
+        GameManager.Singleton.numPowerupsCollected += 1;
         WeaponsManager.Instance.ActivateWeapon(id); // Logic should be flipped
     }
 

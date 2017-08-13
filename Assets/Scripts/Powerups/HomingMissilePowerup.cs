@@ -19,6 +19,7 @@ public class HomingMissilePowerup : Powerup
     public override void ActivatePower()
     {
         //Debug.Log (((HomingMissileScrObj) powerupData).numMissiles + "MISSILES TO CREATE");
+        GameManager.Singleton.numPowerupsCollected += 1;
         missileSpawn.CreateMissiles(((HomingMissileScrObj)powerupData).numMissiles);    // Fire the missiles! [SATISFIES numMissiles]
     }
 }

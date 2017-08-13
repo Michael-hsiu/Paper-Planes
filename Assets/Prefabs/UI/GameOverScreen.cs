@@ -7,6 +7,7 @@ public class GameOverScreen : MonoBehaviour
 {
 
     public GameObject gameOverScreen;
+    public GameObject mapImage;
     public int targetScore;
     public int targetnumEnemiesDefeated;
     public int targetnumPowerupsCollected;
@@ -21,9 +22,12 @@ public class GameOverScreen : MonoBehaviour
 
     [Header("SCORE_LERP_LOGIC")]
     public float scoreLerpDuration = 1.0f;
+    public float mapAlphaLerpDuration = 3.0f;
     public float numEnemiesLerpDuration = 0.5f;
     public float numPowerupsLerpDuration = 0.5f;
     public float scoreLerpRatio;
+    public float numEnemiesLerpRatio;
+    public float numPowerupsLerpRatio;
     public float currScoreLerpTime;
 
     IEnumerator scoreUIControllerRoutine;
@@ -62,6 +66,8 @@ public class GameOverScreen : MonoBehaviour
         StartCoroutine(updateUIScoreRoutine);
         yield return updateUIScoreRoutine;
 
+
+
         // Next lerp the NUM_ENEM_DEFEATED and NUM_POW_COLLECTED simultaneously
         if (updateUINumEnemiesDefeatedRoutine != null)
         {
@@ -87,14 +93,30 @@ public class GameOverScreen : MonoBehaviour
 
     IEnumerator UpdateUIScoreRoutine()
     {
+        // Temp clear the screen (may change to fade out)
+        Utils.KillAllEnemies();
+        Utils.DisablePowerups();
+
         scoreLerpRatio = 0.0f;
         targetScore = GameManager.Singleton.playerScore;
+        Color startColor = mapImage.GetComponent<SpriteRenderer>().color;
+        Color endColor = startColor;
+        endColor.a = 0;
         while (scoreLerpRatio < 1.0f)
         {
+            scoreLerpRatio += (Time.deltaTime / scoreLerpDuration);
+
+            // Lerp the text 
             float newScore = (int)Mathf.Lerp(0, targetScore, scoreLerpRatio);
             scoreText.text = newScore.ToString();
 
-            scoreLerpRatio += (Time.deltaTime / scoreLerpDuration);
+            // Fade out the map
+            //float newAlpha = Mathf.Lerp(255, 0, scoreLerpRatio);
+            //Color mapImageColor = mapImage.GetComponent<SpriteRenderer>().color;
+            //mapImageColor.a = newAlpha;
+            mapImage.GetComponent<SpriteRenderer>().color = Color.Lerp(startColor, endColor, scoreLerpRatio);
+            //Debug.Log("MAP_IMG_COLOR: " + mapImageColor.a);
+
             yield return null;
         }
     }
@@ -102,28 +124,32 @@ public class GameOverScreen : MonoBehaviour
     IEnumerator UpdateUINumEnemiesDefeatedRoutine()
     {
         numEnemiesDefeatedText.gameObject.SetActive(true);
-        scoreLerpRatio = 0.0f;
+        numEnemiesLerpRatio = 0.0f;
         targetnumEnemiesDefeated = GameManager.Singleton.numEnemiesDefeated;
-        while (scoreLerpRatio < 1.0f)
+        float newNumEnemiesDefeated = 0f;
+        while (numEnemiesLerpRatio < 1.0f /*&& newNumEnemiesDefeated < targetnumEnemiesDefeated*/)
         {
-            float newNumEnemiesDefeated = (int)Mathf.Lerp(0, targetnumEnemiesDefeated, scoreLerpRatio);
+            numEnemiesLerpRatio += (Time.deltaTime / numEnemiesLerpDuration);
+
+            newNumEnemiesDefeated = (int)Mathf.Lerp(0, targetnumEnemiesDefeated, numEnemiesLerpRatio);
             numEnemiesDefeatedText.text = newNumEnemiesDefeated.ToString();
 
-            scoreLerpRatio += (Time.deltaTime / numEnemiesLerpDuration);
             yield return null;
         }
     }
     IEnumerator UpdateUINumPowerupsCollectedRoutine()
     {
         numPowerupsCollectedText.gameObject.SetActive(true);
-        scoreLerpRatio = 0.0f;
+        numPowerupsLerpRatio = 0.0f;
         targetnumPowerupsCollected = GameManager.Singleton.numPowerupsCollected;
-        while (scoreLerpRatio < 1.0f)
+        float newNumPowerupsCollected = 0f;
+        while (numPowerupsLerpRatio < 1.0f /*&& newNumPowerupsCollected < targetnumPowerupsCollected*/)
         {
-            float newNumPowerupsCollected = (int)Mathf.Lerp(0, targetnumPowerupsCollected, scoreLerpRatio);
-            numEnemiesDefeatedText.text = newNumPowerupsCollected.ToString();
+            numPowerupsLerpRatio += (Time.deltaTime / numPowerupsLerpDuration);
 
-            scoreLerpRatio += (Time.deltaTime / numPowerupsLerpDuration);
+            newNumPowerupsCollected = (int)Mathf.Lerp(0, targetnumPowerupsCollected, numPowerupsLerpRatio);
+            numPowerupsCollectedText.text = newNumPowerupsCollected.ToString();
+
             yield return null;
         }
     }
