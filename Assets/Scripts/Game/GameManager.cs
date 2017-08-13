@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
 
     public PlayerShip playerShip;
+    public GameObject mainCamera;       // Controls zooming and follows player
     public GameObject normalSS;         // Player's normal shotspawn
     public EnemySpawner enemySpawner;       // Takes care of spawning enemies
     public PowerupSpawner powerupSpawner;
@@ -24,6 +25,11 @@ public class GameManager : MonoBehaviour
     public int playerBalance = 0;       // How much money the player has
     public int playerDamage = 20;
     public int scoreMultiplier = 1;
+
+    [Header("SCORE_UI_FIELDS")]
+    public int numEnemiesDefeated = 0;
+    public int numPowerupsCollected = 0;
+
     public Color startColor;
     public Vector3 playerStartPosition; // Player start position at beginning of game
 
@@ -106,7 +112,7 @@ public class GameManager : MonoBehaviour
         triFireLevel = PlayerPrefs.GetInt(Constants.triFireLevel, 0);
 
         // Subscribe events
-        StartLevelEvent += OnLevelStartEnableMovingSpawners;
+        //StartLevelEvent += OnLevelStartEnableMovingSpawners;
     }
 
     public void Start()
@@ -147,8 +153,9 @@ public class GameManager : MonoBehaviour
         levelActive = false;
 
         enemySpawner.EndLevel();
-        UIManager.Singleton.DisplayFailureScreen();
-        Debug.LogError("PLAYER DIED!");
+        mainCamera.GetComponent<CameraController>().StartScoreUICameraAnimation();
+        UIManager.Singleton.DisplayGameOverScreen();
+        //Debug.LogError("PLAYER DIED!");
         //Debug.Break ();
     }
 
@@ -167,7 +174,11 @@ public class GameManager : MonoBehaviour
         playerShip.ResetPlayer();       // Reset internals: position, rotation, rigidbody
         playerHealth = playerMaxHealth;
         playerShip.sprite.material.color = startColor;
+
         playerScore = 0;
+        numEnemiesDefeated = 0;
+        numPowerupsCollected = 0;
+
         UIManager.Singleton.UpdateScore();
         // Reset level logic
         currLevel = 0;
@@ -180,12 +191,12 @@ public class GameManager : MonoBehaviour
     /* START StartLevelEvent subscribers. */
     // Most of these can be moved to their dependency classes later.
 
-    public void OnLevelStartEnableMovingSpawners()
-    {
-        // TODO: Disable old spawners
-        // TODO: Enable new spawners
-        movingSpawnManager.spawnEnabled = true;
-    }
+    //public void OnLevelStartEnableMovingSpawners()
+    //{
+    //    // TODO: Disable old spawners
+    //    // TODO: Enable new spawners
+    //    movingSpawnManager.spawnEnabled = true;
+    //}
     /* END StartLevelEvent subscriber list. */
 
     // THIS is the new way of increasing level difficulty over time.
@@ -213,6 +224,7 @@ public class GameManager : MonoBehaviour
     public void RecordEnemyKilled(EnemyType enemyType)
     {
         enemySpawner.RecordKill(enemyType);
+        numEnemiesDefeated += 1;
         // Unlock stronger enemies
         if (playerScore >= enemyScoreBoundaries[Math.Min(currLevel, enemyScoreBoundaries.Count - 1)])
         {

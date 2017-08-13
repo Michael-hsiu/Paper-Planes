@@ -25,7 +25,8 @@ public class UIManager : MonoBehaviour
     public Text dashStoreText;
     public Text burshRushText;
     public Image healthBar;     // The Health Bar that changes in size as health inc/dec
-    public ContinueScreen continueScreen;
+    public GameOverScreen gameOverScreen;   // Screen that displays after player loss
+    //public ContinueScreen continueScreen;
     public Button startGameButton;      // Primary button for beginning the game
     public GameObject shopButton;
     public float scaleY;    // Original height of health bar
@@ -264,6 +265,12 @@ public class UIManager : MonoBehaviour
         StartCoroutine(LerpHealthBar());
     }
 
+    public void DisplayGameOverScreen()
+    {
+        gameOverScreen.gameObject.SetActive(true);
+        gameOverScreen.GetComponent<GameOverScreen>().OnScoreUIEntered();
+    }
+
     void Awake()
     {
         if (singleton == null)
@@ -361,8 +368,8 @@ public class UIManager : MonoBehaviour
 
     public void EndLevel(int level)
     {
-        DisplayVictoryScreen();                                 // Opens the Victory Screen and the only current way of progressing to next level.
-                                                                //GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
+        //DisplayVictoryScreen();                                 // Opens the Victory Screen and the only current way of progressing to next level.
+        //GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
     }
 
     public void RestartLevel()
@@ -371,53 +378,53 @@ public class UIManager : MonoBehaviour
         startDisplayedScore = 0;     // Lerp start point
         displayedChangingScore = 0;     // Currently lerping score that is displayed
 
-        DisableFailureScreen();
-        DisableContinueScreen();
+        //DisableFailureScreen();
+        //DisableContinueScreen();
         ResetHealthBar();
     }
 
-    public void DisableContinueScreen()
-    {
-        continueScreen.gameObject.SetActive(false);
-    }
+    //  public void DisableContinueScreen()
+    //  {
+    //      continueScreen.gameObject.SetActive(false);
+    //  }
 
-    public void DisplayVictoryScreen()
-    {
-        continueScreen.gameObject.SetActive(true);
-        continueScreen.GetComponent<ContinueScreen>().OpenVictoryContinueScreen();
-        Debug.Log("VICTORY SCREEN");
-        /*EnableVictoryScreen ();
-		DisableFailureScreen ();*/
-    }
+    //  public void DisplayVictoryScreen()
+    //  {
+    //      continueScreen.gameObject.SetActive(true);
+    //      continueScreen.GetComponent<ContinueScreen>().OpenVictoryContinueScreen();
+    //      Debug.Log("VICTORY SCREEN");
+    //      /*EnableVictoryScreen ();
+    //DisableFailureScreen ();*/
+    //}
 
-    public void DisplayFailureScreen()
-    {
-        continueScreen.gameObject.SetActive(true);
-        continueScreen.GetComponent<ContinueScreen>().OpenFailureContinueScreen();
-        DisableVictoryScreen();
-        EnableFailureScreen();
-    }
+    //public void DisplayFailureScreen()
+    //{
+    //    continueScreen.gameObject.SetActive(true);
+    //    //continueScreen.GetComponent<ContinueScreen>().OpenFailureContinueScreen();
+    //    //DisableVictoryScreen();
+    //    //EnableFailureScreen();
+    //}
 
 
-    public void EnableVictoryScreen()
-    {
-        continueScreen.victoryScreen.SetActive(true);
-    }
+    //public void EnableVictoryScreen()
+    //{
+    //    continueScreen.victoryScreen.SetActive(true);
+    //}
 
-    public void DisableVictoryScreen()
-    {
-        continueScreen.victoryScreen.SetActive(false);
-    }
+    //public void DisableVictoryScreen()
+    //{
+    //    continueScreen.victoryScreen.SetActive(false);
+    //}
 
-    public void EnableFailureScreen()
-    {
-        continueScreen.failureScreen.SetActive(true);
-    }
+    //public void EnableFailureScreen()
+    //{
+    //    continueScreen.failureScreen.SetActive(true);
+    //}
 
-    public void DisableFailureScreen()
-    {
-        continueScreen.failureScreen.SetActive(false);
-    }
+    //public void DisableFailureScreen()
+    //{
+    //    continueScreen.failureScreen.SetActive(false);
+    //}
 
 
     //Singleton implementation
