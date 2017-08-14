@@ -167,6 +167,8 @@ public class GameManager : MonoBehaviour
         // Clean up the level
         // TODO: player's powerups, health, stats need to be reset. Or use events? Are they misleading?
         UIManager.Singleton.RestartLevel();     // // Clean up UI
+        mainCamera.GetComponent<CameraController>().StartGameCameraAnimation();     // Zoom back into map
+
         //Utils.KillAllEnemies();
         //Utils.DisablePowerups();
         enemySpawner.RestartLevel();

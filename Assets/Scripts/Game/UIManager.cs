@@ -328,19 +328,6 @@ public class UIManager : MonoBehaviour
     IEnumerator IncreaseLevelRoutine(int currLevel)
     {
 
-        //if (currLevel == 0)
-        //{
-
-        //    String goalText = "Ready...begin!!!";
-        //    levelGoalText.gameObject.SetActive(true);
-        //    levelGoalText.text = goalText;
-        //    yield return new WaitForSeconds(1.5f);  // Show the level goal text on screen
-        //    levelGoalText.gameObject.SetActive(false);      // Hide the text
-
-        //}
-        //else
-        //{
-
         //String goalText = "WARNING: Difficulty increased!!!";
         // scoreBoundaries list is zero-indexed (1st level is index 0)
         String goalText = "WAVE " + (GameManager.Singleton.currLevel + 1) + ": BEGIN!";
@@ -377,55 +364,12 @@ public class UIManager : MonoBehaviour
         // Restart
         startDisplayedScore = 0;     // Lerp start point
         displayedChangingScore = 0;     // Currently lerping score that is displayed
+        scoreText.text = 0.ToString();
 
         //DisableFailureScreen();
         //DisableContinueScreen();
         ResetHealthBar();
     }
-
-    //  public void DisableContinueScreen()
-    //  {
-    //      continueScreen.gameObject.SetActive(false);
-    //  }
-
-    //  public void DisplayVictoryScreen()
-    //  {
-    //      continueScreen.gameObject.SetActive(true);
-    //      continueScreen.GetComponent<ContinueScreen>().OpenVictoryContinueScreen();
-    //      Debug.Log("VICTORY SCREEN");
-    //      /*EnableVictoryScreen ();
-    //DisableFailureScreen ();*/
-    //}
-
-    //public void DisplayFailureScreen()
-    //{
-    //    continueScreen.gameObject.SetActive(true);
-    //    //continueScreen.GetComponent<ContinueScreen>().OpenFailureContinueScreen();
-    //    //DisableVictoryScreen();
-    //    //EnableFailureScreen();
-    //}
-
-
-    //public void EnableVictoryScreen()
-    //{
-    //    continueScreen.victoryScreen.SetActive(true);
-    //}
-
-    //public void DisableVictoryScreen()
-    //{
-    //    continueScreen.victoryScreen.SetActive(false);
-    //}
-
-    //public void EnableFailureScreen()
-    //{
-    //    continueScreen.failureScreen.SetActive(true);
-    //}
-
-    //public void DisableFailureScreen()
-    //{
-    //    continueScreen.failureScreen.SetActive(false);
-    //}
-
 
     //Singleton implementation
     private static UIManager singleton;

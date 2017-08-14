@@ -30,7 +30,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
-        startCameraMovementRoutine = StartGameCameraAnimation();
+        startCameraMovementRoutine = StartGameCameraAnimationRoutine();
         StartCoroutine(startCameraMovementRoutine);
         //playerGameplayOffset = transform.position - GameManager.Singleton.playerShip.transform.position;
     }
@@ -43,7 +43,18 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    IEnumerator StartGameCameraAnimation()
+    // Zoom in the camera to player
+    public void StartGameCameraAnimation()
+    {
+        if (startCameraMovementRoutine != null)
+        {
+            StopCoroutine(startCameraMovementRoutine);
+            startCameraMovementRoutine = null;
+        }
+        startCameraMovementRoutine = StartGameCameraAnimationRoutine();
+        StartCoroutine(startCameraMovementRoutine);
+    }
+    IEnumerator StartGameCameraAnimationRoutine()
     {
         // Move forward a little, then pause
         isTransitioning = true;
@@ -58,6 +69,7 @@ public class CameraController : MonoBehaviour
         isTransitioning = false;
     }
 
+    // Zoom out camera to show whole map
     public void StartScoreUICameraAnimation()
     {
         if (scoreUICameraMovementRoutine != null)

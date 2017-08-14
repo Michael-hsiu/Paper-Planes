@@ -1,13 +1,15 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/UIManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Utility/HealthPickup.cs">
     <Files>
       <File FileName="Assets/Scripts/Menu/ContinueScreen.cs" Line="33" Column="6" />
-      <File FileName="Assets/Camera/CameraController.cs" Line="84" Column="24" />
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="143" Column="63" />
-      <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="143" Column="80" />
-      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="64" Column="6" />
-      <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="107" Column="63" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="271" Column="74" />
+      <File FileName="Assets/Camera/CameraController.cs" Line="72" Column="41" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="170" Column="106" />
+      <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="105" Column="39" />
+      <File FileName="Assets/Prefabs/UI/PlayAgainButton.cs" Line="14" Column="48" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="368" Column="9" />
+      <File FileName="Assets/Scripts/Powerups/TripMineWeapon.cs" Line="40" Column="65" />
+      <File FileName="Assets/Scripts/Powerups/WaveShotPowerup.cs" Line="9" Column="57" />
+      <File FileName="Assets/Scripts/Utility/HealthPickup.cs" Line="18" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

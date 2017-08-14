@@ -8,6 +8,8 @@ public class GameOverScreen : MonoBehaviour
 
     public GameObject gameOverScreen;
     public GameObject mapImage;
+    public GameObject playAgainButton;
+
     public int targetScore;
     public int targetnumEnemiesDefeated;
     public int targetnumPowerupsCollected;
@@ -29,6 +31,10 @@ public class GameOverScreen : MonoBehaviour
     public float numEnemiesLerpRatio;
     public float numPowerupsLerpRatio;
     public float currScoreLerpTime;
+
+    public Color startColor;
+    public Color endColor;
+    public bool assignedStartColor = false;
 
     IEnumerator scoreUIControllerRoutine;
     IEnumerator updateUIScoreRoutine;
@@ -87,7 +93,9 @@ public class GameOverScreen : MonoBehaviour
 
         yield return updateUINumEnemiesDefeatedRoutine;
         yield return updateUINumPowerupsCollectedRoutine;
+
         // Finally display UI for playing again
+        playAgainButton.SetActive(true);
     }
 
 
@@ -97,10 +105,20 @@ public class GameOverScreen : MonoBehaviour
         Utils.KillAllEnemies();
         Utils.DisablePowerups();
 
+        // Have empty text for sub-scores
+        scoreText.text = string.Empty;
+        numEnemiesDefeatedText.text = string.Empty;
+        numPowerupsCollectedText.text = string.Empty;
+
+        // Logic for UI score upgrading
         scoreLerpRatio = 0.0f;
         targetScore = GameManager.Singleton.playerScore;
-        Color startColor = mapImage.GetComponent<SpriteRenderer>().color;
-        Color endColor = startColor;
+        if (!assignedStartColor)
+        {
+            startColor = mapImage.GetComponent<SpriteRenderer>().color;
+            assignedStartColor = true;
+        }
+        endColor = startColor;
         endColor.a = 0;
         while (scoreLerpRatio < 1.0f)
         {
@@ -115,6 +133,7 @@ public class GameOverScreen : MonoBehaviour
             //Color mapImageColor = mapImage.GetComponent<SpriteRenderer>().color;
             //mapImageColor.a = newAlpha;
             mapImage.GetComponent<SpriteRenderer>().color = Color.Lerp(startColor, endColor, scoreLerpRatio);
+            //Debug.Break();
             //Debug.Log("MAP_IMG_COLOR: " + mapImageColor.a);
 
             yield return null;
@@ -152,5 +171,22 @@ public class GameOverScreen : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    // Called on button press
+    public void DisableGameOverScreen()
+    {
+        // Show the map again
+        Color startColor = mapImage.GetComponent<SpriteRenderer>().color;
+        startColor.a = 255;
+        mapImage.GetComponent<SpriteRenderer>().color = startColor;
+
+        // Disable UI elements
+        gameObject.SetActive(false);
+
+        //Debug.Break();
+        //mapImage.SetActive(false);
+        //playAgainButton.SetActive(false);
+
     }
 }

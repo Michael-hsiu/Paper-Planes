@@ -27,7 +27,6 @@ public class TripMineWeapon : PoolObject
 
     void ActivateWeapon(string id)
     {
-        GameManager.Singleton.numPowerupsCollected += 1;
         WeaponsManager.Instance.ActivateWeapon(id); // Logic should be flipped
     }
 
@@ -38,6 +37,7 @@ public class TripMineWeapon : PoolObject
         {
             if (pickupParticlePrefab != null)
             {
+                GameManager.Singleton.numPowerupsCollected += 1;
                 PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
             }
             // Do weapons logic; spawn things

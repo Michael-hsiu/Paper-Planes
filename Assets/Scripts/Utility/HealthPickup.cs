@@ -14,13 +14,14 @@ public class HealthPickup : PoolObject
         // Triggers on collision with rigidbody's colliderg
         if (other.gameObject.CompareTag(Constants.PlayerTag) && GameManager.Singleton.playerHealth > 0)
         {
+            GameManager.Singleton.numPowerupsCollected += 1;
+
             if (pickupParticlePrefab != null)
             {
                 PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
             }
             if (GameManager.Singleton.playerHealth < GameManager.Singleton.playerMaxHealth)
             {
-                GameManager.Singleton.numPowerupsCollected += 1;
 
                 // Can't add more health than max health
                 int healthToAdd = Mathf.Min(healthAmnt, GameManager.Singleton.playerMaxHealth - GameManager.Singleton.playerHealth);

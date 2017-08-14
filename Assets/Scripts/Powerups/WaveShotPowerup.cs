@@ -6,11 +6,11 @@ public class WaveShotPowerup : Powerup
 {
     public override void ActivatePower()
     {
+        GameManager.Singleton.numPowerupsCollected += 1;
         if (GameManager.Singleton.playerShip.waveShotEnabled)
         {
             if (GameManager.Singleton.playerShip.waveShotPowerup != null)
             {
-                GameManager.Singleton.numPowerupsCollected += 1;
                 endTime = GameManager.Singleton.playerShip.waveShotPowerup.endTime + powerDuration;						// Record extended powerup time
                 GameManager.Singleton.playerShip.waveShotPowerup.CancelInvoke("DeactivatePower");       // Prevent old wave shot from de-activating powerup early
                 Debug.Log("INVOKE CANCEL");
