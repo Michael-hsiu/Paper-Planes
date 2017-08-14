@@ -362,6 +362,8 @@ public class UIManager : MonoBehaviour
     public void RestartLevel()
     {
         // Restart
+        scoreText.gameObject.SetActive(true);       // After being disabled from game_over_screen
+
         startDisplayedScore = 0;     // Lerp start point
         displayedChangingScore = 0;     // Currently lerping score that is displayed
         scoreText.text = 0.ToString();

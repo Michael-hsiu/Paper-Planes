@@ -31,6 +31,10 @@ public class AIInput : MonoBehaviour, InputComponent
     public Quaternion rigDesiredRotation;
     float zAngleFiringRig;
 
+    [Header("TIMESCALE_LOGIC")]
+    public bool gamePaused = false;
+    public float endTime;
+
     //public float speed = 5.0f;
     public Vector2 savedVelocity;
     public Vector2 lastDashVelocity;    // For if we get hit by EMP while dashing, we keep velocity without losing full control
@@ -41,6 +45,29 @@ public class AIInput : MonoBehaviour, InputComponent
     public VirtualJoystick virtualJoystickRotate;
 
     //public enum DashState { Ready, Dashing, Cooldown}
+
+    // Naive way of pausing game
+    void Update()
+    {
+        if (Time.time > endTime)
+        {
+            Vector3 moveInputDirection = virtualJoystickMove.inputDirection;
+            if (moveInputDirection == Vector3.zero)
+            {
+                if (!gamePaused)
+                {
+                    Time.timeScale = 0f;
+                    gamePaused = true;
+                }
+                else
+                {
+                    Time.timeScale = 1f;
+                    gamePaused = false;
+                }
+            }
+            endTime += 3.0f;
+        }
+    }
 
     // Called during PlayerShip's FixedUpdate()
     public void UpdateInput(PlayerShip player)
@@ -103,7 +130,6 @@ public class AIInput : MonoBehaviour, InputComponent
                     Debug.Log("DASH KEY REGISTERED!");
                 }
             }
-
             if (Input.GetKey(KeyCode.H))
             {       // Use Burst Rush powerup
                 if (GameManager.Singleton.rushes.Count > 0 && !player.dashStarted)

@@ -62,6 +62,9 @@ public class GameOverScreen : MonoBehaviour
 
     IEnumerator ScoreUIControllerRoutine()
     {
+        // Disable score_text
+        UIManager.Singleton.scoreText.gameObject.SetActive(false);
+
         // First lerp the SCORE
         if (updateUIScoreRoutine != null)
         {
@@ -95,6 +98,7 @@ public class GameOverScreen : MonoBehaviour
         yield return updateUINumPowerupsCollectedRoutine;
 
         // Finally display UI for playing again
+        //Debug.Break();
         playAgainButton.SetActive(true);
     }
 
