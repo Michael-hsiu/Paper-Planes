@@ -118,8 +118,8 @@ public class PowerupSpawner : MonoBehaviour
                 Vector3 rawWidth = mapCentre.transform.TransformDirection(new Vector3(targetCollider.size.x / 2, 0, 0));
                 Vector3 rawHeight = mapCentre.transform.TransformDirection(new Vector3(0, targetCollider.size.y / 2, 0));
 
-                Debug.Log("RAW WIDTH: " + rawWidth);
-                Debug.Log("RAW HEIGHT: " + rawHeight);
+                //Debug.Log("RAW WIDTH: " + rawWidth);
+                //Debug.Log("RAW HEIGHT: " + rawHeight);
 
                 rawWidth.x = rawWidth.x + mapCentre.transform.position.x;
                 rawHeight.y = rawHeight.y + mapCentre.transform.position.y;
@@ -128,7 +128,7 @@ public class PowerupSpawner : MonoBehaviour
                 float randomRotation = possibleSpawnAngles[colliderIndex];
                 Vector3 rotateDirWidth = rawWidth - new Vector3(mapCentre.transform.position.x, 0, 0);
                 rotateDirWidth = Quaternion.Euler(new Vector3(0, 0, randomRotation)) * rotateDirWidth;
-                Debug.Log("ROTATE_WIDTH: " + rotateDirWidth);
+                //Debug.Log("ROTATE_WIDTH: " + rotateDirWidth);
                 // This is making width become height! Just scale every value?
                 //rawWidth.x = rotateDir.x + mapCentre.transform.position.x;
 

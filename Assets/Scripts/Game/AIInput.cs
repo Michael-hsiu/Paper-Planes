@@ -47,27 +47,27 @@ public class AIInput : MonoBehaviour, InputComponent
     //public enum DashState { Ready, Dashing, Cooldown}
 
     // Naive way of pausing game
-    void Update()
-    {
-        if (Time.time > endTime)
-        {
-            Vector3 moveInputDirection = virtualJoystickMove.inputDirection;
-            if (moveInputDirection == Vector3.zero)
-            {
-                if (!gamePaused)
-                {
-                    Time.timeScale = 0f;
-                    gamePaused = true;
-                }
-                else
-                {
-                    Time.timeScale = 1f;
-                    gamePaused = false;
-                }
-            }
-            endTime += 3.0f;
-        }
-    }
+    //void Update()
+    //{
+    //    if (Time.time > endTime)
+    //    {
+    //        Vector3 moveInputDirection = virtualJoystickMove.inputDirection;
+    //        if (moveInputDirection == Vector3.zero)
+    //        {
+    //            if (!gamePaused)
+    //            {
+    //                Time.timeScale = 0f;
+    //                gamePaused = true;
+    //            }
+    //            else
+    //            {
+    //                Time.timeScale = 1f;
+    //                gamePaused = false;
+    //            }
+    //        }
+    //        endTime += 3.0f;
+    //    }
+    //}
 
     // Called during PlayerShip's FixedUpdate()
     public void UpdateInput(PlayerShip player)
