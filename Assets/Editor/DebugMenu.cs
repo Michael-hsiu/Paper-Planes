@@ -14,4 +14,10 @@ public static class DebugMenu
 
         }
     }
+
+    [MenuItem("Debug/Print Current Game Time")]
+    public static void PrintCurrentGameTime()
+    {
+        Debug.Log("CURRENT_GAME_TIME: " + Time.time);
+    }
 }

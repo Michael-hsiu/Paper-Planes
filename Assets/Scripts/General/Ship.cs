@@ -116,19 +116,23 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     {
         DisplayKillScore();            // Displays the score
         OnKillReset();     // Resets the logic
+        RegisterKill();     // Register kill to counts
     }
 
     public void OnKillReset()
     {
         sprite.material.color = startColor;
-        GameManager.Singleton.RecordEnemyKilled(enemyType); // REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
         GameManager.Singleton.UpdateScore(enemyPoints); // Add new score in GameManager
         UIManager.Singleton.UpdateScore();  // Update score in UI
         hitFlickerRoutine = null;
 
         DestroyForReuse();
     }
+    public void RegisterKill()
+    {
+        GameManager.Singleton.RecordEnemyKilled(enemyType); // REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
 
+    }
     public void DisplayKillScore()
     {
         PoolObject scoreTextInstance = PoolManager.Instance.ReuseObjectRef(scoreText, transform.position, Quaternion.identity);

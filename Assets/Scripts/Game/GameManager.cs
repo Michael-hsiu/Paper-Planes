@@ -197,6 +197,12 @@ public class GameManager : MonoBehaviour
         OnLevelStart(currLevel);
     }
 
+    // Actions to take on boss death
+    public void OnBossDeath()
+    {
+        enemySpawner.OnBossDeath();
+    }
+
     /* START StartLevelEvent subscribers. */
     // Most of these can be moved to their dependency classes later.
 

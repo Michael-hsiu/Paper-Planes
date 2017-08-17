@@ -1,12 +1,18 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Spawners/EnemySpawner.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/Ship.cs">
     <Files>
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="71" Column="43" />
-      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="82" Column="25" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="429" Column="46" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="203" Column="36" />
+      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="248" Column="28" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="353" Column="11" />
       <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="184" Column="1" />
-      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="7" Column="9" />
-      <File FileName="Assets/Scripts/Game/InputManager.cs" Line="40" Column="31" />
+      <File FileName="Assets/Scripts/Game/InputManager.cs" Line="44" Column="46" />
+      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="28" Column="27" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="103" Column="45" />
+      <File FileName="Assets/Editor/DebugMenu.cs" Line="23" Column="2" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="95" Column="9" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="121" Column="9" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="170" Column="16" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="117" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

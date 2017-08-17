@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
     [Header("NEW_ENEMIES_UNLOCKED_UI")]
     public string newEnemyText = "New enemies have appeared!";
     public string newEnemyUpgradesText = "Existing enemies are now stronger!";
+    public string bossSpawnedText = "A boss has spawned!";
+
     public float numEnemiesEaseOutDuration = 0.5f;
     public float newEnemiesEaseInLerpDuration = 0.5f;
     public float newEnemiesLerpRatio;
@@ -74,6 +76,7 @@ public class UIManager : MonoBehaviour
     IEnumerator healthBarLerpRoutine;
     IEnumerator newEnemyUpgradeUnlockedRoutine;
     IEnumerator newEnemyUnlockedRoutine;
+    IEnumerator bossSpawnedRoutine;
 
     void Update()
     {
@@ -323,6 +326,71 @@ public class UIManager : MonoBehaviour
     {
         healthBar.rectTransform.localScale = new Vector3(8.02f, scaleY, 1);
     }
+
+    public void OnBossSpawnedUI()
+    {
+        if (bossSpawnedRoutine != null)
+        {
+            StopCoroutine(bossSpawnedRoutine);
+            bossSpawnedRoutine = null;
+        }
+        scoreGoalText.gameObject.SetActive(true);
+        bossSpawnedRoutine = OnBossSpawnedUIRoutine();
+        StartCoroutine(bossSpawnedRoutine);
+    }
+
+    // Announce that a boss was spawned
+    IEnumerator OnBossSpawnedUIRoutine()
+    {
+        // Wait for other UI routines to end before starting
+        //if (newEnemyUnlockedRoutine != null)
+        //{
+        //    yield return levelGoalRoutine;
+        //}
+        //if (newEnemyUpgradeUnlockedRoutine != null)
+        //{
+        //    yield return newEnemyUpgradeUnlockedRoutine;
+        //}
+        // Ease in the annoucement
+        if (!assignedStartColor)
+        {
+            textEndColor = scoreGoalText.color;
+            // Recall that Color alphas range from 0f to 1f
+            textEndColor.a = 1.0f;
+
+            textStartColor = textEndColor;
+            textStartColor.a = 0.0f;
+
+            assignedStartColor = true;
+            //Debug.Break();
+        }
+        // Prep the text
+        scoreGoalText.color = textStartColor;
+        scoreGoalText.text = bossSpawnedText;
+
+        newEnemiesLerpRatio = 0.0f;
+        while (newEnemiesLerpRatio < 1.0f)
+        {
+            newEnemiesLerpRatio += (Time.deltaTime / newEnemiesEaseInLerpDuration);
+            Color lerpColor = Color.Lerp(textStartColor, textEndColor, newEnemiesLerpRatio);
+            scoreGoalText.color = lerpColor;
+            yield return null;
+        }
+
+        // Annoucement stays for a duration
+        yield return new WaitForSeconds(newEnemiesTextDuration);
+
+        // Ease out the annoucement
+        newEnemiesLerpRatio = 0.0f;
+        while (newEnemiesLerpRatio < 1.0f)
+        {
+            newEnemiesLerpRatio += (Time.deltaTime / numEnemiesEaseOutDuration);
+            scoreGoalText.color = Color.Lerp(textEndColor, textStartColor, newEnemiesLerpRatio);
+            yield return null;
+        }
+        scoreGoalText.gameObject.SetActive(false);
+    }
+
 
     // goal=enemiesToKill
     public void OnLevelStartUpdateUI()

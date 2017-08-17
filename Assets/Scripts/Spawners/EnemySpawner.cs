@@ -7,22 +7,25 @@ public class EnemySpawner : MonoBehaviour
 
     public float xBound;
     public float yBound;
-    public float spawnDelay = 1.0f;             // Delay between enemy spawns. A random # btwn 0 and this.
     public bool spawnEnabled = false;
-    public int currLevel = 0;       // This is used from EnemySpawner. Enemies UP TO this index are allowed to be spawned. Reflects same-named value from GameManager.
-    public bool bossSpawnEnabled = false;
     public List<Collider> mapColliders = new List<Collider>();     // Reference to GameManager list
     public GameObject mapCentre;        // The center of the map
 
     // Revised system for spawning enemies
     [Header("NEW_ENEMY_SPAWN_LOGIC")]
     // Indices must be matched up properly
+    public int currLevel = 0;       // This is used from EnemySpawner. Enemies UP TO this index are allowed to be spawned. Reflects same-named value from GameManager.
+    public float spawnDelay = 1.0f;             // Delay between enemy spawns. A random # btwn 0 and this.
+    public bool bossSpawnEnabled = false;
+    public float nextBossSpawnTime;
+    public int lastBossSpawnIndex = -1;      // To prevent spawning same boss 2x in a row
+    public int maxEnemyScoreBoundary;
+
     public List<GameObject> baseEnemyTypes = new List<GameObject>();     // List of all lvl_1 normal enemies
     public List<Row> enemyTypeUpgrades = new List<Row>();         // List of all upgrades for normal enemies
 
     public List<GameObject> baseBossTypes = new List<GameObject>();      // List of all lvl_1 normal bosses
     public List<int> enemyScoreBoundaries = new List<int>();     // Stores information about how many points needed to reach next level of enemy
-    public int maxEnemyScoreBoundary;
 
     // Booleans for each enemy type
     public bool pawnLevel2Unlocked = false;
@@ -58,6 +61,7 @@ public class EnemySpawner : MonoBehaviour
     public int NUM_BOSSES_ALIVE = 0;
 
     IEnumerator enemySpawnRoutine;
+    IEnumerator bossSpawnRoutine;
 
     public List<GameObject> enemyShips = new List<GameObject>();
 
@@ -68,7 +72,7 @@ public class EnemySpawner : MonoBehaviour
         //xBound = boxSize.x / 2;
         //yBound = boxSize.y / 2;
         maxEnemyScoreBoundary = baseEnemyTypes.Count;
-        enemySpawnRoutine = StartSpawningEnemies();
+        enemySpawnRoutine = EnemySpawnRoutine();
         StartCoroutine(enemySpawnRoutine);
     }
 
@@ -109,7 +113,7 @@ public class EnemySpawner : MonoBehaviour
         spawnEnabled = true;
 
         StopAllCoroutines();
-        enemySpawnRoutine = StartSpawningEnemies();
+        enemySpawnRoutine = EnemySpawnRoutine();
         StartCoroutine(enemySpawnRoutine);
     }
 
@@ -223,9 +227,122 @@ public class EnemySpawner : MonoBehaviour
         {
             UIManager.Singleton.OnNewEnemyUpgradeUnlocked();
         }
+
+        // Check if points reached certain level. If so, start spawning bosses
+        if (!bossSpawnEnabled && playerScore > 100)
+        {
+            bossSpawnEnabled = true;
+            nextBossSpawnTime = Time.time + Random.Range(3f, 5f);
+            if (bossSpawnRoutine != null)
+            {
+                StopCoroutine(bossSpawnRoutine);
+                bossSpawnRoutine = null;
+            }
+            bossSpawnRoutine = BossSpawnRoutine();
+            StartCoroutine(bossSpawnRoutine);
+            Debug.Break();
+        }
     }
 
-    IEnumerator StartSpawningEnemies()
+    // Set the time for the next boss spawn on death of current boss
+    public void OnBossDeath()
+    {
+        nextBossSpawnTime = Time.time + Random.Range(7f, 10f);
+        //NUM_BOSSES_ALIVE -= 1;
+    }
+
+    IEnumerator BossSpawnRoutine()
+    {
+        mapColliders = GameManager.Singleton.mapColliders;  // Ref to map colliders
+        int colliderCountEndIndex = mapColliders.Count - 1;
+        List<float> possibleSpawnAngles = new List<float>() { 90f, -30f, 30f };
+        while (true)
+        {
+            // Wait for a bit before we check to see if spawns are enabled (naive level restart logic)
+            while (bossSpawnEnabled)
+            {
+                Debug.Log("IN_BOSS_SPAWN_ROUTINE");
+                if (NUM_BOSSES_ALIVE == 0 && Time.time > nextBossSpawnTime)
+                {
+
+                    // [TEST] spawn ships.
+                    // Spawn within map range.
+                    // First, choose a collider
+                    int colliderIndex = Random.Range(0, colliderCountEndIndex);
+                    //int colliderIndex = 0;
+                    BoxCollider targetCollider = (BoxCollider)mapColliders[colliderIndex];
+
+
+                    // Convert collider size vector to local space, then store it.
+                    // Scale these vectors, flip sign
+
+                    // Convert collider local space dimensions to world space
+                    Vector3 rawWidth = mapCentre.transform.TransformDirection(new Vector3(targetCollider.size.x / 2, 0, 0));
+                    Vector3 rawHeight = mapCentre.transform.TransformDirection(new Vector3(0, targetCollider.size.y / 2, 0));
+                    //Debug.Log("RAW WIDTH: " + rawWidth);
+                    //Debug.Log("RAW HEIGHT: " + rawHeight);
+
+                    rawWidth.x = rawWidth.x + mapCentre.transform.position.x;
+                    rawHeight.y = rawHeight.y + mapCentre.transform.position.y;
+
+                    // Rotation logic
+                    float randomRotation = possibleSpawnAngles[colliderIndex];
+                    Vector3 rotateDirWidth = rawWidth - new Vector3(mapCentre.transform.position.x, 0, 0);
+                    rotateDirWidth = Quaternion.Euler(new Vector3(0, 0, randomRotation)) * rotateDirWidth;
+                    //Debug.Log("ROTATE_WIDTH: " + rotateDirWidth);
+                    // This is making width become height! Just scale every value?
+                    //rawWidth.x = rotateDir.x + mapCentre.transform.position.x;
+
+                    Vector3 rotateDirHeight = rawHeight - new Vector3(0, mapCentre.transform.position.y, 0);
+                    rotateDirHeight = Quaternion.Euler(new Vector3(0, 0, randomRotation)) * rotateDirHeight;
+
+                    rotateDirWidth *= Random.Range(0.1f, 1f);
+                    rotateDirHeight *= Random.Range(0.1f, 1f);
+
+                    // Possible sign flips
+                    if (Random.Range(0f, 1f) > 0.5f)
+                    {
+                        rotateDirWidth *= -1;
+                    }
+                    if (Random.Range(0f, 1f) > 0.5f)
+                    {
+                        rotateDirHeight *= -1;
+                    }
+                    // Sum up hori and vert components, and shift center to mapCentre as the origin
+                    Vector3 totalVector = rotateDirWidth + rotateDirHeight + mapCentre.transform.position;
+
+                    // Spawn the boss
+                    int selectedEnemyIndex = Random.Range(0, baseBossTypes.Count);
+                    while (selectedEnemyIndex == lastBossSpawnIndex)
+                    {
+                        selectedEnemyIndex = Random.Range(0, baseBossTypes.Count);
+                    }
+                    lastBossSpawnIndex = selectedEnemyIndex;
+                    GameObject selectedBoss = baseBossTypes[selectedEnemyIndex];
+                    PoolObject poolObject = PoolManager.Instance.ReuseObjectRef(selectedBoss, totalVector, Quaternion.identity);
+
+                    // Orient the boss towards player
+                    Vector3 dist = (GameManager.Singleton.playerShip.transform.position - poolObject.transform.position).normalized;    // Find vector difference between target and this
+                    float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
+                    Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+                    poolObject.transform.rotation = desiredRotation;
+
+                    // Record that a boss was spawned
+                    UIManager.Singleton.OnBossSpawnedUI();
+                    NUM_BOSSES_ALIVE += 1;
+                    Debug.Log("BOSS_SPAWNED!");
+
+                    // Wait a bit before checking if the boss has died
+                    yield return new WaitForSeconds(Random.Range(0, 5f));
+                }
+                yield return null;
+            }
+            yield return null;
+        }
+    }
+
+
+    IEnumerator EnemySpawnRoutine()
     {
         mapColliders = GameManager.Singleton.mapColliders;  // Ref to map colliders
         int colliderCountEndIndex = mapColliders.Count - 1;
