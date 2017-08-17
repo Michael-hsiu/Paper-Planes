@@ -17,10 +17,12 @@ public class EnemySpawner : MonoBehaviour
     // Revised system for spawning enemies
     [Header("NEW_ENEMY_SPAWN_LOGIC")]
     // Indices must be matched up properly
-    public List<GameObject> baseEnemyTypes;     // List of all lvl_1 normal enemies
-    public List<Row> enemyTypeUpgrades;         // List of all upgrades for normal enemies
+    public List<GameObject> baseEnemyTypes = new List<GameObject>();     // List of all lvl_1 normal enemies
+    public List<Row> enemyTypeUpgrades = new List<Row>();         // List of all upgrades for normal enemies
 
-    public List<GameObject> baseBossTypes;      // List of all lvl_1 normal bosses
+    public List<GameObject> baseBossTypes = new List<GameObject>();      // List of all lvl_1 normal bosses
+    public List<int> enemyScoreBoundaries = new List<int>();     // Stores information about how many points needed to reach next level of enemy
+    public int maxEnemyScoreBoundary;
 
     // Booleans for each enemy type
     public bool pawnLevel2Unlocked = false;
@@ -65,7 +67,7 @@ public class EnemySpawner : MonoBehaviour
         //Vector3 boxSize = GetComponent<BoxCollider>().size;
         //xBound = boxSize.x / 2;
         //yBound = boxSize.y / 2;
-
+        maxEnemyScoreBoundary = baseEnemyTypes.Count;
         enemySpawnRoutine = StartSpawningEnemies();
         StartCoroutine(enemySpawnRoutine);
     }
@@ -74,6 +76,7 @@ public class EnemySpawner : MonoBehaviour
     public void IncreaseLevel()
     {
         currLevel += 1;
+
     }
 
     public void EndLevel()
@@ -130,75 +133,95 @@ public class EnemySpawner : MonoBehaviour
                 NUM_BOSSES_ALIVE -= 1;
                 break;
         }
-        // Upgrade levels of enemies as necessary
         int playerScore = GameManager.Singleton.playerScore;
+        bool newEnemyUpgradeUnlocked = false;
+        // Upgrade available enemies as necessary
+        if (playerScore >= enemyScoreBoundaries[currLevel] && currLevel < maxEnemyScoreBoundary)
+        {
+            currLevel += 1;
+        }
+
+        // Upgrade levels of enemies as necessary
         if (playerScore > 10000)
         {
 
         }
-        else if (playerScore > 1400)
+        else if (playerScore > 2100)
         {
             if (!turretLevel3Unlocked)
             {
                 turretLevel3Unlocked = true;
+                newEnemyUpgradeUnlocked = true;
                 Debug.Log("TURRET_LVL3_UNLOCKED!");
             }
         }
-        else if (playerScore > 1200)
+        else if (playerScore > 1900)
         {
             if (!turretLevel2Unlocked)
             {
                 turretLevel2Unlocked = true;
+                newEnemyUpgradeUnlocked = true;
                 Debug.Log("TURRET_LVL2_UNLOCKED!");
             }
         }
-        else if (playerScore > 1000)
+        else if (playerScore > 1700)
         {
             if (!bomberLevel3Unlocked)
             {
                 bomberLevel3Unlocked = true;
+                newEnemyUpgradeUnlocked = true;
                 Debug.Log("BOMBER_LVL3_UNLOCKED!");
             }
         }
-        else if (playerScore > 800)
+        else if (playerScore > 1500)
         {
             if (!bomberLevel2Unlocked)
             {
                 bomberLevel2Unlocked = true;
+                newEnemyUpgradeUnlocked = true;
                 Debug.Log("BOMBER_LVL2_UNLOCKED!");
             }
         }
-        else if (playerScore > 600)
+        else if (playerScore > 1300)
         {
             if (!rangedLevel3Unlocked)
             {
                 rangedLevel3Unlocked = true;
+                newEnemyUpgradeUnlocked = true;
                 Debug.Log("RANGED_LVL3_UNLOCKED!");
             }
         }
-        else if (playerScore > 400)
+        else if (playerScore > 800)
         {
             if (!rangedLevel2Unlocked)
             {
                 rangedLevel2Unlocked = true;
+                newEnemyUpgradeUnlocked = true;
                 Debug.Log("RANGED_LVL2_UNLOCKED!");
             }
         }
-        else if (playerScore > 200)
+        else if (playerScore > 600)
         {
             if (!pawnLevel3Unlocked)
             {
                 pawnLevel3Unlocked = true;
+                newEnemyUpgradeUnlocked = true;
                 Debug.Log("PAWN_LVL3_UNLOCKED!");
             }
         }
-        else if (playerScore > 100)
+        else if (playerScore > 200)
         {
             if (!pawnLevel2Unlocked)
             {
                 pawnLevel2Unlocked = true;
+                newEnemyUpgradeUnlocked = true;
                 Debug.Log("PAWN_LVL2_UNLOCKED!");
             }
+        }
+        // Check if new enemy was unlocked; if so, show UI!
+        if (newEnemyUpgradeUnlocked)
+        {
+            UIManager.Singleton.OnNewEnemyUpgradeUnlocked();
         }
     }
 
@@ -227,9 +250,8 @@ public class EnemySpawner : MonoBehaviour
                 // Convert collider local space dimensions to world space
                 Vector3 rawWidth = mapCentre.transform.TransformDirection(new Vector3(targetCollider.size.x / 2, 0, 0));
                 Vector3 rawHeight = mapCentre.transform.TransformDirection(new Vector3(0, targetCollider.size.y / 2, 0));
-
-                Debug.Log("RAW WIDTH: " + rawWidth);
-                Debug.Log("RAW HEIGHT: " + rawHeight);
+                //Debug.Log("RAW WIDTH: " + rawWidth);
+                //Debug.Log("RAW HEIGHT: " + rawHeight);
 
                 rawWidth.x = rawWidth.x + mapCentre.transform.position.x;
                 rawHeight.y = rawHeight.y + mapCentre.transform.position.y;
@@ -238,7 +260,7 @@ public class EnemySpawner : MonoBehaviour
                 float randomRotation = possibleSpawnAngles[colliderIndex];
                 Vector3 rotateDirWidth = rawWidth - new Vector3(mapCentre.transform.position.x, 0, 0);
                 rotateDirWidth = Quaternion.Euler(new Vector3(0, 0, randomRotation)) * rotateDirWidth;
-                Debug.Log("ROTATE_WIDTH: " + rotateDirWidth);
+                //Debug.Log("ROTATE_WIDTH: " + rotateDirWidth);
                 // This is making width become height! Just scale every value?
                 //rawWidth.x = rotateDir.x + mapCentre.transform.position.x;
 
@@ -264,12 +286,13 @@ public class EnemySpawner : MonoBehaviour
                 // Spawn UP TO current level progression.
                 // Use / remove from DICT when MAX_CAP reached. Then remove / reset upon level reset or when enough of the enemy eliminated.
                 // OR we could use current method, which is just instance vars tracking each type of enemy.
-                int selectedEnemyIndex = Random.Range(0, baseEnemyTypes.Count);
+                int selectedEnemyIndex = Random.Range(0, currLevel + 1);
                 GameObject enemyShip = baseEnemyTypes[selectedEnemyIndex];
                 EnemyType enemyType = (enemyShip.GetComponent<Ship>() != null) ? enemyShip.GetComponent<Ship>().enemyType : enemyShip.GetComponent<Turret>().enemyType;
 
                 // First select a valid enemy
                 bool alreadySpawnedMax = true;
+                float randomValue = Random.value;
                 while (alreadySpawnedMax)
                 {
                     switch (enemyType)
@@ -280,11 +303,21 @@ public class EnemySpawner : MonoBehaviour
                                 // Select upgraded form, otherwise just keep original form
                                 if (pawnLevel3Unlocked)
                                 {
-                                    enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[1];
+                                    if (randomValue < 0.5f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[1];
+                                    }
+                                    else if (randomValue < 0.8f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    }
                                 }
                                 else if (pawnLevel2Unlocked)
                                 {
-                                    enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    if (randomValue < 0.5f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    }
                                 }
                                 NUM_PAWNS_ALIVE += 1;
                                 alreadySpawnedMax = false;
@@ -296,11 +329,21 @@ public class EnemySpawner : MonoBehaviour
                                 // Select upgraded form, otherwise just keep original form
                                 if (rangedLevel3Unlocked)
                                 {
-                                    enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[1];
+                                    if (randomValue < 0.5f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[1];
+                                    }
+                                    else if (randomValue < 0.8f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    }
                                 }
                                 else if (rangedLevel2Unlocked)
                                 {
-                                    enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    if (randomValue < 0.5f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    }
                                 }
                                 NUM_RANGED_ALIVE += 1;
                                 alreadySpawnedMax = false;
@@ -312,11 +355,21 @@ public class EnemySpawner : MonoBehaviour
                                 // Select upgraded form, otherwise just keep original form
                                 if (bomberLevel3Unlocked)
                                 {
-                                    enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[1];
+                                    if (randomValue < 0.5f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[1];
+                                    }
+                                    else if (randomValue < 0.8f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    }
                                 }
                                 else if (bomberLevel2Unlocked)
                                 {
-                                    enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    if (randomValue < 0.5f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    }
                                 }
                                 NUM_BOMBERS_ALIVE += 1;
                                 alreadySpawnedMax = false;
@@ -329,11 +382,21 @@ public class EnemySpawner : MonoBehaviour
                                 // Select upgraded form, otherwise just keep original form
                                 if (turretLevel3Unlocked)
                                 {
-                                    enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[1];
+                                    if (randomValue < 0.5f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[1];
+                                    }
+                                    else if (randomValue < 0.9f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    }
                                 }
                                 else if (turretLevel2Unlocked)
                                 {
-                                    enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    if (randomValue < 0.7f)
+                                    {
+                                        enemyShip = enemyTypeUpgrades[selectedEnemyIndex].row[0];
+                                    }
                                 }
                                 NUM_TURRETS_ALIVE += 1;
                                 alreadySpawnedMax = false;
@@ -353,7 +416,7 @@ public class EnemySpawner : MonoBehaviour
                         break;
                     }
                     // Find another eligible spawnable enemy type
-                    selectedEnemyIndex = Random.Range(0, baseEnemyTypes.Count);
+                    selectedEnemyIndex = Random.Range(0, currLevel + 1);
                     enemyShip = baseEnemyTypes[selectedEnemyIndex];
                     enemyType = (enemyShip.GetComponent<Ship>() != null) ? enemyShip.GetComponent<Ship>().enemyType : enemyShip.GetComponent<Turret>().enemyType;
 

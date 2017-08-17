@@ -207,7 +207,7 @@ public class GameManager : MonoBehaviour
     public void OnEnemyLevelIncrease()
     {
         // Increase the number of total enemies that can be spawned, as well as other logic.
-        enemySpawner.IncreaseLevel();
+        //enemySpawner.IncreaseLevel();
 
         // Increase the types of enemies we can now spawn.
         currLevel += 1;
@@ -229,11 +229,11 @@ public class GameManager : MonoBehaviour
     {
         enemySpawner.RecordKill(enemyType);
         numEnemiesDefeated += 1;
-        // Unlock stronger enemies
-        if (playerScore >= enemyScoreBoundaries[Math.Min(currLevel, enemyScoreBoundaries.Count - 1)])
-        {
-            OnEnemyLevelIncrease();
-        }
+        //// Unlock stronger enemies
+        //if (playerScore >= enemyScoreBoundaries[Math.Min(currLevel, enemyScoreBoundaries.Count - 1)])
+        //{
+        //    OnEnemyLevelIncrease();
+        //}
         // Unlock additional powerups
         if (playerScore >= powerupScoreBoundaries[Math.Min(powerupUnlockedLevel, powerupScoreBoundaries.Count - 1)])
         {

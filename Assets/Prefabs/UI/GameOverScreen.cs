@@ -181,8 +181,8 @@ public class GameOverScreen : MonoBehaviour
     public void DisableGameOverScreen()
     {
         // Show the map again
-        Color startColor = mapImage.GetComponent<SpriteRenderer>().color;
-        startColor.a = 255;
+        //Color startColor = mapImage.GetComponent<SpriteRenderer>().color;
+        //startColor.a = 255;
         mapImage.GetComponent<SpriteRenderer>().color = startColor;
 
         // Disable UI elements

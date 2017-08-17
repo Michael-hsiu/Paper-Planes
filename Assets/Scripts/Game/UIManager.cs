@@ -16,6 +16,19 @@ public class UIManager : MonoBehaviour
     public int startDisplayedScore = 0;     // Lerp start point
     public int displayedChangingScore = 0;     // Currently lerping score that is displayed
 
+    [Header("NEW_ENEMIES_UNLOCKED_UI")]
+    public string newEnemyText = "New enemies have appeared!";
+    public string newEnemyUpgradesText = "Existing enemies are now stronger!";
+    public float numEnemiesEaseOutDuration = 0.5f;
+    public float newEnemiesEaseInLerpDuration = 0.5f;
+    public float newEnemiesLerpRatio;
+    public float newEnemiesTextDuration = 0.4f;
+    public Color textStartColor;
+    public Color textEndColor;
+    public bool assignedStartColor = false;
+
+    //[Header("NEW_ENEMY_UPGRADE_IMGS")]
+
     public Canvas uiCanvas;     // Where all UI elements are rendered
     public Text scoreMultiplierText;    // Score multiplier
     public Text scoreText;
@@ -58,6 +71,8 @@ public class UIManager : MonoBehaviour
     public int peekValue;
     public int currentMin;
 
+    IEnumerator healthBarLerpRoutine;
+    IEnumerator newEnemyUpgradeUnlockedRoutine;
 
     void Update()
     {
@@ -262,7 +277,13 @@ public class UIManager : MonoBehaviour
     {
         //int targetEndHealth = damageQueue.Dequeue();
         //Utils.PrintValues("DAMAGE QUEUE POST DEQUEUE", damageQueue);
-        StartCoroutine(LerpHealthBar());
+        if (healthBarLerpRoutine != null)
+        {
+            StopCoroutine(healthBarLerpRoutine);
+            healthBarLerpRoutine = null;
+        }
+        healthBarLerpRoutine = LerpHealthBar();
+        StartCoroutine(healthBarLerpRoutine);
     }
 
     public void DisplayGameOverScreen()
@@ -323,6 +344,69 @@ public class UIManager : MonoBehaviour
         levelGoalRoutine = IncreaseLevelRoutine(GameManager.Singleton.currLevel);
         StartCoroutine(levelGoalRoutine);
     }
+
+    // These 2 methods display UI for new enemies or enemy lvls unlocked
+    public void OnNewEnemyUpgradeUnlocked()
+    {
+        if (newEnemyUpgradeUnlockedRoutine != null)
+        {
+            StopCoroutine(newEnemyUpgradeUnlockedRoutine);
+            newEnemyUpgradeUnlockedRoutine = null;
+        }
+        scoreGoalText.gameObject.SetActive(true);
+        newEnemyUpgradeUnlockedRoutine = OnNewEnemyUpgradeUnlockedRoutine();
+        StartCoroutine(newEnemyUpgradeUnlockedRoutine);
+    }
+    IEnumerator OnNewEnemyUpgradeUnlockedRoutine()
+    {
+        // Ease in the annoucement
+        if (!assignedStartColor)
+        {
+            textEndColor = scoreGoalText.color;
+            // Recall that Color alphas range from 0f to 1f
+            textEndColor.a = 1.0f;
+
+            textStartColor = textEndColor;
+            textStartColor.a = 0.0f;
+
+            assignedStartColor = true;
+            //Debug.Break();
+        }
+        // Prep the text
+        scoreGoalText.color = textStartColor;
+        scoreGoalText.text = newEnemyUpgradesText;
+
+        newEnemiesLerpRatio = 0.0f;
+        while (newEnemiesLerpRatio < 1.0f)
+        {
+            newEnemiesLerpRatio += (Time.deltaTime / newEnemiesEaseInLerpDuration);
+            Color lerpColor = Color.Lerp(textStartColor, textEndColor, newEnemiesLerpRatio);
+            scoreGoalText.color = lerpColor;
+            yield return null;
+        }
+
+        // Annoucement stays for a duration
+        yield return new WaitForSeconds(newEnemiesTextDuration);
+
+        // Ease out the annoucement
+        newEnemiesLerpRatio = 0.0f;
+        while (newEnemiesLerpRatio < 1.0f)
+        {
+            newEnemiesLerpRatio += (Time.deltaTime / numEnemiesEaseOutDuration);
+            scoreGoalText.color = Color.Lerp(textEndColor, textStartColor, newEnemiesLerpRatio);
+            yield return null;
+        }
+        scoreGoalText.gameObject.SetActive(false);
+    }
+    public void OnNewEnemyUnlocked()
+    {
+
+    }
+
+
+
+
+
 
     // Visual cue to players that difficulty is changing
     IEnumerator IncreaseLevelRoutine(int currLevel)
