@@ -101,6 +101,7 @@ public class MissileBoss : Ship, IEnemy
         // Graphics
         PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
         GameManager.Singleton.OnBossDeath();
+
         // Powerup spawn chance
         float randomVal = Random.value;
         if (randomVal <= 1f)

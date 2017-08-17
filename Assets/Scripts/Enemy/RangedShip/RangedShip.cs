@@ -51,7 +51,7 @@ public class RangedShip : FiringShip, IEnemy
             Color resetColor = startColor;
             resetColor.a = 1f;
             sprite.material.color = resetColor;
-            Debug.Log("SPRITE RESET!");
+            //Debug.Log("SPRITE RESET!");
         }
     }
 

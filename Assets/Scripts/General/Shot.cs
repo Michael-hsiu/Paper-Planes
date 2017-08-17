@@ -56,7 +56,7 @@ public class Shot : PoolObject, IMovement
             }
             catch (Exception exception)
             {
-                Debug.Log("NO SPRITE FOR SHOT!");
+                //Debug.Log("NO SPRITE FOR SHOT!");
             }
         }
         try
@@ -67,7 +67,7 @@ public class Shot : PoolObject, IMovement
         }
         catch (Exception exception)
         {
-            Debug.Log("STILL NO SPRITE FOR SHOT!");
+            //Debug.Log("STILL NO SPRITE FOR SHOT!");
         }
 
 

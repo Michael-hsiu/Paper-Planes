@@ -193,9 +193,9 @@ public class Missile : PoolObject
 
                     if (other.gameObject.GetComponent<IDamageable<int>>() != null)
                     {
-                        Debug.Log(other.gameObject.name);
+                        //Debug.Log(other.gameObject.name);
                         //Debug.Log (other.gameObject.GetComponent<IDamageable<int>>() == null);
-                        Debug.Log(powerupData == null);
+                        //Debug.Log(powerupData == null);
                         other.gameObject.GetComponent<IDamageable<int>>().Damage(powerupData.damage);       // Inflict damage
 
                         // [SATISFIES spawn new missile chance]

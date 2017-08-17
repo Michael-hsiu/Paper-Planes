@@ -227,7 +227,7 @@ public class AIInput : MonoBehaviour, InputComponent
                 // Comparing squared vector magnitudes
                 if (player.GetComponent<Rigidbody>().velocity.sqrMagnitude == Mathf.Pow(player.maxForward, 2))
                 {
-                    Debug.Log("MAX VELOCITY REACHED: " + player.GetComponent<Rigidbody>().velocity.sqrMagnitude);       // Should be the square of maxForward
+                    //Debug.Log("MAX VELOCITY REACHED: " + player.GetComponent<Rigidbody>().velocity.sqrMagnitude);       // Should be the square of maxForward
                 }
             }
         }

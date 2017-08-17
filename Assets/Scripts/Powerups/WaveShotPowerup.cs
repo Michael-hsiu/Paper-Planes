@@ -13,7 +13,7 @@ public class WaveShotPowerup : Powerup
             {
                 endTime = GameManager.Singleton.playerShip.waveShotPowerup.endTime + powerDuration;						// Record extended powerup time
                 GameManager.Singleton.playerShip.waveShotPowerup.CancelInvoke("DeactivatePower");       // Prevent old wave shot from de-activating powerup early
-                Debug.Log("INVOKE CANCEL");
+                //Debug.Log("INVOKE CANCEL");
                 //Debug.Break();
             }
             // This doesn't work, since each powerup obj has its own script, but we may implement shot-related powerups differently to avoid this problem
@@ -22,12 +22,12 @@ public class WaveShotPowerup : Powerup
         else
         {
             endTime = Time.time + powerDuration;
-            Debug.Log("NO TIME EXTENSION");
+            //Debug.Log("NO TIME EXTENSION");
         }
         float remainingTime = endTime - Time.time;
         Invoke("DeactivatePower", remainingTime);                 // Powerup deactivation call
 
-        Debug.Log("NEW ENDTIME: " + endTime);
+        //Debug.Log("NEW ENDTIME: " + endTime);
         GameManager.Singleton.playerShip.waveShotEnabled = true;
         GameManager.Singleton.playerShip.waveShotPowerup = this;
         GameManager.Singleton.playerShip.activePowerups.Enqueue(this);      // Register all powerups
@@ -38,7 +38,7 @@ public class WaveShotPowerup : Powerup
         //if (Time.time > GameManager.Singleton.playerShip.waveShotPowerup.endTime || GameManager.Singleton.playerShip.isResetting)
         //{
         GameManager.Singleton.playerShip.waveShotEnabled = false;
-        Debug.Log("ENDED AT: " + Time.time);
+        //Debug.Log("ENDED AT: " + Time.time);
         //}
         //Debug.Break();
     }

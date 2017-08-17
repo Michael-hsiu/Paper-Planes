@@ -108,7 +108,7 @@ public class WaveShot : PoolObject, IMovement
             {
                 idamageable.Damage(waveShotDamage);
                 PoolManager.Instance.ReuseObject(debugExplosion, transform.position, Quaternion.identity);       // Visual indication that we hit an enemy
-                Debug.Log("ENEMY HIT BY WAVE!");
+                //Debug.Log("ENEMY HIT BY WAVE!");
             }
         }
     }

@@ -137,6 +137,7 @@
     <Compile Include="Assets\Prefabs\UI\PlayAgainButton.cs" />
     <Compile Include="Assets\Prefabs\UI\ScoreText.cs" />
     <Compile Include="Assets\Prefabs\UI\ShopSlot.cs" />
+    <Compile Include="Assets\Prefabs\UI\StartScreen.cs" />
     <Compile Include="Assets\Prefabs\UI\UpgradesListPanel.cs" />
     <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
     <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />

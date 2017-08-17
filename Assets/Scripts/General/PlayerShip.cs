@@ -202,12 +202,12 @@ public class PlayerShip : FiringShip
             {
                 firingPowerupEnabled = false;
             }
-            Debug.Log(String.Format(oldContainer.firingPowerupID + " FIRING POWERUP DEACTIVATED AT ENDTIME: {0}", Time.time));
+            //Debug.Log(String.Format(oldContainer.firingPowerupID + " FIRING POWERUP DEACTIVATED AT ENDTIME: {0}", Time.time));
         }
         else
         {
             firingPowerupEnabled = false;
-            Debug.Log(activeShotSpawnContainer.firingPowerupID);
+            //Debug.Log(activeShotSpawnContainer.firingPowerupID);
             //Debug.Break();
         }
     }

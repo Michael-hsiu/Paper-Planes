@@ -229,7 +229,7 @@ public class EnemySpawner : MonoBehaviour
         }
 
         // Check if points reached certain level. If so, start spawning bosses
-        if (!bossSpawnEnabled && playerScore > 100)
+        if (!bossSpawnEnabled && playerScore > 1000)
         {
             bossSpawnEnabled = true;
             nextBossSpawnTime = Time.time + Random.Range(3f, 5f);

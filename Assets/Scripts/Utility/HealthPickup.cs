@@ -25,7 +25,7 @@ public class HealthPickup : PoolObject
 
                 // Can't add more health than max health
                 int healthToAdd = Mathf.Min(healthAmnt, GameManager.Singleton.playerMaxHealth - GameManager.Singleton.playerHealth);
-                Debug.Log("HEALTH TO ADD: " + healthToAdd);
+                //Debug.Log("HEALTH TO ADD: " + healthToAdd);
 
                 GameManager.Singleton.playerHealth += healthToAdd;   // Set new health in GameManager
                 UIManager.Singleton.UpdateHealth(); // Update health in UI

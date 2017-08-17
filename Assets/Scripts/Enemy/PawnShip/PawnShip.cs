@@ -33,7 +33,7 @@ public class PawnShip : Ship
             Color resetColor = startColor;
             resetColor.a = 1f;
             sprite.material.color = resetColor;
-            Debug.Log("SPRITE RESET!");
+            //Debug.Log("SPRITE RESET!");
         }
     }
 
@@ -41,7 +41,7 @@ public class PawnShip : Ship
     {
         //base.Update ();
         Move();
-        Debug.Log("HEALTH3: " + health);
+        //Debug.Log("HEALTH3: " + health);
         //Debug.Break();
     }
 
