@@ -73,10 +73,10 @@ public class EnemySpawner : MonoBehaviour
     }
 
     // Increase the number of total enemies that can be spawned, and how many of each.
-    public void IncreaseLevel()
+    public void UnlockNewEnemy()
     {
         currLevel += 1;
-
+        UIManager.Singleton.OnNewEnemyUnlocked();
     }
 
     public void EndLevel()
@@ -138,7 +138,7 @@ public class EnemySpawner : MonoBehaviour
         // Upgrade available enemies as necessary
         if (playerScore >= enemyScoreBoundaries[currLevel] && currLevel < maxEnemyScoreBoundary)
         {
-            currLevel += 1;
+            UnlockNewEnemy();
         }
 
         // Upgrade levels of enemies as necessary
@@ -146,7 +146,7 @@ public class EnemySpawner : MonoBehaviour
         {
 
         }
-        else if (playerScore > 2100)
+        else if (playerScore > 3400)
         {
             if (!turretLevel3Unlocked)
             {
@@ -155,7 +155,7 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log("TURRET_LVL3_UNLOCKED!");
             }
         }
-        else if (playerScore > 1900)
+        else if (playerScore > 3000)
         {
             if (!turretLevel2Unlocked)
             {
@@ -164,7 +164,7 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log("TURRET_LVL2_UNLOCKED!");
             }
         }
-        else if (playerScore > 1700)
+        else if (playerScore > 2600)
         {
             if (!bomberLevel3Unlocked)
             {
@@ -173,7 +173,7 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log("BOMBER_LVL3_UNLOCKED!");
             }
         }
-        else if (playerScore > 1500)
+        else if (playerScore > 2200)
         {
             if (!bomberLevel2Unlocked)
             {
@@ -182,7 +182,7 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log("BOMBER_LVL2_UNLOCKED!");
             }
         }
-        else if (playerScore > 1300)
+        else if (playerScore > 1800)
         {
             if (!rangedLevel3Unlocked)
             {
@@ -191,7 +191,7 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log("RANGED_LVL3_UNLOCKED!");
             }
         }
-        else if (playerScore > 800)
+        else if (playerScore > 1400)
         {
             if (!rangedLevel2Unlocked)
             {
@@ -200,7 +200,7 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log("RANGED_LVL2_UNLOCKED!");
             }
         }
-        else if (playerScore > 600)
+        else if (playerScore > 800)
         {
             if (!pawnLevel3Unlocked)
             {
@@ -209,7 +209,7 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log("PAWN_LVL3_UNLOCKED!");
             }
         }
-        else if (playerScore > 200)
+        else if (playerScore > 400)
         {
             if (!pawnLevel2Unlocked)
             {

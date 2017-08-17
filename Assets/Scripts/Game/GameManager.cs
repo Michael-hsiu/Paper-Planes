@@ -152,6 +152,11 @@ public class GameManager : MonoBehaviour
         playerShip.gameObject.SetActive(false);
         levelActive = false;
 
+        // Tell subscribers to do their work
+        if (EndLevelEvent != null)
+        {
+            EndLevelEvent();
+        }
         enemySpawner.EndLevel();
         powerupSpawner.EndLevel();
 

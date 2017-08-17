@@ -5,6 +5,11 @@ using System.Collections;
 public class PoolObject : MonoBehaviour
 {
     public GameObject poolObjHolder;        // The container for all this category of pool object
+
+    public void Start()
+    {
+        GameManager.Singleton.EndLevelEvent += OnGameOver;
+    }
     public virtual void OnObjectReuse()
     {
         // Anything to reset? Transform, velocity, etc.
@@ -13,7 +18,13 @@ public class PoolObject : MonoBehaviour
 
     public virtual void DestroyForReuse()
     {
-        //Debug.Log ("DestroyForReuse() WAS REACHED");
         gameObject.SetActive(false);    // Naive implementation; need to customize to improve performance (only disabling scripts, sprite, etc. instead of whole GO)
+    }
+
+    // Actions to take when game ends
+    public void OnGameOver()
+    {
+        // Recycle all pool objects on game end
+        DestroyForReuse();
     }
 }

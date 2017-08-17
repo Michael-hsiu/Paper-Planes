@@ -1,10 +1,12 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefabs/UI/GameOverScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Spawners/EnemySpawner.cs">
     <Files>
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="169" Column="23" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="352" Column="43" />
-      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="338" Column="35" />
-      <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="66" Column="67" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="71" Column="43" />
+      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="82" Column="25" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="429" Column="46" />
+      <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="184" Column="1" />
+      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="7" Column="9" />
+      <File FileName="Assets/Scripts/Game/InputManager.cs" Line="40" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

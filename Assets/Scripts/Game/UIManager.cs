@@ -73,6 +73,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator healthBarLerpRoutine;
     IEnumerator newEnemyUpgradeUnlockedRoutine;
+    IEnumerator newEnemyUnlockedRoutine;
 
     void Update()
     {
@@ -400,11 +401,56 @@ public class UIManager : MonoBehaviour
     }
     public void OnNewEnemyUnlocked()
     {
+        if (newEnemyUnlockedRoutine != null)
+        {
+            StopCoroutine(newEnemyUnlockedRoutine);
+            newEnemyUnlockedRoutine = null;
+        }
+        scoreGoalText.gameObject.SetActive(true);
+        newEnemyUnlockedRoutine = OnNewEnemyUnlockedRoutine();
+        StartCoroutine(newEnemyUnlockedRoutine);
+    }
+    IEnumerator OnNewEnemyUnlockedRoutine()
+    {
+        // Ease in the annoucement
+        if (!assignedStartColor)
+        {
+            textEndColor = scoreGoalText.color;
+            // Recall that Color alphas range from 0f to 1f
+            textEndColor.a = 1.0f;
+
+            textStartColor = textEndColor;
+            textStartColor.a = 0.0f;
+
+            assignedStartColor = true;
+            //Debug.Break();
+        }
+        // Prep the text
+        scoreGoalText.color = textStartColor;
+        scoreGoalText.text = newEnemyText;
+        newEnemiesLerpRatio = 0.0f;
+        while (newEnemiesLerpRatio < 1.0f)
+        {
+            newEnemiesLerpRatio += (Time.deltaTime / newEnemiesEaseInLerpDuration);
+            Color lerpColor = Color.Lerp(textStartColor, textEndColor, newEnemiesLerpRatio);
+            scoreGoalText.color = lerpColor;
+            yield return null;
+        }
+
+        // Announcement stays for a duration
+        yield return new WaitForSeconds(newEnemiesTextDuration);
+
+        // Ease out the annoucement
+        newEnemiesLerpRatio = 0.0f;
+        while (newEnemiesLerpRatio < 1.0f)
+        {
+            newEnemiesLerpRatio += (Time.deltaTime / numEnemiesEaseOutDuration);
+            scoreGoalText.color = Color.Lerp(textEndColor, textStartColor, newEnemiesLerpRatio);
+            yield return null;
+        }
+        scoreGoalText.gameObject.SetActive(false);
 
     }
-
-
-
 
 
 
