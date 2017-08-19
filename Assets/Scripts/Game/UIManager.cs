@@ -399,8 +399,8 @@ public class UIManager : MonoBehaviour
         //startDisplayedScore = -1;     // Lerp start point
         //displayedChangingScore = -1;     // Currently lerping score that is displayed
 
-        shopButton.SetActive(false);
-        startGameButton.gameObject.SetActive(false);
+        //shopButton.SetActive(false);
+        //startGameButton.gameObject.SetActive(false);
         scoreGoalText.text = GameManager.Singleton.enemyScoreBoundaries[GameManager.Singleton.currLevel].ToString();
 
         // Can we dynamically pass in params to event subscribers?
@@ -532,10 +532,10 @@ public class UIManager : MonoBehaviour
         String goalText = "Ready...";
         levelGoalText.gameObject.SetActive(true);
         levelGoalText.text = goalText;
-        yield return new WaitForSeconds(1.5f);  // Show the level goal text on screen
+        yield return new WaitForSeconds(2.5f);  // Show the level goal text on screen
         goalText = "Begin!";
         levelGoalText.text = goalText;
-        yield return new WaitForSeconds(1f);  // Show the level goal text on screen
+        yield return new WaitForSeconds(1.5f);  // Show the level goal text on screen
 
         // Blink on and off
         //levelGoalText.gameObject.SetActive(false);      // Hide the text
@@ -594,9 +594,9 @@ public class UIManager : MonoBehaviour
         dashStoreText.text = "Stored Dashes: " + dashes;
     }
 
-    public void UpdateBurstRushText()
-    {
-        burshRushText.text = "Burst Rushes: " + GameManager.Singleton.rushes.Count;     // See how many rushes are left in our list
-    }
+    //public void UpdateBurstRushText()
+    //{
+    //    burshRushText.text = "Burst Rushes: " + GameManager.Singleton.rushes.Count;     // See how many rushes are left in our list
+    //}
 
 }

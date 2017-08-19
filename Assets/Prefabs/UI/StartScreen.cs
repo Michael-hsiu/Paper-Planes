@@ -101,13 +101,16 @@ public class StartScreen : MonoBehaviour
     // Action to be executed when player taps the start screen
     public void OnClickedOnStartButton()
     {
-        if (startScreenDisappearRoutine != null)
+        if (onStartScreen)
         {
-            StopCoroutine(startScreenDisappearRoutine);
-            startScreenDisappearRoutine = null;
+            if (startScreenDisappearRoutine != null)
+            {
+                StopCoroutine(startScreenDisappearRoutine);
+                startScreenDisappearRoutine = null;
+            }
+            startScreenDisappearRoutine = OnClickedOnStartButtonRoutine();
+            StartCoroutine(startScreenDisappearRoutine);
         }
-        startScreenDisappearRoutine = OnClickedOnStartButtonRoutine();
-        StartCoroutine(startScreenDisappearRoutine);
     }
     IEnumerator OnClickedOnStartButtonRoutine()
     {
@@ -131,7 +134,8 @@ public class StartScreen : MonoBehaviour
         }
 
         // Spawn in the map
-        cameraController.StartGameCameraAnimation();
+        GameManager.Singleton.OnGameStart();
+        //cameraController.StartGameCameraAnimation();
     }
 }
 

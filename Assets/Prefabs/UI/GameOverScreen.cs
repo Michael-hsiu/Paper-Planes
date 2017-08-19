@@ -189,7 +189,7 @@ public class GameOverScreen : MonoBehaviour
         //startColor.a = 255;
         mapImage.GetComponent<SpriteRenderer>().color = startColor;
         leftJoystick.SetActive(true);
-        rightJoystick.SetActive(true);
+        //rightJoystick.SetActive(true);
 
         // Disable UI elements
         gameObject.SetActive(false);

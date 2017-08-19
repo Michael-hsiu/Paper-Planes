@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerShip playerShip;
     public GameObject mainCamera;       // Controls zooming and follows player
+    public CameraController cameraController;
     public GameObject normalSS;         // Player's normal shotspawn
     public EnemySpawner enemySpawner;       // Takes care of spawning enemies
     public PowerupSpawner powerupSpawner;
@@ -102,14 +103,14 @@ public class GameManager : MonoBehaviour
         //mapCollider = GetComponent<BoxCollider>();
 
         // Now populate powerups / purchasables with PlayerPrefs. 0=default/start level of each powerup.
-        homingMissileLevel = PlayerPrefs.GetInt(Constants.homingMissileLevel, 0);
-        burstRushLevel = PlayerPrefs.GetInt(Constants.burstRushLevel, 0);
-        dashLevel = PlayerPrefs.GetInt(Constants.dashLevel, 0);
-        shurikenLevel = PlayerPrefs.GetInt(Constants.shurikenLevel, 0);
-        tripMineLevel = PlayerPrefs.GetInt(Constants.tripMineLevel, 0);
-        waveShotLevel = PlayerPrefs.GetInt(Constants.waveShotLevel, 0);
-        dualFireLevel = PlayerPrefs.GetInt(Constants.dualFireLevel, 0);
-        triFireLevel = PlayerPrefs.GetInt(Constants.triFireLevel, 0);
+        //homingMissileLevel = PlayerPrefs.GetInt(Constants.homingMissileLevel, 0);
+        //burstRushLevel = PlayerPrefs.GetInt(Constants.burstRushLevel, 0);
+        //dashLevel = PlayerPrefs.GetInt(Constants.dashLevel, 0);
+        //shurikenLevel = PlayerPrefs.GetInt(Constants.shurikenLevel, 0);
+        //tripMineLevel = PlayerPrefs.GetInt(Constants.tripMineLevel, 0);
+        //waveShotLevel = PlayerPrefs.GetInt(Constants.waveShotLevel, 0);
+        //dualFireLevel = PlayerPrefs.GetInt(Constants.dualFireLevel, 0);
+        //triFireLevel = PlayerPrefs.GetInt(Constants.triFireLevel, 0);
 
         // Subscribe events
         //StartLevelEvent += OnLevelStartEnableMovingSpawners;
@@ -118,7 +119,8 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         playerStartPosition = playerShip.gameObject.transform.position;
-        OnGameStart();
+        playerShip.gameObject.transform.position = new Vector3(800f, 0f, 0f);   // Make sure we can't see player
+        //OnGameStart();
     }
 
     // This is just for the start game button.
@@ -131,7 +133,7 @@ public class GameManager : MonoBehaviour
     public void OnLevelStart(int currLevel)
     {
         currLevel = Math.Min(currLevel, enemyScoreBoundaries.Count - 1);
-        //Debug.Log("SCOREBOUNDARIES COUNT: " + scoreBoundaries.Count);
+        playerShip.gameObject.transform.position = playerStartPosition;     // Return player to start position
         targetScore = enemyScoreBoundaries[currLevel];
         levelActive = true;
 
@@ -143,6 +145,7 @@ public class GameManager : MonoBehaviour
                 StartLevelEvent();     // Tell all of our listeners to fire
             }
         }
+        cameraController.StartGameCameraAnimation();
     }
 
     // Called by player input if player dies

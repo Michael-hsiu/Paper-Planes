@@ -72,6 +72,18 @@ public class EnemySpawner : MonoBehaviour
         //xBound = boxSize.x / 2;
         //yBound = boxSize.y / 2;
         maxEnemyScoreBoundary = baseEnemyTypes.Count;
+        GameManager.Singleton.StartLevelEvent += OnGameStart;       // Only spawn when game starts
+        //enemySpawnRoutine = EnemySpawnRoutine();
+        //StartCoroutine(enemySpawnRoutine);
+    }
+
+    public void OnGameStart()
+    {
+        if (enemySpawnRoutine != null)
+        {
+            StopCoroutine(enemySpawnRoutine);
+            enemySpawnRoutine = null;
+        }
         enemySpawnRoutine = EnemySpawnRoutine();
         StartCoroutine(enemySpawnRoutine);
     }
@@ -113,6 +125,7 @@ public class EnemySpawner : MonoBehaviour
         spawnEnabled = true;
 
         StopAllCoroutines();
+
         enemySpawnRoutine = EnemySpawnRoutine();
         StartCoroutine(enemySpawnRoutine);
     }

@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
     public GameObject gameUIContainer;
     //public GameObject scoreText;
     //public GameObject healthBar;
-    //public GameObject leftJoystick;
+    public GameObject leftJoystick;
     //public GameObject rightJoystick;
     //public List<GameObject> lerpOnStartObjectsRaw = new List<GameObject>();    // UI elements to fade in
     //public List<ColoredGameObject> lerpOnStartObjects = new List<ColoredGameObject>();    // UI elements to fade in
@@ -71,7 +71,7 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!isTransitioning)
+        if (!isTransitioning && GameManager.Singleton.levelActive)
         {
             transform.position = GameManager.Singleton.playerShip.gameObject.transform.position + playerGameplayOffset;       // Camera follows the player
         }
@@ -81,7 +81,7 @@ public class CameraController : MonoBehaviour
     {
         // Let the text display for a while before fading
         yield return new WaitForSeconds(tutorialStayDuration);
-
+        //Debug.Break();
         // Now start fading it out
         tutorialDisappearLerpRatio = 0.0f;
         while (tutorialDisappearLerpRatio < 1.0f)
@@ -105,7 +105,7 @@ public class CameraController : MonoBehaviour
         if (tutorialEnabled)
         {
             tutorialUIContainer.SetActive(true);
-            // Ease in the annoucement
+            // Ease in the announcement
             if (!assignedStartColor)
             {
                 tutorialDisappearStartColor = tutorialTextSample.color;
@@ -118,10 +118,17 @@ public class CameraController : MonoBehaviour
                 assignedStartColor = true;
                 //Debug.Break();
             }
+            if (tutorialUIDisappearRoutine != null)
+            {
+                StopCoroutine(tutorialUIDisappearRoutine);
+                tutorialUIDisappearRoutine = null;
+            }
+            tutorialUIDisappearRoutine = StartTutorialTextFade();
+            StartCoroutine(tutorialUIDisappearRoutine);
             tutorialEnabled = false;
         }
         //healthBar.SetActive(true);
-        //leftJoystick.SetActive(true);
+        leftJoystick.SetActive(true);
         //rightJoystick.SetActive(true);
 
         if (startCameraMovementRoutine != null)

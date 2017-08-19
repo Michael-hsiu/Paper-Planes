@@ -54,7 +54,7 @@ public class BurstRushPowerup : PoolObject
                 PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
             }
             GameManager.Singleton.rushes.Enqueue(this);     // Add a Rush to our count
-            UIManager.Singleton.UpdateBurstRushText();
+            //UIManager.Singleton.UpdateBurstRushText();
 
             TriggerCharge(player);          // Immediately activate powerup on pickup
             HideInScene();
@@ -78,7 +78,7 @@ public class BurstRushPowerup : PoolObject
         // Begin Phase I, which will initiate Phase II
         //this.player = player;	// Keep track of the player so we can chage its rushStarted bool flag
 
-        UIManager.Singleton.UpdateBurstRushText();
+        //UIManager.Singleton.UpdateBurstRushText();
         StopAllCoroutines();
         chargeRoutine = StartCharge();
         StartCoroutine(chargeRoutine);
