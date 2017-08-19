@@ -56,7 +56,6 @@ public class StartScreen : MonoBehaviour
     {
         while (onStartScreen)
         {
-            Debug.Log("IN_ROUTINE");
             // Ease in the annoucement
             if (!assignedStartColor)
             {
@@ -82,7 +81,7 @@ public class StartScreen : MonoBehaviour
                 yield return null;
             }
 
-            // Annoucement stays for a duration
+            // Announcement stays for a duration
             yield return new WaitForSeconds(tapStayDuration);
 
             // Ease out the annoucement
@@ -116,6 +115,11 @@ public class StartScreen : MonoBehaviour
     {
         onStartScreen = false;
 
+        if (tapFadeRoutine != null)
+        {
+            StopCoroutine(tapFadeRoutine);
+            tapFadeRoutine = null;
+        }
         // Fade out the start button and title
         textDisappearStartColor = tapToStartText.color;
         Color startColorCopy = textDisappearStartColor;
