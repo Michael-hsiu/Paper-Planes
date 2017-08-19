@@ -30,7 +30,7 @@ public class FiringPowerup : Powerup
         }
 
         // Case 2 - A firing powerup that is not the best powerup is active.
-        else if (activeWeaponType < PlayerShip.Weapons.LEVEL_FOUR)
+        else if (activeWeaponType < PlayerShip.Weapons.LEVEL_SIX)
         {
 
             player.SetWeapons((PlayerShip.Weapons)(activePowerup.firingPowerupID + 1), this);       // Improve weapons

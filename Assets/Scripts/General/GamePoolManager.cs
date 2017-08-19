@@ -28,6 +28,12 @@ public class GamePoolManager : MonoBehaviour
     public GameObject turretSingleShot;
     public GameObject enemyFasterShot;
     public GameObject enemyBulletHellShot;
+    public GameObject rangedLvl1Shot;
+    public GameObject rangedLvl2Shot;
+    public GameObject rangedLvl3Shot;
+    public GameObject turretLvl1Shot;
+    public GameObject turretLvl2Shot;
+    public GameObject turretLvl3Shot;
 
 
     [Header("POWERUP_PREFABS")] // Player powerups / related items
@@ -143,6 +149,12 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(turretSingleShot, 200);
         PoolManager.Instance.CreatePool(enemyFasterShot, 200);
         PoolManager.Instance.CreatePool(enemyBulletHellShot, 100);
+        PoolManager.Instance.CreatePool(rangedLvl1Shot, 100);
+        PoolManager.Instance.CreatePool(rangedLvl2Shot, 100);
+        PoolManager.Instance.CreatePool(rangedLvl3Shot, 100);
+        PoolManager.Instance.CreatePool(turretLvl1Shot, 100);
+        PoolManager.Instance.CreatePool(turretLvl2Shot, 100);
+        PoolManager.Instance.CreatePool(turretLvl3Shot, 100);
 
         // Powerups
         //PoolManager.Instance.CreatePool (dualShotPowerup, 50);

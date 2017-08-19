@@ -160,17 +160,17 @@ public class PowerupSpawner : MonoBehaviour
                 if (currLevelIndex >= 6)
                 {
                     // Spawn health pack
-                    if (randomValue < 0.1f)
+                    if (randomValue < 0.15f)
                     {
                         spawnIndex = 0;
                     }
                     // Spawn burst rush
-                    else if (randomValue < 0.2f)
+                    else if (randomValue < 0.25f)
                     {
                         spawnIndex = 6;
                     }
                     // Spawn firing powerup
-                    else if (randomValue < 0.3f)
+                    else if (randomValue < 0.45f)
                     {
                         spawnIndex = 1;
                     }

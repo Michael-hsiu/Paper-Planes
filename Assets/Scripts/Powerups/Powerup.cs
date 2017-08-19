@@ -87,23 +87,39 @@ public class Powerup : PoolObject
     }
     IEnumerator DestroyAfterDurationRoutine()
     {
-        // Wait for set duration
-        Invoke("FadePowerup", existsInWorldDuration - fadeDuration);    // Allocate some time to fade
+        try
+        {
+            // Wait for set duration
+            Invoke("FadePowerup", existsInWorldDuration - fadeDuration);    // Allocate some time to fade
+        }
+        catch (Exception exception)
+        {
+            // Invoke issues
+        }
         yield return new WaitForSeconds(existsInWorldDuration);
 
         // Destroy if not picked up
         DestroyForReuse();
+
     }
     // Controls fadeout of powerup
     public void FadePowerup()
     {
-        if (fadePowerupRoutine != null)
+        try
         {
-            StopCoroutine(fadePowerupRoutine);
-            fadePowerupRoutine = null;
+            if (fadePowerupRoutine != null)
+            {
+                StopCoroutine(fadePowerupRoutine);
+                fadePowerupRoutine = null;
+            }
+            fadePowerupRoutine = FadePowerupRoutine();
+            StartCoroutine(fadePowerupRoutine);
         }
-        fadePowerupRoutine = FadePowerupRoutine();
-        StartCoroutine(fadePowerupRoutine);
+        catch (Exception exception)
+        {
+            // Sometimes errors if already inactive
+        }
+
     }
     IEnumerator FadePowerupRoutine()
     {

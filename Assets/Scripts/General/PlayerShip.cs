@@ -12,6 +12,8 @@ public class PlayerShip : FiringShip
         LEVEL_TWO,
         LEVEL_THREE,
         LEVEL_FOUR,
+        LEVEL_FIVE,
+        LEVEL_SIX,
         SIDE
 
     };
@@ -169,7 +171,7 @@ public class PlayerShip : FiringShip
         // First cancel the current firing powerup's Deactivate call...
         if (activeShotSpawnContainer != null && activeShotSpawnContainer.activePowerup != null)
         {
-            Debug.Log("CANCELED INVOKE!");
+            //Debug.Log("CANCELED INVOKE!");
             activeShotSpawnContainer.activePowerup.CancelInvoke("DeactivatePower");     // We're going to set a new deactivation call!
         }
 
@@ -292,8 +294,16 @@ public class PlayerShip : FiringShip
     {
         if (other.gameObject.CompareTag(Constants.EnemyShot))
         {
-            other.gameObject.GetComponent<PoolObject>().DestroyForReuse();
-            Damage(10);
+            try
+            {
+                Damage(other.GetComponent<Shot>().shotDamage);
+                other.gameObject.GetComponent<PoolObject>().DestroyForReuse();
+            }
+            catch (Exception exception)
+            {
+                // Invalid shot
+            }
+
         }
     }
 
