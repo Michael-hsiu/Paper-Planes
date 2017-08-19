@@ -7,7 +7,11 @@ public class BomberMS : MonoBehaviour, IMoveState
 
     public Direction direction;
     public float destroyDelay = 6.0f;
+    public float stationaryDelay = 0.3f;        // Stay still for a duration before exploding
+    public bool isStationary = false;
+
     IEnumerator destroyRoutine;
+
     public Direction Direction
     {
         get
@@ -30,7 +34,7 @@ public class BomberMS : MonoBehaviour, IMoveState
     // Setup activities after being activated from Object Pool
     public void OnObjectReuse()
     {
-
+        isStationary = false;
     }
 
     public void UpdateState()
@@ -67,6 +71,15 @@ public class BomberMS : MonoBehaviour, IMoveState
                 }
                 bomberShip.StartExploding();        // Alert bomber ship to start exploding
             }
+            else
+            {
+                // Invoke a stop moving method before exploding
+                if (!isStationary)
+                {
+                    Invoke("StopMoving", bomberShip.explosionTime - Time.time - stationaryDelay);
+                    isStationary = true;
+                }
+            }
             if (bomberShip.isSlingShotBomber && !bomberShip.inSlingChargeMode)
             {
                 bomberShip.speed = bomberShip.explodingMoveSpeed;   // Generalize?
@@ -101,4 +114,9 @@ public class BomberMS : MonoBehaviour, IMoveState
 
     }
 
+    // Stops bomber from moving
+    public void StopMoving()
+    {
+        bomberShip.speed = 0f;
+    }
 }

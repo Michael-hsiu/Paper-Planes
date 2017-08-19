@@ -1,16 +1,12 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Powerups/BurstRushPowerup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/PowerupSpawner.cs">
     <Files>
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="192" Column="9" />
       <File FileName="Assets/Scripts/Game/UIManager.cs" Line="594" Column="11" />
       <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="193" Column="9" />
-      <File FileName="Assets/Prefabs/UI/StartScreen.cs" Line="95" Column="58" />
+      <File FileName="Assets/Prefabs/UI/StartScreen.cs" Line="91" Column="71" />
       <File FileName="Assets/Camera/CameraController.cs" Line="84" Column="25" />
-      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="110" Column="5" />
-      <File FileName="Assets/Prefabs/Powerups/FiringPowerup.cs" Line="57" Column="34" />
-      <File FileName="Assets/Scripts/Powerups/ScoreMultiplierPowerup.cs" Line="23" Column="36" />
-      <File FileName="Assets/Scripts/Powerups/WaveShotPowerup.cs" Line="28" Column="53" />
-      <File FileName="Assets/Scripts/Powerups/BurstRushPowerup.cs" Line="46" Column="8" />
+      <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="75" Column="46" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

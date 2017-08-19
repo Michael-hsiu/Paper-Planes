@@ -42,9 +42,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
             sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
             startColor = sprite.material.color;
         }
-
-
-        //Debug.Log ("SHIP START");
+        //base.Start();
     }
 
     protected virtual void Update()

@@ -14,6 +14,7 @@ public class BomberShip : Ship
     public float damageRange = 8.0f;
     public float rotationFactor = 150.0f;
     public float explodingMoveSpeed = 5.0f;
+    public float explosionTime;     // When the ship explodes
     public bool isExploding = false;
     public bool explosionActive = false;
     public bool canExplode = true;
@@ -202,6 +203,7 @@ public class BomberShip : Ship
 
         //Debug.Log ("EXPLOSION COUNTDOWN BEGINS!");
 
+        explosionTime = Time.time + explosionDelay;         // Used to determine when the ship stops moving
         yield return new WaitForSeconds(explosionDelay);     // Wait for a few seconds while beeping animation plays
 
         // Get all colliders in area

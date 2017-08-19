@@ -154,7 +154,42 @@ public class PowerupSpawner : MonoBehaviour
                 //Vector3 spawnLoc = new Vector3(Random.Range(xBoundLeft, xBoundRight), Random.Range(yBoundLeft, yBoundRight), 0);
 
                 // Actual powerup spawning logic
-                PoolManager.Instance.ReuseObject(powerupsList[Random.Range(0, currLevelIndex + 1)], totalVector, Quaternion.identity);
+                // Assume health pack is always at index 0
+                float randomValue = Random.value;
+                int spawnIndex = 0;
+                if (currLevelIndex >= 6)
+                {
+                    // Spawn health pack
+                    if (randomValue < 0.1f)
+                    {
+                        spawnIndex = 0;
+                    }
+                    // Spawn burst rush
+                    else if (randomValue < 0.2f)
+                    {
+                        spawnIndex = 6;
+                    }
+                    // Spawn firing powerup
+                    else if (randomValue < 0.3f)
+                    {
+                        spawnIndex = 1;
+                    }
+                    // Any other powerup
+                    else
+                    {
+                        //while (spawnIndex == 6)
+                        //{
+                        spawnIndex = Random.Range(2, currLevelIndex + 1);
+                        //    yield return null;
+                        //}
+                    }
+                }
+                else
+                {
+                    spawnIndex = Random.Range(0, currLevelIndex + 1);
+                }
+
+                PoolManager.Instance.ReuseObject(powerupsList[spawnIndex], totalVector, Quaternion.identity);
                 //Debug.Log ("POWERUP SPAWNED!");
                 yield return new WaitForSeconds(Random.Range(spawnDelayLowerBound, spawnDelayUpperBound));
                 //numPowerupsSpawned += 1;
