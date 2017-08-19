@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class StartScreen : MonoBehaviour
 {
 
     [Header("UI_ELEMENTS")]
     public Text titleText;
     public Text tapToStartText;
+    public Image logo;
 
     [Header("TAP_LERP_LOGIC")]
     public float tapEaseInLerpDuration = 0.5f;
@@ -20,7 +22,17 @@ public class StartScreen : MonoBehaviour
     public bool assignedStartColor = false;
     public bool onStartScreen = true;
 
+    [Header("TAP_DISAPPEAR_LOGIC")]
+    public float tapDisappearDuration = 0.5f;
+    public float tapDisappearLerpRatio;
+    public Color textDisappearStartColor;
+    public Color textDisappearEndColor;
+
+    [Header("CAMERA_REF")]
+    public CameraController cameraController;
+
     IEnumerator tapFadeRoutine;
+    IEnumerator startScreenDisappearRoutine;
 
     void Start()
     {
@@ -86,9 +98,40 @@ public class StartScreen : MonoBehaviour
         }
     }
 
+    // Action to be executed when player taps the start screen
     public void OnClickedOnStartButton()
     {
-        Debug.Log("CLICKED_START!");
+        if (startScreenDisappearRoutine != null)
+        {
+            StopCoroutine(startScreenDisappearRoutine);
+            startScreenDisappearRoutine = null;
+        }
+        startScreenDisappearRoutine = OnClickedOnStartButtonRoutine();
+        StartCoroutine(startScreenDisappearRoutine);
+    }
+    IEnumerator OnClickedOnStartButtonRoutine()
+    {
+        onStartScreen = false;
+
+        // Fade out the start button and title
+        textDisappearStartColor = tapToStartText.color;
+        Color startColorCopy = textDisappearStartColor;
+        startColorCopy.a = 0f;
+        textDisappearEndColor = startColorCopy;
+
+        tapDisappearLerpRatio = 0.0f;
+        while (tapDisappearLerpRatio < 1.0f)
+        {
+            tapDisappearLerpRatio += (Time.deltaTime / tapDisappearDuration);
+            Color lerpColor = Color.Lerp(textDisappearStartColor, textDisappearEndColor, tapDisappearLerpRatio);
+            tapToStartText.color = lerpColor;
+            titleText.color = lerpColor;
+            logo.color = lerpColor;
+            yield return null;
+        }
+
+        // Spawn in the map
+        cameraController.StartGameCameraAnimation();
     }
 }
 

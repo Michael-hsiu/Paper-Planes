@@ -240,7 +240,6 @@ public class EnemySpawner : MonoBehaviour
             }
             bossSpawnRoutine = BossSpawnRoutine();
             StartCoroutine(bossSpawnRoutine);
-            Debug.Break();
         }
     }
 

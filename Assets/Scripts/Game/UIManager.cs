@@ -528,10 +528,14 @@ public class UIManager : MonoBehaviour
 
         //String goalText = "WARNING: Difficulty increased!!!";
         // scoreBoundaries list is zero-indexed (1st level is index 0)
-        String goalText = "WAVE " + (GameManager.Singleton.currLevel + 1) + ": BEGIN!";
+        //String goalText = "WAVE " + (GameManager.Singleton.currLevel + 1) + ": BEGIN!";
+        String goalText = "Ready...";
         levelGoalText.gameObject.SetActive(true);
         levelGoalText.text = goalText;
         yield return new WaitForSeconds(1.5f);  // Show the level goal text on screen
+        goalText = "Begin!";
+        levelGoalText.text = goalText;
+        yield return new WaitForSeconds(1f);  // Show the level goal text on screen
 
         // Blink on and off
         //levelGoalText.gameObject.SetActive(false);      // Hide the text

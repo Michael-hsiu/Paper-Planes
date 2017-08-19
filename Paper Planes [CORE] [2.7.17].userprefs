@@ -1,19 +1,13 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Camera/CameraController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Spawners/EnemySpawner.cs">
     <Files>
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="203" Column="36" />
-      <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="33" Column="36" />
-      <File FileName="Assets/Scripts/Game/InputManager.cs" Line="44" Column="46" />
-      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="28" Column="27" />
-      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="80" Column="10" />
-      <File FileName="Assets/Editor/DebugMenu.cs" Line="23" Column="2" />
-      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="95" Column="9" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="121" Column="9" />
-      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="171" Column="31" />
-      <File FileName="Assets/Scripts/General/Ship.cs" Line="135" Column="6" />
-      <File FileName="Assets/Prefabs/UI/StartScreen.cs" Line="91" Column="37" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="392" Column="6" />
-      <File FileName="Assets/Camera/CameraController.cs" Line="42" Column="1" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="538" Column="44" />
+      <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="193" Column="9" />
+      <File FileName="Assets/Prefabs/UI/StartScreen.cs" Line="135" Column="6" />
+      <File FileName="Assets/Camera/CameraController.cs" Line="26" Column="35" />
+      <File FileName="Assets/Scripts/General/PoolManager.cs" Line="6" Column="14" />
+      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="242" Column="46" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

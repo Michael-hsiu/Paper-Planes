@@ -21,6 +21,8 @@ public class GameOverScreen : MonoBehaviour
     public Text scoreText;
     public Text numEnemiesDefeatedText;
     public Text numPowerupsCollectedText;
+    public GameObject leftJoystick;
+    public GameObject rightJoystick;
 
     [Header("SCORE_LERP_LOGIC")]
     public float scoreLerpDuration = 1.0f;
@@ -62,8 +64,10 @@ public class GameOverScreen : MonoBehaviour
 
     IEnumerator ScoreUIControllerRoutine()
     {
-        // Disable score_text
+        // Disable score_text and joysticks
         UIManager.Singleton.scoreText.gameObject.SetActive(false);
+        leftJoystick.SetActive(false);
+        rightJoystick.SetActive(false);
 
         // First lerp the SCORE
         if (updateUIScoreRoutine != null)
@@ -184,6 +188,8 @@ public class GameOverScreen : MonoBehaviour
         //Color startColor = mapImage.GetComponent<SpriteRenderer>().color;
         //startColor.a = 255;
         mapImage.GetComponent<SpriteRenderer>().color = startColor;
+        leftJoystick.SetActive(true);
+        rightJoystick.SetActive(true);
 
         // Disable UI elements
         gameObject.SetActive(false);
