@@ -11,6 +11,7 @@ public class EnemyScriptableObject : ScriptableObject
     public int health;
     public float rotationSpeed;
     public float rotationFactor;
+    public float speed;
 
     // Mostly used for Bomber Mini-bosses
     public Vector3 spriteInitialPosition;

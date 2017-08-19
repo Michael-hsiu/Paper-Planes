@@ -19,12 +19,23 @@ public class Powerup : PoolObject
     public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
     protected bool isVisible;
 
+    [Header("FADE_LERP_LOGIC")]
+    public float fadeDuration = 2.0f;      // How long tutorial text stays before disappearing
+    public float fadeLerpRatio;
+    public Color fadeStartColor;
+    public Color fadeEndColor;
+    public bool assignedStartColor = false;
+    public SpriteRenderer rawSprite;
+
     IEnumerator destroyAfterDurationRoutine;
+    IEnumerator fadePowerupRoutine;
     public string powerupID;
 
     public override void Start()
     {
+        rawSprite = GetComponent<SpriteRenderer>();
         player = GameManager.Singleton.playerShip.GetComponent<PlayerShip>();
+        assignedStartColor = false;
         ShowInScene();
         base.Start();
     }
@@ -42,6 +53,11 @@ public class Powerup : PoolObject
         Start();
         DestroyAfterDuration();     // Destroy if not picked up for a set duration
     }
+    public override void DestroyForReuse()
+    {
+        rawSprite.material.color = fadeStartColor;      // Reset color
+        base.DestroyForReuse();
+    }
 
     public virtual void ActivatePowerup()
     {
@@ -50,6 +66,11 @@ public class Powerup : PoolObject
         {
             StopCoroutine(destroyAfterDurationRoutine);
             destroyAfterDurationRoutine = null;
+        }
+        if (fadePowerupRoutine != null)
+        {
+            StopCoroutine(fadePowerupRoutine);
+            fadePowerupRoutine = null;
         }
         GameManager.Singleton.numPowerupsCollected += 1;
     }
@@ -67,10 +88,43 @@ public class Powerup : PoolObject
     IEnumerator DestroyAfterDurationRoutine()
     {
         // Wait for set duration
+        Invoke("FadePowerup", existsInWorldDuration - fadeDuration);    // Allocate some time to fade
         yield return new WaitForSeconds(existsInWorldDuration);
 
         // Destroy if not picked up
         DestroyForReuse();
+    }
+    // Controls fadeout of powerup
+    public void FadePowerup()
+    {
+        if (fadePowerupRoutine != null)
+        {
+            StopCoroutine(fadePowerupRoutine);
+            fadePowerupRoutine = null;
+        }
+        fadePowerupRoutine = FadePowerupRoutine();
+        StartCoroutine(fadePowerupRoutine);
+    }
+    IEnumerator FadePowerupRoutine()
+    {
+        if (!assignedStartColor)
+        {
+            fadeStartColor = rawSprite.material.color;
+            fadeStartColor.a = 1.0f;
+
+            fadeEndColor = fadeStartColor;
+            fadeEndColor.a = 0.0f;
+
+            assignedStartColor = true;
+        }
+        fadeLerpRatio = 0.0f;
+        while (fadeLerpRatio < 1.0f)
+        {
+            fadeLerpRatio += (Time.deltaTime / fadeDuration);
+            Color lerpColor = Color.Lerp(fadeStartColor, fadeEndColor, fadeLerpRatio);
+            rawSprite.material.color = lerpColor;
+            yield return null;
+        }
     }
 
     public virtual void DeactivatePowerup()

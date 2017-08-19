@@ -46,6 +46,7 @@ public class BomberShip : Ship
         health = defaultValues.health;
         rotationSpeed = defaultValues.rotationSpeed;
         rotationFactor = defaultValues.rotationFactor;
+        speed = defaultValues.speed;
 
         isExploding = false;
         explosionActive = false;
