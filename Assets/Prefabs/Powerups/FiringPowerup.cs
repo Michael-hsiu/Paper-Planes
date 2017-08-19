@@ -7,9 +7,9 @@ public class FiringPowerup : Powerup
 {
 
     // Check active firing powerup. If normal, add 1. If enhanced already, add 1 and extend the time.
-    public override void ActivatePower()
+    // OnTriggerEnter takes care of destroyForReuse
+    public override void ActivatePowerup()
     {
-        GameManager.Singleton.numPowerupsCollected += 1;
 
         timeObtained = Time.time;                   // Record time powerup was obtained
 
@@ -54,13 +54,16 @@ public class FiringPowerup : Powerup
 
         Debug.Log("ENDTIME: " + endTime);
         Debug.Log("EXPIRE_TIME: " + player.firingPowerupExpirationTime);
-        Invoke("DeactivatePower", player.firingPowerupExpirationTime - timeObtained);       // Reset to state before powerup obtained
+        Invoke("DeactivatePowerup", player.firingPowerupExpirationTime - timeObtained);       // Reset to state before powerup obtained
 
+        // End destroy routine
+        base.ActivatePowerup();
     }
 
-    public override void DeactivatePower()
+    public override void DeactivatePowerup()
     {
         // ONLY dequeue if we know that there's a 2nd ShotSpawnContainer object on top of the one for Normal ShotSpawns.
         player.DeactivateFiringPowerup();
+        base.DeactivatePowerup();
     }
 }

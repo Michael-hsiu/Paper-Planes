@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TripMineWeapon : PoolObject
+public class TripMineWeapon : Powerup
 {
 
     public GameObject mine;
@@ -11,45 +11,49 @@ public class TripMineWeapon : PoolObject
     public float mineFuse = 19.0f;
     public float explosionForce = 30.0f;
     public List<Mine> mines = new List<Mine>();
-    protected bool isVisible;
-    public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
+    //protected bool isVisible;
+    //public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
 
     private IEnumerator cr;
-    private GameObject player;
+    //private GameObject player;
 
     private SpecialWeapons id = SpecialWeapons.TRIPMINES;
 
 
-    void Start()
-    {
-        player = GameObject.FindGameObjectWithTag(Constants.PlayerTag);     // Get Player at runtime	
-    }
+    //public override void Start()
+    //{
+    //    player = GameObject.FindGameObjectWithTag(Constants.PlayerTag);     // Get Player at runtime	
+    //}
 
-    void ActivateWeapon(string id)
-    {
-        WeaponsManager.Instance.ActivateWeapon(id); // Logic should be flipped
-    }
+    //void ActivateWeapon(string id)
+    //{
+    //    WeaponsManager.Instance.ActivateWeapon(id); // Logic should be flipped
+    //}
 
-    void OnTriggerEnter(Collider other)
-    {
+    //void OnTriggerEnter(Collider other)
+    //{
 
-        if (other.gameObject.CompareTag(Constants.PlayerTag))
-        {
-            if (pickupParticlePrefab != null)
-            {
-                GameManager.Singleton.numPowerupsCollected += 1;
-                PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
-            }
-            // Do weapons logic; spawn things
-            SpawnMines();
-            HideInScene();
-        }
+    //    if (other.gameObject.CompareTag(Constants.PlayerTag))
+    //    {
+    //        if (pickupParticlePrefab != null)
+    //        {
+    //            GameManager.Singleton.numPowerupsCollected += 1;
+    //            PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
+    //        }
+    //        // Do weapons logic; spawn things
+    //        SpawnMines();
+    //        HideInScene();
+    //    }
+    //}
+
+    public override void ActivatePowerup()
+    {
+        SpawnMines();
+        base.ActivatePowerup();
     }
 
     void SpawnMines()
     {
-
-
         // spawns, radius, rotations, explosions
         Vector3 pos = player.transform.position;
         float angle = 0f;
@@ -87,16 +91,16 @@ public class TripMineWeapon : PoolObject
         }
     }
 
-    void HideInScene()
-    {
-        SetVisibility(false);
-    }
+    //void HideInScene()
+    //{
+    //    SetVisibility(false);
+    //}
 
-    void SetVisibility(bool isVisible)
-    {
-        this.isVisible = isVisible;
-        gameObject.GetComponent<Renderer>().enabled = this.isVisible;
-        gameObject.GetComponent<Collider>().enabled = this.isVisible;
+    //void SetVisibility(bool isVisible)
+    //{
+    //    this.isVisible = isVisible;
+    //    gameObject.GetComponent<Renderer>().enabled = this.isVisible;
+    //    gameObject.GetComponent<Collider>().enabled = this.isVisible;
 
-    }
+    //}
 }

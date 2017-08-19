@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class WaveShotPowerup : Powerup
 {
-    public override void ActivatePower()
+    public override void ActivatePowerup()
     {
-        GameManager.Singleton.numPowerupsCollected += 1;
+        //GameManager.Singleton.numPowerupsCollected += 1;
         if (GameManager.Singleton.playerShip.waveShotEnabled)
         {
             if (GameManager.Singleton.playerShip.waveShotPowerup != null)
@@ -25,21 +25,21 @@ public class WaveShotPowerup : Powerup
             //Debug.Log("NO TIME EXTENSION");
         }
         float remainingTime = endTime - Time.time;
-        Invoke("DeactivatePower", remainingTime);                 // Powerup deactivation call
+        Invoke("DeactivatePowerup", remainingTime);                 // Powerup deactivation call
 
         //Debug.Log("NEW ENDTIME: " + endTime);
         GameManager.Singleton.playerShip.waveShotEnabled = true;
         GameManager.Singleton.playerShip.waveShotPowerup = this;
         GameManager.Singleton.playerShip.activePowerups.Enqueue(this);      // Register all powerups
+
+        base.ActivatePowerup();
     }
 
-    public override void DeactivatePower()
+    public override void DeactivatePowerup()
     {
         //if (Time.time > GameManager.Singleton.playerShip.waveShotPowerup.endTime || GameManager.Singleton.playerShip.isResetting)
         //{
         GameManager.Singleton.playerShip.waveShotEnabled = false;
-        //Debug.Log("ENDED AT: " + Time.time);
-        //}
-        //Debug.Break();
+        base.DeactivatePowerup();
     }
 }

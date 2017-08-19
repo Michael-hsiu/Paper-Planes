@@ -144,7 +144,7 @@ public class PlayerShip : FiringShip
         while (activePowerups.Count > 0)
         {
             Powerup currPowerup = activePowerups.Dequeue();
-            currPowerup.DeactivatePower();
+            currPowerup.DeactivatePowerup();
         }
         isResetting = false;
     }

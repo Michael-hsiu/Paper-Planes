@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SideMissilePowerup : Powerup {
 
-	public override void ActivatePower() {
+	public override void ActivatePowerup() {
 		if (GameManager.Singleton.playerShip.sideMissileEnabled) {
 			endTime = endTime + powerDuration;						// Record extended powerup time
 
@@ -17,7 +17,7 @@ public class SideMissilePowerup : Powerup {
 		Invoke ("DeactivatePower", powerDuration);	// Prime the deactivation call
 	}
 
-	public override void DeactivatePower() {
+	public override void DeactivatePowerup() {
 		GameManager.Singleton.playerShip.sideMissileEnabled = false;
 	}
 }

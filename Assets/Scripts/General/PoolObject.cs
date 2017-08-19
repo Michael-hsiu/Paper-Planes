@@ -6,7 +6,7 @@ public class PoolObject : MonoBehaviour
 {
     public GameObject poolObjHolder;        // The container for all this category of pool object
 
-    public void Start()
+    public virtual void Start()
     {
         GameManager.Singleton.EndLevelEvent += OnGameOver;
     }

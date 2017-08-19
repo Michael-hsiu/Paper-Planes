@@ -10,16 +10,18 @@ public class HomingMissilePowerup : Powerup
 
     //private HomingMissileScrObj specPowerupData;
 
-    void Start()
+    public override void Start()
     {
         missileSpawn = GameManager.Singleton.normalSS.GetComponent<PlayerShotSpawn>();
+        base.Start();
         //specPowerupData = (HomingMissileScrObj) powerupData;
     }
 
-    public override void ActivatePower()
+    public override void ActivatePowerup()
     {
         //Debug.Log (((HomingMissileScrObj) powerupData).numMissiles + "MISSILES TO CREATE");
-        GameManager.Singleton.numPowerupsCollected += 1;
+        //GameManager.Singleton.numPowerupsCollected += 1;
         missileSpawn.CreateMissiles(((HomingMissileScrObj)powerupData).numMissiles);    // Fire the missiles! [SATISFIES numMissiles]
+        base.ActivatePowerup();
     }
 }

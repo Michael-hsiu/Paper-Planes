@@ -591,7 +591,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateDashText(int dashes)
     {
-        dashStoreText.text = "Stored Dashes: " + dashes;
+        //dashStoreText.text = "Stored Dashes: " + dashes;
     }
 
     //public void UpdateBurstRushText()

@@ -8,7 +8,7 @@ public class ShurikenPowerup : Powerup
     public GameObject shuriken;
     //public GameObject player;
     //protected bool isVisible;
-    public float lifeTime = 10.0f;
+    public float shurikenLifeTime = 10.0f;
 
     private IEnumerator cr;
     private ShurikenObj sken;
@@ -20,20 +20,27 @@ public class ShurikenPowerup : Powerup
             player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
         }*/
 
-    void OnTriggerEnter(Collider other)
-    {
+    //public override void OnTriggerEnter(Collider other)
+    //{
 
-        if (other.gameObject.CompareTag(Constants.PlayerTag))
-        {
-            // Do weapons logic; spawn things
-            if (pickupParticlePrefab != null)
-            {
-                GameManager.Singleton.numPowerupsCollected += 1;
-                PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
-            }
-            SpawnShuriken();
-            HideInScene();
-        }
+    //    if (other.gameObject.CompareTag(Constants.PlayerTag))
+    //    {
+    //        // Do weapons logic; spawn things
+    //        if (pickupParticlePrefab != null)
+    //        {
+    //            GameManager.Singleton.numPowerupsCollected += 1;
+    //            PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
+    //        }
+    //        ActivatePowerup();
+    //        //SpawnShuriken();
+    //        //HideInScene();
+    //    }
+    //}
+
+    public override void ActivatePowerup()
+    {
+        SpawnShuriken();
+        base.ActivatePowerup();
     }
 
     void SpawnShuriken()
@@ -49,7 +56,7 @@ public class ShurikenPowerup : Powerup
 
         s.GetComponent<Rigidbody>().AddForce(player.transform.up * 500);        // Outwards radiating movement, using position relative to y-axis of player
 
-        cr = BeginCountdown(lifeTime);
+        cr = BeginCountdown(shurikenLifeTime);
         StartCoroutine(cr);     // Begin detonation countdown
     }
 
@@ -64,21 +71,21 @@ public class ShurikenPowerup : Powerup
         }
     }
 
-    void HideInScene()
-    {
-        SetVisibility(false);
-    }
+    //void HideInScene()
+    //{
+    //    SetVisibility(false);
+    //}
 
-    void SetVisibility(bool isVisible)
-    {
-        this.isVisible = isVisible;
-        gameObject.GetComponent<Renderer>().enabled = this.isVisible;
-        gameObject.GetComponent<Collider>().enabled = this.isVisible;
+    //void SetVisibility(bool isVisible)
+    //{
+    //    this.isVisible = isVisible;
+    //    gameObject.GetComponent<Renderer>().enabled = this.isVisible;
+    //    gameObject.GetComponent<Collider>().enabled = this.isVisible;
 
-    }
+    //}
 
-    void Update()
-    {
-        //Debug.Log ("LOCAL EULER Z: " + -1 * (360 - player.transform.localEulerAngles.z));
-    }
+    //void Update()
+    //{
+    //    //Debug.Log ("LOCAL EULER Z: " + -1 * (360 - player.transform.localEulerAngles.z));
+    //}
 }
