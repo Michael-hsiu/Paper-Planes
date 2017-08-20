@@ -134,6 +134,7 @@
     <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenSizeScrObj.cs" />
     <Compile Include="Assets\Prefabs\Powerups\UpgradableScriptableObject.cs" />
     <Compile Include="Assets\Prefabs\UI\GameOverScreen.cs" />
+    <Compile Include="Assets\Prefabs\UI\PauseButton.cs" />
     <Compile Include="Assets\Prefabs\UI\PlayAgainButton.cs" />
     <Compile Include="Assets\Prefabs\UI\ScoreText.cs" />
     <Compile Include="Assets\Prefabs\UI\ShopSlot.cs" />
