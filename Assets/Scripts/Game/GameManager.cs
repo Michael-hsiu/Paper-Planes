@@ -154,6 +154,16 @@ public class GameManager : MonoBehaviour
         cameraController.StartGameCameraAnimation();
     }
 
+    // Used by CameraController when restarting level and resetting poolObj
+    public void OnLevelTearDown()
+    {
+        // Tell subscribers to do their work
+        if (EndLevelEvent != null)
+        {
+            EndLevelEvent();
+        }
+    }
+
     // Called by player input if player dies
     public void OnLevelLost()
     {
@@ -166,8 +176,8 @@ public class GameManager : MonoBehaviour
         {
             EndLevelEvent();
         }
-        enemySpawner.EndLevel();
-        powerupSpawner.EndLevel();
+        //enemySpawner.EndLevel();
+        //powerupSpawner.EndLevel();
 
         mainCamera.GetComponent<CameraController>().StartScoreUICameraAnimation();
         UIManager.Singleton.DisplayGameOverScreen();
@@ -180,11 +190,18 @@ public class GameManager : MonoBehaviour
     {
         // Clean up the level
         // TODO: player's powerups, health, stats need to be reset. Or use events? Are they misleading?
+
+        // Only tear down level if game was restarted via Tutorial option
+        if (cameraController.tutorialEnabled)
+        {
+            // First run normal level teardown activities
+            OnLevelTearDown();
+        }
         UIManager.Singleton.RestartLevel();     // // Clean up UI
         mainCamera.GetComponent<CameraController>().StartGameCameraAnimation();     // Zoom back into map
 
-        //Utils.KillAllEnemies();
-        //Utils.DisablePowerups();
+        Utils.KillAllEnemies();
+        Utils.DisablePowerups();
         enemySpawner.RestartLevel();
 
 

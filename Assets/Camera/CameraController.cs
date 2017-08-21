@@ -102,8 +102,12 @@ public class CameraController : MonoBehaviour
         gameUIContainer.SetActive(true);
         gameMap.SetActive(true);
 
+        // Move camera to its start position
+        transform.position = startPosition;
+
         if (tutorialEnabled)
         {
+
             tutorialUIContainer.SetActive(true);
             // Ease in the announcement
             if (!assignedStartColor)
@@ -117,6 +121,13 @@ public class CameraController : MonoBehaviour
 
                 assignedStartColor = true;
                 //Debug.Break();
+            }
+            // Restore alphas to full
+            else
+            {
+                tutorialTextMesh01.color = tutorialDisappearStartColor;
+                tutorialTextMesh02.color = tutorialDisappearStartColor;
+                tutorialTextMesh03.color = tutorialDisappearStartColor;
             }
             if (tutorialUIDisappearRoutine != null)
             {

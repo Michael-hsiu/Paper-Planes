@@ -16,8 +16,9 @@ public class TutorialConfirmScreen : MenuScreen
         // Tear down this menu screen
         OnTearDown();
 
-        // Restart the level with tutorial enabled
-        GameManager.Singleton.tutorialEnabled = true;
+        // Restart the level with tutorial enabled and timescale back to normal
+        Time.timeScale = 1;
+        GameManager.Singleton.cameraController.tutorialEnabled = true;
         GameManager.Singleton.OnLevelRestart();
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PowerupSpawner : MonoBehaviour
 {
     [Header("SPAWNING_LOGIC")]
+    public float gameStartDelayDuration = 1.5f;     // Delay at beginning of game while camera is zooming in
     public int initialStartIndex = 0;   // Powerups up to and including this index can be spawned in beginning, rest must be unlocked by gaining points
     public int currLevelIndex;
     public bool levelWasIncreasedOnce = false;
@@ -73,6 +74,7 @@ public class PowerupSpawner : MonoBehaviour
 
         // Subscribe to events
         GameManager.Singleton.StartLevelEvent += OnLevelStartEnablePowerupSpawners;
+        GameManager.Singleton.EndLevelEvent += EndLevel;
 
         // Start routines
         powerupSpawnRoutine = StartSpawningPowerups();
@@ -95,6 +97,9 @@ public class PowerupSpawner : MonoBehaviour
 
     IEnumerator StartSpawningPowerups()
     {
+        // Delay a bit while camera zooms in
+        yield return new WaitForSeconds(gameStartDelayDuration);
+
         mapColliders = GameManager.Singleton.mapColliders;  // Ref to map colliders
         int colliderCountEndIndex = mapColliders.Count - 1;
         // Keep true while in current round

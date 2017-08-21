@@ -16,6 +16,7 @@ public class EnemySpawner : MonoBehaviour
     // Indices must be matched up properly
     public int currLevel = 0;       // This is used from EnemySpawner. Enemies UP TO this index are allowed to be spawned. Reflects same-named value from GameManager.
     public float spawnDelay = 1.0f;             // Delay between enemy spawns. A random # btwn 0 and this.
+    public float gameStartDelayDuration = 3.0f;     // Delay at beginning of game while camera is zooming in
     public bool bossSpawnEnabled = false;
     public float nextBossSpawnTime;
     public int lastBossSpawnIndex = -1;      // To prevent spawning same boss 2x in a row
@@ -73,6 +74,8 @@ public class EnemySpawner : MonoBehaviour
         //yBound = boxSize.y / 2;
         maxEnemyScoreBoundary = baseEnemyTypes.Count;
         GameManager.Singleton.StartLevelEvent += OnGameStart;       // Only spawn when game starts
+        GameManager.Singleton.EndLevelEvent += EndLevel;       // Only spawn when game starts
+
         //enemySpawnRoutine = EnemySpawnRoutine();
         //StartCoroutine(enemySpawnRoutine);
     }
@@ -356,6 +359,10 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator EnemySpawnRoutine()
     {
+
+        // Delay a bit while camera zooms in
+        yield return new WaitForSeconds(gameStartDelayDuration);
+
         mapColliders = GameManager.Singleton.mapColliders;  // Ref to map colliders
         int colliderCountEndIndex = mapColliders.Count - 1;
         while (true)
