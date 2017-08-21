@@ -23,7 +23,7 @@ public class PauseButton : MonoBehaviour
         {
             Time.timeScale = 1;
             gamePaused = false;
-            pauseMainMenu.OnTearDown();
+            GameManager.Singleton.activeMenuScreen.OnTearDown();        // Remove menu screen from whatever screen we are on, if button is pressed again
         }
     }
 }

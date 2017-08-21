@@ -6,12 +6,13 @@ public class ShurikenPowerup : Powerup
 {
 
     public GameObject shuriken;
+    public float thrustForce = 500f;
     //public GameObject player;
     //protected bool isVisible;
     public float shurikenLifeTime = 10.0f;
 
-    private IEnumerator cr;
-    private ShurikenObj sken;
+    private IEnumerator countdownRoutine;
+    private ShurikenObj shurikenObj;
 
     private SpecialWeapons id = SpecialWeapons.SHURIKEN;
 
@@ -47,17 +48,18 @@ public class ShurikenPowerup : Powerup
     {
 
         // spawns, radius, rotations, explosions
-        Vector3 pos = player.transform.position;
+        //Vector3 pos = player.transform.position;
+        Vector3 pos = GameManager.Singleton.shurikenShotSpawn.transform.position;
 
         //Debug.Log ("PLAYER POS: " + pos);
         //Debug.Log ("PLAYER FORWARD: " + player.transform.forward);
 
         ShurikenObj s = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(shuriken, pos, Quaternion.identity);
 
-        s.GetComponent<Rigidbody>().AddForce(player.transform.up * 500);        // Outwards radiating movement, using position relative to y-axis of player
+        s.GetComponent<Rigidbody>().AddForce(player.transform.up * thrustForce);        // Outwards radiating movement, using position relative to y-axis of player
 
-        cr = BeginCountdown(shurikenLifeTime);
-        StartCoroutine(cr);     // Begin detonation countdown
+        countdownRoutine = BeginCountdown(shurikenLifeTime);
+        StartCoroutine(countdownRoutine);     // Begin detonation countdown
     }
 
     IEnumerator BeginCountdown(float lifeTime)
@@ -65,9 +67,9 @@ public class ShurikenPowerup : Powerup
         yield return new WaitForSeconds(lifeTime);
 
         // Destroy for reuse by pool
-        if (sken != null)
+        if (shurikenObj != null)
         {
-            sken.FinishExistence();
+            shurikenObj.FinishExistence();
         }
     }
 

@@ -101,6 +101,7 @@ public class EnemySpawner : MonoBehaviour
     public void EndLevel()
     {
         spawnEnabled = false;
+        bossSpawnEnabled = false;
     }
 
     public void RestartLevel()
@@ -127,8 +128,22 @@ public class EnemySpawner : MonoBehaviour
         currLevel = 0;
         spawnEnabled = true;
 
-        StopAllCoroutines();
+        //StopAllCoroutines();
 
+        // Restart coroutines
+        if (bossSpawnRoutine != null)
+        {
+            StopCoroutine(bossSpawnRoutine);
+            bossSpawnRoutine = null;
+        }
+        bossSpawnRoutine = BossSpawnRoutine();
+        StartCoroutine(bossSpawnRoutine);
+
+        if (enemySpawnRoutine != null)
+        {
+            StopCoroutine(enemySpawnRoutine);
+            enemySpawnRoutine = null;
+        }
         enemySpawnRoutine = EnemySpawnRoutine();
         StartCoroutine(enemySpawnRoutine);
     }

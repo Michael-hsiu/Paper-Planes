@@ -20,6 +20,7 @@ public class Powerup : PoolObject
     protected bool isVisible;
 
     [Header("FADE_LERP_LOGIC")]
+    public int numBlinks = 3;       // How many times we blink until fading
     public float fadeDuration = 2.0f;      // How long tutorial text stays before disappearing
     public float fadeLerpRatio;
     public Color fadeStartColor;
@@ -136,13 +137,17 @@ public class Powerup : PoolObject
 
             assignedStartColor = true;
         }
-        fadeLerpRatio = 0.0f;
-        while (fadeLerpRatio < 1.0f)
+        // We fade a total of 'numBlinks' times
+        for (int i = 0; i < numBlinks; i += 1)
         {
-            fadeLerpRatio += (Time.deltaTime / fadeDuration);
-            Color lerpColor = Color.Lerp(fadeStartColor, fadeEndColor, fadeLerpRatio);
-            rawSprite.material.color = lerpColor;
-            yield return null;
+            fadeLerpRatio = 0.0f;
+            while (fadeLerpRatio < 1.0f)
+            {
+                fadeLerpRatio += (Time.deltaTime / (fadeDuration / numBlinks));
+                Color lerpColor = Color.Lerp(fadeStartColor, fadeEndColor, fadeLerpRatio);
+                rawSprite.material.color = lerpColor;
+                yield return null;
+            }
         }
     }
 

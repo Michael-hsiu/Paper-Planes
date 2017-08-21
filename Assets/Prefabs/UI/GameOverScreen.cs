@@ -195,7 +195,7 @@ public class GameOverScreen : MonoBehaviour
             PlayerPrefs.Save();
 
             highScoreLabelText.text = "New High Score";
-            highScoreText.text = oldPlayerHighScore + "->" + PlayerPrefs.GetInt(Constants.highScore).ToString();
+            highScoreText.text = oldPlayerHighScore + " → " + PlayerPrefs.GetInt(Constants.highScore).ToString();
         }
         else
         {

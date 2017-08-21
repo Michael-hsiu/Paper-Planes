@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject mainCamera;       // Controls zooming and follows player
     public CameraController cameraController;
     public GameObject normalSS;         // Player's normal shotspawn
+    public GameObject shurikenShotSpawn;         // Where shurikens spawn
     public EnemySpawner enemySpawner;       // Takes care of spawning enemies
     public PowerupSpawner powerupSpawner;
     public MovingSpawnManager movingSpawnManager;
