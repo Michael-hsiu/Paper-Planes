@@ -21,6 +21,8 @@ public class GameOverScreen : MonoBehaviour
     public Text scoreText;
     public Text numEnemiesDefeatedText;
     public Text numPowerupsCollectedText;
+    public Text highScoreLabelText;
+    public Text highScoreText;
     public GameObject leftJoystick;
     public GameObject rightJoystick;
 
@@ -68,6 +70,8 @@ public class GameOverScreen : MonoBehaviour
         UIManager.Singleton.scoreText.gameObject.SetActive(false);
         leftJoystick.SetActive(false);
         rightJoystick.SetActive(false);
+        highScoreText.gameObject.SetActive(false);
+        highScoreLabelText.gameObject.SetActive(false);
 
         // First lerp the SCORE
         if (updateUIScoreRoutine != null)
@@ -101,9 +105,6 @@ public class GameOverScreen : MonoBehaviour
         yield return updateUINumEnemiesDefeatedRoutine;
         yield return updateUINumPowerupsCollectedRoutine;
 
-        // Finally display UI for playing again
-        //Debug.Break();
-        playAgainButton.SetActive(true);
     }
 
 
@@ -179,6 +180,33 @@ public class GameOverScreen : MonoBehaviour
 
             yield return null;
         }
+
+        // Finally display UI for playing again
+        //Debug.Break();
+        //PlayerPrefs.DeleteAll();
+        int playerHighScore = PlayerPrefs.GetInt(Constants.highScore, 0);
+        int oldPlayerHighScore = 0;
+        if (GameManager.Singleton.playerScore > playerHighScore)
+        {
+            oldPlayerHighScore = playerHighScore;
+            playerHighScore = GameManager.Singleton.playerScore;
+
+            PlayerPrefs.SetInt(Constants.highScore, playerHighScore);
+            PlayerPrefs.Save();
+
+            highScoreLabelText.text = "New High Score";
+            highScoreText.text = oldPlayerHighScore + "->" + PlayerPrefs.GetInt(Constants.highScore).ToString();
+        }
+        else
+        {
+            highScoreLabelText.text = "High Score";
+            highScoreText.text = PlayerPrefs.GetInt(Constants.highScore).ToString();
+        }
+
+        // Show high score
+        highScoreText.gameObject.SetActive(true);
+        highScoreLabelText.gameObject.SetActive(true);
+        playAgainButton.SetActive(true);
     }
 
     // Called on button press

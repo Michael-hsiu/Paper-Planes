@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
     public bool isTransitioning = false;
     public GameObject gameMap;          // Actual image of the map
     public GameObject tutorialUIContainer;      // Contains all tutorial UI elements
-    public bool tutorialEnabled = true;
+    public bool tutorialEnabled;
 
     [Header("CAMERA_VIEW_VALUES")]
     public float startMenuOrthographicSize = 200.0f;
@@ -86,6 +86,7 @@ public class CameraController : MonoBehaviour
         tutorialDisappearLerpRatio = 0.0f;
         while (tutorialDisappearLerpRatio < 1.0f)
         {
+
             tutorialDisappearLerpRatio += (Time.deltaTime / tutorialDisappearDuration);
             Color lerpColor = Color.Lerp(tutorialDisappearStartColor, tutorialDisappearEndColor, tutorialDisappearLerpRatio);
             tutorialTextMesh01.color = lerpColor;
@@ -105,11 +106,14 @@ public class CameraController : MonoBehaviour
         // Move camera to its start position
         transform.position = startPosition;
 
-        Debug.Log("CAMERA_ANIM!");
-        Debug.Break();
         // Bool is controlled by GM on level start
         if (tutorialEnabled)
         {
+
+            // No tutorial during next playthrough, unless activated thru Pause Menu
+            //tutorialEnabled = false;
+            PlayerPrefs.SetInt(Constants.tutorialEnabled, 0);
+            PlayerPrefs.Save();
 
             tutorialUIContainer.SetActive(true);
             // Ease in the announcement
@@ -140,10 +144,15 @@ public class CameraController : MonoBehaviour
             tutorialUIDisappearRoutine = StartTutorialTextFade();
             StartCoroutine(tutorialUIDisappearRoutine);
 
-            // No tutorial during next playthrough, unless activated thru Pause Menu
-            //tutorialEnabled = false;
-            //PlayerPrefs.SetInt(Constants.tutorialEnabled, 0);
+
+
             Debug.Log("TUT_ENABLED_INT_NEW: " + PlayerPrefs.GetInt(Constants.tutorialEnabled));
+        }
+        else if (assignedStartColor)
+        {
+            tutorialTextMesh01.color = tutorialDisappearEndColor;
+            tutorialTextMesh02.color = tutorialDisappearEndColor;
+            tutorialTextMesh03.color = tutorialDisappearEndColor;
         }
         //healthBar.SetActive(true);
         leftJoystick.SetActive(true);

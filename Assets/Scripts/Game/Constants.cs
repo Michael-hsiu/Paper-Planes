@@ -40,6 +40,7 @@ public static class Constants
 
     public static readonly string tutorialEnabled = "tutorialEnabled";
     public static readonly string tutorialEnabledOnce = "tutorialEnabledOnce";
+    public static readonly string highScore = "highScore";
 
 
     // Other examples

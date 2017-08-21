@@ -135,6 +135,12 @@ public class GameManager : MonoBehaviour
         //OnGameStart();
     }
 
+    // Debug method
+    public void DeleteAllPlayerPrefs()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
     // This is just for the start game button.
     public void OnGameStart()
     {
@@ -150,19 +156,30 @@ public class GameManager : MonoBehaviour
         //Debug.Break();
 
         // Force enable tutorial is it hasn't been activated before
-        tutEnabledOnceIndicator = PlayerPrefs.GetInt(Constants.tutorialEnabledOnce);
-        Debug.Log("TUT_ENABLED_ONCE_INDICATOR: " + PlayerPrefs.GetInt(Constants.tutorialEnabledOnce));
-        if (tutEnabledOnceIndicator != 1)
+        //tutEnabledOnceIndicator = PlayerPrefs.GetInt(Constants.tutorialEnabledOnce);
+        //Debug.Log("TUT_ENABLED_ONCE_INDICATOR: " + PlayerPrefs.GetInt(Constants.tutorialEnabledOnce));
+        //if (tutEnabledOnceIndicator != 1)
+        //{
+        //    PlayerPrefs.SetInt(Constants.tutorialEnabled, 1);
+        //    PlayerPrefs.SetInt(Constants.tutorialEnabledOnce, 1);
+        //    PlayerPrefs.Save();
+        //    tutEnabledOnceIndicator = 1;
+        //    //tutorialEnabledOnce = true;
+        //    Debug.Break();
+        //}
+        //Debug.Log("HAS_KEY: " + PlayerPrefs.HasKey(Constants.tutorialEnabledOnce));
+        int tutOnce = PlayerPrefs.GetInt(Constants.tutorialEnabledOnce, -1);
+        if (tutOnce == -1)
         {
-            PlayerPrefs.SetInt(Constants.tutorialEnabled, 1);
             PlayerPrefs.SetInt(Constants.tutorialEnabledOnce, 1);
-            tutEnabledOnceIndicator = 1;
-            //tutorialEnabledOnce = true;
+            PlayerPrefs.SetInt(Constants.tutorialEnabled, 1);
+            PlayerPrefs.Save();
             Debug.Break();
         }
+
         // Also activate tutorial if was accessed through Pause Menu option
         // Tutorial normally deactivated by CameraController/GM after first call o.w.
-        tutEnabledInt = PlayerPrefs.GetInt(Constants.tutorialEnabled);
+        tutEnabledInt = PlayerPrefs.GetInt(Constants.tutorialEnabled, -1);
         Debug.Log("TUT_ENABLED_INT: " + tutEnabledInt);
         if (tutEnabledInt == 1)
         {

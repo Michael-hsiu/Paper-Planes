@@ -13,20 +13,22 @@ public class TutorialConfirmScreen : MenuScreen
 
     public void OnYesButtonPressed()
     {
-        // Tear down this menu screen
-        OnTearDown();
-
         // Restart the level with tutorial enabled and timescale back to normal
         Time.timeScale = 1;
-        GameManager.Singleton.cameraController.tutorialEnabled = true;
+        //GameManager.Singleton.cameraController.tutorialEnabled = true;
         PlayerPrefs.SetInt(Constants.tutorialEnabled, 1);   // Just in case app crashes or is closed before the tutorial playthrough happens
+        PlayerPrefs.Save();
+
         GameManager.Singleton.OnLevelRestart();
+        // Tear down this menu screen
+        OnTearDown();
     }
 
     public void OnNoButtonPressed()
     {
-        OnTearDown();       // Tear down this menu screen
         pauseMainMenu.gameObject.SetActive(true);
         pauseMainMenu.OnSetup();    // Transition back to pause main menu
+        OnTearDown();       // Tear down this menu screen
+
     }
 }

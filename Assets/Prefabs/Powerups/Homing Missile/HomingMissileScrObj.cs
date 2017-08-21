@@ -5,46 +5,50 @@ using System.IO;
 using System;
 
 [CreateAssetMenu]
-public class HomingMissileScrObj : PowerupScriptableObject {
+public class HomingMissileScrObj : PowerupScriptableObject
+{
 
-	// Homing Missile Powerup holds a reference to this SO; changes this SO if a powerup is upgraded.
+    // Homing Missile Powerup holds a reference to this SO; changes this SO if a powerup is upgraded.
 
-	// Status vars w/ default values for ref (un-upgraded)
-	public int damage = 40;						// Overwrite from JSON
-	public int numMissiles = 4;					// Overwrite from JSON
-	public float missileSpawnChance = 0.0f;		// Overwrite from JSON
-	public GameObject missile;		// Missile fab
+    // Status vars w/ default values for ref (un-upgraded)
+    public int damage = 40;                     // Overwrite from JSON
+    public int numMissiles = 4;                 // Overwrite from JSON
+    public float missileSpawnChance = 0.0f;     // Overwrite from JSON
+    public GameObject missile;      // Missile fab
 
-	public readonly string damageStr = "HMSOdamageStr";
-	public readonly string numMissilesStr = "HMSOnumMissiles";
-	public readonly string missileSpawnChanceStr = "HMSOmissileSpawnChanceStr";
+    public readonly string damageStr = "HMSOdamageStr";
+    public readonly string numMissilesStr = "HMSOnumMissiles";
+    public readonly string missileSpawnChanceStr = "HMSOmissileSpawnChanceStr";
 
-	// Info for Shop
-	// This needs to be changed, since this scrObj doesn't need to hold this info, each ENHANCEMENT needs to hold this info.
-	// So we need to store a list of PowerupScrObj that hold the info of each enhancement.
-	// We instantiate a new Shop Slot for each entry in our list.
-	void OnEnable() {
-		foreach (UpgradableScriptableObject so in upgradeList) {
-			so.parentPowerup = this;
-		}
+    // Info for Shop
+    // This needs to be changed, since this scrObj doesn't need to hold this info, each ENHANCEMENT needs to hold this info.
+    // So we need to store a list of PowerupScrObj that hold the info of each enhancement.
+    // We instantiate a new Shop Slot for each entry in our list.
+    void OnEnable()
+    {
+        foreach (UpgradableScriptableObject so in upgradeList)
+        {
+            so.parentPowerup = this;
+        }
 
-		// Load existing prefs if exist
-		LoadSavedData ();
+        // Load existing prefs if exist
+        LoadSavedData();
 
-		//LoadJSON ();
-		//SaveJSON ();
-	}
+        //LoadJSON ();
+        //SaveJSON ();
+    }
 
-	public override void LoadSavedData() {
-		PlayerPrefs.DeleteAll ();			// Un-comment to save player progress
-		damage = PlayerPrefs.HasKey (damageStr) ? PlayerPrefs.GetInt (damageStr) : 40;
-		numMissiles = PlayerPrefs.HasKey (numMissilesStr) ? PlayerPrefs.GetInt (numMissilesStr) : 4;
-		missileSpawnChance = PlayerPrefs.HasKey (missileSpawnChanceStr) ? PlayerPrefs.GetFloat (missileSpawnChanceStr) : 0.0f;
-	}
+    public override void LoadSavedData()
+    {
+        //PlayerPrefs.DeleteAll ();			// Un-comment to save player progress
+        damage = PlayerPrefs.HasKey(damageStr) ? PlayerPrefs.GetInt(damageStr) : 40;
+        numMissiles = PlayerPrefs.HasKey(numMissilesStr) ? PlayerPrefs.GetInt(numMissilesStr) : 4;
+        missileSpawnChance = PlayerPrefs.HasKey(missileSpawnChanceStr) ? PlayerPrefs.GetFloat(missileSpawnChanceStr) : 0.0f;
+    }
 
-	// ONLY this level needs to be serialized. Every other ScrObj it references is ok as is, are just data containers.
-	// Reference: https://www.youtube.com/watch?v=7AgdALFE758
-	/*public void SaveJSON() {
+    // ONLY this level needs to be serialized. Every other ScrObj it references is ok as is, are just data containers.
+    // Reference: https://www.youtube.com/watch?v=7AgdALFE758
+    /*public void SaveJSON() {
 		string newJSON = JsonUtility.ToJson (this);
 		string fileName = Path.Combine (Application.persistentDataPath, (this.name + ".json"));
 
