@@ -19,6 +19,7 @@ public class TutorialConfirmScreen : MenuScreen
         // Restart the level with tutorial enabled and timescale back to normal
         Time.timeScale = 1;
         GameManager.Singleton.cameraController.tutorialEnabled = true;
+        PlayerPrefs.SetInt(Constants.tutorialEnabled, 1);   // Just in case app crashes or is closed before the tutorial playthrough happens
         GameManager.Singleton.OnLevelRestart();
     }
 

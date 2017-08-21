@@ -113,7 +113,10 @@ public class Powerup : PoolObject
                 fadePowerupRoutine = null;
             }
             fadePowerupRoutine = FadePowerupRoutine();
-            StartCoroutine(fadePowerupRoutine);
+            if (isActiveAndEnabled)
+            {
+                StartCoroutine(fadePowerupRoutine);
+            }
         }
         catch (Exception exception)
         {

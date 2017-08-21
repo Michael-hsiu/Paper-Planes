@@ -105,6 +105,9 @@ public class CameraController : MonoBehaviour
         // Move camera to its start position
         transform.position = startPosition;
 
+        Debug.Log("CAMERA_ANIM!");
+        Debug.Break();
+        // Bool is controlled by GM on level start
         if (tutorialEnabled)
         {
 
@@ -136,7 +139,11 @@ public class CameraController : MonoBehaviour
             }
             tutorialUIDisappearRoutine = StartTutorialTextFade();
             StartCoroutine(tutorialUIDisappearRoutine);
-            tutorialEnabled = false;
+
+            // No tutorial during next playthrough, unless activated thru Pause Menu
+            //tutorialEnabled = false;
+            //PlayerPrefs.SetInt(Constants.tutorialEnabled, 0);
+            Debug.Log("TUT_ENABLED_INT_NEW: " + PlayerPrefs.GetInt(Constants.tutorialEnabled));
         }
         //healthBar.SetActive(true);
         leftJoystick.SetActive(true);

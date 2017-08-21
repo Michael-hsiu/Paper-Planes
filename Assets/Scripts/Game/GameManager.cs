@@ -28,7 +28,10 @@ public class GameManager : MonoBehaviour
     public int scoreMultiplier = 1;
 
     [Header("TUTORIAL_LOGIC")]
-    public bool tutorialEnabled = true;
+    public int tutEnabledInt = 1;
+    public int tutEnabledOnceIndicator = 0;
+    public bool tutorialEnabledOnce = false;
+    //public bool tutorialEnabled = true;
 
     [Header("PAUSE_MENU_LOGIC")]
     public MenuScreen activeMenuScreen;
@@ -108,6 +111,9 @@ public class GameManager : MonoBehaviour
         movingSpawnManager = GetComponent<MovingSpawnManager>();
         //mapCollider = GetComponent<BoxCollider>();
 
+
+
+
         // Now populate powerups / purchasables with PlayerPrefs. 0=default/start level of each powerup.
         //homingMissileLevel = PlayerPrefs.GetInt(Constants.homingMissileLevel, 0);
         //burstRushLevel = PlayerPrefs.GetInt(Constants.burstRushLevel, 0);
@@ -132,12 +138,42 @@ public class GameManager : MonoBehaviour
     // This is just for the start game button.
     public void OnGameStart()
     {
+
+        // Actually start the game
         OnLevelStart(0);
     }
 
     // This is the PUBLISHER for events that fire on level starts.
     public void OnLevelStart(int currLevel)
     {
+        // Get player prefs
+        //Debug.Break();
+
+        // Force enable tutorial is it hasn't been activated before
+        tutEnabledOnceIndicator = PlayerPrefs.GetInt(Constants.tutorialEnabledOnce);
+        Debug.Log("TUT_ENABLED_ONCE_INDICATOR: " + PlayerPrefs.GetInt(Constants.tutorialEnabledOnce));
+        if (tutEnabledOnceIndicator != 1)
+        {
+            PlayerPrefs.SetInt(Constants.tutorialEnabled, 1);
+            PlayerPrefs.SetInt(Constants.tutorialEnabledOnce, 1);
+            tutEnabledOnceIndicator = 1;
+            //tutorialEnabledOnce = true;
+            Debug.Break();
+        }
+        // Also activate tutorial if was accessed through Pause Menu option
+        // Tutorial normally deactivated by CameraController/GM after first call o.w.
+        tutEnabledInt = PlayerPrefs.GetInt(Constants.tutorialEnabled);
+        Debug.Log("TUT_ENABLED_INT: " + tutEnabledInt);
+        if (tutEnabledInt == 1)
+        {
+            cameraController.tutorialEnabled = true;
+        }
+        else
+        {
+            cameraController.tutorialEnabled = false;
+        }
+
+
         currLevel = Math.Min(currLevel, enemyScoreBoundaries.Count - 1);
         playerShip.gameObject.transform.position = playerStartPosition;     // Return player to start position
         targetScore = enemyScoreBoundaries[currLevel];
@@ -196,9 +232,12 @@ public class GameManager : MonoBehaviour
         {
             // First run normal level teardown activities
             OnLevelTearDown();
+            // Next playthru will not have tutorial
+            //cameraController.tutorialEnabled = false;
+            //PlayerPrefs.SetInt(Constants.tutorialEnabled, 0);
         }
         UIManager.Singleton.RestartLevel();     // // Clean up UI
-        mainCamera.GetComponent<CameraController>().StartGameCameraAnimation();     // Zoom back into map
+        //mainCamera.GetComponent<CameraController>().StartGameCameraAnimation();     // Zoom back into map
 
         Utils.KillAllEnemies();
         Utils.DisablePowerups();
