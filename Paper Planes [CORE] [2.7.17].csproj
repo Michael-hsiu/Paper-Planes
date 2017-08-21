@@ -133,12 +133,16 @@
     <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenScrObj.cs" />
     <Compile Include="Assets\Prefabs\Powerups\Shuriken\ShurikenSizeScrObj.cs" />
     <Compile Include="Assets\Prefabs\Powerups\UpgradableScriptableObject.cs" />
+    <Compile Include="Assets\Prefabs\UI\CreditsScreen.cs" />
     <Compile Include="Assets\Prefabs\UI\GameOverScreen.cs" />
+    <Compile Include="Assets\Prefabs\UI\MenuScreen.cs" />
     <Compile Include="Assets\Prefabs\UI\PauseButton.cs" />
+    <Compile Include="Assets\Prefabs\UI\PauseMainMenu.cs" />
     <Compile Include="Assets\Prefabs\UI\PlayAgainButton.cs" />
     <Compile Include="Assets\Prefabs\UI\ScoreText.cs" />
     <Compile Include="Assets\Prefabs\UI\ShopSlot.cs" />
     <Compile Include="Assets\Prefabs\UI\StartScreen.cs" />
+    <Compile Include="Assets\Prefabs\UI\TutorialConfirmScreen.cs" />
     <Compile Include="Assets\Prefabs\UI\UpgradesListPanel.cs" />
     <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
     <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
@@ -235,7 +239,6 @@
     <Compile Include="Assets\Scripts\Interfaces\IMovement.cs" />
     <Compile Include="Assets\Scripts\Menu\ContinueScreen.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
-    <Compile Include="Assets\Scripts\Menu\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Menu\PowerupHolder.cs" />
     <Compile Include="Assets\Scripts\Menu\ShopMenu.cs" />
     <Compile Include="Assets\Scripts\Particles\DestroyOnEnd.cs" />

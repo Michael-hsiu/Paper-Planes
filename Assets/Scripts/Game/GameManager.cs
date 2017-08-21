@@ -27,6 +27,12 @@ public class GameManager : MonoBehaviour
     public int playerDamage = 20;
     public int scoreMultiplier = 1;
 
+    [Header("TUTORIAL_LOGIC")]
+    public bool tutorialEnabled = true;
+
+    [Header("PAUSE_MENU_LOGIC")]
+    public MenuScreen activeMenuScreen;
+
     [Header("SCORE_UI_FIELDS")]
     public int numEnemiesDefeated = 0;
     public int numPowerupsCollected = 0;

@@ -7,6 +7,7 @@ public class PauseButton : MonoBehaviour
 {
 
     public bool gamePaused = false;
+    public MenuScreen pauseMainMenu;
 
     // Called when Pause Button is clicked
     public void OnClick()
@@ -15,11 +16,14 @@ public class PauseButton : MonoBehaviour
         {
             Time.timeScale = 0;
             gamePaused = true;
+            pauseMainMenu.gameObject.SetActive(true);
+            pauseMainMenu.OnSetup();
         }
         else
         {
             Time.timeScale = 1;
             gamePaused = false;
+            pauseMainMenu.OnTearDown();
         }
     }
 }
