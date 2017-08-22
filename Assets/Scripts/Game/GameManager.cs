@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public CameraController cameraController;
     public GameObject normalSS;         // Player's normal shotspawn
     public GameObject shurikenShotSpawn;         // Where shurikens spawn
+    public GameObject homingMissilesShotSpawn;         // Where shurikens spawn
     public EnemySpawner enemySpawner;       // Takes care of spawning enemies
     public PowerupSpawner powerupSpawner;
     public MovingSpawnManager movingSpawnManager;
@@ -283,7 +284,10 @@ public class GameManager : MonoBehaviour
     // Actions to take on boss death
     public void OnBossDeath()
     {
+        // Get ready for next boss spawn
+        UIManager.Singleton.OnBossDeathUI();
         enemySpawner.OnBossDeath();
+        powerupSpawner.OnBossDeath();
     }
 
     /* START StartLevelEvent subscribers. */

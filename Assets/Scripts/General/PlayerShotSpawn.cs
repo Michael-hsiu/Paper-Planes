@@ -73,7 +73,7 @@ public class PlayerShotSpawn : ShotSpawn
         while (numMissiles > 0)
         {
             Vector3 randomRot = RandomRotation();
-            Missile m = (Missile)PoolManager.Instance.ReuseObjectRef(missile, transform.position, Quaternion.Euler(randomRot) * Quaternion.Inverse(targetRotation.transform.rotation));
+            Missile m = (Missile)PoolManager.Instance.ReuseObjectRef(missile, GameManager.Singleton.homingMissilesShotSpawn.transform.position, Quaternion.Euler(randomRot) * Quaternion.Inverse(targetRotation.transform.rotation));
             //m.GetComponent<Rigidbody> ().AddForce(randomRot * 20);		// Random propulsion in semicircular range (0-180deg)
             numMissiles -= 1;
         }

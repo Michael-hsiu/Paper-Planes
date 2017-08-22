@@ -1,19 +1,26 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Powerups/WaveShotPowerup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/PoolManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="32" Column="34" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="454" Column="23" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="288" Column="45" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="398" Column="76" />
       <File FileName="Assets/Prefabs/Powerups/Homing Missile/HomingMissileScrObj.cs" Line="43" Column="34" />
       <File FileName="Assets/Scripts/Powerups/ShurikenPowerup.cs" Line="59" Column="164" />
-      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="7" Column="5" />
       <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="11" Column="79" />
-      <File FileName="Assets/Scripts/Powerups/TripMineWeapon.cs" Line="86" Column="197" />
+      <File FileName="Assets/Scripts/Powerups/TripMineWeapon.cs" Line="72" Column="1" />
       <File FileName="Assets/Prefabs/Powerups/FiringPowerup.cs" Line="74" Column="43" />
       <File FileName="Assets/Scripts/Powerups/ShurikenObj.cs" Line="111" Column="64" />
-      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="8" Column="59" />
-      <File FileName="Assets/Scripts/General/WaveShotSpawn.cs" Line="38" Column="94" />
-      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="314" Column="10" />
-      <File FileName="Assets/Scripts/Powerups/WaveShotPowerup.cs" Line="8" Column="34" />
+      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="77" Column="78" />
+      <File FileName="Assets/Scripts/General/WaveShotSpawn.cs" Line="15" Column="36" />
+      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="325" Column="41" />
+      <File FileName="Assets/Scripts/Powerups/WaveShotPowerup.cs" Line="32" Column="48" />
+      <File FileName="Assets/Scripts/Powerups/HomingMissilePowerup.cs" Line="29" Column="92" />
+      <File FileName="Assets/Scripts/Powerups/Missile.cs" Line="143" Column="47" />
+      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="286" Column="28" />
+      <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="230" Column="75" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="112" Column="18" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="137" Column="1" />
+      <File FileName="Assets/Scripts/General/GamePoolManager.cs" Line="53" Column="42" />
+      <File FileName="Assets/Scripts/General/PoolManager.cs" Line="33" Column="1" />
     </Files>
     <Pads>
       <Pad Id="MonoDevelop.Debugger.WatchPad">

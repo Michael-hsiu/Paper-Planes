@@ -17,9 +17,10 @@ public class UIManager : MonoBehaviour
     public int displayedChangingScore = 0;     // Currently lerping score that is displayed
 
     [Header("NEW_ENEMIES_UNLOCKED_UI")]
-    public string newEnemyText = "New enemies have appeared!";
-    public string newEnemyUpgradesText = "Existing enemies are now stronger!";
-    public string bossSpawnedText = "A boss has spawned!";
+    public readonly string newEnemyText = "New enemies have appeared!";
+    public readonly string newEnemyUpgradesText = "Existing enemies are now stronger!";
+    public readonly string bossSpawnedText = "A boss has spawned!";
+    public readonly string bossDeathText = "Boss defeated! Super Powerups will now spawn for 30s!";
 
     public float numEnemiesEaseOutDuration = 0.5f;
     public float newEnemiesEaseInLerpDuration = 0.5f;
@@ -28,6 +29,8 @@ public class UIManager : MonoBehaviour
     public Color textStartColor;
     public Color textEndColor;
     public bool assignedStartColor = false;
+
+    public float bossDeathLerpRatio;    // Other lerp logic same as new_enemies
 
     //[Header("NEW_ENEMY_UPGRADE_IMGS")]
 
@@ -77,6 +80,7 @@ public class UIManager : MonoBehaviour
     IEnumerator newEnemyUpgradeUnlockedRoutine;
     IEnumerator newEnemyUnlockedRoutine;
     IEnumerator bossSpawnedRoutine;
+    IEnumerator bossDeathRoutine;
 
     void Update()
     {
@@ -391,6 +395,61 @@ public class UIManager : MonoBehaviour
         scoreGoalText.gameObject.SetActive(false);
     }
 
+    // Called when Boss dies to notify player Super Powerups will now spawn
+    public void OnBossDeathUI()
+    {
+        if (bossDeathRoutine != null)
+        {
+            StopCoroutine(bossDeathRoutine);
+            bossDeathRoutine = null;
+        }
+        scoreGoalText.gameObject.SetActive(true);
+        bossDeathRoutine = OnBossDeathUIRoutine();
+        StartCoroutine(bossDeathRoutine);
+    }
+    // Announce that a boss was spawned
+    IEnumerator OnBossDeathUIRoutine()
+    {
+        // Ease in the annoucement
+        if (!assignedStartColor)
+        {
+            textEndColor = scoreGoalText.color;
+            // Recall that Color alphas range from 0f to 1f
+            textEndColor.a = 1.0f;
+
+            textStartColor = textEndColor;
+            textStartColor.a = 0.0f;
+
+            assignedStartColor = true;
+            //Debug.Break();
+        }
+        // Prep the text
+        scoreGoalText.color = textStartColor;
+        scoreGoalText.text = bossDeathText;
+
+        bossDeathLerpRatio = 0.0f;
+        while (bossDeathLerpRatio < 1.0f)
+        {
+            bossDeathLerpRatio += (Time.deltaTime / newEnemiesEaseInLerpDuration);
+            Color lerpColor = Color.Lerp(textStartColor, textEndColor, bossDeathLerpRatio);
+            scoreGoalText.color = lerpColor;
+            yield return null;
+        }
+
+        // Annoucement stays for a duration
+        yield return new WaitForSeconds(newEnemiesTextDuration);
+
+        // Ease out the annoucement
+        bossDeathLerpRatio = 0.0f;
+        while (bossDeathLerpRatio < 1.0f)
+        {
+            bossDeathLerpRatio += (Time.deltaTime / numEnemiesEaseOutDuration);
+            scoreGoalText.color = Color.Lerp(textEndColor, textStartColor, bossDeathLerpRatio);
+            yield return null;
+        }
+        scoreGoalText.gameObject.SetActive(false);
+    }
+
 
     // goal=enemiesToKill
     public void OnLevelStartUpdateUI()
@@ -529,6 +588,7 @@ public class UIManager : MonoBehaviour
         //String goalText = "WARNING: Difficulty increased!!!";
         // scoreBoundaries list is zero-indexed (1st level is index 0)
         //String goalText = "WAVE " + (GameManager.Singleton.currLevel + 1) + ": BEGIN!";
+        yield return new WaitForSeconds(0.5f);  // Zoom in anim is still kind of ugly
         String goalText = "Ready...";
         levelGoalText.gameObject.SetActive(true);
         levelGoalText.text = goalText;

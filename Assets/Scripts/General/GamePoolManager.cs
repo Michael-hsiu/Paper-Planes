@@ -49,6 +49,14 @@ public class GamePoolManager : MonoBehaviour
     public GameObject sideMissilePowerup;       // May be removed if we make this a permanent powerup
     public GameObject healthPack;
 
+    [Header("SUPER_POWERUP_PREFABS")]
+    public GameObject firingSuperPowerup;
+    public GameObject waveShotSuperPowerup;
+    public GameObject burstRushSuperPowerup;
+    public GameObject homingMissileSuperPowerup;
+    public GameObject shurikenSuperPowerup;
+    public GameObject tripMineSuperPowerup;
+
 
     [Header("POWERUP_HELPER_PREFABS")]
     public GameObject tripMines;
@@ -168,6 +176,14 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(tripMinePowerup, 50);
         PoolManager.Instance.CreatePool(sideMissilePowerup, 50);
         PoolManager.Instance.CreatePool(healthPack, 50);
+
+        // Super Powerups
+        PoolManager.Instance.CreatePool(firingSuperPowerup, 50);
+        PoolManager.Instance.CreatePool(waveShotSuperPowerup, 50);
+        PoolManager.Instance.CreatePool(burstRushSuperPowerup, 50);
+        PoolManager.Instance.CreatePool(homingMissileSuperPowerup, 50);
+        PoolManager.Instance.CreatePool(shurikenSuperPowerup, 50);
+        PoolManager.Instance.CreatePool(tripMineSuperPowerup, 50);
 
 
         // Powerup helper objs

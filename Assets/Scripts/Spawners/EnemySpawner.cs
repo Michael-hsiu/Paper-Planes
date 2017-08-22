@@ -170,6 +170,14 @@ public class EnemySpawner : MonoBehaviour
         }
         int playerScore = GameManager.Singleton.playerScore;
         bool newEnemyUpgradeUnlocked = false;
+
+        // Trigger Boss Super Powerup drops as necessary
+        if (enemyType == EnemyType.Boss)
+        {
+            Debug.Log("BOSS_KILLED!");
+            Debug.Break();
+            GameManager.Singleton.OnBossDeath();
+        }
         // Upgrade available enemies as necessary
         if (playerScore >= enemyScoreBoundaries[currLevel] && currLevel < maxEnemyScoreBoundary)
         {

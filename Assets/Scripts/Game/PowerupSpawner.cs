@@ -6,9 +6,12 @@ public class PowerupSpawner : MonoBehaviour
 {
     [Header("SPAWNING_LOGIC")]
     public float gameStartDelayDuration = 1.5f;     // Delay at beginning of game while camera is zooming in
+    public float superPowerupAvailableDuration = 30.0f;     // How long we will spawn super powerups
+    public float superPowerupSpawnChance = 0.2f;        // Chance of spawning a Super Powerup istead of a normal one
     public int initialStartIndex = 0;   // Powerups up to and including this index can be spawned in beginning, rest must be unlocked by gaining points
     public int currLevelIndex;
     public bool levelWasIncreasedOnce = false;
+    public bool superPowerupSpawnEnabled = false;
 
     public float xBound;
     public float yBound;
@@ -29,9 +32,11 @@ public class PowerupSpawner : MonoBehaviour
     public IEnumerator cr2;
 
     public List<Collider> mapColliders = new List<Collider>();     // Reference to GameManager list
-    public List<GameObject> powerupsList = new List<GameObject>();
-    public List<GameObject> enemyShips = new List<GameObject>();
 
+    public List<GameObject> powerupsList = new List<GameObject>();
+    public List<GameObject> superPowerupsList = new List<GameObject>();
+
+    IEnumerator bossDeathRoutine;
 
     private static PowerupSpawner singleton;
     public static PowerupSpawner Singleton
@@ -82,11 +87,32 @@ public class PowerupSpawner : MonoBehaviour
 
     }
 
+    // Called to initiate Super Powerup spawning
+    public void OnBossDeath()
+    {
+        if (bossDeathRoutine != null)
+        {
+            StopCoroutine(bossDeathRoutine);
+            bossDeathRoutine = null;
+        }
+        bossDeathRoutine = OnBossDeathRoutine();
+        StartCoroutine(bossDeathRoutine);
+    }
+    IEnumerator OnBossDeathRoutine()
+    {
+
+        // Spawn powerups for this long
+        superPowerupSpawnEnabled = true;
+        yield return new WaitForSeconds(superPowerupAvailableDuration);
+
+        // Then disable spawns
+        superPowerupSpawnEnabled = false;
+    }
+
     public void OnLevelStartEnablePowerupSpawners()
     {
-        // TODO: add new powerups every lvl
         spawnEnabled = true;
-
+        superPowerupSpawnEnabled = false;
     }
 
     // Called from ENEMY KILL
@@ -162,47 +188,50 @@ public class PowerupSpawner : MonoBehaviour
                 // Assume health pack is always at index 0
                 float randomValue = Random.value;
                 int spawnIndex = 0;
-                if (currLevelIndex >= 6)
+                if (!superPowerupSpawnEnabled || (superPowerupSpawnEnabled && (Random.value > superPowerupSpawnChance)))
                 {
-                    // Spawn health pack
-                    if (randomValue < 0.15f)
+                    // Spawn normal powerup
+                    if (currLevelIndex >= 6)
                     {
-                        spawnIndex = 0;
+                        // Spawn health pack
+                        if (randomValue < 0.15f)
+                        {
+                            spawnIndex = 0;
+                        }
+                        // Spawn burst rush
+                        else if (randomValue < 0.25f)
+                        {
+                            spawnIndex = 6;
+                        }
+                        // Spawn firing powerup
+                        else if (randomValue < 0.45f)
+                        {
+                            spawnIndex = 1;
+                        }
+                        // Any other powerup
+                        else
+                        {
+                            //while (spawnIndex == 6)
+                            //{
+                            spawnIndex = Random.Range(2, currLevelIndex + 1);
+                            //    yield return null;
+                            //}
+                        }
                     }
-                    // Spawn burst rush
-                    else if (randomValue < 0.25f)
-                    {
-                        spawnIndex = 6;
-                    }
-                    // Spawn firing powerup
-                    else if (randomValue < 0.45f)
-                    {
-                        spawnIndex = 1;
-                    }
-                    // Any other powerup
                     else
                     {
-                        //while (spawnIndex == 6)
-                        //{
-                        spawnIndex = Random.Range(2, currLevelIndex + 1);
-                        //    yield return null;
-                        //}
+                        spawnIndex = Random.Range(0, currLevelIndex + 1);
                     }
+                    PoolManager.Instance.ReuseObject(powerupsList[spawnIndex], totalVector, Quaternion.identity);
                 }
+                // Spawn Super Powerup 
                 else
                 {
-                    spawnIndex = Random.Range(0, currLevelIndex + 1);
+                    spawnIndex = Random.Range(0, superPowerupsList.Count);
+                    PoolManager.Instance.ReuseObject(superPowerupsList[spawnIndex], totalVector, Quaternion.identity);
                 }
-
-                PoolManager.Instance.ReuseObject(powerupsList[spawnIndex], totalVector, Quaternion.identity);
-                //Debug.Log ("POWERUP SPAWNED!");
                 yield return new WaitForSeconds(Random.Range(spawnDelayLowerBound, spawnDelayUpperBound));
-                //numPowerupsSpawned += 1;
-                //Instantiate (powerups [Random.Range (0, powerups.Count)], spawnLoc, Quaternion.identity);
             }
-            /*if (!spawnEnabled) {
-                numPowerupsSpawned = 0;		// Reset after each lvl
-             }*/
             yield return null;
         }
     }
@@ -213,8 +242,6 @@ public class PowerupSpawner : MonoBehaviour
         if (currLevelIndex < powerupsList.Count - 1)
         {
             currLevelIndex += 1;
-            //Debug.Break();
-            //Debug.Log("POWERUP LEVEL INCREASED!");
         }
     }
 
