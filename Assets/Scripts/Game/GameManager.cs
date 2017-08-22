@@ -250,14 +250,19 @@ public class GameManager : MonoBehaviour
         // TODO: player's powerups, health, stats need to be reset. Or use events? Are they misleading?
 
         // Only tear down level if game was restarted via Tutorial option
-        if (cameraController.tutorialEnabled)
-        {
-            // First run normal level teardown activities
-            OnLevelTearDown();
-            // Next playthru will not have tutorial
-            //cameraController.tutorialEnabled = false;
-            //PlayerPrefs.SetInt(Constants.tutorialEnabled, 0);
-        }
+        OnLevelTearDown();
+        //if (cameraController.tutorialEnabled)
+        //{
+        //    // First run normal level teardown activities
+        //    // Tell subscribers to do their work
+        //    if (EndLevelEvent != null)
+        //    {
+        //        EndLevelEvent();
+        //    }
+        //    // Next playthru will not have tutorial
+        //    //cameraController.tutorialEnabled = false;
+        //    //PlayerPrefs.SetInt(Constants.tutorialEnabled, 0);
+        //}
         UIManager.Singleton.RestartLevel();     // // Clean up UI
         //mainCamera.GetComponent<CameraController>().StartGameCameraAnimation();     // Zoom back into map
 

@@ -6,6 +6,8 @@ public class ShurikenPowerup : Powerup
 {
 
     public GameObject shuriken;
+    public GameObject superShuriken;
+
     public float thrustForce = 500f;
     //public GameObject player;
     //protected bool isVisible;
@@ -61,8 +63,8 @@ public class ShurikenPowerup : Powerup
             pos = GameManager.Singleton.shurikenShotSpawnLeft.transform.position;
             pos2 = GameManager.Singleton.shurikenShotSpawnRight.transform.position;
 
-            ShurikenObj s1 = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(shuriken, pos, player.transform.rotation * Quaternion.Euler(0, 0, firingAngleLeft));
-            ShurikenObj s2 = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(shuriken, pos2, player.transform.rotation * Quaternion.Euler(0, 0, firingAngleRight));
+            ShurikenObj s1 = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(superShuriken, pos, player.transform.rotation * Quaternion.Euler(0, 0, firingAngleLeft));
+            ShurikenObj s2 = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(superShuriken, pos2, player.transform.rotation * Quaternion.Euler(0, 0, firingAngleRight));
 
             s1.GetComponent<Rigidbody>().AddForce(s1.transform.up * thrustForce);        // Outwards radiating movement, using position relative to y-axis of player
             s2.GetComponent<Rigidbody>().AddForce(s2.transform.up * thrustForce);        // Outwards radiating movement, using position relative to y-axis of player

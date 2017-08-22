@@ -7,6 +7,10 @@ public class BurstRushPowerup : Powerup
 
     public GameObject burstChargeColliders;     // Assign in inspector
     public GameObject burstRushColliders;
+
+    public GameObject superBurstChargeColliders;     // Assign in inspector
+    public GameObject superBurstRushColliders;
+
     public bool isActive;
     public bool isCharging = false;
     public float chargeTime = 3.0f;
@@ -31,6 +35,9 @@ public class BurstRushPowerup : Powerup
         //player = GameObject.FindGameObjectWithTag (Constants.PlayerTag);		// Get Player at runtime	
         burstChargeColliders = BurstRushManager.Instance.burstChargeColliders;
         burstRushColliders = BurstRushManager.Instance.burstRushColliders;
+
+        superBurstChargeColliders = BurstRushManager.Instance.superBurstChargeColliders;
+        superBurstRushColliders = BurstRushManager.Instance.superBurstRushColliders;
         //player = GameManager.Singleton.playerShip;
         base.Start();
         //burstChargeColliders.SetActive (false);
@@ -64,6 +71,7 @@ public class BurstRushPowerup : Powerup
     {
         GameManager.Singleton.rushes.Enqueue(this);     // Add a Rush to our count
         TriggerCharge(player);          // Immediately activate powerup on pickup
+
         base.ActivatePowerup();
     }
 
@@ -109,7 +117,14 @@ public class BurstRushPowerup : Powerup
         player.GetComponent<Rigidbody>().velocity = Vector3.zero;           // Naive fix: non-force impl of halting player entirely
         isCharging = true;
         GameManager.Singleton.axisInput = false;                            // So we can't move while charging
-        BurstRushManager.Instance.burstChargeColliders.SetActive(true); // Enable charge collider
+        if (isSuperPowerup)
+        {
+            BurstRushManager.Instance.superBurstChargeColliders.SetActive(true); // Enable charge collider
+        }
+        else
+        {
+            BurstRushManager.Instance.burstChargeColliders.SetActive(true); // Enable charge collider
+        }
 
         yield return new WaitForSeconds(chargeTime);
 
@@ -130,15 +145,31 @@ public class BurstRushPowerup : Powerup
 
         GameManager.Singleton.speedCapped = false;
         GameManager.Singleton.turnInput = false;        // Can't turn whilst rushing
-        BurstRushManager.Instance.burstRushColliders.SetActive(true);
+        if (isSuperPowerup)
+        {
+            BurstRushManager.Instance.superBurstRushColliders.SetActive(true);
+        }
+        else
+        {
+            BurstRushManager.Instance.burstRushColliders.SetActive(true);
+        }
+
 
 
         player.GetComponent<Rigidbody>().AddForce(player.transform.up * thrust, ForceMode.Impulse);     // Propel player forward
 
         yield return new WaitForSeconds(rushTime);      // Also need to disable inputs
 
-        BurstRushManager.Instance.burstChargeColliders.SetActive(false);        // Disable charge collider
-        BurstRushManager.Instance.burstRushColliders.SetActive(false);
+        if (isSuperPowerup)
+        {
+            BurstRushManager.Instance.superBurstChargeColliders.SetActive(false);
+            BurstRushManager.Instance.superBurstRushColliders.SetActive(false);
+        }
+        else
+        {
+            BurstRushManager.Instance.burstChargeColliders.SetActive(false);        // Disable charge collider
+            BurstRushManager.Instance.burstRushColliders.SetActive(false);
+        }
 
         rushRoutine = null;
         player.rushStarted = false;     // Allow player to now use other powerups

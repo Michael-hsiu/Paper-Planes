@@ -6,39 +6,78 @@ public class ShurikenObj : PoolObject
 {
 
     public ShurikenScrObj powerupData;      // Data about upgrades, etc.
-
+    public CapsuleCollider capsuleCollider;     // On same child as Sprite
     public GameObject explosion;
+
+    public float initialColliderRadius;
+    public Vector3 initialLocalScale;
+
     public float rotationFactor = 300.0f;
     public bool isSuperShuriken = false;
     public int damageDealt = -1;
     public float growTimeMult = 2.5f;
+
     public float MAX_SIZE = 3.0f;           // Maximum size as per prefab
+
     public bool dmgDone = false;
     public bool growingBigger = false;
 
-    public float dmgDelay = 0.1f;
-    public bool canDmg = true;
+    public float damageDelay = 0.1f;
+    public bool canDamage = true;
 
-    private IEnumerator cr;
-    private IEnumerator damageDelayRoutine;
+    IEnumerator circularRotationRoutine;
+    IEnumerator damageDelayRoutine;
 
-    void OnEnable()
+    void Awake()
     {
-        StopAllCoroutines();
-        // Reset size
-        transform.localScale = Vector3.one * 1.3f;      // This float mult is for this specific prefab
-
-        canDmg = true;
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        cr = CircularRotate();
-        StartCoroutine(cr);
+        initialColliderRadius = capsuleCollider.radius;
+        initialLocalScale = capsuleCollider.transform.localScale;
     }
+
+    public override void OnObjectReuse()
+    {
+        // Anything to reset? Transform, velocity, etc.
+        //transform.position = Vector3.zero;
+        //transform.rotation = Quaternion.identity;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+        // Reset collider and scale
+        capsuleCollider.radius = initialColliderRadius;
+        capsuleCollider.transform.localScale = initialLocalScale;
+
+        // Reset coroutines
+        if (circularRotationRoutine != null)
+        {
+            StopCoroutine(circularRotationRoutine);
+            circularRotationRoutine = null;
+        }
+        circularRotationRoutine = CircularRotate();
+        StartCoroutine(circularRotationRoutine);
+
+        if (damageDelayRoutine != null)
+        {
+            StopCoroutine(damageDelayRoutine);
+            damageDelayRoutine = null;
+        }
+    }
+
+    //void OnEnable()
+    //{
+    //    //StopAllCoroutines();
+    //    //// Reset size
+    //    //transform.localScale = Vector3.one * 1.3f;      // This float mult is for this specific prefab
+
+    //    //canDmg = true;
+    //    //GetComponent<Rigidbody>().velocity = Vector3.zero;
+    //    //cr = CircularRotate();
+    //    //StartCoroutine(cr);
+    //}
 
     void Update()
     {
         if (isSuperShuriken)
         {
-            if (growingBigger && transform.localScale.x < MAX_SIZE)
+            if (growingBigger && capsuleCollider.transform.localScale.x < MAX_SIZE)
             {
                 Resize();
             }
@@ -46,9 +85,12 @@ public class ShurikenObj : PoolObject
     }
 
     // Increase our size gradually after reaching damage quota
+    // TODO: cache initial localSize and collider radius, reset every time fab reused
     public void Resize()
     {
-        transform.localScale += Vector3.one * powerupData.sizeMultiplier / growTimeMult;            // Gradually increase size of object
+        capsuleCollider.gameObject.transform.localScale += Vector3.one * powerupData.sizeMultiplier / growTimeMult;            // Gradually increase size of object
+        //capsuleCollider.radius += powerupData.sizeMultiplier / growTimeMult;
+
         Debug.Log("RESIZING");
         if (transform.localScale.x >= powerupData.sizeMultiplier)
         {
@@ -88,7 +130,7 @@ public class ShurikenObj : PoolObject
         {
             if (other.gameObject != null)
             {
-                if (canDmg && other.gameObject.GetComponent<IDamageable<int>>() != null)
+                if (canDamage && other.gameObject.GetComponent<IDamageable<int>>() != null)
                 {
                     other.gameObject.GetComponent<IDamageable<int>>().Damage(powerupData.damage);       // Inflict damage
 
@@ -107,7 +149,7 @@ public class ShurikenObj : PoolObject
                         growingBigger = true;       // Start the resizing process
                     }
 
-                    // Visual cue that shuriken has been destroyed
+                    // Visual cue that shuriken is hitting enemy
                     PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
 
                     // Delay btwn hits to prevent super-fast dmg
@@ -127,7 +169,7 @@ public class ShurikenObj : PoolObject
 
     public void FinishExistence()
     {
-        StopCoroutine(cr);
+        StopCoroutine(circularRotationRoutine);
         PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
 
         DestroyForReuse();      // Recycle this fab
@@ -146,15 +188,10 @@ public class ShurikenObj : PoolObject
 
     IEnumerator DamageDelay()
     {
-        canDmg = false;
-        yield return new WaitForSeconds(dmgDelay);
-        canDmg = true;
+        canDamage = false;
+        yield return new WaitForSeconds(damageDelay);
+        canDamage = true;
     }
 
-    public virtual void OnObjectReuse()
-    {
-        // Anything to reset? Transform, velocity, etc.
-        transform.position = Vector3.zero;
-        transform.rotation = Quaternion.identity;
-    }
+
 }

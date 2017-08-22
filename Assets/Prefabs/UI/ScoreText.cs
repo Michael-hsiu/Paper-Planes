@@ -65,7 +65,11 @@ public class ScoreText : PoolObject
     //    }
     //}
 
-    // Need to make this pool-able
+    public override void DestroyForReuse()
+    {
+        transform.position = new Vector3(300, 0, 0);        // So it's easier to click prefabs in scene
+        base.DestroyForReuse();
+    }
 
     public void OnObjectReuse(GameObject target)
     {

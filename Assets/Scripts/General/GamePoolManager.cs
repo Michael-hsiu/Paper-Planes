@@ -61,6 +61,7 @@ public class GamePoolManager : MonoBehaviour
     [Header("POWERUP_HELPER_PREFABS")]
     public GameObject tripMines;
     public GameObject shurikenObj;
+    public GameObject superShurikenObj;
     public GameObject waveShot;
     public GameObject superWaveShot;
     public GameObject homingMissiles;
@@ -191,6 +192,7 @@ public class GamePoolManager : MonoBehaviour
         // Powerup helper objs
         PoolManager.Instance.CreatePool(tripMines, 40);
         PoolManager.Instance.CreatePool(shurikenObj, 10);
+        PoolManager.Instance.CreatePool(superShurikenObj, 5);
         PoolManager.Instance.CreatePool(waveShot, 100);
         PoolManager.Instance.CreatePool(superWaveShot, 100);
         PoolManager.Instance.CreatePool(homingMissiles, 100);

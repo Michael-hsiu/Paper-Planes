@@ -1,18 +1,13 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Spawners/EnemySpawner.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Powerups/ShurikenPowerup.cs">
     <Files>
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="18" Column="67" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="74" Column="61" />
       <File FileName="Assets/Scripts/Game/UIManager.cs" Line="398" Column="76" />
-      <File FileName="Assets/Scripts/Powerups/ShurikenPowerup.cs" Line="68" Column="86" />
-      <File FileName="Assets/Scripts/Powerups/TripMineWeapon.cs" Line="83" Column="17" />
-      <File FileName="Assets/Scripts/Powerups/Missile.cs" Line="9" Column="28" />
-      <File FileName="Assets/Scripts/Powerups/HomingMissilePowerup.cs" Line="29" Column="94" />
-      <File FileName="Assets/Scripts/Powerups/WaveShotPowerup.cs" Line="53" Column="64" />
       <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="324" Column="64" />
-      <File FileName="Assets/Scripts/General/PlayerShotSpawn.cs" Line="78" Column="38" />
-      <File FileName="Assets/Scripts/General/WaveShotSpawn.cs" Line="19" Column="6" />
-      <File FileName="Assets/Scripts/Powerups/ShurikenObj.cs" Line="44" Column="14" />
-      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="178" Column="29" />
+      <File FileName="Assets/Scripts/Powerups/BurstRushPowerup.cs" Line="166" Column="80" />
+      <File FileName="Assets/Scripts/Powerups/BurstRushManager.cs" Line="37" Column="50" />
+      <File FileName="Assets/Scripts/Game/Constants.cs" Line="10" Column="52" />
+      <File FileName="Assets/Scripts/Powerups/ShurikenPowerup.cs" Line="63" Column="82" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

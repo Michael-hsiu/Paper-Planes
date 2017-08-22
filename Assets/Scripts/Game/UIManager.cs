@@ -17,10 +17,10 @@ public class UIManager : MonoBehaviour
     public int displayedChangingScore = 0;     // Currently lerping score that is displayed
 
     [Header("NEW_ENEMIES_UNLOCKED_UI")]
-    public readonly string newEnemyText = "New enemies have appeared!";
-    public readonly string newEnemyUpgradesText = "Existing enemies are now stronger!";
-    public readonly string bossSpawnedText = "A boss has spawned!";
-    public readonly string bossDeathText = "Boss defeated! Super Powerups will now spawn for 30s!";
+    public string newEnemyText = "New enemies have appeared!";
+    public string newEnemyUpgradesText = "Existing enemies are now stronger!";
+    public string bossSpawnedText = "A boss has spawned!";
+    public string bossDeathText = "Boss defeated! Super Powerups will now spawn for 30s!";
 
     public float numEnemiesEaseOutDuration = 0.5f;
     public float newEnemiesEaseInLerpDuration = 0.5f;
