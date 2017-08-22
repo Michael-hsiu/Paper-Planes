@@ -6,6 +6,15 @@ using System;
 public class FiringPowerup : Powerup
 {
 
+    public bool activatingSuperPowerup = false;     // To let us call same method 2x w/out looping
+
+
+    public override void OnObjectReuse()
+    {
+        activatingSuperPowerup = false;
+        base.OnObjectReuse();
+    }
+
     // Check active firing powerup. If normal, add 1. If enhanced already, add 1 and extend the time.
     // OnTriggerEnter takes care of destroyForReuse
     public override void ActivatePowerup()
@@ -58,6 +67,17 @@ public class FiringPowerup : Powerup
 
         // End destroy routine
         base.ActivatePowerup();
+
+        // Activate another lvl if Super Powerup
+        if (isSuperPowerup && !activatingSuperPowerup)
+        {
+            activatingSuperPowerup = true;
+            ActivatePowerup();
+        }
+        else
+        {
+            activatingSuperPowerup = false;
+        }
     }
 
     public override void DeactivatePowerup()

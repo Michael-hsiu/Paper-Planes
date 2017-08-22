@@ -8,7 +8,7 @@ public class Powerup : PoolObject
 {
 
     public PowerupScriptableObject powerupData;         // Ref to data container; data about upgrades, etc.
-
+    public bool isSuperPowerup = false;     // Enables some special attributes
     public PlayerShip player;
     //public List<ShotSpawn> prevSS = new List<ShotSpawn> ();
     public Stack<ShotSpawn> prevSS = new Stack<ShotSpawn>();
@@ -18,6 +18,7 @@ public class Powerup : PoolObject
     public float timeObtained;
     public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
     protected bool isVisible;
+
 
     [Header("FADE_LERP_LOGIC")]
     public int numBlinks = 3;       // How many times we blink until fading
@@ -34,7 +35,7 @@ public class Powerup : PoolObject
 
     public override void Start()
     {
-        rawSprite = GetComponent<SpriteRenderer>();
+        //rawSprite = GetComponent<SpriteRenderer>();
         player = GameManager.Singleton.playerShip.GetComponent<PlayerShip>();
         assignedStartColor = false;
         ShowInScene();
@@ -201,7 +202,7 @@ public class Powerup : PoolObject
     void SetVisibility(bool isVisible)
     {
         this.isVisible = isVisible;
-        gameObject.GetComponent<Renderer>().enabled = this.isVisible;
+        rawSprite.enabled = this.isVisible;
         gameObject.GetComponent<Collider>().enabled = this.isVisible;
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WaveShotPowerup : Powerup
 {
+
+
     public override void ActivatePowerup()
     {
         //GameManager.Singleton.numPowerupsCollected += 1;
@@ -32,6 +34,12 @@ public class WaveShotPowerup : Powerup
         GameManager.Singleton.playerShip.waveShotPowerup = this;
         GameManager.Singleton.playerShip.activePowerups.Enqueue(this);      // Register all powerups
 
+        // Super Powerup logic
+        if (isSuperPowerup)
+        {
+            GameManager.Singleton.playerShip.superWaveActivated = true;     // Triggers use of Super shot spawns
+        }
+
         base.ActivatePowerup();
     }
 
@@ -40,6 +48,10 @@ public class WaveShotPowerup : Powerup
         //if (Time.time > GameManager.Singleton.playerShip.waveShotPowerup.endTime || GameManager.Singleton.playerShip.isResetting)
         //{
         GameManager.Singleton.playerShip.waveShotEnabled = false;
+        if (isSuperPowerup)
+        {
+            GameManager.Singleton.playerShip.superWaveActivated = false;     // Triggers use of Super shot spawns
+        }
         base.DeactivatePowerup();
     }
 }

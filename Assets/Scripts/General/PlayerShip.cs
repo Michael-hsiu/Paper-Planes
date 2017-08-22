@@ -33,9 +33,12 @@ public class PlayerShip : FiringShip
     [Header("WAVE_SHOT DEPENDENCIES")]
     // Wave shot dependencies
     public List<GameObject> waveSpawns = new List<GameObject>();
+    public List<GameObject> superWaveSpawns = new List<GameObject>();
+
     public bool waveShotEnabled = false;
     public float waveRandomVal;
     public float waveChance = 0.15f;
+    public bool superWaveActivated = false;
 
     [Header("FRONT_FACING_MISSILE DEPENDENCIES")]
     // Front-facing missile dependencies
@@ -312,11 +315,25 @@ public class PlayerShip : FiringShip
         waveRandomVal = UnityEngine.Random.value;       // Set the random value
         if (waveRandomVal <= waveChance)
         {
-            foreach (GameObject go in waveSpawns)
+            if (superWaveActivated)
             {
-                if (go.GetComponent<ShotSpawn>() != null)
+                foreach (GameObject go in superWaveSpawns)
                 {
-                    go.GetComponent<ShotSpawn>().CreateShot();  // Fire the shot!
+                    if (go.GetComponent<ShotSpawn>() != null)
+                    {
+                        go.GetComponent<ShotSpawn>().CreateShot();  // Fire the shot!
+                        //Debug.Break();
+                    }
+                }
+            }
+            else
+            {
+                foreach (GameObject go in waveSpawns)
+                {
+                    if (go.GetComponent<ShotSpawn>() != null)
+                    {
+                        go.GetComponent<ShotSpawn>().CreateShot();  // Fire the shot!
+                    }
                 }
             }
         }

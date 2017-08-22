@@ -20,7 +20,7 @@ public class ShurikenObj : PoolObject
     public bool canDmg = true;
 
     private IEnumerator cr;
-    private IEnumerator dd;
+    private IEnumerator damageDelayRoutine;
 
     void OnEnable()
     {
@@ -108,8 +108,8 @@ public class ShurikenObj : PoolObject
                     PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
 
                     // Delay btwn hits to prevent super-fast dmg
-                    dd = DamageDelay(dmgDelay);
-                    StartCoroutine(dd);
+                    damageDelayRoutine = DamageDelay(dmgDelay);
+                    StartCoroutine(damageDelayRoutine);
                 }
             }
         }

@@ -8,6 +8,7 @@ public class WaveShotSpawn : ShotSpawn
     public GameObject waveShot;
     public GameObject straightMissile;
 
+    [Range(0.0f, 360.0f)] public float firingAngle = 0.0f;
     public float coolDownDuration = 0.3f;
     public float coolDownEndTime;
     public bool waveShotEnabled = false;
@@ -27,9 +28,14 @@ public class WaveShotSpawn : ShotSpawn
             {
                 PoolManager.Instance.ReuseObject(waveShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation) * Quaternion.Euler(0, 0, 90));
             }
-            else
+            else if (gameObject.CompareTag("LeftSideSS"))
             {
                 PoolManager.Instance.ReuseObject(waveShot, transform.position, transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation) * Quaternion.Euler(0, 0, -90));
+            }
+            else
+            {
+                Quaternion fireRotation = transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation) * Quaternion.Euler(0, 0, firingAngle);
+                PoolManager.Instance.ReuseObject(waveShot, transform.position, fireRotation);
             }
             // Register to cooldown
             coolDownEndTime = Time.time + coolDownDuration;
