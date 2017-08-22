@@ -175,7 +175,7 @@ public class EnemySpawner : MonoBehaviour
         if (enemyType == EnemyType.Boss)
         {
             Debug.Log("BOSS_KILLED!");
-            Debug.Break();
+            //Debug.Break();
             GameManager.Singleton.OnBossDeath();
         }
         // Upgrade available enemies as necessary

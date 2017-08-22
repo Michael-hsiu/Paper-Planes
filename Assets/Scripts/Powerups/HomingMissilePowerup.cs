@@ -26,11 +26,11 @@ public class HomingMissilePowerup : Powerup
         //missileSpawn.CreateMissiles(((HomingMissileScrObj)powerupData).numMissiles);    // Fire the missiles! [SATISFIES numMissiles]
         if (isSuperPowerup)
         {
-            missileSpawn.CreateMissiles(numSuperMissiles);    // Fire the Super # missiles!
+            missileSpawn.CreateMissiles(numMissiles * 2, 5);    // Fire the Super # missiles!
         }
         else
         {
-            missileSpawn.CreateMissiles(numMissiles);    // Fire the missiles! [SATISFIES numMissiles]
+            missileSpawn.CreateMissiles(numMissiles, 0);    // Fire the missiles! [SATISFIES numMissiles]
         }
         base.ActivatePowerup();
     }

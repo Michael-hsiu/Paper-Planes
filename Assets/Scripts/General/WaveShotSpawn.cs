@@ -6,6 +6,7 @@ public class WaveShotSpawn : ShotSpawn
 {
 
     public GameObject waveShot;
+    public GameObject superWaveShot;
     public GameObject straightMissile;
 
     [Range(0.0f, 360.0f)] public float firingAngle = 0.0f;
@@ -35,7 +36,7 @@ public class WaveShotSpawn : ShotSpawn
             else
             {
                 Quaternion fireRotation = transform.rotation * Quaternion.Inverse(targetRotation.transform.rotation) * Quaternion.Euler(0, 0, firingAngle);
-                PoolManager.Instance.ReuseObject(waveShot, transform.position, fireRotation);
+                PoolManager.Instance.ReuseObject(superWaveShot, transform.position, fireRotation);
             }
             // Register to cooldown
             coolDownEndTime = Time.time + coolDownDuration;

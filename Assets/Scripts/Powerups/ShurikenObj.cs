@@ -9,7 +9,7 @@ public class ShurikenObj : PoolObject
 
     public GameObject explosion;
     public float rotationFactor = 300.0f;
-
+    public bool isSuperShuriken = false;
     public int damageDealt = -1;
     public float growTimeMult = 2.5f;
     public float MAX_SIZE = 3.0f;           // Maximum size as per prefab
@@ -36,9 +36,12 @@ public class ShurikenObj : PoolObject
 
     void Update()
     {
-        if (growingBigger && transform.localScale.x < MAX_SIZE)
+        if (isSuperShuriken)
         {
-            Resize();
+            if (growingBigger && transform.localScale.x < MAX_SIZE)
+            {
+                Resize();
+            }
         }
     }
 
@@ -108,7 +111,12 @@ public class ShurikenObj : PoolObject
                     PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
 
                     // Delay btwn hits to prevent super-fast dmg
-                    damageDelayRoutine = DamageDelay(dmgDelay);
+                    if (damageDelayRoutine != null)
+                    {
+                        StopCoroutine(damageDelayRoutine);
+                        damageDelayRoutine = null;
+                    }
+                    damageDelayRoutine = DamageDelay();
                     StartCoroutine(damageDelayRoutine);
                 }
             }
@@ -136,7 +144,7 @@ public class ShurikenObj : PoolObject
         FinishExistence();
     }
 
-    IEnumerator DamageDelay(float dmgDelay)
+    IEnumerator DamageDelay()
     {
         canDmg = false;
         yield return new WaitForSeconds(dmgDelay);

@@ -20,6 +20,7 @@ public class PlayerShotSpawn : ShotSpawn
     public GameObject ultimateShot;
     public GameObject waveShot;
     public GameObject missile;
+    public GameObject superMissile;
 
 
     //public GameObject targetRotation;
@@ -60,7 +61,7 @@ public class PlayerShotSpawn : ShotSpawn
     }
 
     // This is for homing missiles
-    public void CreateMissiles(int numMissiles)
+    public void CreateMissiles(int numMissiles, int numSuperMissiles)
     {
 
         // The parent should be the player or enemy sprite
@@ -76,6 +77,17 @@ public class PlayerShotSpawn : ShotSpawn
             Missile m = (Missile)PoolManager.Instance.ReuseObjectRef(missile, GameManager.Singleton.homingMissilesShotSpawn.transform.position, Quaternion.Euler(randomRot) * Quaternion.Inverse(targetRotation.transform.rotation));
             //m.GetComponent<Rigidbody> ().AddForce(randomRot * 20);		// Random propulsion in semicircular range (0-180deg)
             numMissiles -= 1;
+        }
+        if (numSuperMissiles > 0)
+        {
+            while (numSuperMissiles > 0)
+            {
+                Vector3 randomRot = RandomRotation();
+                Missile m2 = (Missile)PoolManager.Instance.ReuseObjectRef(superMissile, GameManager.Singleton.homingMissilesShotSpawn.transform.position, Quaternion.Euler(randomRot) * Quaternion.Inverse(targetRotation.transform.rotation));
+                numSuperMissiles -= 1;
+            }
+
+            //m.GetComponent<Rigidbody> ().AddForce(randomRot * 20);        // Random propulsion in semicircular range (0-180deg)
         }
     }
 

@@ -11,6 +11,10 @@ public class ShurikenPowerup : Powerup
     //protected bool isVisible;
     public float shurikenLifeTime = 10.0f;
 
+    [Header("FIRING_ANGLES")]
+    public float firingAngleLeft = 315f;
+    public float firingAngleRight = 45f;
+
     private IEnumerator countdownRoutine;
     private ShurikenObj shurikenObj;
 
@@ -50,13 +54,28 @@ public class ShurikenPowerup : Powerup
         // spawns, radius, rotations, explosions
         //Vector3 pos = player.transform.position;
         Vector3 pos = GameManager.Singleton.shurikenShotSpawn.transform.position;
+        Vector3 pos2 = GameManager.Singleton.shurikenShotSpawn.transform.position;
 
+        if (isSuperPowerup)
+        {
+            pos = GameManager.Singleton.shurikenShotSpawnLeft.transform.position;
+            pos2 = GameManager.Singleton.shurikenShotSpawnRight.transform.position;
+
+            ShurikenObj s1 = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(shuriken, pos, player.transform.rotation * Quaternion.Euler(0, 0, firingAngleLeft));
+            ShurikenObj s2 = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(shuriken, pos2, player.transform.rotation * Quaternion.Euler(0, 0, firingAngleRight));
+
+            s1.GetComponent<Rigidbody>().AddForce(s1.transform.up * thrustForce);        // Outwards radiating movement, using position relative to y-axis of player
+            s2.GetComponent<Rigidbody>().AddForce(s2.transform.up * thrustForce);        // Outwards radiating movement, using position relative to y-axis of player
+        }
+        else
+        {
+            ShurikenObj s = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(shuriken, pos, Quaternion.identity);
+            s.GetComponent<Rigidbody>().AddForce(player.transform.up * thrustForce);        // Outwards radiating movement, using position relative to y-axis of player
+        }
         //Debug.Log ("PLAYER POS: " + pos);
         //Debug.Log ("PLAYER FORWARD: " + player.transform.forward);
 
-        ShurikenObj s = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(shuriken, pos, Quaternion.identity);
 
-        s.GetComponent<Rigidbody>().AddForce(player.transform.up * thrustForce);        // Outwards radiating movement, using position relative to y-axis of player
 
         countdownRoutine = BeginCountdown(shurikenLifeTime);
         StartCoroutine(countdownRoutine);     // Begin detonation countdown

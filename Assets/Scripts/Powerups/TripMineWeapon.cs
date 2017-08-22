@@ -81,11 +81,11 @@ public class TripMineWeapon : Powerup
                 float newZOuter = pos.z;
                 Vector3 newPosOuter = new Vector3(newXOuter, newYOuter, newZOuter);
 
-                Mine mine2 = (Mine)PoolManager.Instance.ReuseObjectRef(mine, newPosOuter, Quaternion.identity);
+                // Outer ring of mines
+                //Mine mine2 = (Mine)PoolManager.Instance.ReuseObjectRef(mine, newPosOuter, Quaternion.identity);
+                //mine2.GetComponent<Rigidbody>().AddForce(new Vector3(radius * Mathf.Sin(angleTwo * Mathf.Deg2Rad), radius * Mathf.Cos(angleTwo * Mathf.Deg2Rad), newPosOuter.z) * explosionForce * 2f);        // Outwards radiating movement, using position relative to world origin
 
-                mine2.GetComponent<Rigidbody>().AddForce(new Vector3(radius * Mathf.Sin(angleTwo * Mathf.Deg2Rad), radius * Mathf.Cos(angleTwo * Mathf.Deg2Rad), newPosOuter.z) * explosionForce * 2f);        // Outwards radiating movement, using position relative to world origin
-
-                mines.Add(mine2);       // Add mines to a list
+                //mines.Add(mine2);       // Add mines to a list
                 angleTwo += 72.0f;
             }
             angle += mineSeparationAngle;     // Spawn in 5 times (or whatever appropriate for angle)

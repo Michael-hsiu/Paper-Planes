@@ -62,7 +62,9 @@ public class GamePoolManager : MonoBehaviour
     public GameObject tripMines;
     public GameObject shurikenObj;
     public GameObject waveShot;
-    public GameObject missiles;
+    public GameObject superWaveShot;
+    public GameObject homingMissiles;
+    public GameObject superHomingMissiles;
     public GameObject straightMissiles;
     public GameObject playerStraightMissiles;
     public GameObject empWaveShot;
@@ -190,7 +192,9 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(tripMines, 40);
         PoolManager.Instance.CreatePool(shurikenObj, 10);
         PoolManager.Instance.CreatePool(waveShot, 100);
-        PoolManager.Instance.CreatePool(missiles, 100);
+        PoolManager.Instance.CreatePool(superWaveShot, 100);
+        PoolManager.Instance.CreatePool(homingMissiles, 100);
+        PoolManager.Instance.CreatePool(superHomingMissiles, 100);
         PoolManager.Instance.CreatePool(straightMissiles, 100);
         PoolManager.Instance.CreatePool(playerStraightMissiles, 50);
         PoolManager.Instance.CreatePool(empWaveShot, 10);

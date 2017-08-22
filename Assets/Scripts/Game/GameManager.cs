@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public CameraController cameraController;
     public GameObject normalSS;         // Player's normal shotspawn
     public GameObject shurikenShotSpawn;         // Where shurikens spawn
+    public GameObject shurikenShotSpawnLeft;        // Where Super Shurikens spawn
+    public GameObject shurikenShotSpawnRight;        // Where Super Shurikens spawn
+
     public GameObject homingMissilesShotSpawn;         // Where shurikens spawn
     public EnemySpawner enemySpawner;       // Takes care of spawning enemies
     public PowerupSpawner powerupSpawner;
