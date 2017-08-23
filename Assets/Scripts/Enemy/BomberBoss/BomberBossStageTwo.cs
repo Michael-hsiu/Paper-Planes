@@ -114,7 +114,7 @@ public class BomberBossStageTwo : Ship
     {
         // Graphics
         PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
-        GameManager.Singleton.OnBossDeath();
+        //GameManager.Singleton.OnBossDeath();
 
 
         // Powerup spawn chance

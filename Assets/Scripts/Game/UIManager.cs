@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 
 
 public class UIManager : MonoBehaviour
@@ -76,11 +77,15 @@ public class UIManager : MonoBehaviour
     public int peekValue;
     public int currentMin;
 
+    public Queue<IEnumerator> pendingRoutines = new Queue<IEnumerator>();
     IEnumerator healthBarLerpRoutine;
     IEnumerator newEnemyUpgradeUnlockedRoutine;
     IEnumerator newEnemyUnlockedRoutine;
     IEnumerator bossSpawnedRoutine;
     IEnumerator bossDeathRoutine;
+
+    IEnumerator UIprocessRoutine;
+    IEnumerator activeRoutine;
 
     void Update()
     {
@@ -331,16 +336,72 @@ public class UIManager : MonoBehaviour
         healthBar.rectTransform.localScale = new Vector3(8.02f, scaleY, 1);
     }
 
+    // Controls order in which UI messages are displayed to player
+    IEnumerator UIMessageProcessRoutine()
+    {
+        while (true)
+        {
+            // Go through messages sequentially
+            if (pendingRoutines.Count > 0 && activeRoutine == null)
+            {
+                activeRoutine = pendingRoutines.Dequeue();
+                StartCoroutine(activeRoutine);
+            }
+            // Each UI coroutine will set itself to null when completed
+            while (activeRoutine != null)
+            {
+                Debug.Log("ACTIVE_ROUTINE_NOT_NULL");
+                Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
+                scoreGoalText.gameObject.SetActive(true);
+                yield return null;
+            }
+            Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
+            //Debug.Break();
+            yield return null;
+        }
+    }
+    // goal=enemiesToKill
+    public void OnLevelStartUpdateUI()
+    {
+        // Reset cached scores from last game (this currently occurs during waves, so messes up score lerp)
+        //startDisplayedScore = -1;     // Lerp start point
+        //displayedChangingScore = -1;     // Currently lerping score that is displayed
+
+        //shopButton.SetActive(false);
+        //startGameButton.gameObject.SetActive(false);
+        scoreGoalText.text = GameManager.Singleton.enemyScoreBoundaries[GameManager.Singleton.currLevel].ToString();
+
+        // Can we dynamically pass in params to event subscribers?
+        if (levelGoalRoutine != null)
+        {
+            StopCoroutine(levelGoalRoutine);
+            levelGoalRoutine = null;
+            levelGoalText.gameObject.SetActive(false);      // Hide the text
+        }
+        levelGoalRoutine = IncreaseLevelRoutine(GameManager.Singleton.currLevel);
+        StartCoroutine(levelGoalRoutine);
+
+        // Start the routine that will process everything
+        if (UIprocessRoutine != null)
+        {
+            StopCoroutine(UIprocessRoutine);
+            UIprocessRoutine = null;
+        }
+        UIprocessRoutine = UIMessageProcessRoutine();
+        StartCoroutine(UIprocessRoutine);
+    }
     public void OnBossSpawnedUI()
     {
         if (bossSpawnedRoutine != null)
         {
-            StopCoroutine(bossSpawnedRoutine);
+            //StopCoroutine(bossSpawnedRoutine);
             bossSpawnedRoutine = null;
         }
         scoreGoalText.gameObject.SetActive(true);
         bossSpawnedRoutine = OnBossSpawnedUIRoutine();
-        StartCoroutine(bossSpawnedRoutine);
+        pendingRoutines.Enqueue(bossSpawnedRoutine);    // Will be processed in order by UI message coroutine
+
+        //StartCoroutine(bossSpawnedRoutine);
     }
 
     // Announce that a boss was spawned
@@ -393,6 +454,8 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         scoreGoalText.gameObject.SetActive(false);
+        bossSpawnedRoutine = null;      // So other coroutines can run
+        activeRoutine = null;
     }
 
     // Called when Boss dies to notify player Super Powerups will now spawn
@@ -400,12 +463,14 @@ public class UIManager : MonoBehaviour
     {
         if (bossDeathRoutine != null)
         {
-            StopCoroutine(bossDeathRoutine);
+            //StopCoroutine(bossDeathRoutine);
             bossDeathRoutine = null;
         }
         scoreGoalText.gameObject.SetActive(true);
         bossDeathRoutine = OnBossDeathUIRoutine();
-        StartCoroutine(bossDeathRoutine);
+        pendingRoutines.Enqueue(bossDeathRoutine);    // Will be processed in order by UI message coroutine
+
+        //StartCoroutine(bossDeathRoutine);
     }
     // Announce that a boss was spawned
     IEnumerator OnBossDeathUIRoutine()
@@ -438,7 +503,7 @@ public class UIManager : MonoBehaviour
 
         // Annoucement stays for a duration
         yield return new WaitForSeconds(newEnemiesTextDuration);
-
+        //Debug.Break();
         // Ease out the annoucement
         bossDeathLerpRatio = 0.0f;
         while (bossDeathLerpRatio < 1.0f)
@@ -448,42 +513,25 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         scoreGoalText.gameObject.SetActive(false);
+        bossDeathRoutine = null;      // So other coroutines can run
+        activeRoutine = null;
+
     }
 
-
-    // goal=enemiesToKill
-    public void OnLevelStartUpdateUI()
-    {
-        // Reset cached scores from last game (this currently occurs during waves, so messes up score lerp)
-        //startDisplayedScore = -1;     // Lerp start point
-        //displayedChangingScore = -1;     // Currently lerping score that is displayed
-
-        //shopButton.SetActive(false);
-        //startGameButton.gameObject.SetActive(false);
-        scoreGoalText.text = GameManager.Singleton.enemyScoreBoundaries[GameManager.Singleton.currLevel].ToString();
-
-        // Can we dynamically pass in params to event subscribers?
-        if (levelGoalRoutine != null)
-        {
-            StopCoroutine(levelGoalRoutine);
-            levelGoalRoutine = null;
-            levelGoalText.gameObject.SetActive(false);      // Hide the text
-        }
-        levelGoalRoutine = IncreaseLevelRoutine(GameManager.Singleton.currLevel);
-        StartCoroutine(levelGoalRoutine);
-    }
 
     // These 2 methods display UI for new enemies or enemy lvls unlocked
     public void OnNewEnemyUpgradeUnlocked()
     {
         if (newEnemyUpgradeUnlockedRoutine != null)
         {
-            StopCoroutine(newEnemyUpgradeUnlockedRoutine);
+            //StopCoroutine(newEnemyUpgradeUnlockedRoutine);
             newEnemyUpgradeUnlockedRoutine = null;
         }
         scoreGoalText.gameObject.SetActive(true);
         newEnemyUpgradeUnlockedRoutine = OnNewEnemyUpgradeUnlockedRoutine();
-        StartCoroutine(newEnemyUpgradeUnlockedRoutine);
+        pendingRoutines.Enqueue(newEnemyUpgradeUnlockedRoutine);    // Will be processed in order by UI message coroutine
+
+        //StartCoroutine(newEnemyUpgradeUnlockedRoutine);
     }
     IEnumerator OnNewEnemyUpgradeUnlockedRoutine()
     {
@@ -525,17 +573,21 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         scoreGoalText.gameObject.SetActive(false);
+        newEnemyUpgradeUnlockedRoutine = null;      // So other coroutines can run
+        activeRoutine = null;
     }
     public void OnNewEnemyUnlocked()
     {
         if (newEnemyUnlockedRoutine != null)
         {
-            StopCoroutine(newEnemyUnlockedRoutine);
+            //StopCoroutine(newEnemyUnlockedRoutine);
             newEnemyUnlockedRoutine = null;
         }
         scoreGoalText.gameObject.SetActive(true);
         newEnemyUnlockedRoutine = OnNewEnemyUnlockedRoutine();
-        StartCoroutine(newEnemyUnlockedRoutine);
+        pendingRoutines.Enqueue(newEnemyUnlockedRoutine);    // Will be processed in order by UI message coroutine
+
+        //StartCoroutine(newEnemyUnlockedRoutine);
     }
     IEnumerator OnNewEnemyUnlockedRoutine()
     {
@@ -576,6 +628,8 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         scoreGoalText.gameObject.SetActive(false);
+        newEnemyUnlockedRoutine = null;      // So other coroutines can run
+        activeRoutine = null;
 
     }
 

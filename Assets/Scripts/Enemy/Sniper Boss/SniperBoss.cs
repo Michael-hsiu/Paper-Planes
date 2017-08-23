@@ -89,7 +89,7 @@ public class SniperBoss : Ship, IEnemy
     {
         // Graphics
         PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
-        GameManager.Singleton.OnBossDeath();
+        //GameManager.Singleton.OnBossDeath();
 
         // Powerup spawn chance
         float randomVal = Random.value;
