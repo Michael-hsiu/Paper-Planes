@@ -39,6 +39,8 @@ public class UIManager : MonoBehaviour
     public Text scoreMultiplierText;    // Score multiplier
     public Text scoreText;
     public Text scoreGoalText;
+    public Image scoreGoalTextBkgrnd;
+
     public Text levelText;
     public Text healthText;
     public Text dashStoreText;
@@ -353,6 +355,7 @@ public class UIManager : MonoBehaviour
                 Debug.Log("ACTIVE_ROUTINE_NOT_NULL");
                 Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
                 scoreGoalText.gameObject.SetActive(true);
+                scoreGoalTextBkgrnd.gameObject.SetActive(true);
                 yield return null;
             }
             Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
@@ -454,6 +457,8 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         scoreGoalText.gameObject.SetActive(false);
+        scoreGoalTextBkgrnd.gameObject.SetActive(false);
+
         bossSpawnedRoutine = null;      // So other coroutines can run
         activeRoutine = null;
     }
@@ -513,6 +518,8 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         scoreGoalText.gameObject.SetActive(false);
+        scoreGoalTextBkgrnd.gameObject.SetActive(false);
+
         bossDeathRoutine = null;      // So other coroutines can run
         activeRoutine = null;
 
@@ -573,6 +580,8 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         scoreGoalText.gameObject.SetActive(false);
+        scoreGoalTextBkgrnd.gameObject.SetActive(false);
+
         newEnemyUpgradeUnlockedRoutine = null;      // So other coroutines can run
         activeRoutine = null;
     }
@@ -628,6 +637,8 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         scoreGoalText.gameObject.SetActive(false);
+        scoreGoalTextBkgrnd.gameObject.SetActive(false);
+
         newEnemyUnlockedRoutine = null;      // So other coroutines can run
         activeRoutine = null;
 

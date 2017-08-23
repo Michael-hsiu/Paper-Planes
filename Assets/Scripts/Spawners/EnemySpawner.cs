@@ -185,82 +185,67 @@ public class EnemySpawner : MonoBehaviour
         }
 
         // Upgrade levels of enemies as necessary
-        if (playerScore > 10000)
+        // Get all enemies up to lvl2. Then all up to lvl 3.
+        if (playerScore > 800 && !pawnLevel2Unlocked)
         {
 
+            pawnLevel2Unlocked = true;
+            newEnemyUpgradeUnlocked = true;
+            Debug.Log("PAWN_LVL2_UNLOCKED!");
+
         }
-        else if (playerScore > 3400)
+        else if (playerScore > 1600 && !rangedLevel2Unlocked)
         {
-            if (!turretLevel3Unlocked)
-            {
-                turretLevel3Unlocked = true;
-                newEnemyUpgradeUnlocked = true;
-                Debug.Log("TURRET_LVL3_UNLOCKED!");
-            }
+            rangedLevel2Unlocked = true;
+            newEnemyUpgradeUnlocked = true;
+            Debug.Log("RANGED_LVL2_UNLOCKED!");
+
         }
-        else if (playerScore > 3000)
+        else if (playerScore > 2200 && !bomberLevel2Unlocked)
         {
-            if (!turretLevel2Unlocked)
-            {
-                turretLevel2Unlocked = true;
-                newEnemyUpgradeUnlocked = true;
-                Debug.Log("TURRET_LVL2_UNLOCKED!");
-            }
+            bomberLevel2Unlocked = true;
+            newEnemyUpgradeUnlocked = true;
+            Debug.Log("BOMBER_LVL2_UNLOCKED!");
+
         }
-        else if (playerScore > 2600)
+        else if (playerScore > 3000 && !turretLevel2Unlocked)
         {
-            if (!bomberLevel3Unlocked)
-            {
-                bomberLevel3Unlocked = true;
-                newEnemyUpgradeUnlocked = true;
-                Debug.Log("BOMBER_LVL3_UNLOCKED!");
-            }
+            turretLevel2Unlocked = true;
+            newEnemyUpgradeUnlocked = true;
+            Debug.Log("TURRET_LVL2_UNLOCKED!");
+
         }
-        else if (playerScore > 2200)
+        else if (playerScore > 4100 && !pawnLevel3Unlocked)
         {
-            if (!bomberLevel2Unlocked)
-            {
-                bomberLevel2Unlocked = true;
-                newEnemyUpgradeUnlocked = true;
-                Debug.Log("BOMBER_LVL2_UNLOCKED!");
-            }
+            pawnLevel3Unlocked = true;
+            newEnemyUpgradeUnlocked = true;
+            Debug.Log("PAWN_LVL3_UNLOCKED!");
+
         }
-        else if (playerScore > 1800)
+        else if (playerScore > 6100 && !rangedLevel3Unlocked)
         {
-            if (!rangedLevel3Unlocked)
-            {
-                rangedLevel3Unlocked = true;
-                newEnemyUpgradeUnlocked = true;
-                Debug.Log("RANGED_LVL3_UNLOCKED!");
-            }
+            rangedLevel3Unlocked = true;
+            newEnemyUpgradeUnlocked = true;
+            Debug.Log("RANGED_LVL3_UNLOCKED!");
+
         }
-        else if (playerScore > 1400)
+        else if (playerScore > 8100 && !bomberLevel3Unlocked)
         {
-            if (!rangedLevel2Unlocked)
-            {
-                rangedLevel2Unlocked = true;
-                newEnemyUpgradeUnlocked = true;
-                Debug.Log("RANGED_LVL2_UNLOCKED!");
-            }
+            bomberLevel3Unlocked = true;
+            newEnemyUpgradeUnlocked = true;
+            Debug.Log("BOMBER_LVL3_UNLOCKED!");
         }
-        else if (playerScore > 800)
+        else if (playerScore > 10100 && !turretLevel3Unlocked)
         {
-            if (!pawnLevel3Unlocked)
-            {
-                pawnLevel3Unlocked = true;
-                newEnemyUpgradeUnlocked = true;
-                Debug.Log("PAWN_LVL3_UNLOCKED!");
-            }
+            turretLevel3Unlocked = true;
+            newEnemyUpgradeUnlocked = true;
+            Debug.Log("TURRET_LVL3_UNLOCKED!");
         }
-        else if (playerScore > 400)
+        else if (playerScore > 12100)
         {
-            if (!pawnLevel2Unlocked)
-            {
-                pawnLevel2Unlocked = true;
-                newEnemyUpgradeUnlocked = true;
-                Debug.Log("PAWN_LVL2_UNLOCKED!");
-            }
+            // New logic would go here
         }
+
         // Check if new enemy was unlocked; if so, show UI!
         if (newEnemyUpgradeUnlocked)
         {

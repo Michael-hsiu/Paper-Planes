@@ -28,16 +28,31 @@ public class Missile : PoolObject
     [SerializeField]
     private bool canDmg = true;     // Helps us register hit delays
 
-    void OnEnable()
-    {
-        StopAllCoroutines();
-        transform.rotation = Quaternion.identity;
-        StartCoroutine(SeekAndMove());      // Find target as soon we go active
-    }
+    IEnumerator seekMoveRoutine;
+    //void OnEnable()
+    //{
+    //    StopAllCoroutines();
+    //    transform.rotation = Quaternion.identity;
+    //    StartCoroutine(SeekAndMove());      // Find target as soon we go active
+    //}
 
     /*void Start() {
 		missileSpawn = GameManager.Singleton.normalSS.GetComponent <PlayerShotSpawn>();
 	}*/
+
+    public override void OnObjectReuse()
+    {
+        transform.rotation = Quaternion.identity;
+        canDmg = true;
+
+        if (seekMoveRoutine != null)
+        {
+            StopCoroutine(seekMoveRoutine);
+            seekMoveRoutine = null;
+        }
+        seekMoveRoutine = SeekAndMove();
+        StartCoroutine(seekMoveRoutine);    // Find target as soon we go active  
+    }
 
     void Update()
     {
@@ -87,7 +102,7 @@ public class Missile : PoolObject
                 }
             }
         }
-        catch
+        catch (System.Exception exception)
         {
             //Debug.Log ("Find target try-catch!!!");
         }
@@ -141,7 +156,13 @@ public class Missile : PoolObject
             else
             {
                 // Start search for new target
-                StartCoroutine(SeekAndMove());
+                if (seekMoveRoutine != null)
+                {
+                    StopCoroutine(seekMoveRoutine);
+                    seekMoveRoutine = null;
+                }
+                seekMoveRoutine = SeekAndMove();
+                StartCoroutine(seekMoveRoutine);
                 //Debug.Log ("LOOKING FOR TARGET");
             }
 
@@ -228,16 +249,4 @@ public class Missile : PoolObject
         canDmg = true;
     }
 
-    public override void OnObjectReuse()
-    {
-        // Anything to reset? Transform, velocity, etc.
-        StopAllCoroutines();
-
-        //transform.rotation = Quaternion.identity;
-        canDmg = true;
-
-        //Debug.Log ("MISSILE REUSED!");
-
-        //GetComponent<Rigidbody> ().velocity = Vector3.zero;
-    }
 }
