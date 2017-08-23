@@ -1,11 +1,13 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/BomberShip/BomberShip.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/General/Ship.cs">
     <Files>
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="361" Column="10" />
+      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="116" Column="53" />
       <File FileName="Assets/Scripts/Game/UIManager.cs" Line="689" Column="31" />
       <File FileName="Assets/Scripts/Enemy/PawnShip/PawnShip.cs" Line="97" Column="84" />
-      <File FileName="Assets/Scripts/General/Ship.cs" Line="132" Column="73" />
-      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="107" Column="41" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="93" Column="20" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="171" Column="36" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/ShipSpawn.cs" Line="27" Column="44" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBoss.cs" Line="139" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

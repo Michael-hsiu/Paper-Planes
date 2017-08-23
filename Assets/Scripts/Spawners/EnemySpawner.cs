@@ -340,6 +340,8 @@ public class EnemySpawner : MonoBehaviour
                     {
                         selectedEnemyIndex = Random.Range(0, baseBossTypes.Count);
                     }
+                    //Debug.Break();
+
                     lastBossSpawnIndex = selectedEnemyIndex;
                     GameObject selectedBoss = baseBossTypes[selectedEnemyIndex];
                     PoolObject poolObject = PoolManager.Instance.ReuseObjectRef(selectedBoss, totalVector, Quaternion.identity);

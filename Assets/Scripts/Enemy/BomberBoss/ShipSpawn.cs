@@ -18,6 +18,13 @@ public class ShipSpawn : MonoBehaviour
     public void Spawn()
     {
         PoolManager.Instance.ReuseObject(shipToSpawn, transform.position, Quaternion.identity);
-        enemySpawner.NUM_BOMBERS_ALIVE += 1;    // Must record mobs we spawn
+        if (enemySpawner != null)
+        {
+            enemySpawner.NUM_BOMBERS_ALIVE += 1;    // Must record mobs we spawn
+        }
+        else
+        {
+            Debug.Log("ENEMY_SPAWNER_NULL");
+        }
     }
 }
