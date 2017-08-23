@@ -90,10 +90,14 @@ public class PawnShip : Ship
             other.gameObject.GetComponent<PlayerShip>().Damage(touchDamage);
 
             // Quick fix to prevent pt increase from a pawn suicide
-            int tempPts = enemyPoints;
-            enemyPoints = 0;
-            Kill();     // Don't spawn powerup; also shouldn't record pts; should record # still alive!
-            enemyPoints = tempPts;
+            //int tempPts = enemyPoints;
+            //enemyPoints = 0;
+            //Kill();     
+
+            // Don't spawn powerup; also shouldn't record pts; should record # still alive!
+            RegisterKillWithoutScore();
+            OnKillReset();
+            //enemyPoints = tempPts;
         }
     }
 

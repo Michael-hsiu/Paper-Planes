@@ -25,6 +25,7 @@ public class BomberShip : Ship
     public GameObject selfExplosionPrefab;
 
     private Rigidbody rigidBody;
+    IEnumerator beginExplosionRoutine;
     #endregion
 
     #region Unity Life Cycle
@@ -101,7 +102,9 @@ public class BomberShip : Ship
         }
 
         PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
-        if (!explosionActive)
+
+        // Drop a powerup if not exploding
+        if (!explosionActive && !isCore)
         {
             float randomVal = UnityEngine.Random.value;
             if (randomVal <= 0.3f)
@@ -114,6 +117,7 @@ public class BomberShip : Ship
         {
             // Handles self-death by explosion case
             OnKillReset();
+            RegisterKillWithoutScore();
             //sprite.material.color = startColor;
             //hitFlickerRoutine = null;
 
@@ -146,7 +150,13 @@ public class BomberShip : Ship
     {
         if (canExplode)
         {
-            StartCoroutine(BeginExplosion());
+            if (beginExplosionRoutine != null)
+            {
+                StopCoroutine(beginExplosionRoutine);
+                beginExplosionRoutine = null;
+            }
+            beginExplosionRoutine = BeginExplosion();
+            StartCoroutine(beginExplosionRoutine);
         }
     }
 
@@ -158,7 +168,10 @@ public class BomberShip : Ship
         {
             //StopCoroutine(hitFlickerRoutine);
             hitFlickerRoutine = FlickerHit();
-            StartCoroutine(hitFlickerRoutine);
+            if (isActiveAndEnabled)
+            {
+                StartCoroutine(hitFlickerRoutine);
+            }
         }
 
         health -= damageTaken;      // We lose health

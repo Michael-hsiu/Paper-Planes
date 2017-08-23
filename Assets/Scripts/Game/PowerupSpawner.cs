@@ -199,21 +199,21 @@ public class PowerupSpawner : MonoBehaviour
                             spawnIndex = 0;
                         }
                         // Spawn burst rush
-                        else if (randomValue < 0.25f)
-                        {
-                            spawnIndex = 6;
-                        }
+                        //else if (randomValue < 0.25f)
+                        //{
+                        //    spawnIndex = 6;
+                        //}
                         // Spawn firing powerup
-                        else if (randomValue < 0.45f)
-                        {
-                            spawnIndex = 1;
-                        }
+                        //else if (randomValue < 0.45f)
+                        //{
+                        //    spawnIndex = 1;
+                        //}
                         // Any other powerup
                         else
                         {
                             //while (spawnIndex == 6)
                             //{
-                            spawnIndex = Random.Range(2, currLevelIndex + 1);
+                            spawnIndex = Random.Range(1, currLevelIndex + 1);
                             //    yield return null;
                             //}
                         }

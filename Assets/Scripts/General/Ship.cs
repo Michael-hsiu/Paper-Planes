@@ -81,7 +81,10 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
         {
             //StopCoroutine(hitFlickerRoutine);
             hitFlickerRoutine = FlickerHit();
-            StartCoroutine(hitFlickerRoutine);
+            if (isActiveAndEnabled)
+            {
+                StartCoroutine(hitFlickerRoutine);
+            }
         }
 
         health -= damageTaken;      // We lose health
@@ -119,10 +122,11 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     public void OnKillReset()
     {
+        hitFlickerRoutine = null;
         sprite.material.color = startColor;
+
         GameManager.Singleton.UpdateScore(enemyPoints); // Add new score in GameManager
         UIManager.Singleton.UpdateScore();  // Update score in UI
-        hitFlickerRoutine = null;
 
         DestroyForReuse();
     }
@@ -130,6 +134,11 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     {
         GameManager.Singleton.RecordEnemyKilled(enemyType); // REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
 
+    }
+    public void RegisterKillWithoutScore()
+    {
+        // Record kill for total # of mobs alive, but not for final score count
+        GameManager.Singleton.RecordEnemyKilledWithoutScore(enemyType); // REGISTER A KILL so we know if we can spawn more of this enemy. This should cover Missiles and Shurikens registering damage / kills
     }
     public void DisplayKillScore()
     {

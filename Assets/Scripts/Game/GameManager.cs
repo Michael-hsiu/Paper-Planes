@@ -349,6 +349,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Records a bomber explosion, or mob suicide
+    public void RecordEnemyKilledWithoutScore(EnemyType enemyType)
+    {
+        enemySpawner.RecordKill(enemyType);
+
+        // Unlock additional powerups
+        if (playerScore >= powerupScoreBoundaries[Math.Min(powerupUnlockedLevel, powerupScoreBoundaries.Count - 1)])
+        {
+            OnPowerupLevelIncrease();
+        }
+    }
+
     // Start Shop scene, while preventing Managers and Player from being destroyed
     public void OpenShop()
     {
