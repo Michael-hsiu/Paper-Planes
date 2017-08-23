@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
     public bool onDashCooldown = false;
     public int numDashes = 99;
 
+    public bool cameraIsAnimating = false;
+
     // The following logic needs to be populated by PlayerPrefs
     public int powerupUnlockedLevel = 0;
     public int homingMissileLevel = 0;
@@ -179,7 +181,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(Constants.tutorialEnabledOnce, 1);
             PlayerPrefs.SetInt(Constants.tutorialEnabled, 1);
             PlayerPrefs.Save();
-            Debug.Break();
+            //Debug.Break();
         }
 
         // Also activate tutorial if was accessed through Pause Menu option
@@ -202,13 +204,13 @@ public class GameManager : MonoBehaviour
         levelActive = true;
 
         // Announce to subscribers
-        if (currLevel != enemyScoreBoundaries.Count - 1)
+        //if (currLevel != enemyScoreBoundaries.Count - 1)
+        //{
+        if (StartLevelEvent != null)
         {
-            if (StartLevelEvent != null)
-            {
-                StartLevelEvent();     // Tell all of our listeners to fire
-            }
+            StartLevelEvent();     // Tell all of our listeners to fire
         }
+        //}
         cameraController.StartGameCameraAnimation();
     }
 

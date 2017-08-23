@@ -9,6 +9,7 @@ public class GameOverScreen : MonoBehaviour
     public GameObject gameOverScreen;
     public GameObject mapImage;
     public GameObject playAgainButton;
+    public GameObject pauseButton;
 
     public int targetScore;
     public int targetnumEnemiesDefeated;
@@ -66,12 +67,13 @@ public class GameOverScreen : MonoBehaviour
 
     IEnumerator ScoreUIControllerRoutine()
     {
-        // Disable score_text and joysticks
+        // Disable score_text and joysticks and pause_button
         UIManager.Singleton.scoreText.gameObject.SetActive(false);
         leftJoystick.SetActive(false);
         rightJoystick.SetActive(false);
         highScoreText.gameObject.SetActive(false);
         highScoreLabelText.gameObject.SetActive(false);
+        pauseButton.SetActive(false);
 
         // First lerp the SCORE
         if (updateUIScoreRoutine != null)

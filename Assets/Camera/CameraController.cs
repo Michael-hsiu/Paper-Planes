@@ -16,6 +16,7 @@ public class CameraController : MonoBehaviour
     public bool isTransitioning = false;
     public GameObject gameMap;          // Actual image of the map
     public GameObject tutorialUIContainer;      // Contains all tutorial UI elements
+    public GameObject pauseButton;      // Could be disabled on game_over
     public bool tutorialEnabled;
 
     [Header("CAMERA_VIEW_VALUES")]
@@ -99,9 +100,11 @@ public class CameraController : MonoBehaviour
     // Zoom in the camera to player
     public void StartGameCameraAnimation()
     {
+
         // Set Game UI elements active
         gameUIContainer.SetActive(true);
         gameMap.SetActive(true);
+        pauseButton.SetActive(true);
 
         // Move camera to its start position
         transform.position = startPosition;
@@ -168,6 +171,8 @@ public class CameraController : MonoBehaviour
     }
     IEnumerator StartGameCameraAnimationRoutine()
     {
+        GameManager.Singleton.cameraIsAnimating = true;
+
         // Move forward a little, then pause
         isTransitioning = true;
         transitionRatio = 0.0f;
@@ -178,6 +183,7 @@ public class CameraController : MonoBehaviour
             transitionRatio += Time.deltaTime * 1 / startAnimationDuration;       // Animation lasts 2 sec (or whatever value animationDuration is)
             yield return null;
         }
+        GameManager.Singleton.cameraIsAnimating = false;
         isTransitioning = false;
     }
 
