@@ -22,11 +22,23 @@ public class StraightMissile : PoolObject
     public Renderer sprite;
     public float flickerTime = 0.05f;
 
+    [Header("AUDIO")]
+    public AudioSource audioSource;
+    public AudioClip explosionAudioClip;
+
+
     Rigidbody rigidBody;
     IEnumerator destroyAfterLifetimeRoutine;
+    IEnumerator destroyAfterAudioRoutine;
     IEnumerator fadeRoutine;
     // Reset speed on reuse
     // Give a speed boost on use
+
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+        rigidBody = GetComponent<Rigidbody>();    // Find rigidbody
+    }
 
     public override void OnObjectReuse()
     {
@@ -83,12 +95,6 @@ public class StraightMissile : PoolObject
         StartCoroutine(destroyAfterLifetimeRoutine);
     }
 
-
-    void Awake()
-    {
-        rigidBody = GetComponent<Rigidbody>();    // Find rigidbody
-    }
-
     // For explosions triggered by contact
     void OnTriggerEnter(Collider other)
     {
@@ -109,11 +115,31 @@ public class StraightMissile : PoolObject
 
                     PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
                     //Debug.Log ("STRAIGHT MISSILE EXPLODED!");
-
-                    DestroyForReuse();      // We explode after one hit
+                    if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+                    {
+                        audioSource.PlayOneShot(explosionAudioClip, 0.3f);
+                        Debug.Log("AUDIO_PLAYING: " + audioSource.isPlaying);
+                        //Debug.Break();
+                    }
+                    if (destroyAfterAudioRoutine != null)
+                    {
+                        StopCoroutine(destroyAfterAudioRoutine);
+                        destroyAfterAudioRoutine = null;
+                    }
+                    destroyAfterAudioRoutine = DestroyAfterAudioPlaysRoutine();
+                    StartCoroutine(destroyAfterAudioRoutine);
+                    //DestroyForReuse();      // We explode after one hit
                 }
             }
         }
+    }
+
+    // Play sound effect, then explode/recycle
+    IEnumerator DestroyAfterAudioPlaysRoutine()
+    {
+        transform.position = new Vector3(200, 0, 0);    // Appears to disappear
+        yield return new WaitForSeconds(explosionAudioClip.length);
+        DestroyForReuse();
     }
 
     IEnumerator DestroyAfterLifeTime()

@@ -28,7 +28,12 @@ public class Missile : PoolObject
     [SerializeField]
     private bool canDmg = true;     // Helps us register hit delays
 
+    [Header("AUDIO")]
+    public AudioSource audioSource;
+    public AudioClip explosionAudioClip;
+
     IEnumerator seekMoveRoutine;
+    IEnumerator destroyAfterAudioRoutine;
     //void OnEnable()
     //{
     //    StopAllCoroutines();
@@ -40,6 +45,10 @@ public class Missile : PoolObject
 		missileSpawn = GameManager.Singleton.normalSS.GetComponent <PlayerShotSpawn>();
 	}*/
 
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     public override void OnObjectReuse()
     {
         transform.rotation = Quaternion.identity;
@@ -217,29 +226,50 @@ public class Missile : PoolObject
                         //Debug.Log(other.gameObject.name);
                         //Debug.Log (other.gameObject.GetComponent<IDamageable<int>>() == null);
                         //Debug.Log(powerupData == null);
+
                         other.gameObject.GetComponent<IDamageable<int>>().Damage(powerupData.damage);       // Inflict damage
 
                         // [SATISFIES spawn new missile chance]
-                        randomVal = Random.value;
-                        //Debug.Log ("RANDOMVAL" + randomVal);
-                        if (randomVal < powerupData.missileSpawnChance)
-                        {
-                            int numMissilesToSpawn = Random.Range(1, 4);
-                            for (int i = 0; i < numMissilesToSpawn; i++)
-                            {
-                                Debug.Log("EXTRA MISSILE SPAWNED!");
-                                PoolManager.Instance.ReuseObject(powerupData.missile, transform.position, Quaternion.identity);     // Chance of spawning another missile on missile hit
-                            }
-                        }
+                        //randomVal = Random.value;
+                        ////Debug.Log ("RANDOMVAL" + randomVal);
+                        //if (randomVal < powerupData.missileSpawnChance)
+                        //{
+                        //    int numMissilesToSpawn = Random.Range(1, 4);
+                        //    for (int i = 0; i < numMissilesToSpawn; i++)
+                        //    {
+                        //        Debug.Log("EXTRA MISSILE SPAWNED!");
+                        //        PoolManager.Instance.ReuseObject(powerupData.missile, transform.position, Quaternion.identity);     // Chance of spawning another missile on missile hit
+                        //    }
+                        //}
                     }
 
                     PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
                     //Debug.Log ("MISSILE EXPLODED!");
-
-                    DestroyForReuse();      // We explode after one hit
+                    if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+                    {
+                        audioSource.PlayOneShot(explosionAudioClip, 0.3f);
+                        Debug.Log("AUDIO_PLAYING: " + audioSource.isPlaying);
+                        //Debug.Break();
+                    }
+                    if (destroyAfterAudioRoutine != null)
+                    {
+                        StopCoroutine(destroyAfterAudioRoutine);
+                        destroyAfterAudioRoutine = null;
+                    }
+                    destroyAfterAudioRoutine = DestroyAfterAudioPlaysRoutine();
+                    StartCoroutine(destroyAfterAudioRoutine);
+                    //DestroyForReuse();      // We explode after one hit
                 }
             }
         }
+    }
+
+    // Play sound effect, then explode/recycle
+    IEnumerator DestroyAfterAudioPlaysRoutine()
+    {
+        transform.position = new Vector3(200, 0, 0);    // Appears to disappear
+        yield return new WaitForSeconds(explosionAudioClip.length);
+        DestroyForReuse();
     }
 
     IEnumerator DamageDelay(float dmgDelay)

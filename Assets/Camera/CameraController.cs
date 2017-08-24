@@ -79,7 +79,10 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        // Always directly above playerShip
+        transform.position = new Vector3(GameManager.Singleton.playerShip.transform.position.x, GameManager.Singleton.playerShip.transform.position.y, transform.position.z);
         startPosition = transform.position;
+
         //startCameraMovementRoutine = StartGameCameraAnimationRoutine();
         //StartCoroutine(startCameraMovementRoutine);
         //playerGameplayOffset = transform.position - GameManager.Singleton.playerShip.transform.position;

@@ -10,7 +10,18 @@ public class Mine : PoolObject
     public float rotationFactor = 150.0f;
     public int explosionDmg = 20;
     public float dmgRange = 4.0f;
+
+    [Header("AUDIO")]
+    public AudioSource audioSource;
+    public AudioClip explosionAudioClip;
+
     private IEnumerator cr;
+    IEnumerator destroyAfterAudioRoutine;
+
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void OnEnable()
     {
@@ -50,7 +61,21 @@ public class Mine : PoolObject
         StopCoroutine(cr);
         DamageArea();   // Deal AoE dmg
         PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
-        DestroyForReuse();      // Recycle this fab
+
+        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+        {
+            audioSource.PlayOneShot(explosionAudioClip, 0.3f);
+            Debug.Log("AUDIO_PLAYING: " + audioSource.isPlaying);
+            //Debug.Break();
+        }
+        if (destroyAfterAudioRoutine != null)
+        {
+            StopCoroutine(destroyAfterAudioRoutine);
+            destroyAfterAudioRoutine = null;
+        }
+        destroyAfterAudioRoutine = DestroyAfterAudioPlaysRoutine();
+        StartCoroutine(destroyAfterAudioRoutine);
+        //DestroyForReuse();      // Recycle this fab
     }
 
     IEnumerator CircularRotate()
@@ -62,5 +87,13 @@ public class Mine : PoolObject
                                                                                     //Debug.Log(transform.forward);
             yield return null;
         }
+    }
+
+    // Play sound effect, then explode/recycle
+    IEnumerator DestroyAfterAudioPlaysRoutine()
+    {
+        transform.position = new Vector3(200, 0, 0);    // Appears to disappear
+        yield return new WaitForSeconds(explosionAudioClip.length);
+        DestroyForReuse();
     }
 }

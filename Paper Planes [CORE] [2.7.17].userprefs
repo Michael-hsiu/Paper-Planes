@@ -1,13 +1,20 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Powerups/ShurikenPowerup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefabs/UI/PlayAgainButton.cs">
     <Files>
-      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="89" Column="38" />
+      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="90" Column="20" />
       <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="71" Column="41" />
-      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="82" Column="60" />
-      <File FileName="Assets/Scripts/Utility/HealthPickup.cs" Line="15" Column="82" />
-      <File FileName="Assets/Camera/CameraController.cs" Line="70" Column="47" />
-      <File FileName="Assets/Scripts/Powerups/ShurikenObj.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="43" Column="58" />
+      <File FileName="Assets/Camera/CameraController.cs" Line="83" Column="174" />
       <File FileName="Assets/Scripts/Powerups/ShurikenPowerup.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Powerups/ShurikenObj.cs" Line="144" Column="71" />
+      <File FileName="Assets/Scripts/General/WaveShot.cs" Line="118" Column="18" />
+      <File FileName="Assets/Scripts/Powerups/Missile.cs" Line="36" Column="42" />
+      <File FileName="Assets/Scripts/Powerups/Mine.cs" Line="24" Column="6" />
+      <File FileName="Assets/Scripts/Powerups/TripMineWeapon.cs" Line="109" Column="33" />
+      <File FileName="Assets/Scripts/Utility/HealthPickup.cs" Line="60" Column="65" />
+      <File FileName="Assets/Prefabs/UI/StartScreen.cs" Line="43" Column="51" />
+      <File FileName="Assets/Scripts/Powerups/StraightMissile.cs" Line="28" Column="1" />
+      <File FileName="Assets/Prefabs/UI/PlayAgainButton.cs" Line="14" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -7,6 +7,7 @@ public class HealthPickup : Powerup
 
     public int healthAmnt = 100;
     //public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
+    IEnumerator destroyAfterAudioRoutine;
 
 
     public override void OnTriggerEnter(Collider other)
@@ -22,13 +23,20 @@ public class HealthPickup : Powerup
             if (GameManager.Singleton.playerHealth < GameManager.Singleton.playerMaxHealth)
             {
                 ActivatePowerup();
+                DestroyForReuse();
             }
             else
             {
                 GameManager.Singleton.numPowerupsCollected += 1;
                 powerupAudioSource.PlayOneShot(pickupAudioClip, 0.5f);
+                if (destroyAfterAudioRoutine != null)
+                {
+                    StopCoroutine(destroyAfterAudioRoutine);
+                    destroyAfterAudioRoutine = null;
+                }
+                destroyAfterAudioRoutine = DestroyAfterAudioPlaysRoutine();
+                StartCoroutine(destroyAfterAudioRoutine);
             }
-            DestroyForReuse();
         }
     }
 
@@ -43,5 +51,13 @@ public class HealthPickup : Powerup
         UIManager.Singleton.UpdateHealth(); // Update health in UI
 
         base.ActivatePowerup();
+    }
+
+    // Play sound effect, then explode/recycle
+    IEnumerator DestroyAfterAudioPlaysRoutine()
+    {
+        transform.position = new Vector3(200, 0, 0);    // Appears to disappear
+        yield return new WaitForSeconds(pickupAudioClip.length);
+        DestroyForReuse();
     }
 }

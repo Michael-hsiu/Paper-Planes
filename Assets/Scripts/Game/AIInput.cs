@@ -84,10 +84,10 @@ public class AIInput : MonoBehaviour, InputComponent
             if (Time.time > player.nextFire && !GameManager.Singleton.isBurstRushCharging && !GameManager.Singleton.isBurstRushing && !player.dashStarted)
             {
                 player.Fire();
-                if (isActiveAndEnabled)
-                {
-                    //StartCoroutine(PlayDelayedAudioRoutine(player));
-                }
+                //if (isActiveAndEnabled)
+                //{
+                //    StartCoroutine(PlayDelayedAudioRoutine(player));
+                //}
             }
 
             bool axisInput = GameManager.Singleton.axisInput;   // Check if we register hori/vert movement

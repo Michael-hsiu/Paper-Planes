@@ -24,6 +24,10 @@ public class WaveShot : PoolObject, IMovement
     public Renderer sprite;
     public float flickerTime = 0.05f;
 
+    [Header("AUDIO")]
+    public AudioSource audioSource;
+    public AudioClip sliceAudioClip;
+
     Rigidbody rigidBody;
     IEnumerator destroyAfterLifetimeRoutine;
     IEnumerator fadeRoutine;
@@ -79,6 +83,7 @@ public class WaveShot : PoolObject, IMovement
     void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();    // Find rigidbody
+        audioSource = GetComponent<AudioSource>();
     }
     protected void Start()
     {
@@ -107,6 +112,10 @@ public class WaveShot : PoolObject, IMovement
             if (idamageable != null)
             {
                 idamageable.Damage(waveShotDamage);
+                if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+                {
+                    audioSource.PlayOneShot(sliceAudioClip, 0.5f);
+                }
                 PoolManager.Instance.ReuseObject(debugExplosion, transform.position, Quaternion.identity);       // Visual indication that we hit an enemy
                 //Debug.Log("ENEMY HIT BY WAVE!");
             }

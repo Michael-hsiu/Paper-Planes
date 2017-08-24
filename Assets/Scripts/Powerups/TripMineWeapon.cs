@@ -104,7 +104,10 @@ public class TripMineWeapon : Powerup
             if (m != null)
             {
                 // Need to object pool explosions too
-                m.Explode();
+                if (m.isActiveAndEnabled)
+                {
+                    m.Explode();
+                }
             }
         }
     }

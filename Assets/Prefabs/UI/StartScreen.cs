@@ -31,8 +31,17 @@ public class StartScreen : MonoBehaviour
     [Header("CAMERA_REF")]
     public CameraController cameraController;
 
+    [Header("AUDIO")]
+    public AudioSource audioSource;
+    public AudioClip tapPlayAudioClip;
+
     IEnumerator tapFadeRoutine;
     IEnumerator startScreenDisappearRoutine;
+
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void Start()
     {
@@ -113,8 +122,10 @@ public class StartScreen : MonoBehaviour
     }
     IEnumerator OnClickedOnStartButtonRoutine()
     {
-        onStartScreen = false;
+        // Play tap audio
+        audioSource.PlayOneShot(tapPlayAudioClip, 1f);
 
+        onStartScreen = false;
         if (tapFadeRoutine != null)
         {
             StopCoroutine(tapFadeRoutine);
