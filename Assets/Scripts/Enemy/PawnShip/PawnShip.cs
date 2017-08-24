@@ -95,6 +95,7 @@ public class PawnShip : Ship
             //Kill();     
 
             // Don't spawn powerup; also shouldn't record pts; should record # still alive!
+            PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
             RegisterKillWithoutScore();
             OnKillReset();
             //enemyPoints = tempPts;

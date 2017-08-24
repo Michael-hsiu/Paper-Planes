@@ -194,7 +194,7 @@ public class PowerupSpawner : MonoBehaviour
                     if (currLevelIndex >= 6)
                     {
                         // Spawn health pack
-                        if (randomValue < 0.15f)
+                        if (randomValue < 0.1f)
                         {
                             spawnIndex = 0;
                         }
