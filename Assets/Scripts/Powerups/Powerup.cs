@@ -29,6 +29,10 @@ public class Powerup : PoolObject
     public bool assignedStartColor = false;
     public SpriteRenderer rawSprite;
 
+    [Header("AUDIO")]
+    public AudioSource powerupAudioSource;
+    public AudioClip pickupAudioClip;
+
     IEnumerator destroyAfterDurationRoutine;
     IEnumerator fadePowerupRoutine;
     public string powerupID;
@@ -36,6 +40,7 @@ public class Powerup : PoolObject
     public override void Start()
     {
         //rawSprite = GetComponent<SpriteRenderer>();
+        powerupAudioSource = GetComponent<AudioSource>();
         player = GameManager.Singleton.playerShip.GetComponent<PlayerShip>();
         assignedStartColor = false;
         ShowInScene();
@@ -75,6 +80,8 @@ public class Powerup : PoolObject
             fadePowerupRoutine = null;
         }
         GameManager.Singleton.numPowerupsCollected += 1;
+        powerupAudioSource.PlayOneShot(pickupAudioClip, 0.5f);
+        //Debug.Break();
     }
 
     public void DestroyAfterDuration()
@@ -168,6 +175,7 @@ public class Powerup : PoolObject
             {
                 PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);
             }
+            //Debug.Break();
             ActivatePowerup();
             HideInScene();      // Can't destroy it yet b/c it needs to invoke a method
 

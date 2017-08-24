@@ -25,6 +25,11 @@ public class ShurikenObj : PoolObject
     public float damageDelay = 0.1f;
     public bool canDamage = true;
 
+    [Header("AUDIO")]
+    public AudioSource audioSource;
+    public AudioClip sliceAudioClip;
+
+
     IEnumerator circularRotationRoutine;
     IEnumerator damageDelayRoutine;
 
@@ -32,6 +37,7 @@ public class ShurikenObj : PoolObject
     {
         initialColliderRadius = capsuleCollider.radius;
         initialLocalScale = capsuleCollider.transform.localScale;
+        audioSource = GetComponent<AudioSource>();
     }
 
     public override void OnObjectReuse()
@@ -133,6 +139,10 @@ public class ShurikenObj : PoolObject
                 if (canDamage && other.gameObject.GetComponent<IDamageable<int>>() != null)
                 {
                     other.gameObject.GetComponent<IDamageable<int>>().Damage(powerupData.damage);       // Inflict damage
+                    if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+                    {
+                        audioSource.PlayOneShot(sliceAudioClip, 0.5f);
+                    }
 
                     // The initial setting of damage boundary
                     if (!dmgDone)

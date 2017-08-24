@@ -67,6 +67,10 @@ public class PlayerShip : FiringShip
     public float maxForward = 3.0f;
     public float colliderRadius = 1.2f;
 
+    [Header("AUDIO")]
+    public AudioSource playerAudioSource;
+    public AudioClip firingAudioClip;
+
     public static PlayerShip singleton;
 
     #endregion

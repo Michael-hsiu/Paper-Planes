@@ -26,6 +26,7 @@ public class HealthPickup : Powerup
             else
             {
                 GameManager.Singleton.numPowerupsCollected += 1;
+                powerupAudioSource.PlayOneShot(pickupAudioClip, 0.5f);
             }
             DestroyForReuse();
         }

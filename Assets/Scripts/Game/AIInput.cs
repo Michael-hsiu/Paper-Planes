@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
+//using UnityStandardAssets.CrossPlatformInput;
 
 // Dash components modelled after: http://answers.unity3d.com/questions/892955/dashing-mechanic-using-rigidbodyaddforce.html
 public class AIInput : MonoBehaviour, InputComponent
@@ -68,6 +68,11 @@ public class AIInput : MonoBehaviour, InputComponent
     //        endTime += 3.0f;
     //    }
     //}
+    IEnumerator PlayDelayedAudioRoutine(PlayerShip player)
+    {
+        yield return new WaitForSeconds(1.2f);
+        player.playerAudioSource.PlayOneShot(player.firingAudioClip, 0.4f);   // Play audio
+    }
 
     // Called during PlayerShip's FixedUpdate()
     public void UpdateInput(PlayerShip player)
@@ -79,6 +84,10 @@ public class AIInput : MonoBehaviour, InputComponent
             if (Time.time > player.nextFire && !GameManager.Singleton.isBurstRushCharging && !GameManager.Singleton.isBurstRushing && !player.dashStarted)
             {
                 player.Fire();
+                if (isActiveAndEnabled)
+                {
+                    //StartCoroutine(PlayDelayedAudioRoutine(player));
+                }
             }
 
             bool axisInput = GameManager.Singleton.axisInput;   // Check if we register hori/vert movement

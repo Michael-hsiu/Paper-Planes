@@ -45,6 +45,11 @@ public class CameraController : MonoBehaviour
     //public List<GameObject> lerpOnStartObjectsRaw = new List<GameObject>();    // UI elements to fade in
     //public List<ColoredGameObject> lerpOnStartObjects = new List<ColoredGameObject>();    // UI elements to fade in
 
+    [Header("AUDIO")]
+    public AudioSource audioSource;
+    public AudioClip bgmAudioClip;
+    public float audioDelay = 3.0f;
+
     IEnumerator startCameraMovementRoutine;
     IEnumerator scoreUICameraMovementRoutine;
     IEnumerator tutorialUIDisappearRoutine;
@@ -59,8 +64,18 @@ public class CameraController : MonoBehaviour
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         DontDestroyOnLoad(this);
+        audioSource.time = audioDelay;
+        audioSource.PlayOneShot(bgmAudioClip);
+        //StartCoroutine(DelayedAudioRoutine());
     }
+
+    //IEnumerator DelayedAudioRoutine()
+    //{
+    //    yield return new WaitForSeconds(audioDelay);
+    //    audioSource.PlayOneShot(bgmAudioClip);
+    //}
 
     void Start()
     {

@@ -156,9 +156,9 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(playerDualShot, 50);
         PoolManager.Instance.CreatePool(playerTriShot, 50);
         PoolManager.Instance.CreatePool(playerUltiShot, 25);
-        PoolManager.Instance.CreatePool(enemySingleShot, 200);
-        PoolManager.Instance.CreatePool(turretSingleShot, 200);
-        PoolManager.Instance.CreatePool(enemyFasterShot, 200);
+        PoolManager.Instance.CreatePool(enemySingleShot, 150);
+        PoolManager.Instance.CreatePool(turretSingleShot, 150);
+        //PoolManager.Instance.CreatePool(enemyFasterShot, 100);
         PoolManager.Instance.CreatePool(enemyBulletHellShot, 100);
         PoolManager.Instance.CreatePool(rangedLvl1Shot, 100);
         PoolManager.Instance.CreatePool(rangedLvl2Shot, 100);
@@ -200,29 +200,29 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(straightMissiles, 100);
         PoolManager.Instance.CreatePool(playerStraightMissiles, 50);
         PoolManager.Instance.CreatePool(empWaveShot, 10);
-        PoolManager.Instance.CreatePool(teleMarker, 10);
+        //PoolManager.Instance.CreatePool(teleMarker, 10);
 
         // Enemies
-        PoolManager.Instance.CreatePool(pawnShipLvl1, 300);
-        PoolManager.Instance.CreatePool(pawnShipLvl2, 300);
-        PoolManager.Instance.CreatePool(pawnShipLvl3, 300);
+        PoolManager.Instance.CreatePool(pawnShipLvl1, 100);
+        PoolManager.Instance.CreatePool(pawnShipLvl2, 100);
+        PoolManager.Instance.CreatePool(pawnShipLvl3, 100);
 
-        PoolManager.Instance.CreatePool(rangedShipLvl1, 300);
-        PoolManager.Instance.CreatePool(rangedShipLvl2, 300);
-        PoolManager.Instance.CreatePool(rangedShipLvl3, 300);
+        PoolManager.Instance.CreatePool(rangedShipLvl1, 100);
+        PoolManager.Instance.CreatePool(rangedShipLvl2, 100);
+        PoolManager.Instance.CreatePool(rangedShipLvl3, 100);
 
-        PoolManager.Instance.CreatePool(bomberShipLvl1, 300);
-        PoolManager.Instance.CreatePool(bomberShipLvl2, 300);
-        PoolManager.Instance.CreatePool(bomberShipLvl3, 300);
+        PoolManager.Instance.CreatePool(bomberShipLvl1, 100);
+        PoolManager.Instance.CreatePool(bomberShipLvl2, 100);
+        PoolManager.Instance.CreatePool(bomberShipLvl3, 100);
 
         PoolManager.Instance.CreatePool(turretLvl1, 100);
         PoolManager.Instance.CreatePool(turretLvl2, 100);
         PoolManager.Instance.CreatePool(turretLvl3, 100);
 
 
-        PoolManager.Instance.CreatePool(mediShipLvl1, 100);
-        PoolManager.Instance.CreatePool(dropShipLvl1, 100);
-        PoolManager.Instance.CreatePool(assassinShipLvl1, 100);
+        //PoolManager.Instance.CreatePool(mediShipLvl1, 100);
+        //PoolManager.Instance.CreatePool(dropShipLvl1, 100);
+        //PoolManager.Instance.CreatePool(assassinShipLvl1, 100);
         PoolManager.Instance.CreatePool(missileBossLvl1, 2);
         PoolManager.Instance.CreatePool(sniperBossLvl1, 2);
         PoolManager.Instance.CreatePool(bomberBossStageOne, 15);
