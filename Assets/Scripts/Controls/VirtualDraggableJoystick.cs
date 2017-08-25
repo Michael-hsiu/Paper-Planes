@@ -12,6 +12,9 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
 
     public Vector3 inputDirection = Vector3.zero;
     public Vector3 fakeInputDirection;
+
+    public Vector3 currPos;
+    public Vector3 lastPos = Vector3.zero;
     public Camera tapHandleCamera;
     //public float joystickKnobDistance = 2.0f;       // Scales how far we can pull the knob from confines of the circle region
 
@@ -56,7 +59,19 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
                 joystickImg.rectTransform.anchoredPosition3D = tapPoint;
                 if (!GameManager.Singleton.cameraIsAnimating)
                 {
-                    inputDirection = (Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) - Camera.main.transform.position).normalized;
+                    //inputDirection = tapHandleCamera.ScreenToWorldPoint(Input.GetTouch(0).deltaPosition).normalized;
+                    currPos = tapHandleCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
+
+                    if (lastPos == Vector3.zero)
+                    {
+                        inputDirection = (currPos - tapHandleCamera.transform.position).normalized;
+                        lastPos = tapHandleCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
+                    }
+                    else
+                    {
+                        inputDirection = (currPos - lastPos).normalized;
+
+                    }
                 }
 
                 //Vector3 rawInputDirection = Input.GetTouch(0).deltaPosition.normalized;
@@ -154,6 +169,8 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
         //inputDirection = Vector3.zero;      // Reset position of joystick on release
         //joystickImg.rectTransform.anchoredPosition = Vector3.zero;      // Return joystick to its center position in bkgrndImg
         //bgImg.gameObject.SetActive(false);
+        currPos = Vector3.zero;
+        lastPos = Vector3.zero;
 
         joystickImg.gameObject.SetActive(false);
 

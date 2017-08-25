@@ -237,7 +237,7 @@ public class GameOverScreen : MonoBehaviour
         {
             spriteRenderer.color = startColor;
         }
-        leftJoystick.SetActive(true);
+        //leftJoystick.SetActive(true);
         //rightJoystick.SetActive(true);
 
         // Disable UI elements

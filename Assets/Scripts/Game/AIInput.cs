@@ -193,7 +193,8 @@ public class AIInput : MonoBehaviour, InputComponent
                         playerRotEuler.y = 0f;
                         playerStartRotation = Quaternion.Euler(playerRotEuler);
 
-                        zAnglePlayer = (Mathf.Atan2(moveInputDirection.y, moveInputDirection.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+                        Vector3 destRotEuler = virtualJoystickMove.currPos - virtualJoystickMove.lastPos;
+                        zAnglePlayer = (Mathf.Atan2(destRotEuler.y, destRotEuler.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
                         desiredRotation = Quaternion.Euler(0, 0, zAnglePlayer);        // Store rotation as an Euler, then Quaternion
                         rotationEndTime = Time.time + rotationDetectInterval;   // Schedule next rotation check
                         lerpStartTime = Time.time;
