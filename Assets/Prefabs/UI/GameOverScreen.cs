@@ -27,6 +27,8 @@ public class GameOverScreen : MonoBehaviour
     public Text highScoreText;
     public GameObject leftJoystick;
     public GameObject rightJoystick;
+    public GameObject draggableMainVirtualJoystickImg;
+    public GameObject draggableMainVirtualJoystick;
 
     [Header("SCORE_LERP_LOGIC")]
     public float scoreLerpDuration = 1.0f;
@@ -54,6 +56,13 @@ public class GameOverScreen : MonoBehaviour
         numPowerupsCollectedText.gameObject.SetActive(false);
     }
 
+    void Start()
+    {
+        //GameManager.Singleton.StartLevelEvent += OnGameStart;
+    }
+
+
+
     // Begins Score UI display sequence
     public void OnScoreUIEntered()
     {
@@ -70,6 +79,9 @@ public class GameOverScreen : MonoBehaviour
     {
         // Disable score_text and joysticks and pause_button
         UIManager.Singleton.scoreText.gameObject.SetActive(false);
+
+        draggableMainVirtualJoystick.SetActive(false);
+        draggableMainVirtualJoystickImg.SetActive(false);
         leftJoystick.SetActive(false);
         rightJoystick.SetActive(false);
         highScoreText.gameObject.SetActive(false);

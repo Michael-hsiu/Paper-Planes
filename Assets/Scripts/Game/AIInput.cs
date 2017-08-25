@@ -41,7 +41,8 @@ public class AIInput : MonoBehaviour, InputComponent
                                         //public DashState dashState;		// Stores current dash state
 
     public IEnumerator cr1;
-    public VirtualJoystick virtualJoystickMove;
+    //public VirtualJoystick virtualJoystickMove;
+    public VirtualDraggableJoystick virtualJoystickMove;
     public VirtualJoystick virtualJoystickRotate;
 
     //public enum DashState { Ready, Dashing, Cooldown}
@@ -192,7 +193,7 @@ public class AIInput : MonoBehaviour, InputComponent
                         playerRotEuler.y = 0f;
                         playerStartRotation = Quaternion.Euler(playerRotEuler);
 
-                        zAnglePlayer = (Mathf.Atan2(moveInputDirection.z, moveInputDirection.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+                        zAnglePlayer = (Mathf.Atan2(moveInputDirection.y, moveInputDirection.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
                         desiredRotation = Quaternion.Euler(0, 0, zAnglePlayer);        // Store rotation as an Euler, then Quaternion
                         rotationEndTime = Time.time + rotationDetectInterval;   // Schedule next rotation check
                         lerpStartTime = Time.time;

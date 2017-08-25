@@ -176,7 +176,7 @@ public class CameraController : MonoBehaviour
             tutorialTextMesh03.color = tutorialDisappearEndColor;
         }
         //healthBar.SetActive(true);
-        leftJoystick.SetActive(true);
+        //leftJoystick.SetActive(true);
         //rightJoystick.SetActive(true);
 
         if (startCameraMovementRoutine != null)

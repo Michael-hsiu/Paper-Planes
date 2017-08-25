@@ -144,6 +144,7 @@
     <Compile Include="Assets\Prefabs\UI\StartScreen.cs" />
     <Compile Include="Assets\Prefabs\UI\TutorialConfirmScreen.cs" />
     <Compile Include="Assets\Prefabs\UI\UpgradesListPanel.cs" />
+    <Compile Include="Assets\Scripts\Controls\VirtualDraggableJoystick.cs" />
     <Compile Include="Assets\Scripts\Enemy\AssassinCollisionHelper.cs" />
     <Compile Include="Assets\Scripts\Enemy\AssassinShip.cs" />
     <Compile Include="Assets\Scripts\Enemy\BomberBoss\BomberBoss.cs" />
