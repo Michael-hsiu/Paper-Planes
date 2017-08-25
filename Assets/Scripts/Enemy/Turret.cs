@@ -40,6 +40,10 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     public Color startColor;
     public Renderer sprite;
     public float flickerTime = 0.05f;
+
+
+    [Header("AUDIO")]
+    public AudioClip hitSoundAudioClip;
     #endregion
 
     #region Properties
@@ -138,7 +142,11 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
     public virtual void Damage(int damageTaken)
     {
+        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.2f);      // Play hit sound
 
+        }
         // Restart flicker animation
         if (hitFlickerRoutine != null)
         {
@@ -173,6 +181,7 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
         //transform.gameObject.SetActive(false);	// "Destroy" our gameobject
 
         PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
+        //GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.2f);      // Play hit sound
 
         DisplayKillScore();            // Displays the score
         OnKillReset();     // Resets the logic

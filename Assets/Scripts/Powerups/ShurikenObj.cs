@@ -141,7 +141,7 @@ public class ShurikenObj : PoolObject
                     other.gameObject.GetComponent<IDamageable<int>>().Damage(powerupData.damage);       // Inflict damage
                     if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
                     {
-                        audioSource.PlayOneShot(sliceAudioClip, 0.5f);
+                        audioSource.PlayOneShot(sliceAudioClip, 0.3f);
                     }
 
                     // The initial setting of damage boundary

@@ -27,6 +27,7 @@ public class BurstRushPowerup : Powerup
     //public PlayerShip player;
     public Vector3 oldVelocity;
 
+
     public SpecialWeapons id = SpecialWeapons.RUSH;
 
 

@@ -47,6 +47,8 @@ public class CameraController : MonoBehaviour
 
     [Header("AUDIO")]
     public AudioSource audioSource;
+    public AudioSource bomberAudioSource;
+
     public AudioClip bgmAudioClip;
     public float audioDelay = 3.0f;
 
@@ -64,7 +66,7 @@ public class CameraController : MonoBehaviour
 
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
         DontDestroyOnLoad(this);
         //audioSource.time = audioDelay;
         audioSource.clip = bgmAudioClip;

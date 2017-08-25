@@ -29,6 +29,8 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     public Renderer sprite;
     public float flickerTime = 0.05f;
 
+    [Header("AUDIO")]
+    public AudioClip hitSoundAudioClip;
 
     /** UNITY CALLBACKS */
 
@@ -75,7 +77,11 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     public virtual void Damage(int damageTaken)
     {
+        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.2f);      // Play hit sound
 
+        }
         // Restart flicker animation
         if (hitFlickerRoutine == null)
         {
@@ -115,6 +121,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     public virtual void Kill()
     {
+
         DisplayKillScore();            // Displays the score
         OnKillReset();     // Resets the logic
         RegisterKill();     // Register kill to counts

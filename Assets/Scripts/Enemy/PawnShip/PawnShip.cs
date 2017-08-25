@@ -9,6 +9,7 @@ public class PawnShip : Ship
 
     public int touchDamage = 10;
 
+
     #region Unity Life Cycle
     protected override void Start()
     {

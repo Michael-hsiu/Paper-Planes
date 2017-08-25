@@ -114,7 +114,7 @@ public class WaveShot : PoolObject, IMovement
                 idamageable.Damage(waveShotDamage);
                 if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
                 {
-                    audioSource.PlayOneShot(sliceAudioClip, 0.5f);
+                    audioSource.PlayOneShot(sliceAudioClip, 0.3f);
                 }
                 PoolManager.Instance.ReuseObject(debugExplosion, transform.position, Quaternion.identity);       // Visual indication that we hit an enemy
                 //Debug.Log("ENEMY HIT BY WAVE!");
