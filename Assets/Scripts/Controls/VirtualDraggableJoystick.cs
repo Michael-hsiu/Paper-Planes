@@ -42,11 +42,15 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
     {
         if (GameManager.Singleton.levelActive)
         {
+
             Debug.Log("TOUCH_COUNT_PTER_DRAG: " + Input.touchCount);
 
             Debug.Log("ON_DRAG_CALLED!");
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             {
+                // Currently kind of glitchy if set in OnPterDown (appears in last pos)
+                joystickImg.gameObject.SetActive(true);
+
                 Vector2 tapPoint = Input.GetTouch(0).position;
                 tapPoint = tapHandleCamera.ScreenToWorldPoint(new Vector3(tapPoint.x, tapPoint.y, transform.position.z));        // Core logic
                                                                                                                                  //tapPoint.y = Screen.width - tapPoint.y;
@@ -64,7 +68,8 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
 
                     if (lastPos == Vector3.zero)
                     {
-                        inputDirection = (currPos - tapHandleCamera.transform.position).normalized;
+                        //inputDirection = (currPos - tapHandleCamera.transform.position).normalized;
+                        inputDirection = Vector3.zero;
                         lastPos = tapHandleCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
                     }
                     else
@@ -115,7 +120,7 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
         //bgImg.gameObject.SetActive(true);
         if (GameManager.Singleton.levelActive)
         {
-            joystickImg.gameObject.SetActive(true);
+            //joystickImg.gameObject.SetActive(true);
 
             Debug.Log("ON_PTER_DOWN!");
             Debug.Log("TOUCH_COUNT_PTER_DOWN: " + Input.touchCount);
@@ -123,15 +128,18 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
 
 
 
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            if (Input.touchCount > 0)
             {
                 if (GameManager.Singleton.cameraIsAnimating)
                 {
-                    Vector2 tapPoint = Input.GetTouch(0).position;
-                    tapPoint = tapHandleCamera.ScreenToWorldPoint(tapPoint);        // Core logic
+                    //Vector2 tapPoint = Input.GetTouch(0).position;
+                    //tapPoint = tapHandleCamera.ScreenToWorldPoint(new Vector3(tapPoint.x, tapPoint.y, transform.position.z));        // Core logic
+                    //                                                                                                                 //tapPoint.y = Screen.width - tapPoint.y;
+                    //                                                                                                                 //bgImg.rectTransform.anchoredPosition3D = tapPoint;
+                    //joystickImg.rectTransform.anchoredPosition3D = tapPoint;
 
                     //bgImg.rectTransform.anchoredPosition = tapPoint;
-                    joystickImg.rectTransform.anchoredPosition = tapPoint;
+                    //joystickImg.rectTransform.anchoredPosition = tapPoint;
 
                     //inputDirection = Input.GetTouch(0).deltaPosition.normalized;
                 }
@@ -142,23 +150,29 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
 
                 Debug.Log("TOUCHPHASE_BEGAN!");
             }
-            else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            {
-                Vector2 tapPoint = Input.GetTouch(0).position;
-                tapPoint = tapHandleCamera.ScreenToWorldPoint(tapPoint);        // Core logic
 
-                //bgImg.rectTransform.anchoredPosition = tapPoint;
-                joystickImg.rectTransform.anchoredPosition = tapPoint;
+            //else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+            //{
+            //    Debug.Log("TOUCHPHASE_ENDED!");
+            //    //Debug.Break();
+            //}
+            OnDrag(ped);        // A single tap makes front knob snap to touch location
 
-                //inputDirection = Input.GetTouch(0).deltaPosition.normalized;
-                Debug.Log("TOUCHPHASE_MOVED!");
-            }
-            else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                Debug.Log("TOUCHPHASE_ENDED!");
-                //Debug.Break();
-            }
-            //OnDrag(ped);        // A single tap makes front knob snap to touch location
+        }
+        else if (Input.touchCount > 0/* && Input.GetTouch(0).phase == TouchPhase.Moved*/)
+        {
+            //Vector2 tapPoint = Input.GetTouch(0).position;
+            //tapPoint = tapHandleCamera.ScreenToWorldPoint(new Vector3(tapPoint.x, tapPoint.y, transform.position.z));        // Core logic
+            //                                                                                                                 //tapPoint.y = Screen.width - tapPoint.y;
+            //                                                                                                                 //bgImg.rectTransform.anchoredPosition3D = tapPoint;
+            //joystickImg.rectTransform.anchoredPosition3D = tapPoint;
+
+            //bgImg.rectTransform.anchoredPosition = tapPoint;
+            //joystickImg.rectTransform.anchoredPosition = tapPoint;
+
+            //inputDirection = Input.GetTouch(0).deltaPosition.normalized;
+            //Debug.Log("TOUCHPHASE_MOVED!");
+            OnDrag(ped);        // A single tap makes front knob snap to touch location
 
         }
 

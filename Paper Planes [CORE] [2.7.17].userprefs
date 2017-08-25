@@ -1,14 +1,17 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefabs/UI/GameOverScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs">
     <Files>
       <File FileName="Assets/Scripts/Game/AIInput.cs" Line="197" Column="164" />
       <File FileName="Assets/Camera/CameraController.cs" Line="123" Column="34" />
       <File FileName="Assets/Inputs/VirtualJoystick.cs" Line="72" Column="31" />
-      <File FileName="Assets/Scripts/Controls/VirtualDraggableJoystick.cs" Line="65" Column="48" />
-      <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="240" Column="38" />
+      <File FileName="Assets/Scripts/Controls/VirtualDraggableJoystick.cs" Line="119" Column="15" />
+      <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="240" Column="40" />
       <File FileName="Assets/Scripts/Game/GameManager.cs" Line="23" Column="27" />
       <File FileName="Assets/Scripts/Game/UIManager.cs" Line="376" Column="55" />
-      <File FileName="Assets/Prefabs/UI/PlayAgainButton.cs" Line="25" Column="45" />
+      <File FileName="Assets/Prefabs/UI/PlayAgainButton.cs" Line="12" Column="5" />
+      <File FileName="Assets/Scripts/Powerups/Missile.cs" Line="273" Column="6" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="111" Column="14" />
+      <File FileName="Assets/Scripts/Enemy/Sniper Boss/SniperBoss.cs" Line="68" Column="15" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

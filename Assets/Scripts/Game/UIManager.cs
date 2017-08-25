@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     public string bossSpawnedText = "A boss has spawned!";
     public string bossDeathText = "Boss defeated! Super Powerups will now spawn for 30s!";
     public GameObject draggableMainVirtualJoystick;
+    public GameObject draggableMainVirtualJoystickImg;
 
 
     public float numEnemiesEaseOutDuration = 0.5f;
@@ -375,6 +376,8 @@ public class UIManager : MonoBehaviour
         //shopButton.SetActive(false);
         //startGameButton.gameObject.SetActive(false);
         draggableMainVirtualJoystick.SetActive(true);
+        //draggableMainVirtualJoystickImg.SetActive(true);
+
         scoreGoalText.text = GameManager.Singleton.enemyScoreBoundaries[GameManager.Singleton.currLevel].ToString();
 
         // Can we dynamically pass in params to event subscribers?

@@ -66,8 +66,9 @@ public class CameraController : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         DontDestroyOnLoad(this);
-        audioSource.time = audioDelay;
-        audioSource.PlayOneShot(bgmAudioClip);
+        //audioSource.time = audioDelay;
+        audioSource.clip = bgmAudioClip;
+        audioSource.Play();
         //StartCoroutine(DelayedAudioRoutine());
     }
 
