@@ -7,9 +7,12 @@ public class LaserCollider : MonoBehaviour
 
     public int dmg = 10;        // Damage param for burstRush
     public float dmgDelay = 0.05f;      // Delay btwn hits to player
-    [SerializeField] private float nextDmgTime = 0f;
+    public float nextDmgTime = 0f;
 
     [SerializeField] private Collider laserCollider;
+
+    [Header("AUDIO")]
+    public AudioClip laserHitAudioClip;
 
     void Awake()
     {
@@ -22,6 +25,7 @@ public class LaserCollider : MonoBehaviour
 
         if (other.gameObject.CompareTag(Constants.PlayerTag))
         {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(laserHitAudioClip, 0.5f);
 
             // Damage the player continuously with laser, with some delay btwn hits
             if (other.gameObject != null)
