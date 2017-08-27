@@ -118,8 +118,9 @@ public class RangedMS : MonoBehaviour, IMoveState
         }
     }
 
+    // Called by parent ranged_ship on pool reuse
     public void OnObjectReuse()
     {
-
+        direction = Direction.FORWARDS;     // Reset movement direction
     }
 }

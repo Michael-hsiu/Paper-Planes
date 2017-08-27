@@ -66,11 +66,16 @@ public class CameraController : MonoBehaviour
 
     void Awake()
     {
-        //audioSource = GetComponent<AudioSource>();
-        DontDestroyOnLoad(this);
+        audioSource = GetComponent<AudioSource>();
         //audioSource.time = audioDelay;
-        audioSource.clip = bgmAudioClip;
-        audioSource.Play();
+        if (audioSource != null)
+        {
+            audioSource.clip = bgmAudioClip;
+            audioSource.Play();
+
+        }
+
+        DontDestroyOnLoad(this);
         //StartCoroutine(DelayedAudioRoutine());
     }
 

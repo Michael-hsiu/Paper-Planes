@@ -93,8 +93,9 @@ public class RangedFS : MonoBehaviour, IFireState
         }
     }
 
+    // Called by parent ranged_ship on pool reuse
     public void OnObjectReuse()
     {
-
+        mode = FiringMode.NotFiring;        // Reset to default firing mode
     }
 }

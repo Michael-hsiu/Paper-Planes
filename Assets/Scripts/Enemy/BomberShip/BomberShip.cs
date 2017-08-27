@@ -34,6 +34,12 @@ public class BomberShip : Ship
     #endregion
 
     #region Unity Life Cycle
+
+    void Awake()
+    {
+        bomberAudioSource = GetComponent<AudioSource>();
+    }
+
     protected override void Start()
     {
         // Call our overridden initalization method
@@ -121,7 +127,11 @@ public class BomberShip : Ship
         else
         {
             // We direct OUR audio_source to stop playing whir sound
-            bomberAudioSource.Stop();      // Play hit sound
+            if (bomberAudioSource != null)
+            {
+                bomberAudioSource.Stop();      // Play hit sound
+
+            }
 
             // We tell camera audio_source to play our explsn_death_sound
             if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
@@ -233,7 +243,10 @@ public class BomberShip : Ship
 
         if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
         {
-            bomberAudioSource.PlayOneShot(whirAudioClip, 0.4f);      // Play hit sound
+            if (bomberAudioSource != null)
+            {
+                bomberAudioSource.PlayOneShot(whirAudioClip, 0.4f);      // Play hit sound
+            }
 
         }
         explosionTime = Time.time + explosionDelay;         // Used to determine when the ship stops moving
