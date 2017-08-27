@@ -8,7 +8,7 @@
       <File FileName="Assets/Camera/CameraController.cs" Line="76" Column="9" />
       <File FileName="Assets/Scripts/Powerups/BurstChargeColliders.cs" Line="20" Column="9" />
       <File FileName="Assets/Scripts/Game/PowerupSpawner.cs" Line="232" Column="98" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="474" Column="52" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="533" Column="10" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
