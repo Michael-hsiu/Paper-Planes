@@ -21,10 +21,20 @@ public class UIManager : MonoBehaviour
     public string newEnemyText = "New enemies have appeared!";
     public string newEnemyUpgradesText = "Existing enemies are now stronger!";
     public string bossSpawnedText = "A boss has spawned!";
-    public string bossDeathText = "Boss defeated! Super Powerups will now spawn for 30s!";
+    public string bossDeathTextOne = "Boss defeated!";
+    public string bossDeathTextTwo = "Super Powerups will now spawn for 30s!";
+
     public GameObject draggableMainVirtualJoystick;
     public GameObject draggableMainVirtualJoystickImg;
 
+    public float bossDeathEaseOutDurationOne = 0.5f;
+    public float bossDeathEaseInLerpDurationOne = 0.5f;
+    public float bossDeathTextDurationOne = 0.4f;
+
+    public float bossDeathEaseOutDurationTwo = 0.6f;
+    public float bossDeathEaseInLerpDurationTwo = 0.6f;
+    public float bossDeathTextDurationTwo = 0.4f;
+    public float bossDeathLerpRatio;
 
     public float numEnemiesEaseOutDuration = 0.5f;
     public float newEnemiesEaseInLerpDuration = 0.5f;
@@ -34,7 +44,6 @@ public class UIManager : MonoBehaviour
     public Color textEndColor;
     public bool assignedStartColor = false;
 
-    public float bossDeathLerpRatio;    // Other lerp logic same as new_enemies
 
     //[Header("NEW_ENEMY_UPGRADE_IMGS")]
 
@@ -488,6 +497,7 @@ public class UIManager : MonoBehaviour
     // Announce that a boss was spawned
     IEnumerator OnBossDeathUIRoutine()
     {
+        // 1st part of msg
         // Ease in the annoucement
         if (!assignedStartColor)
         {
@@ -503,28 +513,56 @@ public class UIManager : MonoBehaviour
         }
         // Prep the text
         scoreGoalText.color = textStartColor;
-        scoreGoalText.text = bossDeathText;
+        scoreGoalText.text = bossDeathTextOne;
 
         bossDeathLerpRatio = 0.0f;
         while (bossDeathLerpRatio < 1.0f)
         {
-            bossDeathLerpRatio += (Time.deltaTime / newEnemiesEaseInLerpDuration);
+            bossDeathLerpRatio += (Time.deltaTime / bossDeathEaseInLerpDurationOne);
             Color lerpColor = Color.Lerp(textStartColor, textEndColor, bossDeathLerpRatio);
             scoreGoalText.color = lerpColor;
             yield return null;
         }
 
         // Annoucement stays for a duration
-        yield return new WaitForSeconds(newEnemiesTextDuration);
+        yield return new WaitForSeconds(bossDeathTextDurationOne);
         //Debug.Break();
         // Ease out the annoucement
         bossDeathLerpRatio = 0.0f;
         while (bossDeathLerpRatio < 1.0f)
         {
-            bossDeathLerpRatio += (Time.deltaTime / numEnemiesEaseOutDuration);
+            bossDeathLerpRatio += (Time.deltaTime / bossDeathEaseOutDurationOne);
             scoreGoalText.color = Color.Lerp(textEndColor, textStartColor, bossDeathLerpRatio);
             yield return null;
         }
+
+        // Now 2nd part of msg
+        // Prep the text
+        scoreGoalText.color = textStartColor;
+        scoreGoalText.text = bossDeathTextTwo;
+
+        bossDeathLerpRatio = 0.0f;
+        while (bossDeathLerpRatio < 1.0f)
+        {
+            bossDeathLerpRatio += (Time.deltaTime / bossDeathEaseInLerpDurationTwo);
+            Color lerpColor = Color.Lerp(textStartColor, textEndColor, bossDeathLerpRatio);
+            scoreGoalText.color = lerpColor;
+            yield return null;
+        }
+
+        // Annoucement stays for a duration
+        yield return new WaitForSeconds(bossDeathTextDurationTwo);
+        //Debug.Break();
+        // Ease out the annoucement
+        bossDeathLerpRatio = 0.0f;
+        while (bossDeathLerpRatio < 1.0f)
+        {
+            bossDeathLerpRatio += (Time.deltaTime / bossDeathEaseOutDurationTwo);
+            scoreGoalText.color = Color.Lerp(textEndColor, textStartColor, bossDeathLerpRatio);
+            yield return null;
+        }
+
+        // Teardown
         scoreGoalText.gameObject.SetActive(false);
         scoreGoalTextBkgrnd.gameObject.SetActive(false);
 
