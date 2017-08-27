@@ -44,6 +44,7 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
     [Header("AUDIO")]
     public AudioClip hitSoundAudioClip;
+    public AudioClip deathSoundAudioClip;
     #endregion
 
     #region Properties
@@ -161,6 +162,13 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
             Kill();
             //Debug.Log ("Killed via projectile weapon");
         }
+        else
+        {
+            if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+            {
+                GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.6f);      // Play hit sound
+            }
+        }
     }
 
     // Flicker when hit
@@ -179,7 +187,11 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     {
         //Destroy (transform.gameObject);		// Destroy our gameobject
         //transform.gameObject.SetActive(false);	// "Destroy" our gameobject
+        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(deathSoundAudioClip, 1f);      // Play hit sound
 
+        }
         PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
         //GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.2f);      // Play hit sound
 

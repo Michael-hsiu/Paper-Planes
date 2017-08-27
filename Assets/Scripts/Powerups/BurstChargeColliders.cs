@@ -10,6 +10,7 @@ public class BurstChargeColliders : MonoBehaviour
 
     [Header("AUDIO")]
     public AudioClip rushAudioClip;
+    public AudioClip scorchAudioClip;
 
 
     void OnTriggerStay(Collider other)
@@ -23,6 +24,7 @@ public class BurstChargeColliders : MonoBehaviour
                 if (other.gameObject.GetComponent<IDamageable<int>>() != null)
                 {
                     GameManager.Singleton.cameraController.audioSource.PlayOneShot(rushAudioClip, 0.5f);
+                    GameManager.Singleton.cameraController.audioSource.PlayOneShot(scorchAudioClip, 0.4f);
 
                     other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);      // Inflict damage
                     PoolManager.Instance.ReuseObject(explosion, other.transform.position, Quaternion.identity);

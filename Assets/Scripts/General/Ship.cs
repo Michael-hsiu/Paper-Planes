@@ -31,6 +31,8 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     [Header("AUDIO")]
     public AudioClip hitSoundAudioClip;
+    public AudioClip deathSoundAudioClip;
+
 
     /** UNITY CALLBACKS */
 
@@ -77,11 +79,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     public virtual void Damage(int damageTaken)
     {
-        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
-        {
-            GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.1f);      // Play hit sound
 
-        }
         // Restart flicker animation
         if (hitFlickerRoutine == null)
         {
@@ -98,6 +96,13 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
         {
             Kill();
             //Debug.Log ("Killed via projectile weapon");
+        }
+        else
+        {
+            if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+            {
+                GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.1f);      // Play hit sound
+            }
         }
     }
 
@@ -121,7 +126,11 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     public virtual void Kill()
     {
+        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(deathSoundAudioClip, 0.6f);      // Play hit sound
 
+        }
         DisplayKillScore();            // Displays the score
         OnKillReset();     // Resets the logic
         RegisterKill();     // Register kill to counts

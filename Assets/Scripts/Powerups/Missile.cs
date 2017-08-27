@@ -247,7 +247,7 @@ public class Missile : PoolObject
                     //Debug.Log ("MISSILE EXPLODED!");
                     if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
                     {
-                        audioSource.PlayOneShot(explosionAudioClip, 0.2f);
+                        audioSource.PlayOneShot(explosionAudioClip, 0.4f);
                         Debug.Log("AUDIO_PLAYING: " + audioSource.isPlaying);
                         //Debug.Break();
                     }
