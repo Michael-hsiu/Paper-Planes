@@ -229,6 +229,7 @@ public class PowerupSpawner : MonoBehaviour
                 {
                     spawnIndex = Random.Range(0, superPowerupsList.Count);
                     PoolManager.Instance.ReuseObject(superPowerupsList[spawnIndex], totalVector, Quaternion.identity);
+                    //Debug.Log(superPowerupsList[spawnIndex].GetComponent<Powerup>().powerupID);
                 }
                 yield return new WaitForSeconds(Random.Range(spawnDelayLowerBound, spawnDelayUpperBound));
             }
