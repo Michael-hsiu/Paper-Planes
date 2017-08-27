@@ -20,7 +20,7 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
 
     void Awake()
     {
-        //GameManager.Singleton.StartLevelEvent += ResetJoystick;
+        GameManager.Singleton.StartLevelEvent += ResetJoystick;
     }
 
     void Update()
@@ -32,7 +32,7 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
     {
         // Reset joystick on game_start
         inputDirection = Vector3.zero;
-        joystickImg.rectTransform.anchoredPosition = Vector3.zero;      // Return joystick_img to center of mount 
+        //joystickImg.rectTransform.anchoredPosition = Vector3.zero;      // Return joystick_img to center of mount 
 
         Debug.Log("JOYSTICK_RESET");
         //Debug.Break();

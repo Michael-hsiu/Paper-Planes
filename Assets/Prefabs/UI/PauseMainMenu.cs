@@ -18,6 +18,7 @@ public class PauseMainMenu : MenuScreen
     public MenuScreen creditsScreen;
 
 
+
     // Called when pause button is pressed again
     // Timescale must be separately set back to 1
     //public void OnTearDown()
@@ -34,6 +35,8 @@ public class PauseMainMenu : MenuScreen
     // Transition to Tutorial Confirmation screen
     public void OnTransitionToTutorialConfirmationScreen()
     {
+        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+
         tutorialConfirmScreen.gameObject.SetActive(true);
         tutorialConfirmScreen.OnSetup();
         OnTearDown();
@@ -43,6 +46,9 @@ public class PauseMainMenu : MenuScreen
     // Option to adjust volume, with #s
     public void OnTransitionToMusicScreen()
     {
+        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+
+
         musicScreen.gameObject.SetActive(true);
         musicScreen.OnSetup();
         OnTearDown();
@@ -52,6 +58,8 @@ public class PauseMainMenu : MenuScreen
     // Transition to Credits screen
     public void OnTransitionToCreditsScreen()
     {
+        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+
         creditsScreen.gameObject.SetActive(true);
         creditsScreen.OnSetup();
         OnTearDown();

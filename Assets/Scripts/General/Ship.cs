@@ -128,7 +128,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     {
         if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
         {
-            GameManager.Singleton.cameraController.audioSource.PlayOneShot(deathSoundAudioClip, 0.6f);      // Play hit sound
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(deathSoundAudioClip, 0.3f);      // Play hit sound
 
         }
         DisplayKillScore();            // Displays the score

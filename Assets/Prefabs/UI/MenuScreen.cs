@@ -5,8 +5,12 @@ using UnityEngine.UI;
 
 public class MenuScreen : MonoBehaviour
 {
+    [Header("UI_ELEMENTS")]
     public MenuScreen pauseMainMenu;
     public List<GameObject> UIElementsToEnable = new List<GameObject>();
+
+    [Header("AUDIO")]
+    public AudioClip onTappedAudioClip;
 
     // Called when screen is displayed to player
     public virtual void OnSetup()

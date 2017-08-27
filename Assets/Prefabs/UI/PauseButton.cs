@@ -9,9 +9,14 @@ public class PauseButton : MonoBehaviour
     public bool gamePaused = false;
     public MenuScreen pauseMainMenu;
 
+    [Header("AUDIO")]
+    public AudioClip onTappedAudioClip;
+
     // Called when Pause Button is clicked
     public void OnClick()
     {
+        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+
         if (!gamePaused)
         {
             Time.timeScale = 0;

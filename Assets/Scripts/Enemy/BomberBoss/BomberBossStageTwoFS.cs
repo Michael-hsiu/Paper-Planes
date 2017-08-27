@@ -86,7 +86,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
     {
         // Choose an attack
         float randomVal = Random.value;
-        if (randomVal <= 0.7f)
+        if (randomVal <= 1.0f)
         {
             // Trigger the SLINGSHOT attack
             slingShotAttackActive = true;
@@ -94,12 +94,12 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
             Debug.Log(slingshotAttackRoutine == null);
             //Debug.Break();
         }
-        else
-        {
-            // Trigger the RUSH attack
-            rushAttackActive = true;
-            attackStatus = AttackStatus.BOMBER_BOSS_RUSH_ATTACK;
-        }
+        //else
+        //{
+        //    // Trigger the RUSH attack
+        //    rushAttackActive = true;
+        //    attackStatus = AttackStatus.BOMBER_BOSS_RUSH_ATTACK;
+        //}
     }
 
     // Set next possible time for attack 

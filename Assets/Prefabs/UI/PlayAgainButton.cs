@@ -8,7 +8,7 @@ public class PlayAgainButton : MonoBehaviour
     public GameOverScreen gameOverScreen;
 
     [Header("AUDIO")]
-    public AudioSource audioSource;
+    //public AudioSource audioSource;
     public AudioClip playAgainAudioClip;
 
     IEnumerator returnAfterAudioRoutine;

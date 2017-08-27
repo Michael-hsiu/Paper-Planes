@@ -1,10 +1,19 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/Turret.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Prefabs/UI/PauseButton.cs">
     <Files>
       <File FileName="Assets/Scripts/Powerups/Missile.cs" Line="250" Column="75" />
-      <File FileName="Assets/Scripts/Powerups/BurstChargeColliders.cs" Line="27" Column="107" />
-      <File FileName="Assets/Scripts/General/Ship.cs" Line="106" Column="10" />
-      <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="163" Column="10" />
+      <File FileName="Assets/Scripts/Powerups/BurstChargeColliders.cs" Line="30" Column="71" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="90" Column="51" />
+      <File FileName="Assets/Scripts/Enemy/Turret.cs" Line="169" Column="102" />
+      <File FileName="Assets/Scripts/Controls/VirtualDraggableJoystick.cs" Line="35" Column="40" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="193" Column="21" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoFS.cs" Line="102" Column="12" />
+      <File FileName="Assets/Prefabs/UI/PlayAgainButton.cs" Line="25" Column="96" />
+      <File FileName="Assets/Prefabs/UI/PauseMainMenu.cs" Line="38" Column="95" />
+      <File FileName="Assets/Prefabs/UI/MenuScreen.cs" Line="13" Column="39" />
+      <File FileName="Assets/Prefabs/UI/TutorialConfirmScreen.cs" Line="4" Column="22" />
+      <File FileName="Assets/Prefabs/UI/CreditsScreen.cs" Line="15" Column="9" />
+      <File FileName="Assets/Prefabs/UI/PauseButton.cs" Line="18" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
