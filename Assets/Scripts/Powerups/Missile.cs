@@ -32,6 +32,7 @@ public class Missile : PoolObject
     public AudioSource audioSource;
     public AudioClip explosionAudioClip;
 
+    Rigidbody rigidBody;
     IEnumerator seekMoveRoutine;
     IEnumerator destroyAfterAudioRoutine;
     //void OnEnable()
@@ -48,9 +49,11 @@ public class Missile : PoolObject
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        rigidBody = GetComponent<Rigidbody>();
     }
     public override void OnObjectReuse()
     {
+        rigidBody.velocity = Vector3.zero;
         transform.rotation = Quaternion.identity;
         canDmg = true;
 

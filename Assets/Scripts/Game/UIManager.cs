@@ -334,6 +334,8 @@ public class UIManager : MonoBehaviour
 
         // SUBSCRIBE to GameManager StartLevelEvent
         GameManager.Singleton.StartLevelEvent += OnLevelStartUpdateUI;
+        GameManager.Singleton.EndLevelEvent += OnLevelEndUpdateUI;
+
     }
 
     public void ResetHealthBar()
@@ -686,8 +688,21 @@ public class UIManager : MonoBehaviour
         //}
     }
 
-    public void EndLevel(int level)
+    // This is called on game_over
+    public void OnLevelEndUpdateUI()
     {
+        if (activeRoutine != null)
+        {
+            StopCoroutine(activeRoutine);
+        }
+        if (UIprocessRoutine != null)
+        {
+            StopCoroutine(UIprocessRoutine);
+        }
+        pendingRoutines.Clear();    // Remove all remaining routines
+
+        scoreGoalText.gameObject.SetActive(false);
+        scoreGoalTextBkgrnd.gameObject.SetActive(false);
         //DisplayVictoryScreen();                                 // Opens the Victory Screen and the only current way of progressing to next level.
         //GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
     }

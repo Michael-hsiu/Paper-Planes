@@ -7,6 +7,8 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 {
 
     #region Variables
+    public EnemyScriptableObject defaultValues;
+
     public EnemyType enemyType = EnemyType.Turret;
     public GameObject scoreText;    // Prefab for score_text
 
@@ -68,6 +70,9 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
         sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
         startColor = sprite.material.color;
+
+        // Reset default values
+        health = defaultValues.health;
 
         if (burstFireRoutine == null)
         {

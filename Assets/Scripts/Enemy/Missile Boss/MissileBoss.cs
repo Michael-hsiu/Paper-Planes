@@ -96,6 +96,8 @@ public class MissileBoss : Ship, IEnemy
 
     #endregion
 
+
+
     public override void Kill()
     {
         // Graphics

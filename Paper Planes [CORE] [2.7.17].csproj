@@ -189,7 +189,7 @@
     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossFiringDistanceCollider.cs" />
     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossMS.cs" />
     <Compile Include="Assets\Scripts\Enemy\Sniper Boss\SniperBossSafeDistanceCollider.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Turret.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Turret\Turret.cs" />
     <Compile Include="Assets\Scripts\FSM\FSMManager.cs" />
     <Compile Include="Assets\Scripts\FSM\IEntityState.cs" />
     <Compile Include="Assets\Scripts\FSM\IFireState.cs" />

@@ -51,18 +51,23 @@ public class SniperBoss : Ship, IEnemy
         moveState = GetComponent<IMoveState>();
         fireState = GetComponent<IFireState>();
 
+        // Reset default values
+        health = defaultValues.health;
+        enemyType = EnemyType.Boss;
         //nextAtkTime = Time.time + Random.Range(2.0f, 5.0f);
     }
 
     // This is called everytime this prefab is reused
     public override void OnObjectReuse()
     {
-
-        moveState = GetComponent<IMoveState>();
-        fireState = GetComponent<IFireState>();
+        Start();
+        //moveState = GetComponent<IMoveState>();
+        //fireState = GetComponent<IFireState>();
 
         moveState.OnObjectReuse();
         fireState.OnObjectReuse();
+
+
     }
 
     #endregion
