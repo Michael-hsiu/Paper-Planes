@@ -44,6 +44,9 @@ public class UIManager : MonoBehaviour
     public Color textEndColor;
     public bool assignedStartColor = false;
 
+    [Header("PAUSE_MENU_UI")]
+    public GameObject gameContentUI;
+    public GameObject pauseScreenUI;
 
     //[Header("NEW_ENEMY_UPGRADE_IMGS")]
 

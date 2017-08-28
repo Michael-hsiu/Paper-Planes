@@ -8,7 +8,7 @@ public class SettingsButton : MonoBehaviour
 {
 
     public bool settingEnabled = true;
-    public string preferenceID = "sound_setting";       // Setting used by player_prefs to retain changed settings
+    public string preferenceID;       // Setting used by player_prefs to retain changed settings
 
     [Header("UI_ELEMENTS")]
     public Image settingEnabledImg;
@@ -16,30 +16,31 @@ public class SettingsButton : MonoBehaviour
 
 
     // Set player_prefs settings
-    void Awake()
+    public virtual void Start()
     {
-
         // Record settings
         if (PlayerPrefs.HasKey(preferenceID))
         {
+            Debug.Log("HAS_KEY: " + preferenceID);
             int storedSetting = PlayerPrefs.GetInt(preferenceID);
             if (storedSetting == 0)
             {
-                DisableSettingUI();
-                settingEnabled = false;
+                DisableSetting();
             }
             else
             {
-                EnableSettingUI();
-                settingEnabled = true;
+                EnableSetting();
             }
         }
         // Otherwise, assume settings are default (all on)
         else
         {
-            EnableSettingUI();
-            settingEnabled = true;
+            Debug.Log("NO_KEY: " + preferenceID);
+
+            //Debug.Break();
+            EnableSetting();
         }
+
     }
 
     // Method accessed by button
@@ -52,34 +53,41 @@ public class SettingsButton : MonoBehaviour
 
     // Overridden by ea. button type
     // Called last by ea. method that calls this
-    public virtual void OnSettingsChanged()
+    public void OnSettingsChanged()
     {
         // Disable the setting
         if (settingEnabled)
         {
-            DisableSettingUI();
-            settingEnabled = false;
-
+            DisableSetting();
         }
         // Enable the setting
         else
         {
-            EnableSettingUI();
-            settingEnabled = true;
-
+            EnableSetting();
         }
-        // TODO: save to player prefs
+        PlayerPrefs.Save();
+        // TODO: save to player prefs (put in individual methods?)
     }
 
-    public void EnableSettingUI()
+    // Enable/DisableSetting are overridden by ea. button
+    public virtual void EnableSetting()
     {
-        settingDisabledImg.gameObject.SetActive(false);
         settingEnabledImg.gameObject.SetActive(true);
+        settingDisabledImg.gameObject.SetActive(false);
+
+        settingEnabled = true;
+
+        PlayerPrefs.SetInt(preferenceID, 1);
+
     }
-    public void DisableSettingUI()
+    public virtual void DisableSetting()
     {
         settingDisabledImg.gameObject.SetActive(true);
         settingEnabledImg.gameObject.SetActive(false);
+
+        settingEnabled = false;
+
+        PlayerPrefs.SetInt(preferenceID, 0);
 
     }
 }

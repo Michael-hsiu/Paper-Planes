@@ -45,6 +45,11 @@ public static class Constants
     public static readonly string tutorialEnabledOnce = "tutorialEnabledOnce";
     public static readonly string highScore = "highScore";
 
+    // Sound settings
+    public static readonly string bgmEnabledID = "bgmEnabledID";
+    public static readonly string sfxEnabledID = "sfxEnabledID";
+
+
 
     // Other examples
     /*public static readonly string AnimationStarted = "started";

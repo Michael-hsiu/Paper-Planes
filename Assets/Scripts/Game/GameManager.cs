@@ -142,6 +142,28 @@ public class GameManager : MonoBehaviour
     {
         playerStartPosition = playerShip.gameObject.transform.position;
         playerShip.gameObject.transform.position = new Vector3(800f, 0f, 0f);   // Make sure we can't see player
+
+        // Sound settings check
+        if (PlayerPrefs.HasKey(Constants.bgmEnabledID))
+        {
+            int storedSetting = PlayerPrefs.GetInt(Constants.bgmEnabledID);
+            if (storedSetting == 0)
+            {
+                cameraController.GetComponent<AudioSource>().Stop();
+            }
+        }
+        if (PlayerPrefs.HasKey(Constants.sfxEnabledID))
+        {
+            int storedSetting = PlayerPrefs.GetInt(Constants.sfxEnabledID);
+            if (storedSetting == 0)
+            {
+                sfxEnabled = false;
+            }
+            else
+            {
+                sfxEnabled = true;
+            }
+        }
         //OnGameStart();
     }
 

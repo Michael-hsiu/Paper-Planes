@@ -198,11 +198,15 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     {
         //Destroy (transform.gameObject);		// Destroy our gameobject
         //transform.gameObject.SetActive(false);	// "Destroy" our gameobject
-        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+        if (GameManager.Singleton.sfxEnabled)
         {
-            GameManager.Singleton.cameraController.audioSource.PlayOneShot(deathSoundAudioClip, 1f);      // Play hit sound
+            if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+            {
+                GameManager.Singleton.cameraController.audioSource.PlayOneShot(deathSoundAudioClip, 1f);      // Play hit sound
 
+            }
         }
+
         PoolManager.Instance.ReuseObject(explosion, transform.position, transform.rotation);
         //GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.2f);      // Play hit sound
 
