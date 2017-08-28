@@ -159,7 +159,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     public void DisplayKillScore()
     {
         PoolObject scoreTextInstance = PoolManager.Instance.ReuseObjectRef(scoreText, transform.position, Quaternion.identity);
-        scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReuse(gameObject);  // Pass ourselves in as a target position
+        scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReuseScore(gameObject);  // Pass ourselves in as a target position
     }
 
 

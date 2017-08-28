@@ -28,6 +28,9 @@ public class HealthPickup : Powerup
             }
             else
             {
+                PoolObject scoreTextInstance = PoolManager.Instance.ReuseObjectRef(scoreText, transform.position, Quaternion.identity);
+                scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReusePowerup(gameObject, this, UIstartColor);  // Pass ourselves in as a target position
+
                 GameManager.Singleton.numPowerupsCollected += 1;
                 if (destroyAfterAudioRoutine != null)
                 {

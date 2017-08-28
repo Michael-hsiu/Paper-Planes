@@ -23,6 +23,7 @@ public class ScoreText : PoolObject
     public float fadeLerpDuration = 1.0f;
     public float fadeLerpRatio;
     public float currFadeLerpTime;
+    public Color startColor;
 
     [Header("CANVAS_PLACEMENT_LOGIC")]
     public Vector2 canvasOffset;    // For viewport, center of screen is (0,0); for world, it's bottom left, this is the offset
@@ -31,10 +32,13 @@ public class ScoreText : PoolObject
     public Vector2 viewportPosition;
     public Vector2 proportionalViewportPosition;
     public RectTransform rectTransform;
-
+    public string sortingLayerName = "Player";
     public bool isInitializing = false;
+
+    Renderer renderer;
     IEnumerator onObjectReuseRoutine;
     IEnumerator displayScoreRoutine;
+    IEnumerator displayPowerupNameRoutine;
     IEnumerator fadeRoutine;
 
     void Awake()
@@ -43,7 +47,11 @@ public class ScoreText : PoolObject
 
         scoreText = GetComponent<TextMesh>();
         rectTransform = GetComponent<RectTransform>();
+        startColor = scoreText.color;     // Record the color
 
+        renderer = GetComponent<Renderer>();
+        renderer.sortingLayerName = this.sortingLayerName;      // So we render on top of player sprites
+        renderer.sortingOrder = 9999;
 
         // TextMesh resolution fix: http://answers.unity3d.com/questions/20633/textmesh-looking-fuzzy.html?page=2&pageSize=5&sort=votes
         //float pixelRatio = (Camera.main.orthographicSize * 2.0f) / Camera.main.pixelHeight;
@@ -71,7 +79,48 @@ public class ScoreText : PoolObject
         base.DestroyForReuse();
     }
 
-    public void OnObjectReuse(GameObject target)
+    // If reusing prefab for powerups
+    public void OnObjectReusePowerup(GameObject target, Powerup powerup, Color UIstartColor)
+    {
+        if (displayPowerupNameRoutine != null)
+        {
+            StopCoroutine(displayPowerupNameRoutine);
+            displayPowerupNameRoutine = null;
+        }
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+        displayPowerupNameRoutine = OnObjectReusePowerupRoutine(target, powerup, UIstartColor);
+        StartCoroutine(displayPowerupNameRoutine);
+    }
+    IEnumerator OnObjectReusePowerupRoutine(GameObject target, Powerup powerup, Color UIstartColor)
+    {
+        //while (isInitializing)
+        //{
+        //    yield return null;
+        //}
+        uiCanvas = UIManager.Singleton.uiCanvas;
+        canvasTransform = uiCanvas.GetComponent<RectTransform>();
+        canvasOffset = new Vector2(canvasTransform.sizeDelta.x / 2, canvasTransform.sizeDelta.y / 2);   // Offset from lower-left to center
+
+        // Choose powerup name
+        scoreText.text = powerup.powerupID;
+
+        // Shift to designated position
+        transform.position = target.transform.position;
+
+        displayScoreRoutine = DisplayScoreRoutine();
+        StartCoroutine(displayScoreRoutine);
+
+        fadeRoutine = FadePowerupRoutine(UIstartColor);
+        StartCoroutine(fadeRoutine);
+
+        yield return null;
+    }
+
+    public void OnObjectReuseScore(GameObject target)
     {
         if (displayScoreRoutine != null)
         {
@@ -83,11 +132,11 @@ public class ScoreText : PoolObject
             StopCoroutine(fadeRoutine);
             fadeRoutine = null;
         }
-        onObjectReuseRoutine = OnObjectReuseRoutine(target);
+        onObjectReuseRoutine = OnObjectReuseScoreRoutine(target);
         StartCoroutine(onObjectReuseRoutine);
     }
 
-    IEnumerator OnObjectReuseRoutine(GameObject target)
+    IEnumerator OnObjectReuseScoreRoutine(GameObject target)
     {
         //while (isInitializing)
         //{
@@ -127,7 +176,7 @@ public class ScoreText : PoolObject
         //proportionalViewportPosition = new Vector2(viewportPosition.x * canvasTransform.sizeDelta.x, viewportPosition.y * canvasTransform.sizeDelta.y);
         //rectTransform.localPosition = proportionalViewportPosition - canvasOffset;
 
-        displayScoreRoutine = DisplayScoreRoutine(0);
+        displayScoreRoutine = DisplayScoreRoutine();
         StartCoroutine(displayScoreRoutine);
 
         fadeRoutine = FadeRoutine();
@@ -136,7 +185,7 @@ public class ScoreText : PoolObject
         yield return null;
     }
 
-    IEnumerator DisplayScoreRoutine(int scoreToDisplay)
+    IEnumerator DisplayScoreRoutine()
     {
         // Lerp alpha
         scoreLerpRatio = 0.0f;
@@ -157,6 +206,27 @@ public class ScoreText : PoolObject
         // Move up
         fadeLerpRatio = 0.0f;
         Color initialTextColor = scoreText.color;
+        initialTextColor.a = 1f;
+        scoreText.color = initialTextColor;
+        //Debug.Break();
+        while (fadeLerpRatio < 1.0f)
+        {
+            // Gradually fade alpha
+            // Maybe add exponential modifier?
+            Color currScoreTextColor = scoreText.color;
+            currScoreTextColor.a = Mathf.Lerp(1f, 0f, fadeLerpRatio);
+            scoreText.color = currScoreTextColor;
+
+            fadeLerpRatio += (Time.deltaTime / fadeLerpDuration);
+            yield return null;
+        }
+    }
+
+    IEnumerator FadePowerupRoutine(Color UIstartColor)
+    {
+        // Move up
+        fadeLerpRatio = 0.0f;
+        Color initialTextColor = UIstartColor;
         initialTextColor.a = 1f;
         scoreText.color = initialTextColor;
         //Debug.Break();

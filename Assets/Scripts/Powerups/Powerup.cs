@@ -33,6 +33,10 @@ public class Powerup : PoolObject
     public AudioSource powerupAudioSource;
     public AudioClip pickupAudioClip;
 
+    [Header("UI_LOGIC")]
+    public GameObject scoreText;
+    public Color UIstartColor;
+
     IEnumerator destroyAfterDurationRoutine;
     IEnumerator fadePowerupRoutine;
     public string powerupID;
@@ -79,6 +83,9 @@ public class Powerup : PoolObject
             StopCoroutine(fadePowerupRoutine);
             fadePowerupRoutine = null;
         }
+        PoolObject scoreTextInstance = PoolManager.Instance.ReuseObjectRef(scoreText, transform.position, Quaternion.identity);
+        scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReusePowerup(gameObject, this, UIstartColor);  // Pass ourselves in as a target position
+
         GameManager.Singleton.numPowerupsCollected += 1;
         powerupAudioSource.PlayOneShot(pickupAudioClip, 0.5f);
         //Debug.Break();

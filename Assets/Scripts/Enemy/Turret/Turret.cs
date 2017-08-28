@@ -218,7 +218,7 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     public void DisplayKillScore()
     {
         PoolObject scoreTextInstance = PoolManager.Instance.ReuseObjectRef(scoreText, transform.position, Quaternion.identity);
-        scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReuse(gameObject);  // Pass ourselves in as a target position
+        scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReuseScore(gameObject);  // Pass ourselves in as a target position
     }
 
     public virtual void Fire()

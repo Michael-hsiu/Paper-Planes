@@ -113,6 +113,7 @@ public class GamePoolManager : MonoBehaviour
 
     [Header("TEXT_PREFABS")]
     public GameObject scoreText;
+    public GameObject powerupScoreText;
     public GameObject bossScoreText;
 
     [Header("PARTICLE_PREFABS")]
@@ -232,6 +233,7 @@ public class GamePoolManager : MonoBehaviour
 
         // Text prefabs
         PoolManager.Instance.CreatePool(scoreText, 100);
+        PoolManager.Instance.CreatePool(powerupScoreText, 100);
         PoolManager.Instance.CreatePool(bossScoreText, 10);
 
         // Particle prefabs
