@@ -11,7 +11,10 @@ public class CreditsScreen : MenuScreen
 
     public void OnBackButtonPressed()
     {
-        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        }
 
         OnTearDown();       // Tear down this menu screen
         pauseMainMenu.gameObject.SetActive(true);

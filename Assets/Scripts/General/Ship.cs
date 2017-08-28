@@ -99,9 +99,12 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
         }
         else
         {
-            if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+            if (GameManager.Singleton.sfxEnabled)
             {
-                GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.1f);      // Play hit sound
+                if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+                {
+                    GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.1f);      // Play hit sound
+                }
             }
         }
     }
@@ -126,10 +129,13 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     public virtual void Kill()
     {
-        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+        if (GameManager.Singleton.sfxEnabled)
         {
-            GameManager.Singleton.cameraController.audioSource.PlayOneShot(deathSoundAudioClip, 0.3f);      // Play hit sound
+            if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+            {
+                GameManager.Singleton.cameraController.audioSource.PlayOneShot(deathSoundAudioClip, 0.3f);      // Play hit sound
 
+            }
         }
         DisplayKillScore();            // Displays the score
         OnKillReset();     // Resets the logic

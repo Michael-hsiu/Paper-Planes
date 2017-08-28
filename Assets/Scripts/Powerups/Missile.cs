@@ -248,11 +248,14 @@ public class Missile : PoolObject
 
                     PoolManager.Instance.ReuseObject(explosion, transform.position, Quaternion.identity);
                     //Debug.Log ("MISSILE EXPLODED!");
-                    if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+                    if (GameManager.Singleton.sfxEnabled)
                     {
-                        audioSource.PlayOneShot(explosionAudioClip, 0.4f);
-                        Debug.Log("AUDIO_PLAYING: " + audioSource.isPlaying);
-                        //Debug.Break();
+                        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+                        {
+                            audioSource.PlayOneShot(explosionAudioClip, 0.4f);
+                            Debug.Log("AUDIO_PLAYING: " + audioSource.isPlaying);
+                            //Debug.Break();
+                        }
                     }
                     if (destroyAfterAudioRoutine != null)
                     {

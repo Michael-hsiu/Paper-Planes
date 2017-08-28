@@ -32,9 +32,11 @@ public class BurstChargeColliders : MonoBehaviour
                     {
                         PoolManager.Instance.ReuseObject(explosion, other.transform.position, Quaternion.identity);
                         nextParticleSpawnTime = Time.time + timeBtwnParticleSpawns;
-
-                        GameManager.Singleton.cameraController.audioSource.PlayOneShot(rushAudioClip, 0.5f);
-                        GameManager.Singleton.cameraController.audioSource.PlayOneShot(scorchAudioClip, 0.4f);
+                        if (GameManager.Singleton.sfxEnabled)
+                        {
+                            GameManager.Singleton.cameraController.audioSource.PlayOneShot(rushAudioClip, 0.5f);
+                            GameManager.Singleton.cameraController.audioSource.PlayOneShot(scorchAudioClip, 0.4f);
+                        }
                     }
                 }
             }

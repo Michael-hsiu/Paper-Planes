@@ -15,8 +15,10 @@ public class HealthPickup : Powerup
         // Triggers on collision with rigidbody's colliderg
         if (other.gameObject.CompareTag(Constants.PlayerTag) && GameManager.Singleton.playerHealth > 0)
         {
-            powerupAudioSource.PlayOneShot(pickupAudioClip, 0.5f);
-
+            if (GameManager.Singleton.sfxEnabled)
+            {
+                powerupAudioSource.PlayOneShot(pickupAudioClip, 0.5f);
+            }
             //if (pickupParticlePrefab != null)
             //{
             //    PoolManager.Instance.ReuseObject(pickupParticlePrefab, transform.position, Quaternion.identity);

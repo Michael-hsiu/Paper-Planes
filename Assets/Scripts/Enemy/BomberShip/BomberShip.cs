@@ -134,10 +134,13 @@ public class BomberShip : Ship
             }
 
             // We tell camera audio_source to play our explsn_death_sound
-            if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+            if (GameManager.Singleton.sfxEnabled)
             {
-                GameManager.Singleton.cameraController.audioSource.PlayOneShot(explodeAudioClip, 0.4f);      // Play hit sound
+                if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+                {
+                    GameManager.Singleton.cameraController.audioSource.PlayOneShot(explodeAudioClip, 0.4f);      // Play hit sound
 
+                }
             }
             // Handles self-death by explosion case
             OnKillReset();
@@ -240,14 +243,16 @@ public class BomberShip : Ship
                                                   //GetComponentInChildren<SpriteRenderer>().color = Color.red;     // This will show a change in color field of Sprite Renderer, which isn't what we want in this case
 
         //Debug.Log ("EXPLOSION COUNTDOWN BEGINS!");
-
-        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+        if (GameManager.Singleton.sfxEnabled)
         {
-            if (bomberAudioSource != null)
+            if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
             {
-                bomberAudioSource.PlayOneShot(whirAudioClip, 0.4f);      // Play hit sound
-            }
+                if (bomberAudioSource != null)
+                {
+                    bomberAudioSource.PlayOneShot(whirAudioClip, 0.4f);      // Play hit sound
+                }
 
+            }
         }
         explosionTime = Time.time + explosionDelay;         // Used to determine when the ship stops moving
         yield return new WaitForSeconds(explosionDelay);     // Wait for a few seconds while beeping animation plays

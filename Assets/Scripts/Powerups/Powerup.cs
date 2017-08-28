@@ -87,7 +87,10 @@ public class Powerup : PoolObject
         scoreTextInstance.gameObject.GetComponent<ScoreText>().OnObjectReusePowerup(gameObject, this, UIstartColor);  // Pass ourselves in as a target position
 
         GameManager.Singleton.numPowerupsCollected += 1;
-        powerupAudioSource.PlayOneShot(pickupAudioClip, 0.5f);
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            powerupAudioSource.PlayOneShot(pickupAudioClip, 0.5f);
+        }
         //Debug.Break();
     }
 

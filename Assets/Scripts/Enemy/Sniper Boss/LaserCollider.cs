@@ -25,7 +25,10 @@ public class LaserCollider : MonoBehaviour
 
         if (other.gameObject.CompareTag(Constants.PlayerTag))
         {
-            GameManager.Singleton.cameraController.audioSource.PlayOneShot(laserHitAudioClip, 0.5f);
+            if (GameManager.Singleton.sfxEnabled)
+            {
+                GameManager.Singleton.cameraController.audioSource.PlayOneShot(laserHitAudioClip, 0.5f);
+            }
 
             // Damage the player continuously with laser, with some delay btwn hits
             if (other.gameObject != null)

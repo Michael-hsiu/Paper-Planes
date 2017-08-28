@@ -140,7 +140,9 @@
     <Compile Include="Assets\Prefabs\UI\PauseMainMenu.cs" />
     <Compile Include="Assets\Prefabs\UI\PlayAgainButton.cs" />
     <Compile Include="Assets\Prefabs\UI\ScoreText.cs" />
+    <Compile Include="Assets\Prefabs\UI\SettingsButton.cs" />
     <Compile Include="Assets\Prefabs\UI\ShopSlot.cs" />
+    <Compile Include="Assets\Prefabs\UI\SoundButton.cs" />
     <Compile Include="Assets\Prefabs\UI\StartScreen.cs" />
     <Compile Include="Assets\Prefabs\UI\TutorialConfirmScreen.cs" />
     <Compile Include="Assets\Prefabs\UI\UpgradesListPanel.cs" />

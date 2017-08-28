@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour
     public int numEnemiesDefeated = 0;
     public int numPowerupsCollected = 0;
 
+    [Header("AUDIO")]
+    public bool sfxEnabled = true;
+
     public Color startColor;
     public Vector3 playerStartPosition; // Player start position at beginning of game
 

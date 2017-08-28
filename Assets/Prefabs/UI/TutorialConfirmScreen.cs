@@ -13,7 +13,10 @@ public class TutorialConfirmScreen : MenuScreen
 
     public void OnYesButtonPressed()
     {
-        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        }
 
         // Restart the level with tutorial enabled and timescale back to normal
         Time.timeScale = 1;
@@ -28,7 +31,10 @@ public class TutorialConfirmScreen : MenuScreen
 
     public void OnNoButtonPressed()
     {
-        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        }
 
         pauseMainMenu.gameObject.SetActive(true);
         pauseMainMenu.OnSetup();    // Transition back to pause main menu

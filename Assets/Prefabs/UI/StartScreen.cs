@@ -123,7 +123,10 @@ public class StartScreen : MonoBehaviour
     IEnumerator OnClickedOnStartButtonRoutine()
     {
         // Play tap audio
-        audioSource.PlayOneShot(tapPlayAudioClip, 1f);
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            audioSource.PlayOneShot(tapPlayAudioClip, 1f);
+        }
 
         onStartScreen = false;
         if (tapFadeRoutine != null)

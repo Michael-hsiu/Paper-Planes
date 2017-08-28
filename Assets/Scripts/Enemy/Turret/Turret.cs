@@ -148,10 +148,13 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
     public virtual void Damage(int damageTaken)
     {
-        if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+        if (GameManager.Singleton.sfxEnabled)
         {
-            GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.1f);      // Play hit sound
+            if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+            {
+                GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.1f);      // Play hit sound
 
+            }
         }
         // Restart flicker animation
         if (hitFlickerRoutine != null)
@@ -169,9 +172,12 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
         }
         else
         {
-            if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+            if (GameManager.Singleton.sfxEnabled)
             {
-                GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.3f);      // Play hit sound
+                if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
+                {
+                    GameManager.Singleton.cameraController.audioSource.PlayOneShot(hitSoundAudioClip, 0.3f);      // Play hit sound
+                }
             }
         }
     }

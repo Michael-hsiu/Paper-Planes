@@ -35,8 +35,10 @@ public class PauseMainMenu : MenuScreen
     // Transition to Tutorial Confirmation screen
     public void OnTransitionToTutorialConfirmationScreen()
     {
-        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
-
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        }
         tutorialConfirmScreen.gameObject.SetActive(true);
         tutorialConfirmScreen.OnSetup();
         OnTearDown();
@@ -46,8 +48,10 @@ public class PauseMainMenu : MenuScreen
     // Option to adjust volume, with #s
     public void OnTransitionToMusicScreen()
     {
-        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
-
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        }
 
         musicScreen.gameObject.SetActive(true);
         musicScreen.OnSetup();
@@ -58,8 +62,10 @@ public class PauseMainMenu : MenuScreen
     // Transition to Credits screen
     public void OnTransitionToCreditsScreen()
     {
-        GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
-
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        }
         creditsScreen.gameObject.SetActive(true);
         creditsScreen.OnSetup();
         OnTearDown();

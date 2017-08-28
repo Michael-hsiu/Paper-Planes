@@ -22,7 +22,10 @@ public class PlayAgainButton : MonoBehaviour
     // Hide the game_over screen
     public void OnButtonClick()
     {
-        GameManager.Singleton.cameraController.audioSource.PlayOneShot(playAgainAudioClip, 1f);
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(playAgainAudioClip, 1f);
+        }
         gameOverScreen.DisableGameOverScreen();
 
         GameManager.Singleton.OnLevelRestart();
