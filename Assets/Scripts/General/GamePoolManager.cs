@@ -192,7 +192,7 @@ public class GamePoolManager : MonoBehaviour
         // Powerup helper objs
         PoolManager.Instance.CreatePool(tripMines, 40);
         PoolManager.Instance.CreatePool(shurikenObj, 20);
-        PoolManager.Instance.CreatePool(superShurikenObj, 20);
+        PoolManager.Instance.CreatePool(superShurikenObj, 100);
         PoolManager.Instance.CreatePool(waveShot, 100);
         PoolManager.Instance.CreatePool(superWaveShot, 100);
         PoolManager.Instance.CreatePool(homingMissiles, 100);

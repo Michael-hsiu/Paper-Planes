@@ -29,7 +29,7 @@ public class ShurikenObj : PoolObject
     public AudioSource audioSource;
     public AudioClip sliceAudioClip;
 
-
+    Rigidbody rigidBody;
     IEnumerator circularRotationRoutine;
     IEnumerator damageDelayRoutine;
 
@@ -38,6 +38,8 @@ public class ShurikenObj : PoolObject
         initialColliderRadius = capsuleCollider.radius;
         initialLocalScale = capsuleCollider.transform.localScale;
         audioSource = GetComponent<AudioSource>();
+        //rigidBody = GetComponent<Rigidbody>();
+        //rigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;    // To handle shurikens slipping thru colliders
     }
 
     public override void OnObjectReuse()
@@ -114,7 +116,7 @@ public class ShurikenObj : PoolObject
             if (other.gameObject != null)
             {
                 Vector3 oldVel = transform.GetComponent<Rigidbody>().velocity;
-                transform.GetComponent<Rigidbody>().velocity = Vector3.Reflect(oldVel, Vector3.up);
+                transform.GetComponent<Rigidbody>().velocity = Vector3.Reflect(oldVel, other.transform.rotation * Vector3.right);
             }
         }
         else if (other.gameObject.CompareTag(Constants.GameBorderSide))
