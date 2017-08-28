@@ -65,6 +65,8 @@ public class UIManager : MonoBehaviour
     public float scaleY;    // Original height of health bar
     // Level update text
     public Text levelGoalText;
+    public GameObject levelGoalTextBackground;
+
     public Text levelEndText;
     //public Text startGameText;
     public IEnumerator levelGoalRoutine;
@@ -368,8 +370,8 @@ public class UIManager : MonoBehaviour
             {
                 Debug.Log("ACTIVE_ROUTINE_NOT_NULL");
                 Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
-                scoreGoalText.gameObject.SetActive(true);
                 scoreGoalTextBkgrnd.gameObject.SetActive(true);
+                scoreGoalText.gameObject.SetActive(true);
                 yield return null;
             }
             Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
@@ -389,7 +391,11 @@ public class UIManager : MonoBehaviour
         draggableMainVirtualJoystick.SetActive(true);
         //draggableMainVirtualJoystickImg.SetActive(true);
 
-        scoreGoalText.text = GameManager.Singleton.enemyScoreBoundaries[GameManager.Singleton.currLevel].ToString();
+        //scoreGoalText.text = GameManager.Singleton.enemyScoreBoundaries[GameManager.Singleton.currLevel].ToString();
+        scoreGoalTextBkgrnd.gameObject.SetActive(false);
+        scoreGoalText.gameObject.SetActive(false);
+
+        scoreGoalText.text = String.Empty;      // Clear the text
 
         // Can we dynamically pass in params to event subscribers?
         if (levelGoalRoutine != null)
@@ -398,7 +404,7 @@ public class UIManager : MonoBehaviour
             levelGoalRoutine = null;
             levelGoalText.gameObject.SetActive(false);      // Hide the text
         }
-        levelGoalRoutine = IncreaseLevelRoutine(GameManager.Singleton.currLevel);
+        levelGoalRoutine = IncreaseLevelRoutine();
         StartCoroutine(levelGoalRoutine);
 
         // Start the routine that will process everything
@@ -693,15 +699,18 @@ public class UIManager : MonoBehaviour
 
 
     // Visual cue to players that difficulty is changing
-    IEnumerator IncreaseLevelRoutine(int currLevel)
+    IEnumerator IncreaseLevelRoutine()
     {
 
         //String goalText = "WARNING: Difficulty increased!!!";
         // scoreBoundaries list is zero-indexed (1st level is index 0)
         //String goalText = "WAVE " + (GameManager.Singleton.currLevel + 1) + ": BEGIN!";
-        yield return new WaitForSeconds(0.5f);  // Zoom in anim is still kind of ugly
+        yield return new WaitForSeconds(1.5f);  // Zoom in anim is still kind of ugly
         String goalText = "Ready...";
+
+        levelGoalTextBackground.gameObject.SetActive(true);
         levelGoalText.gameObject.SetActive(true);
+
         levelGoalText.text = goalText;
         yield return new WaitForSeconds(2.5f);  // Show the level goal text on screen
         goalText = "Begin!";
@@ -721,6 +730,7 @@ public class UIManager : MonoBehaviour
         //levelGoalText.gameObject.SetActive(true);
         //yield return new WaitForSeconds(0.7f);  // Show the level goal text on screen
 
+        levelGoalTextBackground.gameObject.SetActive(false);
         levelGoalText.gameObject.SetActive(false);      // Hide the text
         levelGoalRoutine = null;
         //}
