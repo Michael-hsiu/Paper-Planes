@@ -36,10 +36,10 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
     /** UNITY CALLBACKS */
 
-    protected virtual void Start()
+    public override void Start()
     {
         initialPos = new Vector2(transform.position.x, transform.position.y);   // Cache our initial position
-        target = GameObject.FindGameObjectWithTag(Constants.PlayerTag);     // Get Player at runtime
+        target = GameManager.Singleton.playerShip.gameObject;     // Get Player at runtime
 
         if (sprite == null)
         {
@@ -50,7 +50,7 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
             }
         }
         startColor = sprite.material.color;
-        //base.Start();
+        base.Start();
     }
 
     protected virtual void Update()

@@ -44,7 +44,7 @@ public class SniperBoss : Ship, IEnemy
 
     #region Unity Life Cycle
 
-    protected override void Start()
+    public override void Start()
     {
 
         base.Start();

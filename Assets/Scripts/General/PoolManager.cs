@@ -7,6 +7,7 @@ public class PoolManager : MonoBehaviour
 {
 
     Dictionary<int, Queue<ObjectInstance>> poolDictionary = new Dictionary<int, Queue<ObjectInstance>>();
+    Dictionary<string, GameObject> poolHolderDictionary = new Dictionary<string, GameObject>();     // Contains pools for ea. fab w/ ID=string_repr
 
     static PoolManager _instance;
 
@@ -30,7 +31,10 @@ public class PoolManager : MonoBehaviour
         {
             poolDictionary.Add(poolKey, new Queue<ObjectInstance>());
 
-            GameObject poolHolder = new GameObject(prefab.name + " Pool");      // Holds all the prefabs
+            string poolName = prefab.name + " Pool";
+            GameObject poolHolder = new GameObject(poolName);      // Holds all the prefabs
+            poolHolderDictionary[poolName] = poolHolder;        // Used by BomberBossStage2
+
             poolHolder.transform.parent = transform;
 
             for (int i = 0; i < poolSize; i++)
@@ -44,6 +48,16 @@ public class PoolManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Retrieve a pool container object for a certain prefab
+    public GameObject GetPool(string poolName)
+    {
+        if (poolHolderDictionary.ContainsKey(poolName + " Pool"))
+        {
+            return poolHolderDictionary[poolName + " Pool"];
+        }
+        return null;
     }
 
     public void ReuseObject(GameObject prefab, Vector3 position, Quaternion rotation)
@@ -75,6 +89,7 @@ public class PoolManager : MonoBehaviour
         }
         return null;
     }
+
 
     public class ObjectInstance
     {

@@ -29,6 +29,7 @@ public class BomberShip : Ship
     public AudioClip whirAudioClip;
     public AudioClip explodeAudioClip;
 
+    public GameObject poolParent;   // Container for all these prefabs
     private Rigidbody rigidBody;
     IEnumerator beginExplosionRoutine;
     #endregion
@@ -40,7 +41,7 @@ public class BomberShip : Ship
         bomberAudioSource = GetComponent<AudioSource>();
     }
 
-    protected override void Start()
+    public override void Start()
     {
         // Call our overridden initalization method
         //Initialize ();
@@ -66,16 +67,26 @@ public class BomberShip : Ship
         moveState = GetComponent<IMoveState>();
         moveState.OnObjectReuse();
 
+        // Get pool parent if slingshot_bomber
+        if (isSlingShotBomber)
+        {
+            poolParent = PoolManager.Instance.GetPool("slingshot_bomber");
+        }
         base.Start();
 
         //fireState = GetComponent<IFireState>();
     }
     public override void DestroyForReuse()
     {
+        if (isSlingShotBomber)
+        {
+            // Reset to position in pool
+            transform.parent = poolParent.transform;
+        }
+        base.DestroyForReuse();
         //transform.parent = poolObjHolder.transform;       // Move back to pool object container
         //Debug.Log(name);
         //Debug.Break();
-        base.DestroyForReuse();
     }
 
     // This is called everytime this prefab is reused

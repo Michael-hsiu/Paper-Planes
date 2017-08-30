@@ -92,7 +92,7 @@ public class PlayerShip : FiringShip
         startColor = sprite.material.color;
     }
 
-    protected override void Start()
+    public override void Start()
     {
         input = InputManager.Singleton.GetInputComponent();     // Get valid input source
         InitializeShotSpawns();     // Get active shotspawn
