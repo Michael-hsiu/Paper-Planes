@@ -15,6 +15,9 @@ public class TripMineWeapon : Powerup
     //protected bool isVisible;
     //public GameObject pickupParticlePrefab;     // Particle system that plays on particle pickup
 
+    Vector3 pos;
+    Vector3 newPos;
+    WaitForSeconds mineFuseWaitForSec;
     private IEnumerator cr;
     //private GameObject player;
 
@@ -47,6 +50,16 @@ public class TripMineWeapon : Powerup
     //    }
     //}
 
+    //public override void Start()
+    //{
+    //    mineFuseWaitForSec = new WaitForSeconds(mineFuse);
+    //    base.Start();
+    //}
+    public override void OnObjectReuse()
+    {
+        mineFuseWaitForSec = new WaitForSeconds(mineFuse);
+        base.OnObjectReuse();
+    }
     public override void ActivatePowerup()
     {
         SpawnMines();
@@ -56,7 +69,7 @@ public class TripMineWeapon : Powerup
     void SpawnMines()
     {
         // spawns, radius, rotations, explosions
-        Vector3 pos = player.transform.position;
+        pos = player.transform.position;
         float angle = 0f;
         float angleTwo = 0f;
         while (angle < 360.0f)
@@ -66,7 +79,7 @@ public class TripMineWeapon : Powerup
             float newY = pos.y + radius * Mathf.Cos(angle * Mathf.Deg2Rad);
             float newZ = pos.z;
 
-            Vector3 newPos = new Vector3(newX, newY, newZ);
+            newPos = new Vector3(newX, newY, newZ);
             Mine mine1 = (Mine)PoolManager.Instance.ReuseObjectRef(mine, newPos, Quaternion.identity);
 
             mine1.GetComponent<Rigidbody>().AddForce(new Vector3(radius * Mathf.Sin(angle * Mathf.Deg2Rad), radius * Mathf.Cos(angle * Mathf.Deg2Rad), pos.z) * explosionForce);        // Outwards radiating movement, using position relative to world origin
@@ -96,7 +109,7 @@ public class TripMineWeapon : Powerup
 
     IEnumerator BeginCountdown(float mineFuse)
     {
-        yield return new WaitForSeconds(mineFuse);
+        yield return mineFuseWaitForSec;
 
         // Destroy for reuse by pool
         foreach (Mine m in mines)

@@ -174,7 +174,7 @@ public class EnemySpawner : MonoBehaviour
         // Trigger Boss Super Powerup drops as necessary
         if (enemyType == EnemyType.Boss)
         {
-            Debug.Log("BOSS_KILLED!");
+            //Debug.Log("BOSS_KILLED!");
             //Debug.Break();
             GameManager.Singleton.OnBossDeath();
         }
@@ -191,55 +191,55 @@ public class EnemySpawner : MonoBehaviour
 
             pawnLevel2Unlocked = true;
             newEnemyUpgradeUnlocked = true;
-            Debug.Log("PAWN_LVL2_UNLOCKED!");
+            //Debug.Log("PAWN_LVL2_UNLOCKED!");
 
         }
         else if (playerScore > 1600 && !rangedLevel2Unlocked)
         {
             rangedLevel2Unlocked = true;
             newEnemyUpgradeUnlocked = true;
-            Debug.Log("RANGED_LVL2_UNLOCKED!");
+            //Debug.Log("RANGED_LVL2_UNLOCKED!");
 
         }
         else if (playerScore > 2200 && !bomberLevel2Unlocked)
         {
             bomberLevel2Unlocked = true;
             newEnemyUpgradeUnlocked = true;
-            Debug.Log("BOMBER_LVL2_UNLOCKED!");
+            //Debug.Log("BOMBER_LVL2_UNLOCKED!");
 
         }
         else if (playerScore > 3000 && !turretLevel2Unlocked)
         {
             turretLevel2Unlocked = true;
             newEnemyUpgradeUnlocked = true;
-            Debug.Log("TURRET_LVL2_UNLOCKED!");
+            //Debug.Log("TURRET_LVL2_UNLOCKED!");
 
         }
         else if (playerScore > 4100 && !pawnLevel3Unlocked)
         {
             pawnLevel3Unlocked = true;
             newEnemyUpgradeUnlocked = true;
-            Debug.Log("PAWN_LVL3_UNLOCKED!");
+            //Debug.Log("PAWN_LVL3_UNLOCKED!");
 
         }
         else if (playerScore > 6100 && !rangedLevel3Unlocked)
         {
             rangedLevel3Unlocked = true;
             newEnemyUpgradeUnlocked = true;
-            Debug.Log("RANGED_LVL3_UNLOCKED!");
+            //Debug.Log("RANGED_LVL3_UNLOCKED!");
 
         }
         else if (playerScore > 8100 && !bomberLevel3Unlocked)
         {
             bomberLevel3Unlocked = true;
             newEnemyUpgradeUnlocked = true;
-            Debug.Log("BOMBER_LVL3_UNLOCKED!");
+            //Debug.Log("BOMBER_LVL3_UNLOCKED!");
         }
         else if (playerScore > 10100 && !turretLevel3Unlocked)
         {
             turretLevel3Unlocked = true;
             newEnemyUpgradeUnlocked = true;
-            Debug.Log("TURRET_LVL3_UNLOCKED!");
+            //Debug.Log("TURRET_LVL3_UNLOCKED!");
         }
         else if (playerScore > 12100)
         {
@@ -284,7 +284,7 @@ public class EnemySpawner : MonoBehaviour
             // Wait for a bit before we check to see if spawns are enabled (naive level restart logic)
             while (bossSpawnEnabled)
             {
-                Debug.Log("IN_BOSS_SPAWN_ROUTINE");
+                //Debug.Log("IN_BOSS_SPAWN_ROUTINE");
                 if (NUM_BOSSES_ALIVE == 0 && Time.time > nextBossSpawnTime)
                 {
 
@@ -355,7 +355,7 @@ public class EnemySpawner : MonoBehaviour
                     // Record that a boss was spawned
                     UIManager.Singleton.OnBossSpawnedUI();
                     NUM_BOSSES_ALIVE += 1;
-                    Debug.Log("BOSS_SPAWNED!");
+                    //Debug.Log("BOSS_SPAWNED!");
 
                     // Wait a bit before checking if the boss has died
                     yield return new WaitForSeconds(Random.Range(0, 5f));

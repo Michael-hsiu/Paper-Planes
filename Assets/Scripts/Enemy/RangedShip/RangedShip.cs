@@ -45,7 +45,19 @@ public class RangedShip : FiringShip, IEnemy
     public override void OnObjectReuse()
     {
 
-        Start();
+        //Start();
+
+        // Reset default values
+        enemyType = EnemyType.Ranged;
+        health = defaultValues.health;
+
+        // Component state initialization
+        moveState = GetComponent<IMoveState>();
+        fireState = GetComponent<IFireState>();
+
+        moveState.OnObjectReuse();
+        fireState.OnObjectReuse();
+
         if (sprite != null)
         {
             Color resetColor = startColor;
@@ -107,7 +119,7 @@ public class RangedShip : FiringShip, IEnemy
         if (other.gameObject.activeSelf && other.gameObject.CompareTag(Constants.PlayerShot))
         {
 
-            Debug.Log(String.Format("RANGED SHIP HIT BY PLAYER {0}", other.name));
+            //Debug.Log(String.Format("RANGED SHIP HIT BY PLAYER {0}", other.name));
 
             if (other != null)
             {

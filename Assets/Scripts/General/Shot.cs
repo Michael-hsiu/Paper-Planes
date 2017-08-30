@@ -26,6 +26,10 @@ public class Shot : PoolObject, IMovement
     public Renderer sprite;
     public float flickerTime = 0.05f;
 
+    float nonFadeTime;      // Used in coroutine
+    WaitForSeconds existsInWorldDurWaitForSec;
+    WaitForSeconds nonFadeTimeWaitForSec;
+    WaitForSeconds fadeLerpWaitForSec;
     Rigidbody rigidBody;
     IEnumerator destroyAfterLifetimeRoutine;
     IEnumerator fadeRoutine;
@@ -34,6 +38,13 @@ public class Shot : PoolObject, IMovement
 
     public override void OnObjectReuse()
     {
+        rigidBody.velocity = Vector3.zero;      // Reset velocity
+
+        existsInWorldDurWaitForSec = new WaitForSeconds(lifeTime);
+        fadeLerpWaitForSec = new WaitForSeconds(fadeLerpDuration);
+        nonFadeTime = lifeTime - fadeLerpDuration;
+        nonFadeTimeWaitForSec = new WaitForSeconds(nonFadeTime);
+
         if (sprite != null)
         {
             Color rawStartColor = sprite.material.color;
@@ -42,12 +53,6 @@ public class Shot : PoolObject, IMovement
             sprite.material.color = startColor;
             //Debug.Break();
         }
-    }
-
-    // Activate shot countdown when object is enabled
-    void OnEnable()
-    {
-        rigidBody.velocity = Vector3.zero;      // Reset velocity=
         if (sprite == null)
         {
             try
@@ -85,6 +90,47 @@ public class Shot : PoolObject, IMovement
         StartCoroutine(destroyAfterLifetimeRoutine);
     }
 
+    // Activate shot countdown when object is enabled
+    //void OnEnable()
+    //{
+    //    rigidBody.velocity = Vector3.zero;      // Reset velocity=
+    //    if (sprite == null)
+    //    {
+    //        try
+    //        {
+    //            sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
+    //        }
+    //        catch (Exception exception)
+    //        {
+    //            //Debug.Log("NO SPRITE FOR SHOT!");
+    //        }
+    //    }
+    //    try
+    //    {
+    //        Color rawStartColor = sprite.material.color;
+    //        rawStartColor.a = 1f;
+    //        startColor = rawStartColor;
+    //    }
+    //    catch (Exception exception)
+    //    {
+    //        //Debug.Log("STILL NO SPRITE FOR SHOT!");
+    //    }
+
+
+    //    if (destroyAfterLifetimeRoutine != null)
+    //    {
+    //        StopCoroutine(destroyAfterLifetimeRoutine);
+    //        destroyAfterLifetimeRoutine = null;
+    //    }
+    //    if (fadeRoutine != null)
+    //    {
+    //        StopCoroutine(fadeRoutine);
+    //        fadeRoutine = null;
+    //    }
+    //    destroyAfterLifetimeRoutine = DestroyAfterLifeTime();
+    //    StartCoroutine(destroyAfterLifetimeRoutine);
+    //}
+
     void Awake()
     {
 
@@ -93,6 +139,15 @@ public class Shot : PoolObject, IMovement
                                                //transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
 
     }
+    //public override void Start()
+    //{
+    //    existsInWorldDurWaitForSec = new WaitForSeconds(lifeTime);
+    //    fadeLerpWaitForSec = new WaitForSeconds(fadeLerpDuration);
+    //    nonFadeTime = lifeTime - fadeLerpDuration;
+    //    nonFadeTimeWaitForSec = new WaitForSeconds(nonFadeTime);
+
+    //    base.Start();
+    //}
 
     protected void FixedUpdate()
     {
@@ -116,8 +171,8 @@ public class Shot : PoolObject, IMovement
         endTime = Time.time + lifeTime;
 
         // Start moving
-        float nonFadeTime = lifeTime - fadeLerpDuration;
-        yield return new WaitForSeconds(nonFadeTime);
+        //nonFadeTime = lifeTime - fadeLerpDuration;
+        yield return nonFadeTimeWaitForSec;
 
         // Start fading
         if (fadeRoutine != null)
@@ -128,7 +183,7 @@ public class Shot : PoolObject, IMovement
         fadeRoutine = FadeRoutine();
         StartCoroutine(fadeRoutine);
 
-        yield return new WaitForSeconds(fadeLerpDuration);
+        yield return fadeLerpWaitForSec;
 
         // Destroy
         DestroyForReuse();      // "Destroy" the shot, place in object pool

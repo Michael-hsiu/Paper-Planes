@@ -128,11 +128,11 @@ public class BulletHellShotSpawn : ShotSpawn
             {
                 currRotation = transform.rotation;
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, Time.deltaTime * rotationSpeed);
-                Debug.Log("ROTATING");
-                Debug.Log("ROT_ANGLE: " + rotationAngleCopy);
+                //Debug.Log("ROTATING");
+                //Debug.Log("ROT_ANGLE: " + rotationAngleCopy);
                 yield return null;
             }
-            Debug.Log("CYCLE COMPLETED");
+            //Debug.Log("CYCLE COMPLETED");
             //Debug.Break();
             yield return null;
         }

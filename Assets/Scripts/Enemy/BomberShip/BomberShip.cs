@@ -44,7 +44,6 @@ public class BomberShip : Ship
     {
         // Call our overridden initalization method
         //Initialize ();
-        base.Start();
 
         rigidBody = GetComponent<Rigidbody>(); // For use in adjusting velocity
         if (rigidBody != null)
@@ -66,6 +65,9 @@ public class BomberShip : Ship
         // Component state initialization
         moveState = GetComponent<IMoveState>();
         moveState.OnObjectReuse();
+
+        base.Start();
+
         //fireState = GetComponent<IFireState>();
     }
     public override void DestroyForReuse()
@@ -80,15 +82,37 @@ public class BomberShip : Ship
     public override void OnObjectReuse()
     {
         //StopAllCoroutines();
-        Start();
+        //Start();
 
-        if (sprite != null)
-        {
-            Color resetColor = startColor;
-            resetColor.a = 1f;
-            sprite.material.color = resetColor;
-            Debug.Log("BOMBER SPRITE RESET!");
-        }
+        // Reset values from defaultValues scrObj
+        health = defaultValues.health;
+        rotationSpeed = defaultValues.rotationSpeed;
+        rotationFactor = defaultValues.rotationFactor;
+        speed = defaultValues.speed;
+
+        isExploding = false;
+        explosionActive = false;
+
+        // Component state initialization
+        moveState = GetComponent<IMoveState>();
+        moveState.OnObjectReuse();
+
+        //if (sprite == null)
+        //{
+        //    GameObject rawSprite = Utils.FindChildWithTag(gameObject, "Sprite");
+        //    if (rawSprite != null)
+        //    {
+        //        sprite = rawSprite.GetComponent<Renderer>();
+        //    }
+        //}
+        //if (sprite != null)
+        //{
+        //    Color resetColor = startColor;
+        //    resetColor.a = 1f;
+        //    sprite.material.color = resetColor;
+        //    Debug.Log("BOMBER SPRITE RESET!");
+        //}
+        //sprite.material.color = startColor;
     }
 
     #endregion
@@ -212,22 +236,25 @@ public class BomberShip : Ship
     // Flicker when hit
     protected override IEnumerator FlickerHit()
     {
-        Color beforeFlickerColor = sprite.material.color;
-        Color flickerColor = beforeFlickerColor;
-        flickerColor.a = 0.45f;
+        if (sprite != null)
+        {
+            Color beforeFlickerColor = sprite.material.color;
+            Color flickerColor = beforeFlickerColor;
+            flickerColor.a = 0.45f;
 
-        sprite.material.color = flickerColor;
-        yield return new WaitForSeconds(flickerTime);
-        if (explosionActive)
-        {
-            sprite.material.color = Color.red;
+            sprite.material.color = flickerColor;
+            yield return new WaitForSeconds(flickerTime);
+            if (explosionActive)
+            {
+                sprite.material.color = Color.red;
+            }
+            else
+            {
+                sprite.material.color = beforeFlickerColor;
+            }
+            // Open up flicker routine to next hit
+            hitFlickerRoutine = null;
         }
-        else
-        {
-            sprite.material.color = beforeFlickerColor;
-        }
-        // Open up flicker routine to next hit
-        hitFlickerRoutine = null;
     }
 
     /** CO-ROUTINES */

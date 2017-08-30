@@ -87,7 +87,7 @@ public class BomberBoss : Ship, IEnemy
         }
         foreach (ShipSpawn shipSpawn in shipSpawns)
         {
-            Debug.Log(shipSpawn.transform.localPosition);
+            //Debug.Log(shipSpawn.transform.localPosition);
             BomberShip bomberShipFab = (BomberShip)(PoolManager.Instance.ReuseObjectRef(bomberCore, shipSpawn.gameObject.transform.position, Quaternion.identity));
             spawnedCores.Enqueue(bomberShipFab);    // Enqueue for later destruction
             bomberShipFab.bomberBoss = this;
@@ -103,16 +103,41 @@ public class BomberBoss : Ship, IEnemy
         {
             StopCoroutine(spawnBombersRoutine);
         }
-        Start();
+        spawnBombersRoutine = SpawnBombers();
+        StartCoroutine(spawnBombersRoutine);
+
+        numCoresAlive = shipSpawns.Count;   // # of spawning cores
+
+        //Start();
         // Spawn the Core Bombers - no nested prefabs :(
 
         //Debug.Break();
         //StopAllCoroutines();
-        //moveState = GetComponent<IMoveState>();
-        //fireState = GetComponent<IFireState>();
+
+        // Remove any core bombers still alive, then populate
+        while (spawnedCores.Count > 0)
+        {
+            PoolObject corePoolObj = spawnedCores.Dequeue();
+            if (corePoolObj.gameObject.activeInHierarchy)
+            {
+                corePoolObj.DestroyForReuse();
+            }
+        }
+        foreach (ShipSpawn shipSpawn in shipSpawns)
+        {
+            //Debug.Log(shipSpawn.transform.localPosition);
+            BomberShip bomberShipFab = (BomberShip)(PoolManager.Instance.ReuseObjectRef(bomberCore, shipSpawn.gameObject.transform.position, Quaternion.identity));
+            spawnedCores.Enqueue(bomberShipFab);    // Enqueue for later destruction
+            bomberShipFab.bomberBoss = this;
+        }
+
+
+        moveState = GetComponent<IMoveState>();
+        fireState = GetComponent<IFireState>();
 
         moveState.OnObjectReuse();
         fireState.OnObjectReuse();
+
     }
 
     #endregion
@@ -171,7 +196,7 @@ public class BomberBoss : Ship, IEnemy
         // Perform some resets
         OnKillReset();
         DisplayKillScore();
-        Debug.Log("STAGE TWO SPAWNED");
+        //Debug.Log("STAGE TWO SPAWNED");
         //Debug.Break();
     }
 

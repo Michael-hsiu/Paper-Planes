@@ -52,7 +52,12 @@ public class MissileBossMS : MonoBehaviour, IMoveState
     // Setup activities after being activated from Object Pool
     public void OnObjectReuse()
     {
-
+        direction = Direction.PLAYER_DETECTED;
+        missileBoss = GetComponent<MissileBoss>();
+        if (missileBoss != null)
+        {
+            missileBoss.target = GameManager.Singleton.playerShip.gameObject;
+        }
     }
 
     void Update()
@@ -129,9 +134,9 @@ public class MissileBossMS : MonoBehaviour, IMoveState
 
                 float zAngle = (Mathf.Atan2(dist.y, dist.x) * Mathf.Rad2Deg) - 90;  // Angle of rotation around z-axis (pointing upwards)
 
-                Quaternion desiredRotation = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
+                Quaternion desiredRotationToPlayer = Quaternion.Euler(0, 0, zAngle);        // Store rotation as an Euler, then Quaternion
 
-                missileBoss.transform.rotation = Quaternion.RotateTowards(missileBoss.transform.rotation, desiredRotation, missileBoss.rotationSpeed * Time.deltaTime); // Rotate the enemy
+                missileBoss.transform.rotation = Quaternion.RotateTowards(missileBoss.transform.rotation, desiredRotationToPlayer, missileBoss.rotationSpeed * Time.deltaTime); // Rotate the enemy
 
                 /** MOVEMENT UPDATE */
                 if (!missileBoss.isSpeedBuffed)

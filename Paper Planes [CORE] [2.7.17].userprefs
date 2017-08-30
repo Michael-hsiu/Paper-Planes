@@ -1,17 +1,22 @@
 ﻿<Properties StartupConfiguration="{92362816-8F33-A331-C782-ACBA51805F82}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Game/Constants.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoFS.cs">
     <Files>
-      <File FileName="Assets/Prefabs/UI/SettingsButton.cs" Line="43" Column="1" />
-      <File FileName="Assets/Prefabs/UI/BGMSoundButton.cs" Line="11" Column="6" />
-      <File FileName="Assets/Prefabs/UI/SFXSoundButton.cs" Line="13" Column="8" />
-      <File FileName="Assets/Prefabs/UI/TutorialConfirmScreen.cs" Line="44" Column="2" />
-      <File FileName="Assets/Prefabs/UI/CreditsScreen.cs" Line="6" Column="40" />
-      <File FileName="Assets/Prefabs/UI/MusicSettingsScreen.cs" Line="11" Column="5" />
-      <File FileName="Assets/Prefabs/UI/PauseMainMenu.cs" Line="56" Column="48" />
-      <File FileName="Assets/Scripts/Enemy/Turret/Turret.cs" Line="207" Column="14" />
-      <File FileName="Assets/Scripts/Game/GameManager.cs" Line="192" Column="75" />
-      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="49" Column="37" />
-      <File FileName="Assets/Scripts/Game/Constants.cs" Line="46" Column="48" />
+      <File FileName="Assets/Scripts/Game/UIManager.cs" Line="818" Column="5" />
+      <File FileName="Assets/Scripts/Game/AIInput.cs" Line="6" Column="39" />
+      <File FileName="Assets/Prefabs/UI/GameOverScreen.cs" Line="85" Column="1" />
+      <File FileName="Assets/Scripts/Spawners/EnemySpawner.cs" Line="147" Column="46" />
+      <File FileName="Assets/Scripts/General/PoolObject.cs" Line="11" Column="54" />
+      <File FileName="Assets/Scripts/General/PlayerShip.cs" Line="59" Column="37" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBoss.cs" Line="69" Column="10" />
+      <File FileName="Assets/Scripts/Enemy/BomberShip/BomberShip.cs" Line="45" Column="52" />
+      <File FileName="Assets/Scripts/Enemy/Missile Boss/MissileBossMS.cs" Line="59" Column="78" />
+      <File FileName="Assets/Scripts/General/Ship.cs" Line="52" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/Turret/Turret.cs" Line="136" Column="42" />
+      <File FileName="Assets/Scripts/Powerups/TripMineWeapon.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Powerups/Powerup.cs" Line="81" Column="9" />
+      <File FileName="Assets/Scripts/General/TurretShotSpawn.cs" Line="26" Column="63" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enemy/BomberBoss/BomberBossStageTwoFS.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

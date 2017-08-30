@@ -160,41 +160,41 @@ public class GamePoolManager : MonoBehaviour
         PoolManager.Instance.CreatePool(enemySingleShot, 150);
         PoolManager.Instance.CreatePool(turretSingleShot, 150);
         //PoolManager.Instance.CreatePool(enemyFasterShot, 100);
-        PoolManager.Instance.CreatePool(enemyBulletHellShot, 100);
-        PoolManager.Instance.CreatePool(rangedLvl1Shot, 100);
-        PoolManager.Instance.CreatePool(rangedLvl2Shot, 100);
-        PoolManager.Instance.CreatePool(rangedLvl3Shot, 100);
-        PoolManager.Instance.CreatePool(turretLvl1Shot, 100);
-        PoolManager.Instance.CreatePool(turretLvl2Shot, 100);
-        PoolManager.Instance.CreatePool(turretLvl3Shot, 100);
+        PoolManager.Instance.CreatePool(enemyBulletHellShot, 50);
+        PoolManager.Instance.CreatePool(rangedLvl1Shot, 50);
+        PoolManager.Instance.CreatePool(rangedLvl2Shot, 50);
+        PoolManager.Instance.CreatePool(rangedLvl3Shot, 50);
+        PoolManager.Instance.CreatePool(turretLvl1Shot, 50);
+        PoolManager.Instance.CreatePool(turretLvl2Shot, 50);
+        PoolManager.Instance.CreatePool(turretLvl3Shot, 50);
 
         // Powerups
         //PoolManager.Instance.CreatePool (dualShotPowerup, 50);
-        PoolManager.Instance.CreatePool(firingPowerup, 50);
-        PoolManager.Instance.CreatePool(waveShotPowerup, 50);
-        PoolManager.Instance.CreatePool(burstRushPowerup, 50);
-        PoolManager.Instance.CreatePool(dashPowerup, 50);
-        PoolManager.Instance.CreatePool(homingMissilePowerup, 50);
-        PoolManager.Instance.CreatePool(scoreMultPowerup, 50);
-        PoolManager.Instance.CreatePool(shurikenPowerup, 50);
-        PoolManager.Instance.CreatePool(tripMinePowerup, 50);
-        PoolManager.Instance.CreatePool(sideMissilePowerup, 50);
-        PoolManager.Instance.CreatePool(healthPack, 50);
+        PoolManager.Instance.CreatePool(firingPowerup, 15);
+        PoolManager.Instance.CreatePool(waveShotPowerup, 15);
+        PoolManager.Instance.CreatePool(burstRushPowerup, 15);
+        PoolManager.Instance.CreatePool(dashPowerup, 15);
+        PoolManager.Instance.CreatePool(homingMissilePowerup, 15);
+        PoolManager.Instance.CreatePool(scoreMultPowerup, 15);
+        PoolManager.Instance.CreatePool(shurikenPowerup, 15);
+        PoolManager.Instance.CreatePool(tripMinePowerup, 15);
+        PoolManager.Instance.CreatePool(sideMissilePowerup, 15);
+        PoolManager.Instance.CreatePool(healthPack, 15);
 
         // Super Powerups
-        PoolManager.Instance.CreatePool(firingSuperPowerup, 50);
-        PoolManager.Instance.CreatePool(waveShotSuperPowerup, 50);
-        PoolManager.Instance.CreatePool(burstRushSuperPowerup, 50);
-        PoolManager.Instance.CreatePool(homingMissileSuperPowerup, 50);
-        PoolManager.Instance.CreatePool(shurikenSuperPowerup, 50);
-        PoolManager.Instance.CreatePool(tripMineSuperPowerup, 50);
+        PoolManager.Instance.CreatePool(firingSuperPowerup, 15);
+        PoolManager.Instance.CreatePool(waveShotSuperPowerup, 15);
+        PoolManager.Instance.CreatePool(burstRushSuperPowerup, 15);
+        PoolManager.Instance.CreatePool(homingMissileSuperPowerup, 15);
+        PoolManager.Instance.CreatePool(shurikenSuperPowerup, 15);
+        PoolManager.Instance.CreatePool(tripMineSuperPowerup, 15);
 
 
         // Powerup helper objs
         PoolManager.Instance.CreatePool(tripMines, 40);
         PoolManager.Instance.CreatePool(shurikenObj, 20);
-        PoolManager.Instance.CreatePool(superShurikenObj, 100);
-        PoolManager.Instance.CreatePool(waveShot, 100);
+        PoolManager.Instance.CreatePool(superShurikenObj, 30);
+        PoolManager.Instance.CreatePool(waveShot, 30);
         PoolManager.Instance.CreatePool(superWaveShot, 100);
         PoolManager.Instance.CreatePool(homingMissiles, 100);
         PoolManager.Instance.CreatePool(superHomingMissiles, 100);
@@ -204,57 +204,57 @@ public class GamePoolManager : MonoBehaviour
         //PoolManager.Instance.CreatePool(teleMarker, 10);
 
         // Enemies
-        PoolManager.Instance.CreatePool(pawnShipLvl1, 100);
-        PoolManager.Instance.CreatePool(pawnShipLvl2, 100);
-        PoolManager.Instance.CreatePool(pawnShipLvl3, 100);
+        PoolManager.Instance.CreatePool(pawnShipLvl1, 30);
+        PoolManager.Instance.CreatePool(pawnShipLvl2, 30);
+        PoolManager.Instance.CreatePool(pawnShipLvl3, 30);
 
-        PoolManager.Instance.CreatePool(rangedShipLvl1, 100);
-        PoolManager.Instance.CreatePool(rangedShipLvl2, 100);
-        PoolManager.Instance.CreatePool(rangedShipLvl3, 100);
+        PoolManager.Instance.CreatePool(rangedShipLvl1, 30);
+        PoolManager.Instance.CreatePool(rangedShipLvl2, 30);
+        PoolManager.Instance.CreatePool(rangedShipLvl3, 30);
 
-        PoolManager.Instance.CreatePool(bomberShipLvl1, 100);
-        PoolManager.Instance.CreatePool(bomberShipLvl2, 100);
-        PoolManager.Instance.CreatePool(bomberShipLvl3, 100);
+        PoolManager.Instance.CreatePool(bomberShipLvl1, 30);
+        PoolManager.Instance.CreatePool(bomberShipLvl2, 30);
+        PoolManager.Instance.CreatePool(bomberShipLvl3, 30);
 
-        PoolManager.Instance.CreatePool(turretLvl1, 100);
-        PoolManager.Instance.CreatePool(turretLvl2, 100);
-        PoolManager.Instance.CreatePool(turretLvl3, 100);
+        PoolManager.Instance.CreatePool(turretLvl1, 30);
+        PoolManager.Instance.CreatePool(turretLvl2, 30);
+        PoolManager.Instance.CreatePool(turretLvl3, 30);
 
 
         //PoolManager.Instance.CreatePool(mediShipLvl1, 100);
         //PoolManager.Instance.CreatePool(dropShipLvl1, 100);
         //PoolManager.Instance.CreatePool(assassinShipLvl1, 100);
-        PoolManager.Instance.CreatePool(missileBossLvl1, 2);
-        PoolManager.Instance.CreatePool(sniperBossLvl1, 2);
+        PoolManager.Instance.CreatePool(missileBossLvl1, 15);
+        PoolManager.Instance.CreatePool(sniperBossLvl1, 15);
         PoolManager.Instance.CreatePool(bomberBossStageOne, 15);
-        PoolManager.Instance.CreatePool(bomberBossStageTwo, 2);
-        PoolManager.Instance.CreatePool(bomberCore, 30);
+        PoolManager.Instance.CreatePool(bomberBossStageTwo, 15);
+        PoolManager.Instance.CreatePool(bomberCore, 20);
         PoolManager.Instance.CreatePool(slingShotBomber, 15);
 
         // Text prefabs
-        PoolManager.Instance.CreatePool(scoreText, 100);
-        PoolManager.Instance.CreatePool(powerupScoreText, 100);
-        PoolManager.Instance.CreatePool(bossScoreText, 10);
+        PoolManager.Instance.CreatePool(scoreText, 50);
+        PoolManager.Instance.CreatePool(powerupScoreText, 30);
+        PoolManager.Instance.CreatePool(bossScoreText, 5);
 
         // Particle prefabs
-        PoolManager.Instance.CreatePool(burstRushRingParticle, 20);
-        PoolManager.Instance.CreatePool(firingPowerupRingParticle, 20);
-        PoolManager.Instance.CreatePool(healthPickupRingParticle, 20);
-        PoolManager.Instance.CreatePool(homingMissileRingParticle, 20);
-        PoolManager.Instance.CreatePool(scoreMultRingParticle, 20);
-        PoolManager.Instance.CreatePool(shurikenRingParticle, 20);
-        PoolManager.Instance.CreatePool(tripMineRingParticle, 20);
-        PoolManager.Instance.CreatePool(waveShotRingParticle, 20);
+        //PoolManager.Instance.CreatePool(burstRushRingParticle, 10);
+        //PoolManager.Instance.CreatePool(firingPowerupRingParticle, 10);
+        //PoolManager.Instance.CreatePool(healthPickupRingParticle, 10);
+        //PoolManager.Instance.CreatePool(homingMissileRingParticle, 10);
+        //PoolManager.Instance.CreatePool(scoreMultRingParticle, 10);
+        //PoolManager.Instance.CreatePool(shurikenRingParticle, 10);
+        //PoolManager.Instance.CreatePool(tripMineRingParticle, 10);
+        //PoolManager.Instance.CreatePool(waveShotRingParticle, 10);
 
 
-        PoolManager.Instance.CreatePool(burstRushHitParticle, 20);
-        PoolManager.Instance.CreatePool(homingMissileHitParticle, 20);
-        PoolManager.Instance.CreatePool(shurikenRingHitParticle, 20);
-        PoolManager.Instance.CreatePool(tripMineHitParticle, 20);
-        PoolManager.Instance.CreatePool(waveShotHitParticle, 20);
-        PoolManager.Instance.CreatePool(playerShotHitParticle, 20);
-        PoolManager.Instance.CreatePool(empWaveHitParticle, 20);
-        PoolManager.Instance.CreatePool(bomberExplosionParticle, 20);
+        PoolManager.Instance.CreatePool(burstRushHitParticle, 10);
+        PoolManager.Instance.CreatePool(homingMissileHitParticle, 10);
+        PoolManager.Instance.CreatePool(shurikenRingHitParticle, 10);
+        PoolManager.Instance.CreatePool(tripMineHitParticle, 10);
+        PoolManager.Instance.CreatePool(waveShotHitParticle, 10);
+        PoolManager.Instance.CreatePool(playerShotHitParticle, 10);
+        PoolManager.Instance.CreatePool(empWaveHitParticle, 10);
+        PoolManager.Instance.CreatePool(bomberExplosionParticle, 10);
 
         //PoolManager.Instance.CreatePool(topGearStageTwoBoss, 5);
         //PoolManager.Instance.CreatePool(leftGearStageTwoBoss, 5);

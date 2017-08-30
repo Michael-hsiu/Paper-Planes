@@ -158,7 +158,7 @@ public class UIManager : MonoBehaviour
     {
         // Text
         //Debug.Log("HEALTH UPDATED");
-        healthText.text = "Health: " + GameManager.Singleton.playerHealth.ToString() + " / " + GameManager.Singleton.playerMaxHealth.ToString();
+        //healthText.text = "Health: " + GameManager.Singleton.playerHealth.ToString() + " / " + GameManager.Singleton.playerMaxHealth.ToString();
 
         // Health bar
         endHealth = GameManager.Singleton.playerHealth;
@@ -371,13 +371,13 @@ public class UIManager : MonoBehaviour
             // Each UI coroutine will set itself to null when completed
             while (activeRoutine != null)
             {
-                Debug.Log("ACTIVE_ROUTINE_NOT_NULL");
-                Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
-                scoreGoalTextBkgrnd.gameObject.SetActive(true);
-                scoreGoalText.gameObject.SetActive(true);
+                //Debug.Log("ACTIVE_ROUTINE_NOT_NULL");
+                //Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
+                //scoreGoalTextBkgrnd.gameObject.SetActive(true);
+                //scoreGoalText.gameObject.SetActive(true);
                 yield return null;
             }
-            Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
+            //Debug.Log("UI_MSGS_LENGTH: " + pendingRoutines.Count);
             //Debug.Break();
             yield return null;
         }
@@ -427,6 +427,8 @@ public class UIManager : MonoBehaviour
             bossSpawnedRoutine = null;
         }
         scoreGoalText.gameObject.SetActive(true);
+        scoreGoalTextBkgrnd.gameObject.SetActive(true);
+
         bossSpawnedRoutine = OnBossSpawnedUIRoutine();
         pendingRoutines.Enqueue(bossSpawnedRoutine);    // Will be processed in order by UI message coroutine
 
@@ -445,6 +447,8 @@ public class UIManager : MonoBehaviour
         //{
         //    yield return newEnemyUpgradeUnlockedRoutine;
         //}
+        scoreGoalTextBkgrnd.gameObject.SetActive(true);
+        scoreGoalText.gameObject.SetActive(true);
         // Ease in the annoucement
         if (!assignedStartColor)
         {
@@ -498,6 +502,8 @@ public class UIManager : MonoBehaviour
             bossDeathRoutine = null;
         }
         scoreGoalText.gameObject.SetActive(true);
+        scoreGoalTextBkgrnd.gameObject.SetActive(true);
+
         bossDeathRoutine = OnBossDeathUIRoutine();
         pendingRoutines.Enqueue(bossDeathRoutine);    // Will be processed in order by UI message coroutine
 
@@ -506,6 +512,8 @@ public class UIManager : MonoBehaviour
     // Announce that a boss was spawned
     IEnumerator OnBossDeathUIRoutine()
     {
+        scoreGoalTextBkgrnd.gameObject.SetActive(true);
+        scoreGoalText.gameObject.SetActive(true);
         // 1st part of msg
         // Ease in the annoucement
         if (!assignedStartColor)
@@ -590,6 +598,8 @@ public class UIManager : MonoBehaviour
             newEnemyUpgradeUnlockedRoutine = null;
         }
         scoreGoalText.gameObject.SetActive(true);
+        scoreGoalTextBkgrnd.gameObject.SetActive(true);
+
         newEnemyUpgradeUnlockedRoutine = OnNewEnemyUpgradeUnlockedRoutine();
         pendingRoutines.Enqueue(newEnemyUpgradeUnlockedRoutine);    // Will be processed in order by UI message coroutine
 
@@ -597,6 +607,8 @@ public class UIManager : MonoBehaviour
     }
     IEnumerator OnNewEnemyUpgradeUnlockedRoutine()
     {
+        scoreGoalTextBkgrnd.gameObject.SetActive(true);
+        scoreGoalText.gameObject.SetActive(true);
         // Ease in the annoucement
         if (!assignedStartColor)
         {
@@ -648,6 +660,8 @@ public class UIManager : MonoBehaviour
             newEnemyUnlockedRoutine = null;
         }
         scoreGoalText.gameObject.SetActive(true);
+        scoreGoalTextBkgrnd.gameObject.SetActive(true);
+
         newEnemyUnlockedRoutine = OnNewEnemyUnlockedRoutine();
         pendingRoutines.Enqueue(newEnemyUnlockedRoutine);    // Will be processed in order by UI message coroutine
 
@@ -655,6 +669,8 @@ public class UIManager : MonoBehaviour
     }
     IEnumerator OnNewEnemyUnlockedRoutine()
     {
+        scoreGoalTextBkgrnd.gameObject.SetActive(true);
+        scoreGoalText.gameObject.SetActive(true);
         // Ease in the annoucement
         if (!assignedStartColor)
         {
@@ -733,8 +749,8 @@ public class UIManager : MonoBehaviour
         //levelGoalText.gameObject.SetActive(true);
         //yield return new WaitForSeconds(0.7f);  // Show the level goal text on screen
 
-        levelGoalTextBackground.gameObject.SetActive(false);
         levelGoalText.gameObject.SetActive(false);      // Hide the text
+        levelGoalTextBackground.gameObject.SetActive(false);
         levelGoalRoutine = null;
         //}
     }
@@ -754,6 +770,9 @@ public class UIManager : MonoBehaviour
 
         scoreGoalText.gameObject.SetActive(false);
         scoreGoalTextBkgrnd.gameObject.SetActive(false);
+
+        levelGoalText.gameObject.SetActive(false);      // Hide the text
+        levelGoalTextBackground.gameObject.SetActive(false);
         //DisplayVictoryScreen();                                 // Opens the Victory Screen and the only current way of progressing to next level.
         //GameManager.Singleton.shopButton.SetActive (true);		// Shop is active when level is over
     }
@@ -762,6 +781,7 @@ public class UIManager : MonoBehaviour
     {
         // Restart
         scoreText.gameObject.SetActive(true);       // After being disabled from game_over_screen
+        scoreGoalTextBkgrnd.gameObject.SetActive(true);       // After being disabled from game_over_screen
 
         startDisplayedScore = 0;     // Lerp start point
         displayedChangingScore = 0;     // Currently lerping score that is displayed

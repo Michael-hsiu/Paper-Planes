@@ -28,6 +28,7 @@ public class Powerup : PoolObject
     public Color fadeEndColor;
     public bool assignedStartColor = false;
     public SpriteRenderer rawSprite;
+    public Color resetColor;
 
     [Header("AUDIO")]
     public AudioSource powerupAudioSource;
@@ -37,6 +38,8 @@ public class Powerup : PoolObject
     public GameObject scoreText;
     public Color UIstartColor;
 
+    Collider powerupCollider;
+    WaitForSeconds existsInWorldDurWaitForSec;
     IEnumerator destroyAfterDurationRoutine;
     IEnumerator fadePowerupRoutine;
     public string powerupID;
@@ -45,9 +48,14 @@ public class Powerup : PoolObject
     {
         //rawSprite = GetComponent<SpriteRenderer>();
         powerupAudioSource = GetComponent<AudioSource>();
+        powerupCollider = gameObject.GetComponent<Collider>();
+
         player = GameManager.Singleton.playerShip.GetComponent<PlayerShip>();
+        //existsInWorldDurWaitForSec = new WaitForSeconds(existsInWorldDuration);
+        //fadeStartColor = rawSprite.color;
         assignedStartColor = false;
-        ShowInScene();
+
+        //HideInScene();
         base.Start();
     }
 
@@ -61,12 +69,23 @@ public class Powerup : PoolObject
 
     public override void OnObjectReuse()
     {
-        Start();
+        //Start();
+        //assignedStartColor = false;
+        //if (assignedStartColor)
+        //{
+        //    rawSprite.material.color = fadeStartColor;
+        //}
+        //fadeStartColor.a = 1.0f;
+        rawSprite.material.color = resetColor;      // Reset color
+        existsInWorldDurWaitForSec = new WaitForSeconds(existsInWorldDuration);
+
+        ShowInScene();
+        //CancelInvoke("FadePowerup");
         DestroyAfterDuration();     // Destroy if not picked up for a set duration
     }
     public override void DestroyForReuse()
     {
-        rawSprite.material.color = fadeStartColor;      // Reset color
+        //rawSprite.material.color = fadeStartColor;      // Reset color
         base.DestroyForReuse();
     }
 
@@ -115,7 +134,8 @@ public class Powerup : PoolObject
         {
             // Invoke issues
         }
-        yield return new WaitForSeconds(existsInWorldDuration);
+        //yield return new WaitForSeconds(4.0f);
+        yield return existsInWorldDurWaitForSec;
 
         // Destroy if not picked up
         DestroyForReuse();
@@ -172,7 +192,7 @@ public class Powerup : PoolObject
     public virtual void DeactivatePowerup()
     {
         //CancelInvoke ("DeactivatePower");			// Just in case we removed a powerup through override
-        Debug.Log(String.Format("{0} POWERUP DEACTIVATED AT ENDTIME: {1}", powerupID, Time.time));
+        //Debug.Log(String.Format("{0} POWERUP DEACTIVATED AT ENDTIME: {1}", powerupID, Time.time));
         DestroyForReuse();
     }
 
@@ -217,9 +237,9 @@ public class Powerup : PoolObject
         SetVisibility(false);
     }
 
-    void SetVisibility(bool isVisible)
+    void SetVisibility(bool powerupIsVisible)
     {
-        this.isVisible = isVisible;
+        this.isVisible = powerupIsVisible;
         rawSprite.enabled = this.isVisible;
         gameObject.GetComponent<Collider>().enabled = this.isVisible;
     }

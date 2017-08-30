@@ -28,6 +28,7 @@ public class WaveShot : PoolObject, IMovement
     public AudioSource audioSource;
     public AudioClip sliceAudioClip;
 
+    WaitForSeconds fadeLerpDurWaitForSec;
     Rigidbody rigidBody;
     IEnumerator destroyAfterLifetimeRoutine;
     IEnumerator fadeRoutine;
@@ -85,14 +86,16 @@ public class WaveShot : PoolObject, IMovement
         rigidBody = GetComponent<Rigidbody>();    // Find rigidbody
         audioSource = GetComponent<AudioSource>();
     }
-    protected void Start()
+    public override void Start()
     {
+        fadeLerpDurWaitForSec = new WaitForSeconds(fadeLerpDuration);
 
         if (sprite == null)
         {
             sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
             startColor = sprite.material.color;
         }
+        base.Start();
         //shotSpawn = transform.parent.gameObject;		// Initially spawned as child of shotSpawn
         //transform.parent = shotSpawn.transform;	// Set the shotSpawn as parent for shots
 
@@ -144,7 +147,7 @@ public class WaveShot : PoolObject, IMovement
         fadeRoutine = FadeRoutine();
         StartCoroutine(fadeRoutine);
 
-        yield return new WaitForSeconds(fadeLerpDuration);
+        yield return fadeLerpDurWaitForSec;
 
         // Destroy
         DestroyForReuse();      // "Destroy" the shot, place in object pool

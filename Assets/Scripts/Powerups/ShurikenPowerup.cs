@@ -17,6 +17,7 @@ public class ShurikenPowerup : Powerup
     public float firingAngleLeft = 315f;
     public float firingAngleRight = 45f;
 
+    WaitForSeconds countDownWaitForSec;
     private IEnumerator countdownRoutine;
     private ShurikenObj shurikenObj;
 
@@ -43,6 +44,11 @@ public class ShurikenPowerup : Powerup
     //        //HideInScene();
     //    }
     //}
+
+    public override void Start()
+    {
+
+    }
 
     public override void ActivatePowerup()
     {

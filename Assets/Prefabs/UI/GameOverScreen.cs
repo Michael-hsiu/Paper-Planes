@@ -82,8 +82,8 @@ public class GameOverScreen : MonoBehaviour
 
         draggableMainVirtualJoystick.SetActive(false);
         draggableMainVirtualJoystickImg.SetActive(false);
-        leftJoystick.SetActive(false);
-        rightJoystick.SetActive(false);
+        //leftJoystick.SetActive(false);
+        //rightJoystick.SetActive(false);
         highScoreText.gameObject.SetActive(false);
         highScoreLabelText.gameObject.SetActive(false);
         pauseButton.SetActive(false);

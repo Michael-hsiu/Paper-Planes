@@ -24,6 +24,7 @@ public class ScoreText : PoolObject
     public float fadeLerpRatio;
     public float currFadeLerpTime;
     public Color startColor;
+    public float longestChangeDuration;     // Moves us out of the map, out of sight
 
     [Header("CANVAS_PLACEMENT_LOGIC")]
     public Vector2 canvasOffset;    // For viewport, center of screen is (0,0); for world, it's bottom left, this is the offset
@@ -73,11 +74,22 @@ public class ScoreText : PoolObject
     //    }
     //}
 
-    public override void DestroyForReuse()
+    //public void RelocatePrefab()
+    //{
+    //    transform.position = new Vector2(0, 300);
+    //}
+
+    public override void OnObjectReuse()
     {
-        transform.position = new Vector3(300, 0, 0);        // So it's easier to click prefabs in scene
-        base.DestroyForReuse();
+        Invoke("DestroyForReuse", Mathf.Max(scoreLerpDuration, fadeLerpDuration) + 0.5f);   // Destroy this prefab awhile after it should be faded away
+        base.OnObjectReuse();
     }
+    //public override void DestroyForReuse()
+    //{
+    //    //transform.position = new Vector3(300, 0, 0);        // So it's easier to click prefabs in scene
+    //    //Debug.Log("SCORE_TEXT DESTROYED!");
+    //    base.DestroyForReuse();
+    //}
 
     // If reusing prefab for powerups
     public void OnObjectReusePowerup(GameObject target, Powerup powerup, Color UIstartColor)

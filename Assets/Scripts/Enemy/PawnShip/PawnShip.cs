@@ -25,7 +25,12 @@ public class PawnShip : Ship
     // This is called everytime this prefab is reused
     public override void OnObjectReuse()
     {
-        Start();
+        //Start();
+        health = defaultValues.health;
+        enemyType = EnemyType.Pawn;
+
+        moveState = GetComponent<IMoveState>();
+        moveState.OnObjectReuse();
 
         // Reset start color? -color seems to freeze on last flicker
         // The only change that ever occurs is for alpha

@@ -36,7 +36,7 @@ public class MissileBoss : Ship, IEnemy
     public GameObject targetRot; // The rotation we'll use to determine appropriate missile start rotation
     public GameObject empWaveShotSpawn; // We shoot out EMP waves from here!
 
-    [SerializeField] float nextAtkTime;
+    [SerializeField] float nextAtkTime;     // Next time we attack
     IEnumerator attackRoutine;
     // Time at which we can launch next valid atk
 
@@ -55,6 +55,8 @@ public class MissileBoss : Ship, IEnemy
     protected override void Start()
     {
         base.Start();
+
+        // Reset default values
         health = defaultValues.health;
         enemyType = EnemyType.Boss;
 
@@ -63,23 +65,40 @@ public class MissileBoss : Ship, IEnemy
         GetComponent<Rigidbody>().AddForce(transform.up * 0.01f);
         nextAtkTime = Time.time + Random.Range(2, 3);
 
-        if (attackRoutine == null)
+        if (attackRoutine != null)
         {
-            attackRoutine = UseAttack();
-            StartCoroutine(attackRoutine);
+            StopCoroutine(attackRoutine);
+            attackRoutine = null;
         }
+
+        attackRoutine = UseAttack();
+        StartCoroutine(attackRoutine);
+
     }
 
     public override void OnObjectReuse()
     {
+        //Start();
+        // Reset default values
+        health = defaultValues.health;
+        enemyType = EnemyType.Boss;
+
+        moveState = GetComponent<IMoveState>();
+        if (moveState != null)
+        {
+            moveState.OnObjectReuse();
+        }
+
         // End routines
         if (attackRoutine != null)
         {
             StopCoroutine(attackRoutine);
             attackRoutine = null;
         }
+
+        attackRoutine = UseAttack();
+        StartCoroutine(attackRoutine);
         //Debug.Log(attackRoutine == null);
-        Start();
         //moveState.OnObjectReuse();
         //Debug.Break();
 
@@ -92,6 +111,8 @@ public class MissileBoss : Ship, IEnemy
             sprite.material.color = resetColor;
             Debug.Log("SPRITE RESET!");
         }
+        nextAtkTime = Time.time + Random.Range(2.0f, 4.0f);     // Change next atk time
+
     }
 
     #endregion

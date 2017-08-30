@@ -23,18 +23,18 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
         GameManager.Singleton.StartLevelEvent += ResetJoystick;
     }
 
-    void Update()
-    {
-        Debug.Log("TOUCH_COUNT_UPDATE: " + Input.touchCount);
+    //void Update()
+    //{
+    //    //Debug.Log("TOUCH_COUNT_UPDATE: " + Input.touchCount);
 
-    }
+    //}
     private void ResetJoystick()
     {
         // Reset joystick on game_start
         inputDirection = Vector3.zero;
         //joystickImg.rectTransform.anchoredPosition = Vector3.zero;      // Return joystick_img to center of mount 
 
-        Debug.Log("JOYSTICK_RESET");
+        //Debug.Log("JOYSTICK_RESET");
         //Debug.Break();
     }
 
@@ -43,9 +43,9 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
         if (GameManager.Singleton.levelActive)
         {
 
-            Debug.Log("TOUCH_COUNT_PTER_DRAG: " + Input.touchCount);
+            //Debug.Log("TOUCH_COUNT_PTER_DRAG: " + Input.touchCount);
 
-            Debug.Log("ON_DRAG_CALLED!");
+            //Debug.Log("ON_DRAG_CALLED!");
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
             {
                 // Currently kind of glitchy if set in OnPterDown (appears in last pos)
@@ -57,7 +57,7 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
                                                                                                                                  //bgImg.rectTransform.anchoredPosition3D = tapPoint;
                 joystickImg.rectTransform.anchoredPosition3D = tapPoint;
                 //inputDirection = Input.GetTouch(0).deltaPosition.normalized;
-                Debug.Log("TOUCHPHASE_MOVED!");
+                //Debug.Log("TOUCHPHASE_MOVED!");
 
                 // Move joystick indicator to tap position. Only move player is camera is not animating!
                 joystickImg.rectTransform.anchoredPosition3D = tapPoint;
@@ -82,7 +82,7 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
                 //Vector3 rawInputDirection = Input.GetTouch(0).deltaPosition.normalized;
                 //inputDirection = new Vector3(rawInputDirection.x, rawInputDirection.z, 0f);
 
-                Debug.Log("INPUT_DIR: " + inputDirection);
+                //Debug.Log("INPUT_DIR: " + inputDirection);
             }
         }
 
@@ -122,11 +122,8 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
         {
             //joystickImg.gameObject.SetActive(true);
 
-            Debug.Log("ON_PTER_DOWN!");
-            Debug.Log("TOUCH_COUNT_PTER_DOWN: " + Input.touchCount);
-
-
-
+            //Debug.Log("ON_PTER_DOWN!");
+            //Debug.Log("TOUCH_COUNT_PTER_DOWN: " + Input.touchCount);
 
             if (Input.touchCount > 0)
             {
@@ -148,7 +145,7 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
 
                 }
 
-                Debug.Log("TOUCHPHASE_BEGAN!");
+                //Debug.Log("TOUCHPHASE_BEGAN!");
             }
 
             //else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -191,7 +188,7 @@ public class VirtualDraggableJoystick : MonoBehaviour, IDragHandler, IPointerDow
         if (GameManager.Singleton.levelActive)
         {
             inputDirection = Vector3.zero;      // Stop player from moving when not touching screen
-            Debug.Log("ON_PTER_UP!");
+            //Debug.Log("ON_PTER_UP!");
         }
 
     }

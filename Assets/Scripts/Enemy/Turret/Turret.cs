@@ -22,7 +22,7 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     public int enemyPoints = 100;
 
     public GameObject shot;
-    public Transform shotSpawn;
+    public TurretShotSpawn shotSpawn;
 
     public int shotDamage = 10;
     public float fireRate = .1f;
@@ -65,20 +65,28 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
         initialRot = transform.rotation;
         initialPos = new Vector2(transform.position.x, transform.position.y);   // Cache our initial position
-        target = GameObject.FindGameObjectWithTag(Constants.PlayerTag);     // Get Player at runtime
+        target = GameManager.Singleton.playerShip.gameObject;     // Get Player at runtime
         nextFire = Time.time + Random.Range(0f, 1f);
 
-        sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
-        startColor = sprite.material.color;
+        if (sprite == null)
+        {
+            sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
+        }
+        if (sprite != null)
+        {
+            startColor = sprite.material.color;
+        }
 
         // Reset default values
         health = defaultValues.health;
 
-        if (burstFireRoutine == null)
+        if (burstFireRoutine != null)
         {
-            burstFireRoutine = BurstFire();
-            StartCoroutine(burstFireRoutine);
+            StopCoroutine(burstFireRoutine);
+            burstFireRoutine = null;
         }
+        burstFireRoutine = BurstFire();
+        StartCoroutine(burstFireRoutine);
     }
 
     protected virtual void Update()
@@ -87,25 +95,27 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
         Move();
         if (canSeePlayer)
         {
-            Debug.Log("ACTIVATING GUNS");
+            //Debug.Log("ACTIVATING GUNS");
             ActivateGuns();
         }
         else
         {
-            Debug.Log("DEACTIVATING GUNS");
+            //Debug.Log("DEACTIVATING GUNS");
             DeactivateGuns();
         }
     }
 
     public override void OnObjectReuse()
     {
-        // End routines
-        if (burstFireRoutine != null)
-        {
-            StopCoroutine(burstFireRoutine);
-            burstFireRoutine = null;
-        }
-        Start();
+
+        //Start();
+
+        // Reset default values
+        health = defaultValues.health;
+
+        nextFire = Time.time + Random.Range(1f, 2f);
+
+
         //Debug.Break();
         // Reset start color? -color seems to freeze on last flicker
         // The only change that ever occurs is for alpha
@@ -114,8 +124,16 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
             Color resetColor = startColor;
             resetColor.a = 1f;
             sprite.material.color = resetColor;
-            Debug.Log("SPRITE RESET!");
+            //Debug.Log("SPRITE RESET!");
         }
+        // End routines
+        if (burstFireRoutine != null)
+        {
+            StopCoroutine(burstFireRoutine);
+            burstFireRoutine = null;
+        }
+        burstFireRoutine = BurstFire();
+        StartCoroutine(burstFireRoutine);
     }
     #endregion
 
@@ -185,7 +203,7 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     // Flicker when hit
     IEnumerator FlickerHit()
     {
-        Debug.Log("FLICKERING");
+        //Debug.Log("FLICKERING");
         Color flickerColor = sprite.material.color;
         flickerColor.a = 0.45f;
 
@@ -235,15 +253,21 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
     {
 
         nextFire = Time.time + fireRate;    // Cooldown time for projectile firing
+
         // Check for all shotspawns in children
-        foreach (Transform s in transform)
+        if (shotSpawn != null)
         {
-            TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn>();  // Get ShotSpawn in children
-            if (shotSpawn != null)
-            {
-                shotSpawn.CreateShot(); // Fire the shot!
-            }
+            shotSpawn.CreateShot(); // Fire the shot!
         }
+
+        //foreach (Transform s in transform)
+        //{
+        //    TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn>();  // Get ShotSpawn in children
+        //    if (shotSpawn != null)
+        //    {
+        //        shotSpawn.CreateShot(); // Fire the shot!
+        //    }
+        //}
 
     }
 
@@ -261,27 +285,35 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
 
     public void ActivateGuns()
     {
-        foreach (Transform s in transform)
+        if (shotSpawn != null)
         {
-            TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn>();  // Get ShotSpawn in children
-
-            if (shotSpawn != null)
-            {
-                shotSpawn.Arm();    // Fire the shot!
-            }
+            shotSpawn.Arm();    // Fire the shot!
         }
+        //foreach (Transform s in transform)
+        //{
+        //    TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn>();  // Get ShotSpawn in children
+
+        //    if (shotSpawn != null)
+        //    {
+        //        shotSpawn.Arm();    // Fire the shot!
+        //    }
+        //}
     }
 
     public void DeactivateGuns()
     {
-        foreach (Transform s in transform)
-        {
-            TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn>();  // Get ShotSpawn in children
+        //foreach (Transform s in transform)
+        //{
+        //    TurretShotSpawn shotSpawn = s.GetComponent<TurretShotSpawn>();  // Get ShotSpawn in children
 
-            if (shotSpawn != null)
-            {
-                shotSpawn.Disarm(); // Fire the shot!
-            }
+        //    if (shotSpawn != null)
+        //    {
+        //        shotSpawn.Disarm(); // Fire the shot!
+        //    }
+        //}
+        if (shotSpawn != null)
+        {
+            shotSpawn.Disarm(); // Fire the shot!
         }
 
 
@@ -303,8 +335,8 @@ public class Turret : PoolObject, IMovement, IFires, IDamageable<int>, IKillable
                 // Detect if player is within the field of view
                 if (Physics.Raycast(transform.position, rayDirection, out hit, visibilityDistance, layerMask))
                 {
-                    Debug.DrawRay(transform.position, rayDirection, Color.red);
-                    Debug.Log("HIT THE PLAYER!");
+                    //Debug.DrawRay(transform.position, rayDirection, Color.red);
+                    //Debug.Log("HIT THE PLAYER!");
                     return (hit.transform.CompareTag(Constants.PlayerTag));
                 }
             }

@@ -24,7 +24,7 @@ public class FiringPowerup : Powerup
 
         ShotSpawnContainer activePowerup = player.activeShotSpawnContainer; // Get the active powerup's shotspawns
         PlayerShip.Weapons activeWeaponType = activePowerup.firingPowerupID;
-        Debug.Log(activeWeaponType);
+        //Debug.Log(activeWeaponType);
 
         // Choose the new list of shotspawns and set the end time for powerup.
         // Case 1 - No firing powerups active.
@@ -61,8 +61,8 @@ public class FiringPowerup : Powerup
             player.firingPowerupExpirationTime = endTime;               // Record new end time	
         }
 
-        Debug.Log("ENDTIME: " + endTime);
-        Debug.Log("EXPIRE_TIME: " + player.firingPowerupExpirationTime);
+        //Debug.Log("ENDTIME: " + endTime);
+        //Debug.Log("EXPIRE_TIME: " + player.firingPowerupExpirationTime);
         Invoke("DeactivatePowerup", player.firingPowerupExpirationTime - timeObtained);       // Reset to state before powerup obtained
 
         // End destroy routine

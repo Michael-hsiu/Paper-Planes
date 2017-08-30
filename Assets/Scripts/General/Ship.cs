@@ -43,9 +43,13 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
 
         if (sprite == null)
         {
-            sprite = Utils.FindChildWithTag(gameObject, "Sprite").GetComponent<Renderer>();
-            startColor = sprite.material.color;
+            GameObject rawSprite = Utils.FindChildWithTag(gameObject, "Sprite");
+            if (rawSprite != null)
+            {
+                sprite = rawSprite.GetComponent<Renderer>();
+            }
         }
+        startColor = sprite.material.color;
         //base.Start();
     }
 
@@ -145,7 +149,10 @@ public abstract class Ship : AbstractShip, IMovement, IDamageable<int>, IKillabl
     public void OnKillReset()
     {
         hitFlickerRoutine = null;
-        sprite.material.color = startColor;
+        if (sprite != null)
+        {
+            sprite.material.color = startColor;
+        }
 
         GameManager.Singleton.UpdateScore(enemyPoints); // Add new score in GameManager
         UIManager.Singleton.UpdateScore();  // Update score in UI

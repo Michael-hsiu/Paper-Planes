@@ -43,7 +43,7 @@ public class AIInput : MonoBehaviour, InputComponent
     public IEnumerator cr1;
     //public VirtualJoystick virtualJoystickMove;
     public VirtualDraggableJoystick virtualJoystickMove;
-    public VirtualJoystick virtualJoystickRotate;
+    public VirtualDraggableJoystick virtualJoystickRotate;
 
     //public enum DashState { Ready, Dashing, Cooldown}
 
@@ -156,28 +156,28 @@ public class AIInput : MonoBehaviour, InputComponent
             // Rotation logic
             Vector3 rotateInputDirection = virtualJoystickRotate.inputDirection;
             Vector3 moveInputDirection = virtualJoystickMove.inputDirection;
-            if (rotateInputDirection != Vector3.zero)
-            {
-                // Joystick FiringRig Rotation logic
-                if (Time.time > rigRotationEndTime)
-                {
-                    Quaternion rawFiringRigRotation = player.firingRig.transform.rotation;    // Cache start rotation
-                    Vector3 firingRigRotEuler = rawFiringRigRotation.eulerAngles;
-                    firingRigRotEuler.x = 0f;       // Remove non z-axis rot
-                    firingRigRotEuler.y = 0f;
-                    rigStartRotation = Quaternion.Euler(firingRigRotEuler);
+            //if (rotateInputDirection != Vector3.zero)
+            //{
+            //    // Joystick FiringRig Rotation logic
+            //    if (Time.time > rigRotationEndTime)
+            //    {
+            //        Quaternion rawFiringRigRotation = player.firingRig.transform.rotation;    // Cache start rotation
+            //        Vector3 firingRigRotEuler = rawFiringRigRotation.eulerAngles;
+            //        firingRigRotEuler.x = 0f;       // Remove non z-axis rot
+            //        firingRigRotEuler.y = 0f;
+            //        rigStartRotation = Quaternion.Euler(firingRigRotEuler);
 
-                    zAngleFiringRig = (Mathf.Atan2(rotateInputDirection.z, rotateInputDirection.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
-                    rigDesiredRotation = Quaternion.Euler(0, 0, zAngleFiringRig);        // Store rotation as an Euler, then Quaternion
-                    rigRotationEndTime = Time.time + rotationDetectInterval;             // Schedule next rotation check
-                    rigLerpStartTime = Time.time;
-                    rigCurrLerpTime = 0f;
-                }
-                rigCurrLerpTime += Time.deltaTime;
-                rigLerpRatio = rigCurrLerpTime / rotationDetectInterval;
-                player.firingRig.transform.rotation = Quaternion.Slerp(rigStartRotation, rigDesiredRotation, rigLerpRatio);
-                Debug.Log("FIRINGRIGANGLES: " + player.firingRig.transform.rotation.eulerAngles);
-            }
+            //        zAngleFiringRig = (Mathf.Atan2(rotateInputDirection.z, rotateInputDirection.x) * Mathf.Rad2Deg) - 90;    // Angle of rotation around z-axis (pointing upwards)
+            //        rigDesiredRotation = Quaternion.Euler(0, 0, zAngleFiringRig);        // Store rotation as an Euler, then Quaternion
+            //        rigRotationEndTime = Time.time + rotationDetectInterval;             // Schedule next rotation check
+            //        rigLerpStartTime = Time.time;
+            //        rigCurrLerpTime = 0f;
+            //    }
+            //    rigCurrLerpTime += Time.deltaTime;
+            //    rigLerpRatio = rigCurrLerpTime / rotationDetectInterval;
+            //    player.firingRig.transform.rotation = Quaternion.Slerp(rigStartRotation, rigDesiredRotation, rigLerpRatio);
+            //    Debug.Log("FIRINGRIGANGLES: " + player.firingRig.transform.rotation.eulerAngles);
+            //}
             // Movement logic
             if (moveInputDirection != Vector3.zero)
             {

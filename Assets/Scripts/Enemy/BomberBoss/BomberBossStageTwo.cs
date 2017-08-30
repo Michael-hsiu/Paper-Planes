@@ -54,13 +54,19 @@ public class BomberBossStageTwo : Ship
     // This is called everytime this prefab is reused
     public override void OnObjectReuse()
     {
-        StopAllCoroutines();
+        //StopAllCoroutines();
+        //Start();
+        // Reset values from defaultValues scrObj
+        health = defaultValues.health;
+        rotationSpeed = defaultValues.rotationSpeed;
+        rotationFactor = defaultValues.rotationFactor;
 
         // Reset component states
         moveState = GetComponent<IMoveState>();
         fireState = GetComponent<IFireState>();
 
         moveState.OnObjectReuse();
+        fireState.OnObjectReuse();
 
         // Color / alpha reset
         Color resetColor = startColor;
