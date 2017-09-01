@@ -7,8 +7,14 @@ public class BurstChargeColliders : MonoBehaviour
 
     public GameObject explosion;
     public int dmg = 100;       // Damage param for burstRush
-    public float nextParticleSpawnTime;
-    public float timeBtwnParticleSpawns = 0.05f;
+
+    public float delayBtwnHits = 0.01f;
+    public float nextHitTime;
+
+    public float delayBtwnParticles = 0.01f;
+    public float nextParticleTime;
+    //public float delayBtwnHits = 0.01f;
+    //public float nextHitTime;
 
     [Header("AUDIO")]
     public AudioClip rushAudioClip;
@@ -25,18 +31,34 @@ public class BurstChargeColliders : MonoBehaviour
             {
                 if (other.gameObject.GetComponent<IDamageable<int>>() != null)
                 {
-                    other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);      // Inflict damage
+                    //other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);      // Inflict damage
 
                     // Reduce # of particles spawned
-                    if (Time.time > nextParticleSpawnTime)
+                    //if (Time.time > nextParticleSpawnTime)
+                    //{
+                    //    PoolManager.Instance.ReuseObject(explosion, other.transform.position, Quaternion.identity);
+                    //    nextParticleSpawnTime = Time.time + timeBtwnParticleSpawns;
+
+                    //}
+
+                    // Only hit if time is satisfied
+                    if (Time.time > nextHitTime)
+                    {
+                        other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);      // Inflict damage
+                        nextHitTime = Time.time + delayBtwnHits;       // Set time til next atk
+                        //Debug.Log("CHARGE_HIT!");
+                    }
+                    if (Time.time > nextParticleTime)
                     {
                         PoolManager.Instance.ReuseObject(explosion, other.transform.position, Quaternion.identity);
-                        nextParticleSpawnTime = Time.time + timeBtwnParticleSpawns;
+
                         if (GameManager.Singleton.sfxEnabled)
                         {
                             GameManager.Singleton.cameraController.audioSource.PlayOneShot(rushAudioClip, 0.5f);
                             GameManager.Singleton.cameraController.audioSource.PlayOneShot(scorchAudioClip, 0.4f);
                         }
+                        nextParticleTime = Time.time + delayBtwnParticles;
+                        //Debug.Log("CHARGE_RUSH_HIT!");
                     }
                 }
             }

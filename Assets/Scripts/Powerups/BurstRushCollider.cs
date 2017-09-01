@@ -7,6 +7,11 @@ public class BurstRushCollider : MonoBehaviour
 
     public GameObject explosion;
     public int dmg = 20;
+    public float delayBtwnHits = 0.01f;
+    public float nextHitTime;
+
+    public float delayBtwnParticles = 0.01f;
+    public float nextParticleTime;
 
     void OnTriggerStay(Collider other)
     {
@@ -40,9 +45,19 @@ public class BurstRushCollider : MonoBehaviour
                     //    other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);      // Inflict damage
 
                     //}
-                    other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);      // Inflict damage
-                    // Spawn an explosion in either case
-                    PoolManager.Instance.ReuseObject(explosion, other.transform.position, Quaternion.identity);
+                    // Only hit if time is satisfied
+                    if (Time.time > nextHitTime)
+                    {
+                        other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);      // Inflict damage
+                                                                                            // Spawn an explosion in either case
+                                                                                            //PoolManager.Instance.ReuseObject(explosion, other.transform.position, Quaternion.identity);
+                        nextHitTime = Time.time + delayBtwnHits;       // Set time til next atk
+                    }
+                    if (Time.time > nextParticleTime)
+                    {
+                        PoolManager.Instance.ReuseObject(explosion, other.transform.position, Quaternion.identity);
+                        nextParticleTime = Time.time + delayBtwnParticles;
+                    }
                 }
             }
         }

@@ -350,6 +350,12 @@ public class EnemySpawner : MonoBehaviour
                         {
                             selectedEnemyIndex = Random.Range(0, baseBossTypes.Count);
                         }
+
+                        // Spawn BomberBoss always near middle
+                        if (selectedEnemyIndex == baseBossTypes.Count - 1)
+                        {
+                            totalVector = GameManager.Singleton.playerStartPosition + new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0f);
+                        }
                     }
 
                     //Debug.Break();
@@ -370,7 +376,11 @@ public class EnemySpawner : MonoBehaviour
                     //Debug.Log("BOSS_SPAWNED!");
 
                     // Wait a bit before checking if the boss has died
-                    yield return new WaitForSeconds(Random.Range(0, 5f));
+                    yield return new WaitForSeconds(Random.Range(0f, 5f));
+                }
+                else
+                {
+                    yield return new WaitForSeconds((Random.Range(0f, 1.5f)));
                 }
                 yield return null;
             }
