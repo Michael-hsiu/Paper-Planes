@@ -81,6 +81,10 @@ public class BomberShip : Ship
         if (isSlingShotBomber)
         {
             // Reset to position in pool
+            if (poolParent == null)
+            {
+                poolParent = PoolManager.Instance.GetPool("slingshot_bomber");
+            }
             transform.parent = poolParent.transform;
         }
         base.DestroyForReuse();

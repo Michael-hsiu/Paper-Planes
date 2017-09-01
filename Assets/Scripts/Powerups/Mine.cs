@@ -67,7 +67,7 @@ public class Mine : PoolObject
             if (Utils.SquaredEuclideanDistance(GameManager.Singleton.playerShip.gameObject, gameObject) < 625.0f)
             {
                 audioSource.PlayOneShot(explosionAudioClip, 0.3f);
-                Debug.Log("AUDIO_PLAYING: " + audioSource.isPlaying);
+                //Debug.Log("AUDIO_PLAYING: " + audioSource.isPlaying);
                 //Debug.Break();
             }
         }

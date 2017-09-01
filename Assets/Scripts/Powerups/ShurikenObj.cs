@@ -99,11 +99,11 @@ public class ShurikenObj : PoolObject
         capsuleCollider.gameObject.transform.localScale += Vector3.one * powerupData.sizeMultiplier / growTimeMult;            // Gradually increase size of object
         //capsuleCollider.radius += powerupData.sizeMultiplier / growTimeMult;
 
-        Debug.Log("RESIZING");
+        //Debug.Log("RESIZING");
         if (transform.localScale.x >= powerupData.sizeMultiplier)
         {
             growingBigger = false;
-            Debug.Log("RESIZING ENDED!");
+            //Debug.Log("RESIZING ENDED!");
         }
     }
 

@@ -37,6 +37,7 @@ public class EnemySpawner : MonoBehaviour
     public bool bomberLevel3Unlocked = false;
     public bool turretLevel2Unlocked = false;
     public bool turretLevel3Unlocked = false;
+    public bool bossSpawnActive = false;
 
     // The maximum of each enemy we can have alive at a time. MAY be subject to change as level increases.
     [Header("MAX_ENEMY_COUNTS")]
@@ -194,48 +195,48 @@ public class EnemySpawner : MonoBehaviour
             //Debug.Log("PAWN_LVL2_UNLOCKED!");
 
         }
-        else if (playerScore > 1600 && !rangedLevel2Unlocked)
+        else if (playerScore > 2000 && !rangedLevel2Unlocked)
         {
             rangedLevel2Unlocked = true;
             newEnemyUpgradeUnlocked = true;
             //Debug.Log("RANGED_LVL2_UNLOCKED!");
 
         }
-        else if (playerScore > 2200 && !bomberLevel2Unlocked)
+        else if (playerScore > 3000 && !bomberLevel2Unlocked)
         {
             bomberLevel2Unlocked = true;
             newEnemyUpgradeUnlocked = true;
             //Debug.Log("BOMBER_LVL2_UNLOCKED!");
 
         }
-        else if (playerScore > 3000 && !turretLevel2Unlocked)
+        else if (playerScore > 5000 && !turretLevel2Unlocked)
         {
             turretLevel2Unlocked = true;
             newEnemyUpgradeUnlocked = true;
             //Debug.Log("TURRET_LVL2_UNLOCKED!");
 
         }
-        else if (playerScore > 4100 && !pawnLevel3Unlocked)
+        else if (playerScore > 8000 && !pawnLevel3Unlocked)
         {
             pawnLevel3Unlocked = true;
             newEnemyUpgradeUnlocked = true;
             //Debug.Log("PAWN_LVL3_UNLOCKED!");
 
         }
-        else if (playerScore > 6100 && !rangedLevel3Unlocked)
+        else if (playerScore > 11000 && !rangedLevel3Unlocked)
         {
             rangedLevel3Unlocked = true;
             newEnemyUpgradeUnlocked = true;
             //Debug.Log("RANGED_LVL3_UNLOCKED!");
 
         }
-        else if (playerScore > 8100 && !bomberLevel3Unlocked)
+        else if (playerScore > 15000 && !bomberLevel3Unlocked)
         {
             bomberLevel3Unlocked = true;
             newEnemyUpgradeUnlocked = true;
             //Debug.Log("BOMBER_LVL3_UNLOCKED!");
         }
-        else if (playerScore > 10100 && !turretLevel3Unlocked)
+        else if (playerScore > 20000 && !turretLevel3Unlocked)
         {
             turretLevel3Unlocked = true;
             newEnemyUpgradeUnlocked = true;
@@ -253,10 +254,9 @@ public class EnemySpawner : MonoBehaviour
         }
 
         // Check if points reached certain level. If so, start spawning bosses
-        if (!bossSpawnEnabled && playerScore > 1000)
+        if (!bossSpawnEnabled && !bossSpawnActive && playerScore > 1000)
         {
             bossSpawnEnabled = true;
-            nextBossSpawnTime = Time.time + Random.Range(3f, 5f);
             if (bossSpawnRoutine != null)
             {
                 StopCoroutine(bossSpawnRoutine);
@@ -270,15 +270,18 @@ public class EnemySpawner : MonoBehaviour
     // Set the time for the next boss spawn on death of current boss
     public void OnBossDeath()
     {
-        nextBossSpawnTime = Time.time + Random.Range(7f, 10f);
+        nextBossSpawnTime = Time.time + Random.Range(15f, 20f);
         //NUM_BOSSES_ALIVE -= 1;
     }
 
     IEnumerator BossSpawnRoutine()
     {
+        nextBossSpawnTime = Time.time + Random.Range(5f, 10f);
+
         mapColliders = GameManager.Singleton.mapColliders;  // Ref to map colliders
         int colliderCountEndIndex = mapColliders.Count - 1;
         List<float> possibleSpawnAngles = new List<float>() { 90f, -30f, 30f };
+        bool firstBossSpawned = false;
         while (true)
         {
             // Wait for a bit before we check to see if spawns are enabled (naive level restart logic)
@@ -336,10 +339,19 @@ public class EnemySpawner : MonoBehaviour
 
                     // Spawn the boss
                     int selectedEnemyIndex = Random.Range(0, baseBossTypes.Count);
-                    while (selectedEnemyIndex == lastBossSpawnIndex)
+                    if (!firstBossSpawned)
                     {
-                        selectedEnemyIndex = Random.Range(0, baseBossTypes.Count);
+                        selectedEnemyIndex = Random.Range(0, 2);        // Only first 2 bosses (bomberBoss still confusing)
+                        firstBossSpawned = true;
                     }
+                    else
+                    {
+                        while (selectedEnemyIndex == lastBossSpawnIndex)
+                        {
+                            selectedEnemyIndex = Random.Range(0, baseBossTypes.Count);
+                        }
+                    }
+
                     //Debug.Break();
 
                     lastBossSpawnIndex = selectedEnemyIndex;

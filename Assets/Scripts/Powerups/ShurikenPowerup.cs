@@ -78,7 +78,10 @@ public class ShurikenPowerup : Powerup
         else
         {
             ShurikenObj s = (ShurikenObj)PoolManager.Instance.ReuseObjectRef(shuriken, pos, Quaternion.identity);
-            s.GetComponent<Rigidbody>().AddForce(player.transform.up * thrustForce);        // Outwards radiating movement, using position relative to y-axis of player
+            if (s.GetComponent<Rigidbody>() != null)
+            {
+                s.GetComponent<Rigidbody>().AddForce(player.transform.up * thrustForce);        // Outwards radiating movement, using position relative to y-axis of player
+            }
         }
         //Debug.Log ("PLAYER POS: " + pos);
         //Debug.Log ("PLAYER FORWARD: " + player.transform.forward);

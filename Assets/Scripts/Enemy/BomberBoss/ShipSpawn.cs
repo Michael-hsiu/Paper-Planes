@@ -22,9 +22,9 @@ public class ShipSpawn : MonoBehaviour
         {
             enemySpawner.NUM_BOMBERS_ALIVE += 1;    // Must record mobs we spawn
         }
-        else
-        {
-            Debug.Log("ENEMY_SPAWNER_NULL");
-        }
+        //else
+        //{
+        //    Debug.Log("ENEMY_SPAWNER_NULL");
+        //}
     }
 }

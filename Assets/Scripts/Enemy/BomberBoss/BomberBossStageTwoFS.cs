@@ -167,7 +167,7 @@ public class BomberBossStageTwoFS : MonoBehaviour, IFireState
 
                 // Clear the remaining bombers from last prefab use
                 remainingBombers.Clear();
-                remainingBombers = Utils.GetChildren(spawnedMobsContainer, remainingBombers);
+                remainingBombers = Utils.GetRootChildren(spawnedMobsContainer, remainingBombers);
                 foreach (GameObject go in remainingBombers)
                 {
                     // Return bombers to pool and recycle

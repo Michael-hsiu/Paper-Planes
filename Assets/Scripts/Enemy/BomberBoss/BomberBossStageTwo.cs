@@ -162,7 +162,7 @@ public class BomberBossStageTwo : Ship
 
         else if (other.gameObject.CompareTag(Constants.PlayerTag))
         {
-            Debug.Log(((BomberBossStageTwoMS)moveState).direction);
+            //Debug.Log(((BomberBossStageTwoMS)moveState).direction);
             //Debug.Break();
             if (((BomberBossStageTwoMS)moveState).direction == Direction.BOMBER_BOSS_RUSH_FORWARDS_MOVEMENT)
             {

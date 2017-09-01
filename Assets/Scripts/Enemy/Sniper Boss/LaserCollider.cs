@@ -39,7 +39,7 @@ public class LaserCollider : MonoBehaviour
                     {
 
                         other.gameObject.GetComponent<IDamageable<int>>().Damage(dmg);      // Inflict damage
-                        Debug.Log("PLAYER DMGED");
+                        //Debug.Log("PLAYER DMGED");
 
                         nextDmgTime = Time.time + dmgDelay;
                         //Instantiate (explosion, other.transform.position, Quaternion.identity);						

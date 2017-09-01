@@ -63,8 +63,12 @@ public class BomberBossStageTwoMS : MonoBehaviour, IMoveState
     // Should NOT call this when starting for first time, only on reuse
     public void OnObjectReuse()
     {
-        StopAllCoroutines();
-
+        //StopAllCoroutines();
+        if (rotationRoutine != null)
+        {
+            StopCoroutine(rotationRoutine);
+            rotationRoutine = null;
+        }
         rotationRoutine = StartRotating();
         StartCoroutine(rotationRoutine);
     }

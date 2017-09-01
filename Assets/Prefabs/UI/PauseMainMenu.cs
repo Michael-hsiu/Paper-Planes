@@ -11,9 +11,11 @@ public class PauseMainMenu : MenuScreen
     public Button tutorialButton;
     public Button musicButton;
     public Button creditsButton;
+    public PauseButton pauseButton;
 
     [Header("SCREEN_REFS")]
     public MenuScreen tutorialConfirmScreen;
+    public MenuScreen restartConfirmScreen;
     public MenuScreen musicScreen;
     public MenuScreen creditsScreen;
 
@@ -31,6 +33,18 @@ public class PauseMainMenu : MenuScreen
     //    creditsButton.gameObject.SetActive(false);
 
     //}
+
+    // Transition to Restart Confirmation screen
+    public void OnTransitionToRestartConfirmationScreen()
+    {
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        }
+        restartConfirmScreen.gameObject.SetActive(true);
+        restartConfirmScreen.OnSetup();
+        OnTearDown();
+    }
 
     // Transition to Tutorial Confirmation screen
     public void OnTransitionToTutorialConfirmationScreen()
@@ -72,4 +86,15 @@ public class PauseMainMenu : MenuScreen
 
     }
 
+    // Transition back to game
+    public void OnExitMenu()
+    {
+        if (GameManager.Singleton.sfxEnabled)
+        {
+            GameManager.Singleton.cameraController.audioSource.PlayOneShot(onTappedAudioClip, 1f);
+        }
+        Time.timeScale = 1;
+        pauseButton.gamePaused = false;
+        OnTearDown();
+    }
 }

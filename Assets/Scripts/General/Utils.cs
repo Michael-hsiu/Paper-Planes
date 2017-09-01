@@ -19,6 +19,25 @@ public static class Utils
         return GetChildrenHelper(go, list);
     }
 
+    // Recursively gets all children of a gameobject given a list
+    public static List<GameObject> GetRootChildren(GameObject go, List<GameObject> list)
+    {
+        return GetRootChildrenHelper(go, list);
+    }
+
+    private static List<GameObject> GetRootChildrenHelper(GameObject go, List<GameObject> list)
+    {
+        if (go == null)
+        {
+            return list;
+        }
+        foreach (Transform t in go.transform)
+        {
+            list.Add(t.gameObject);
+        }
+        return list;
+    }
+
     private static List<GameObject> GetChildrenHelper(GameObject go, List<GameObject> list)
     {
         if (go == null)

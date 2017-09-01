@@ -34,6 +34,7 @@ public class BomberMS : MonoBehaviour, IMoveState
     // Setup activities after being activated from Object Pool
     public void OnObjectReuse()
     {
+        GetComponent<Rigidbody>().velocity = Vector3.zero;      // Reset velocity
         isStationary = false;
     }
 
@@ -44,7 +45,7 @@ public class BomberMS : MonoBehaviour, IMoveState
 
     IEnumerator DestroyAfterDuration()
     {
-        Debug.Log("HALTING");
+        //Debug.Log("HALTING");
         //Debug.Break();
         yield return new WaitForSeconds(destroyDelay);
         bomberShip.DestroyForReuse();

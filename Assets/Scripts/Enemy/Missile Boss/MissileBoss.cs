@@ -36,6 +36,7 @@ public class MissileBoss : Ship, IEnemy
     public GameObject targetRot; // The rotation we'll use to determine appropriate missile start rotation
     public GameObject empWaveShotSpawn; // We shoot out EMP waves from here!
 
+    public float defaultRotationSpeed;
     [SerializeField] float nextAtkTime;     // Next time we attack
     IEnumerator attackRoutine;
     // Time at which we can launch next valid atk
@@ -58,21 +59,25 @@ public class MissileBoss : Ship, IEnemy
 
         // Reset default values
         health = defaultValues.health;
+        rotationSpeed = defaultValues.rotationSpeed;
         enemyType = EnemyType.Boss;
 
         moveState = GetComponent<IMoveState>();
 
         GetComponent<Rigidbody>().AddForce(transform.up * 0.01f);
-        nextAtkTime = Time.time + Random.Range(2, 3);
+        //nextAtkTime = Time.time + Random.Range(2, 3);
 
-        if (attackRoutine != null)
-        {
-            StopCoroutine(attackRoutine);
-            attackRoutine = null;
-        }
+        defaultRotationSpeed = rotationSpeed;       // Cache the default rotation speed
 
-        attackRoutine = UseAttack();
-        StartCoroutine(attackRoutine);
+
+        //if (attackRoutine != null)
+        //{
+        //    StopCoroutine(attackRoutine);
+        //    attackRoutine = null;
+        //}
+
+        //attackRoutine = UseAttack();
+        //StartCoroutine(attackRoutine);
 
     }
 
@@ -82,6 +87,13 @@ public class MissileBoss : Ship, IEnemy
         // Reset default values
         health = defaultValues.health;
         enemyType = EnemyType.Boss;
+
+        rotationSpeed = defaultRotationSpeed;       // Reset rotation speed if coroutine was cutoff
+        attacking = false;
+        usingSpinAtk = false;
+        nextAtkTime = Time.time + Random.Range(2.0f, 4.0f);     // Change next atk time
+
+        GetComponent<Rigidbody>().AddForce(transform.up * 0.01f);
 
         moveState = GetComponent<IMoveState>();
         if (moveState != null)
@@ -95,7 +107,6 @@ public class MissileBoss : Ship, IEnemy
             StopCoroutine(attackRoutine);
             attackRoutine = null;
         }
-
         attackRoutine = UseAttack();
         StartCoroutine(attackRoutine);
         //Debug.Log(attackRoutine == null);
@@ -111,7 +122,6 @@ public class MissileBoss : Ship, IEnemy
             sprite.material.color = resetColor;
             Debug.Log("SPRITE RESET!");
         }
-        nextAtkTime = Time.time + Random.Range(2.0f, 4.0f);     // Change next atk time
 
     }
 
@@ -192,7 +202,7 @@ public class MissileBoss : Ship, IEnemy
 
 
                     // Weaken rotation speed to make boss fairer
-                    float oldRotationSpeed = rotationSpeed;
+                    //float oldRotationSpeed = rotationSpeed;
                     rotationSpeed = rotationSpeed / 3;
 
 
@@ -281,7 +291,7 @@ public class MissileBoss : Ship, IEnemy
                     }
 
                     // After either attack
-                    rotationSpeed = oldRotationSpeed;       // Restore old rotation speed
+                    rotationSpeed = defaultRotationSpeed;       // Restore old rotation speed
 
                     nextAtkTime = Time.time + Random.Range(3, atkTimeRange);		// Next atk will take place at 'nextAtkTime'	
                     attacking = false;		// No longer attacking
